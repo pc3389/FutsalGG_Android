@@ -1,6 +1,7 @@
 package com.example.futsalgg_android.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -13,7 +14,15 @@ fun AppNavHost(navController: NavHostController) {
         navController = navController,
         startDestination = Screen.Login.route
     ) {
-        composable(Screen.Login.route) { LoginScreen(navController) }
+        composable(Screen.Login.route) {
+            LoginScreen(
+                navController,
+                onClick = {
+                    //TODO On Login Click
+                },
+                context = LocalContext.current
+            )
+        }
         composable(Screen.Main.route) { MainScreen(navController) }
     }
 }
