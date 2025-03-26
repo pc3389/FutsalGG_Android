@@ -12,6 +12,22 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.futsalgg_android.ui.theme.FutsalggColor
 
+/**
+ * 두개의 버튼
+ * 기본으로 하얀색, 까만색 버튼으로 이루어져 있다.
+ *
+ * @param leftText left text
+ * @param rightText right text
+ * @param onLeftClick onClick with left button
+ * @param onRightClick onClick with right button
+ * @param leftContainerColor Left container color, default : White
+ * @param rightContentColor right container color, default: Black
+ * @param leftContentColor left content color, default: Black
+ * @param rightContainerColor right content color, default: White
+ * @param modifier modifier
+ * @param horizontalPadding horizontal padding
+ * @param verticalPadding vertical padding
+ */
 @Composable
 fun DualButtons(
     leftText: String,
