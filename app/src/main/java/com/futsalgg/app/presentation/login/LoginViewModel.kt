@@ -1,12 +1,8 @@
 package com.futsalgg.app.presentation.login
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.futsalgg.app.core.token.TokenManager
-import com.futsalgg.app.data.model.Platform
-import com.futsalgg.app.data.model.response.LoginResponse
+import com.futsalgg.app.core.token.ITokenManager
 import com.futsalgg.app.domain.repository.GoogleLoginRepository
 import com.futsalgg.app.domain.repository.LoginRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +13,7 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val loginRepository: LoginRepository,
     private val googleLoginRepository: GoogleLoginRepository,
-    private val tokenManager: TokenManager
+    private val tokenManager: ITokenManager
 ) : ViewModel() {
 
     fun signInWithGoogleIdToken(

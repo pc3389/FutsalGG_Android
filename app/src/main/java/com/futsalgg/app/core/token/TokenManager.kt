@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 
-class TokenManager(context: Context) {
+class TokenManager(context: Context) : ITokenManager {
 
     private val masterKey = MasterKey.Builder(context)
         .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
@@ -18,7 +18,7 @@ class TokenManager(context: Context) {
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
 
-    fun saveTokens(accessToken: String, refreshToken: String) {
+    override fun saveTokens(accessToken: String, refreshToken: String) {
         sharedPreferences.edit()
             .putString(KEY_ACCESS_TOKEN, accessToken)
             .putString(KEY_REFRESH_TOKEN, refreshToken)
@@ -26,17 +26,17 @@ class TokenManager(context: Context) {
             .apply()
     }
 
-    fun getAccessToken(): String? = sharedPreferences.getString(KEY_ACCESS_TOKEN, null)
+    override fun getAccessToken(): String? = sharedPreferences.getString(KEY_ACCESS_TOKEN, null)
 
-    fun getRefreshToken(): String? = sharedPreferences.getString(KEY_REFRESH_TOKEN, null)
+    override fun getRefreshToken(): String? = sharedPreferences.getString(KEY_REFRESH_TOKEN, null)
 
-    fun isAccessTokenExpired(): Boolean {
+    override fun isAccessTokenExpired(): Boolean {
         val savedAt = sharedPreferences.getLong(KEY_ACCESS_TOKEN_TIMESTAMP, 0L)
         val now = System.currentTimeMillis()
         return now - savedAt > ACCESS_TOKEN_EXPIRATION
     }
 
-    fun clearTokens() {
+    override fun clearTokens() {
         sharedPreferences.edit().clear().apply()
     }
 

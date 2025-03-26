@@ -1,6 +1,7 @@
 package com.futsalgg.app.di
 
 import android.content.Context
+import com.futsalgg.app.core.token.ITokenManager
 import com.futsalgg.app.core.token.TokenManager
 import dagger.Module
 import dagger.Provides
@@ -15,7 +16,7 @@ object TokenModule {
 
     @Provides
     @Singleton
-    fun provideTokenManager(@ApplicationContext context: Context): TokenManager {
+    fun provideTokenManager(@ApplicationContext context: Context): ITokenManager {
         return TokenManager(context)
     }
 }
