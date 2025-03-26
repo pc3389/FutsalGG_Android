@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "693416292022",
+    "project_id": "futsalgg-ec78f",
+    "storage_bucket": "futsalgg-ec78f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:693416292022:android:374b789f8522300ab94017",
+        "android_client_info": {
+          "package_name": "com.futsalgg.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "693416292022-ik2rvcc3qtvd29scmio94j4o880vq0c6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUDjl31qIPdD5eNbftnqj2vXOJpSPW4QQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "693416292022-ik2rvcc3qtvd29scmio94j4o880vq0c6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
