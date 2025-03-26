@@ -122,7 +122,7 @@ private fun handleCredential(
             idToken = idToken,
             onSuccess = onSuccess,
             onFailure = { e ->
-                Log.e("LoginScreen", "Firebase login failed", e)
+                Log.e("LoginScreen", "Login failed", e)
             }
         )
     } else {

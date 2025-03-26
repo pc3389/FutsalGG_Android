@@ -1,4 +1,4 @@
-package com.futsalgg.app.data.di
+package com.futsalgg.app.di
 
 import com.futsalgg.app.data.repository.GoogleLoginRepositoryImpl
 import com.futsalgg.app.data.repository.LoginRepositoryImpl
