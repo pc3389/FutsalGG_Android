@@ -16,8 +16,7 @@ import javax.inject.Singleton
 class NetworkModule {
 
     @Provides
-    fun provideBaseUrl() = "https://example.com/"
-    // TODO Update base url
+    fun provideBaseUrl() = "https://futsalgg.duckdns.org/api/"
 
     @Provides
     @Singleton
