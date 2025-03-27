@@ -25,7 +25,7 @@ fun SelectableButton(
     selectedContentColor: Color = FutsalggColor.white,
     unSelectedContainerColor: Color = FutsalggColor.white,
     unSelectedContentColor: Color = FutsalggColor.mono900,
-    textStyle: TextStyle = FutsalggTypography.bold_16_200,
+    textStyle: TextStyle = FutsalggTypography.bold_17_200,
     hasIcon: Boolean = false,
     @DrawableRes icon: Int = R.drawable.ic_add_14
 ) {

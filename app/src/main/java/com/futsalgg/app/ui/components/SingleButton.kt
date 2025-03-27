@@ -44,7 +44,7 @@ fun SingleButton(
     modifier: Modifier = Modifier,
     containerColor: Color = FutsalggColor.mono900,
     contentColor: Color = FutsalggColor.white,
-    textStyle: TextStyle = FutsalggTypography.bold_16_200,
+    textStyle: TextStyle = FutsalggTypography.bold_17_200,
     hasBorder: Boolean = false,
     hasIcon: Boolean = false,
     @DrawableRes icon: Int = R.drawable.ic_add_14

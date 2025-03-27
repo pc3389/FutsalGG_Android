@@ -81,7 +81,7 @@ fun Contents(onClick: () -> Unit) {
             contentAlignment = Alignment.TopCenter
         ) {
             Image(
-                painter = painterResource(id = R.drawable.temp_login_logo),
+                painter = painterResource(id = R.drawable.futsalgg_logo),
                 contentDescription = "",
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier

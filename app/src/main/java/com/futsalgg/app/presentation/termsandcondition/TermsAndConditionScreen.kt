@@ -100,7 +100,7 @@ fun Content(
             // 두번째 텍스트
             Text(
                 text = stringResource(R.string.terms_and_condition_contents),
-                style = FutsalggTypography.regular_16_200
+                style = FutsalggTypography.regular_17_200
             )
         }
 
@@ -124,7 +124,7 @@ fun Content(
                 )
                 Text(
                     text = stringResource(R.string.agree_all),
-                    style = FutsalggTypography.bold_16_200
+                    style = FutsalggTypography.bold_17_200
                 )
             }
 
@@ -198,7 +198,7 @@ fun CheckBoxAndTextWithBorder(
         ){
             Text(
                 text = stringResource(text),
-                style = FutsalggTypography.regular_16_200
+                style = FutsalggTypography.regular_17_200
             )
             Image(
                 painter = painterResource(R.drawable.ic_arrow_right_16),
