@@ -69,7 +69,7 @@ fun PreviewTopBar() {
     FutsalggTopBar(
         title = "경기 일정 생성하기",
         onBackClick = {},
-        rightIcon = R.drawable.ic_arrow_right_16,
+        rightIcon = R.drawable.ic_arrow_forward_16,
         {}
     )
 }

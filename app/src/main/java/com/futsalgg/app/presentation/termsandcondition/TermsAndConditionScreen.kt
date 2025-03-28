@@ -201,7 +201,7 @@ fun CheckBoxAndTextWithBorder(
                 style = FutsalggTypography.regular_17_200
             )
             Image(
-                painter = painterResource(R.drawable.ic_arrow_right_16),
+                painter = painterResource(R.drawable.ic_arrow_forward_16),
                 contentDescription = "",
                 modifier = Modifier.padding(16.dp)
                     .align(Alignment.CenterEnd)

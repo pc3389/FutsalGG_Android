@@ -29,7 +29,7 @@ import com.futsalgg.app.ui.theme.FutsalggColor
  * @param verticalPadding vertical padding
  */
 @Composable
-fun DualButtons(
+fun DoubleButtons(
     leftText: String,
     rightText: String,
     onLeftClick: () -> Unit,
@@ -73,7 +73,7 @@ fun DualButtons(
 @Preview
 @Composable
 fun PreviewDualButtons() {
-    DualButtons(
+    DoubleButtons(
         "LeftText",
         "RightText",
         onLeftClick = {},
