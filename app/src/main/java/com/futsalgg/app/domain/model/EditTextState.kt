@@ -1,4 +1,4 @@
-package com.futsalgg.app.ui.components
+package com.futsalgg.app.domain.model
 
 enum class EditTextState {
     Default,

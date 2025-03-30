@@ -29,7 +29,9 @@ import androidx.navigation.compose.rememberNavController
 import com.futsalgg.app.R
 import com.futsalgg.app.presentation.base.BaseScreen
 import com.futsalgg.app.util.DateTransformation
-import com.futsalgg.app.ui.components.EditTextState
+import com.futsalgg.app.domain.model.EditTextState
+import com.futsalgg.app.domain.model.Gender
+import com.futsalgg.app.ui.components.DoubleRadioButtonsEnum
 import com.futsalgg.app.ui.components.EditTextWithState
 import com.futsalgg.app.ui.components.SingleButton
 import com.futsalgg.app.ui.components.TextWithStar
@@ -44,6 +46,7 @@ fun SignupScreen(navController: NavController, viewModel: SignupViewModel = hilt
     var nickname by remember { mutableStateOf("") }
     var birthday by remember { mutableStateOf(("")) }
     var showCalendarSheet by remember { mutableStateOf(false) }
+    var gender by remember { mutableStateOf(Gender.MALE) }
 
     BaseScreen(
         navController = navController,
@@ -79,6 +82,11 @@ fun SignupScreen(navController: NavController, viewModel: SignupViewModel = hilt
             )
 
             Spacer(Modifier.height(56.dp))
+
+            GenderUi(
+                gender = gender,
+                onGenderButtonSelect = { gender = it }
+            )
         }
     }
 }
@@ -185,6 +193,27 @@ fun BirthdayUi(
             onDismissRequest = onDismissRequest
         )
     }
+}
+
+@Composable
+fun GenderUi(
+    gender: Gender,
+    onGenderButtonSelect: (Gender) -> Unit
+) {
+    TextWithStar(
+        textRes = R.string.signup_gender,
+    )
+
+    Spacer(Modifier.height(8.dp))
+
+    DoubleRadioButtonsEnum(
+        selected = gender,
+        option1 = Gender.MALE,
+        option2 = Gender.FEMALE,
+        onSelect = onGenderButtonSelect,
+        label1 = "남자",
+        label2 = "여자"
+    )
 }
 
 fun String.toLocalDateOrNull(): LocalDate? {
