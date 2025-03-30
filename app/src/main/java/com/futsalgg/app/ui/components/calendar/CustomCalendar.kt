@@ -31,8 +31,6 @@ fun CustomCalendar(
 ) {
     Column(
         modifier = modifier
-            .padding(16.dp)
-            .padding(top = 8.dp)
     ) {
         CalendarTopBar(
             currentMonth = currentMonth,

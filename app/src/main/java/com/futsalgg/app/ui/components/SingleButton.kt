@@ -3,6 +3,7 @@ package com.futsalgg.app.ui.components
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -59,7 +60,8 @@ fun SingleButton(
             contentColor = contentColor
         ),
         shape = RoundedCornerShape(8.dp),
-        border = if (hasBorder) BorderStroke(1.dp, FutsalggColor.mono500) else null
+        border = if (hasBorder) BorderStroke(1.dp, FutsalggColor.mono500) else null,
+        contentPadding = PaddingValues(8.dp)
     ) {
         Box(
             modifier = Modifier.fillMaxWidth(),

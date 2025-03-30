@@ -56,7 +56,10 @@ fun CalendarBottomSheetContent(
     onDateSelected: (LocalDate) -> Unit,
     onConfirm: () -> Unit
 ) {
-    Column(modifier = Modifier.padding(16.dp)) {
+    Column(
+        modifier = Modifier.padding(horizontal = 16.dp)
+            .padding(bottom = 48.dp)
+    ) {
         CustomCalendar(
             currentMonth = currentMonth,
             selectedDate = selectedDate,

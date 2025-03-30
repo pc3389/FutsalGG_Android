@@ -1,67 +1,110 @@
 package com.futsalgg.app.ui.components
 
+import androidx.annotation.StringRes
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.futsalgg.app.R
 import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.ui.theme.FutsalggTypography
 
 @Composable
 fun EditTextWithState(
-    // TODO Remove stubs
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    hint: String = "사용하실 닉네임을 입력해주세요.",
+    @StringRes hint: Int = R.string.signup_nickname_hint,
     state: EditTextState = EditTextState.Default,
-    errorCannotUseMessage: String = "영어, 특수 문자는 사용 불가합니다.",
-    errorAlreadyExistingMessage: String = "이미 존재하는 닉네임입니다",
-    successMessage: String = "사용 가능한 닉네임입니다"
+    messageProvider: (EditTextState) -> String? = { null },
+    trailingIcon: ImageVector? = null,
+    showTrailingIcon: Boolean = false,
+    onTrailingIconClick: (() -> Unit)? = null,
+    isNumeric: Boolean = false,
+    visualTransformation: VisualTransformation = VisualTransformation.None
 ) {
     val borderColor = when (state) {
         EditTextState.Default -> FutsalggColor.mono500
-        EditTextState.ErrorCannotUse -> FutsalggColor.orange
+        EditTextState.ErrorCannotUse,
         EditTextState.ErrorAlreadyExisting -> FutsalggColor.orange
         EditTextState.Available -> FutsalggColor.mint500
     }
 
-    val messageText = when (state) {
-        EditTextState.ErrorCannotUse -> errorCannotUseMessage
-        EditTextState.ErrorAlreadyExisting -> errorAlreadyExistingMessage
-        EditTextState.Available -> successMessage
-        else -> null
-    }
+    val messageText = messageProvider(state)
 
-    val isError =
-        (state == EditTextState.ErrorAlreadyExisting || state == EditTextState.ErrorCannotUse)
-
-    Column(
-        modifier = modifier.fillMaxWidth()
-    ) {
-        OutlinedTextField(
-            value = value,
-            onValueChange = onValueChange,
-            singleLine = true,
-            placeholder = { Text(text = hint) },
-            isError = isError,
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp),
-            textStyle = FutsalggTypography.regular_17_200,
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = borderColor,
-                unfocusedBorderColor = borderColor,
-                errorBorderColor = borderColor,
-                cursorColor = FutsalggColor.mint500
+    Column(modifier = modifier.fillMaxWidth()) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp)
+                .border(1.dp, borderColor, RoundedCornerShape(8.dp))
+                .padding(horizontal = 8.dp),
+            contentAlignment = Alignment.CenterStart
+        ) {
+            BasicTextField(
+                value = value,
+                onValueChange = {
+                    if (!isNumeric || it.all { c -> c.isDigit() }) {
+                        onValueChange(it)
+                    }
+                },
+                singleLine = true,
+                textStyle = FutsalggTypography.regular_17_200.copy(
+                    color = FutsalggColor.mono900
+                ),
+                cursorBrush = SolidColor(FutsalggColor.mint500),
+                visualTransformation = visualTransformation,
+                keyboardOptions = if (isNumeric) {
+                    KeyboardOptions(keyboardType = KeyboardType.Number)
+                } else {
+                    KeyboardOptions.Default
+                },
+                modifier = Modifier
+                    .padding(8.dp),
+                decorationBox = { innerTextField ->
+                    if (value.isEmpty()) {
+                        Text(
+                            text = stringResource(hint),
+                            color = FutsalggColor.mono400,
+                            style = FutsalggTypography.regular_17_200
+                        )
+                    }
+                    innerTextField()
+                }
             )
-        )
+
+            if (showTrailingIcon && onTrailingIconClick != null) {
+                trailingIcon?.let {
+                    IconButton(onClick = onTrailingIconClick,
+                        modifier = Modifier.align(Alignment.CenterEnd)) {
+                        Icon(
+                            imageVector = it,
+                            contentDescription = "날짜 선택",
+                            tint = FutsalggColor.mono500
+                        )
+                    }
+                }
+            }
+        }
 
         if (messageText != null) {
             Text(
@@ -77,9 +120,19 @@ fun EditTextWithState(
 @Preview
 @Composable
 fun PreviewEditTextWithState() {
+    val context = LocalContext.current
     EditTextWithState(
-        value = "나나나나텍스트",
+        value = "텍스트 테스팅",
+//        value = "",
         onValueChange = {},
-        state = EditTextState.ErrorCannotUse
+        state = EditTextState.ErrorCannotUse,
+        messageProvider = { st ->
+            when (st) {
+                EditTextState.ErrorCannotUse -> context.getString(R.string.signup_nickname_error_message_cannot_use)
+                EditTextState.ErrorAlreadyExisting -> context.getString(R.string.signup_nickname_error_message_already)
+                EditTextState.Available -> context.getString(R.string.signup_nickname_available)
+                else -> null
+            }
+        }
     )
 }

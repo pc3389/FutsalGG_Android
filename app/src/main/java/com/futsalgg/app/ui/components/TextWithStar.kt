@@ -1,0 +1,26 @@
+package com.futsalgg.app.ui.components
+
+import androidx.annotation.StringRes
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
+import com.futsalgg.app.ui.theme.FutsalggColor
+import com.futsalgg.app.ui.theme.FutsalggTypography
+
+@Composable
+fun TextWithStar(@StringRes textRes: Int, modifier: Modifier = Modifier) {
+    Text(
+        buildAnnotatedString {
+            append("${stringResource(textRes)} ")
+            withStyle(style = SpanStyle(color = FutsalggColor.mint500)) {
+                append("*")
+            }
+        },
+        style = FutsalggTypography.bold_20_300,
+        modifier = modifier
+    )
+}
