@@ -4,6 +4,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
+import java.time.LocalDate
 
 class DateTransformation : VisualTransformation {
     override fun filter(text: AnnotatedString): TransformedText {
@@ -41,4 +42,12 @@ fun dateFilter(text: AnnotatedString): TransformedText {
     }
 
     return TransformedText(AnnotatedString(out), offsetTranslator)
+}
+
+fun String.toLocalDateOrNull(): LocalDate? {
+    return try {
+        LocalDate.parse(this)
+    } catch (e: Exception) {
+        null
+    }
 }
