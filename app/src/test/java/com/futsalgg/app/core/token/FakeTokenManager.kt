@@ -1,8 +1,8 @@
 package com.futsalgg.app.core.token
 
 class FakeTokenManager : ITokenManager {
-    private var _accessToken: String? = null
-    private var _refreshToken: String? = null
+    private var _accessToken: String? = "Any_Token"
+    private var _refreshToken: String? = "Refresh_Token"
 
     override fun saveTokens(accessToken: String, refreshToken: String) {
         _accessToken = accessToken

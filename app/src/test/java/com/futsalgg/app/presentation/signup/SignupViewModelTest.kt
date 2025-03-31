@@ -38,9 +38,7 @@ class SignupViewModelTest {
         Dispatchers.setMain(testDispatcher)
         fakeFileUploader = FakeFileUploader()
         fakeUserRepository = FakeUserRepository(fakeFileUploader)
-        fakeTokenManager = FakeTokenManager().apply {
-            saveTokens("fake_access_token", "fake_refresh_token")
-        }
+        fakeTokenManager = FakeTokenManager()
         viewModel = SignupViewModel(fakeUserRepository, fakeTokenManager)
     }
 
@@ -49,78 +47,98 @@ class SignupViewModelTest {
         Dispatchers.resetMain()
     }
 
+    /**
+     * 유효한 생년월일("20000101")을 입력하면 birthdayState가 Available이어야 합니다.
+     */
     @Test
-    fun `birthday valid when in correct format and within range`() = runTest {
-        // 2000년 1월 1일은 유효한 날짜라고 가정 ("yyyyMMdd" 포맷)
+    fun `validateBirthday returns Available for correct date format within range`() = runTest {
         viewModel.onBirthdayChange("20000101")
         viewModel.validateBirthday()
+        // 올바른 날짜 포맷과 범위이면 에러 상태가 아니라 Available 상태가 되어야 합니다.
         assertEquals(EditTextState.Available, viewModel.birthdayState.value)
     }
 
+    /**
+     * 잘못된 생년월일 포맷("2000/01/01")을 입력하면 birthdayState가 ErrorCannotUse이어야 합니다.
+     */
     @Test
-    fun `birthday invalid when format is incorrect`() = runTest {
-        // 잘못된 포맷으로 입력한 경우
+    fun `validateBirthday returns ErrorCannotUse for incorrect date format`() = runTest {
         viewModel.onBirthdayChange("2000/01/01")
         viewModel.validateBirthday()
         assertEquals(EditTextState.ErrorCannotUse, viewModel.birthdayState.value)
     }
 
+    /**
+     * 닉네임이 "유니크"인 경우, checkNicknameDuplication 호출 시 nicknameState가 Available로 설정되어야 합니다.
+     */
     @Test
-    fun `nickname unique check returns Available for unique nickname`() = runTest {
+    fun `checkNicknameDuplication returns Available for unique nickname`() = runTest {
         viewModel.onNicknameChange("유니크")
         viewModel.checkNicknameDuplication()
-        advanceUntilIdle()
+        advanceUntilIdle()  // 모든 코루틴 작업이 완료될 때까지 대기
         assertEquals(EditTextState.Available, viewModel.nicknameState.value)
     }
 
+    /**
+     * 한글이 아닌 닉네임("notKorean")인 경우, checkNicknameDuplication 호출 시 nicknameState가 ErrorCannotUse로 설정되어야 합니다.
+     */
     @Test
-    fun `nickname unique check returns ErrorCannotUse for unique nickname`() = runTest {
+    fun `checkNicknameDuplication returns ErrorCannotUse for non-Korean nickname`() = runTest {
         viewModel.onNicknameChange("notKorean")
         viewModel.checkNicknameDuplication()
+        // 포맷이 한글이 아니므로 바로 ErrorCannotUse로 처리됩니다.
         assertEquals(EditTextState.ErrorCannotUse, viewModel.nicknameState.value)
     }
 
+    /**
+     * 닉네임이 중복되는 경우("익시스팅에러") checkNicknameDuplication 호출 시 nicknameState가 ErrorAlreadyExisting로 설정되어야 합니다.
+     */
     @Test
-    fun `nickname unique check returns ErrorAlreadyExisting for duplicate nickname`() = runTest {
-        viewModel.onNicknameChange("버어어")
+    fun `checkNicknameDuplication returns ErrorAlreadyExisting for duplicate nickname`() = runTest {
+        viewModel.onNicknameChange("익시스팅에러")
         viewModel.checkNicknameDuplication()
         advanceUntilIdle()
         assertEquals(EditTextState.ErrorAlreadyExisting, viewModel.nicknameState.value)
     }
 
+    /**
+     * createUser 함수가 호출되면 내부적으로 생년월일 형식을 변환하여 repository를 호출하고,
+     * 모든 작업이 완료된 후 _isLoading 상태가 false가 되어야 합니다.
+     */
     @Test
-    fun `createUser converts birthday format correctly and calls repository`() = runTest {
-        // 입력: "yyyyMMdd", 출력: "yyyy-MM-dd" (2000-01-01)
-        viewModel.onBirthdayChange("20000101")
+    fun `createUser converts birthday format correctly and finishes loading`() = runTest {
+        viewModel.onBirthdayChange("20000101")  // "yyyyMMdd" 형식 입력
         viewModel.onNicknameChange("유니크")
         viewModel.onGenderChange(Gender.MALE)
-        // notification 상태는 기본적으로 false; 필요하면 toggleNotification 호출
-
         viewModel.createUser(onSuccess = {})
-
-        // FakeUserRepository는 항상 성공을 반환하므로, 테스트는 _isLoading가 false로 끝나는지로 검증
+        // createUser 호출 후 _isLoading가 false여야 합니다.
         assertEquals(false, viewModel.isLoading.value)
     }
 
+    /**
+     * uploadProfileImage 함수가 호출되면 FakeUserRepository의 구현에 따라
+     * 최종적으로 profileImageUrl 상태가 "http://fake.updated.url/profile"로 업데이트되어야 합니다.
+     */
     @Test
-    fun `uploadProfileImage calls repository and updates profileImageUrl`() = runTest {
-        // 테스트용 빈 파일 생성 (임시 파일)
+    fun `uploadProfileImage updates profileImageUrl when upload succeeds`() = runTest {
+        // 테스트용 임시 파일 생성 (빈 파일)
         val tempFile = kotlin.io.path.createTempFile("temp", ".jpg").toFile()
-
-        // ViewModel의 uploadProfileImage 호출
         viewModel.uploadProfileImage(tempFile)
         advanceUntilIdle()
-
-        // FakeUserRepository의 updateProfile은 "http://fake.updated.url/profile" 반환하도록 구현되었으므로,
-        // profileImageUrl 상태가 해당 값으로 업데이트되었는지 확인합니다.
+        // FakeUserRepository는 updateProfile이 "http://fake.updated.url/profile"을 반환하도록 구현되어 있습니다.
         assertEquals("http://fake.updated.url/profile", viewModel.profileImageUrl.value)
-
         tempFile.delete() // 임시 파일 삭제
     }
 
+    // --- Fake Implementations for Testing ---
+
+    /**
+     * FakeUserRepository는 UserRepository 인터페이스를 구현하며,
+     * FileUploader를 주입받아 uploadProfileImage의 전체 플로우를 시뮬레이션합니다.
+     */
     class FakeUserRepository(private val fileUploader: FileUploader) : UserRepository {
         override suspend fun isNicknameUnique(nickname: String): Result<Boolean> {
-            // 예시: "유니크"라는 닉네임이면 유니크, 그 외에는 중복으로 처리
+            // "유니크"라는 닉네임이면 고유, 그 외에는 중복으로 처리
             return if (nickname == "유니크") {
                 Result.success(true)
             } else {
@@ -136,12 +154,12 @@ class SignupViewModelTest {
             agreement: Boolean,
             notification: Boolean
         ): Result<Unit> {
-            // 항상 성공했다고 가정
+            // 항상 성공을 반환
             return Result.success(Unit)
         }
 
         override suspend fun getProfilePresignedUrl(accessToken: String): Result<ProfilePresignedUrlResponse> {
-            // 고정된 presigned URL과 uri 반환 (테스트용)
+            // 테스트용 고정된 presigned URL과 uri 반환
             val fakeResponse = ProfilePresignedUrlResponse(
                 url = "http://fake.presigned.url/upload",
                 uri = "http://fake.uri/profile"
@@ -153,7 +171,7 @@ class SignupViewModelTest {
             accessToken: String,
             uri: String
         ): Result<UpdateProfileResponse> {
-            // 고정된 업데이트 응답 반환 (테스트용)
+            // 테스트용 고정된 업데이트 응답 반환
             val fakeResponse = UpdateProfileResponse(
                 url = "http://fake.updated.url/profile",
                 uri = uri
@@ -168,7 +186,7 @@ class SignupViewModelTest {
             // 1. presigned URL 획득
             val presignedResponse =
                 getProfilePresignedUrl(accessToken).getOrElse { return Result.failure(it) }
-            // 2. presigned URL로 파일 업로드: 여기서 FakeFileUploader.uploadFileToPresignedUrl 호출
+            // 2. presigned URL로 파일 업로드: FakeFileUploader의 uploadFileToPresignedUrl 호출
             val uploadResult = fileUploader.uploadFileToPresignedUrl(presignedResponse.url, file)
             uploadResult.getOrElse { return Result.failure(it) }
             // 3. updateProfile 호출하여 최종 응답 반환
@@ -176,6 +194,10 @@ class SignupViewModelTest {
         }
     }
 
+    /**
+     * FakeFileUploader는 FileUploader 인터페이스를 구현하며,
+     * 항상 성공을 반환하여 파일 업로드 과정을 시뮬레이션합니다.
+     */
     class FakeFileUploader : FileUploader {
         override suspend fun uploadFileToPresignedUrl(
             presignedUrl: String,
