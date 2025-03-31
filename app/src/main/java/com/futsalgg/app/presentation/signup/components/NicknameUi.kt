@@ -27,6 +27,7 @@ fun NicknameUi(
     onNicknameChange: (String) -> Unit,
     isCheckEnabled: Boolean,
     nicknameState: EditTextState,
+    nicknameCheck: () -> Unit,
     context: Context
 ) {
     Box(
@@ -71,7 +72,7 @@ fun NicknameUi(
 
         SingleButton(
             text = stringResource(R.string.signup_nickname_ckeck_button),
-            onClick = { /* TODO */ },
+            onClick = nicknameCheck,
             modifier = Modifier.weight(1f),
             enabled = isCheckEnabled
         )

@@ -17,8 +17,8 @@
     <string name="signup_nickname">닉네임</string>
     <string name="signup_nickname_hint">사용하실 닉네임을 입력해주세요.</string>
     <string name="signup_nickname_error_message_cannot_use">영어, 특수 문자는 사용 불가합니다.</string>
-    <string name="signup_nickname_error_message_already">이미 존재하는 닉네임입니다</string>
-    <string name="signup_nickname_available">사용 가능한 닉네임입니다</string>
+    <string name="signup_nickname_error_message_already">이미 존재하는 닉네임입니다.</string>
+    <string name="signup_nickname_available">사용 가능한 닉네임입니다.</string>
     <string name="signup_nickname_ckeck_button">중복확인</string>
     <string name="signup_birthday_hint">YYYY-MM-DD</string>
     <string name="signup_birthday_error_invalid">YYYY-MM-DD의 형태로 입력해주세요.</string>

@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -12,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.ui.theme.FutsalggTypography
@@ -24,15 +24,17 @@ fun DayCell(
     today: LocalDate,
     selectedDate: LocalDate?,
     primaryColor: Color = FutsalggColor.mint500,
-    canSelectPreviousDate: Boolean = false,
+    canSelectPreviousDate: Boolean,
+    canSelectAfterDate: Boolean,
     onClick: (LocalDate) -> Unit
 ) {
     val isToday = date == today
     val isSelected = date == selectedDate
     val isPast = date.isBefore(today)
+    val isFuture = date.isAfter(today)
 
     val bgColor = if (isToday) primaryColor else Color.Transparent
-    val textColor = if (!canSelectPreviousDate && isPast) {
+    val textColor = if ((!canSelectPreviousDate && isPast) || (!canSelectAfterDate && isFuture)) {
         FutsalggColor.mono200
     } else {
         if (isToday) {
@@ -43,11 +45,18 @@ fun DayCell(
             FutsalggColor.mono900
         }
     }
+
+    val textStyle = if (isToday || isSelected) {
+        FutsalggTypography.bold_17_200
+    } else {
+        FutsalggTypography.regular_15_100
+    }
     val border = if (isSelected) BorderStroke(1.dp, primaryColor) else null
 
     Box(
         modifier = Modifier
             .padding(4.dp)
+            .height(40.dp)
             .background(color = bgColor, shape = RoundedCornerShape(8.dp))
             .then(
                 if (border != null) Modifier.border(
@@ -56,8 +65,7 @@ fun DayCell(
                 ) else Modifier
             )
             .clickable(
-                enabled = (
-                        canSelectPreviousDate || (!canSelectPreviousDate && !isPast))
+                enabled = (!((!canSelectPreviousDate && isPast) || (!canSelectAfterDate && isFuture)))
             ) {
                 onClick(date)
             },
@@ -69,19 +77,8 @@ fun DayCell(
                 vertical = 8.dp
             ),
             text = date.dayOfMonth.toString(),
-            style = FutsalggTypography.bold_17_200,
+            style = textStyle,
             color = textColor
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun CalendarDayCellPreview() {
-    DayCell(
-        date = LocalDate.now(),
-        today = LocalDate.now(),
-        selectedDate = LocalDate.now(),
-        primaryColor = FutsalggColor.mint500
-    ) {}
 }

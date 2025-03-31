@@ -2,6 +2,7 @@ package com.futsalgg.app.presentation.signup.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,7 +24,9 @@ fun NotificationUi(
             style = FutsalggTypography.bold_20_300,
             color = FutsalggColor.mono900
         )
+
         Spacer(Modifier.width(4.dp))
+
         Text(
             text = "(경기 일정, 투표 등록)",
             style = FutsalggTypography.regular_17_200,
@@ -31,7 +34,7 @@ fun NotificationUi(
         )
     }
 
-    Spacer(Modifier.width(8.dp))
+    Spacer(Modifier.height(8.dp))
 
     CheckableTextBox(
         text = "알림 받기",

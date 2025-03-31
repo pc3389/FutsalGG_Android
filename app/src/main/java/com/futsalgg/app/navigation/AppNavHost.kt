@@ -52,7 +52,8 @@ fun AppNavHost(
             val uriStr = backStackEntry.arguments?.getString("uri") ?: ""
             val uri = Uri.parse(uriStr)
 
-            val signupViewModel: SignupViewModel = hiltViewModel()
+            val parentEntry = navController.getBackStackEntry(RoutePath.SIGNUP)
+            val signupViewModel: SignupViewModel = hiltViewModel(parentEntry)
 
             ProfileImageCropScreen(
                 imageUri = uri,

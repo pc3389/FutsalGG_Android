@@ -21,6 +21,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,8 +43,10 @@ import com.futsalgg.app.presentation.signup.components.GenderUi
 import com.futsalgg.app.presentation.signup.components.NicknameUi
 import com.futsalgg.app.presentation.signup.components.NotificationUi
 import com.futsalgg.app.presentation.signup.components.ProfilePictureUi
+import com.futsalgg.app.ui.components.LoadingScreen
 import com.futsalgg.app.ui.components.SingleButton
 import com.futsalgg.app.ui.theme.FutsalggColor
+import com.futsalgg.app.util.toFile
 
 @Composable
 fun SignupScreen(navController: NavController, viewModel: SignupViewModel = hiltViewModel()) {
@@ -52,8 +55,10 @@ fun SignupScreen(navController: NavController, viewModel: SignupViewModel = hilt
 
     val nickname by viewModel.nickname.collectAsState()
     val isCheckEnabled by viewModel.isNicknameValid.collectAsState()
+    val nicknameState by viewModel.nicknameState.collectAsState()
 
     val birthday by viewModel.birthday.collectAsState()
+    val birthdayState by viewModel.birthdayState.collectAsState()
     val showCalendarSheet by viewModel.showCalendarSheet.collectAsState()
 
     val gender by viewModel.gender.collectAsState()
@@ -62,7 +67,13 @@ fun SignupScreen(navController: NavController, viewModel: SignupViewModel = hilt
 
     val notificationChecked by viewModel.notificationChecked.collectAsState()
 
-    var signupButtonEnabled by remember { mutableStateOf(false) }
+    val signupButtonEnabled by remember {
+        derivedStateOf {
+            nicknameState == EditTextState.Available && birthdayState == EditTextState.Available
+        }
+    }
+
+    val isLoading by viewModel.isLoading.collectAsState()
 
     val imagePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
@@ -126,8 +137,9 @@ fun SignupScreen(navController: NavController, viewModel: SignupViewModel = hilt
             NicknameUi(
                 context = context,
                 nickname = nickname,
-                nicknameState = EditTextState.Available,
+                nicknameState = nicknameState,
                 onNicknameChange = viewModel::onNicknameChange,
+                nicknameCheck = { viewModel.checkNicknameDuplication() },
                 isCheckEnabled = isCheckEnabled
             )
 
@@ -143,7 +155,9 @@ fun SignupScreen(navController: NavController, viewModel: SignupViewModel = hilt
                     viewModel.onBirthdaySelect(it)
                     viewModel.onDismissCalendar()
                 },
-                onDismissRequest = viewModel::onDismissCalendar
+                onDismissRequest = viewModel::onDismissCalendar,
+                birthdayState = birthdayState,
+                onValidateBirthday = viewModel::validateBirthday
             )
 
             VerticalSpacer56()
@@ -172,13 +186,25 @@ fun SignupScreen(navController: NavController, viewModel: SignupViewModel = hilt
             SingleButton(
                 text = stringResource(R.string.signup_button),
                 onClick = {
-                    //TODO Button on click
+                    if (croppedImage != null) {
+                        val file = croppedImage!!.toFile(context, "profile.jpg")
+                        viewModel.uploadProfileImage(file)
+                    }
+                    viewModel.createUser(
+                        onSuccess = {
+                            // TODO 유저 등록 성공
+                        }
+                    )
                 },
                 enabled = signupButtonEnabled
             )
 
             VerticalSpacer56()
         }
+    }
+
+    if (isLoading) {
+        LoadingScreen()
     }
 }
 

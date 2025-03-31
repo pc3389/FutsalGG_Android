@@ -1,6 +1,6 @@
 package com.futsalgg.app.presentation.login
 
-import com.futsalgg.app.core.token.ITokenManager
+import com.futsalgg.app.core.token.FakeTokenManager
 import com.futsalgg.app.data.model.Platform
 import com.futsalgg.app.data.model.response.LoginResponse
 import com.futsalgg.app.domain.repository.GoogleLoginRepository
@@ -131,24 +131,6 @@ class LoginViewModelTest {
             return if (shouldSucceed)
                 Result.success(LoginResponse("accessToken", "refreshToken", false))
             else Result.failure(Exception("Server login failed"))
-        }
-    }
-
-    class FakeTokenManager : ITokenManager {
-        private var _accessToken: String? = null
-        private var _refreshToken: String? = null
-
-        override fun saveTokens(accessToken: String, refreshToken: String) {
-            _accessToken = accessToken
-            _refreshToken = refreshToken
-        }
-
-        override fun getAccessToken(): String? = _accessToken
-        override fun getRefreshToken(): String? = _refreshToken
-        override fun isAccessTokenExpired(): Boolean = false
-        override fun clearTokens() {
-            _accessToken = null
-            _refreshToken = null
         }
     }
 }

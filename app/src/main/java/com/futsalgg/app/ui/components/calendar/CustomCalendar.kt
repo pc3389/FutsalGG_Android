@@ -3,17 +3,11 @@ package com.futsalgg.app.ui.components.calendar
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.futsalgg.app.ui.theme.FutsalggColor
 import java.time.LocalDate
@@ -24,26 +18,33 @@ fun CustomCalendar(
     modifier: Modifier = Modifier,
     currentMonth: YearMonth,
     selectedDate: LocalDate? = null,
-    onPreviousMonth: () -> Unit,
-    onNextMonth: () -> Unit,
-    onMonthTitleClick: () -> Unit,
+    onMonthChange: (YearMonth) -> Unit,
+    canSelectPreviousDate: Boolean,
+    canSelectAfterDate: Boolean,
     onDateSelected: (LocalDate) -> Unit
 ) {
+    val thisYear = YearMonth.now().year
+    val yearRange: IntRange = if (canSelectAfterDate) {
+        thisYear..thisYear + 5
+    } else if (canSelectPreviousDate) {
+        1900..thisYear
+    } else {
+        1900..thisYear+5
+    }
     Column(
         modifier = modifier
     ) {
         CalendarTopBar(
             currentMonth = currentMonth,
-            onPreviousMonth = onPreviousMonth,
-            onNextMonth = onNextMonth,
-            onMonthTitleClick = onMonthTitleClick
+            onMonthChange = onMonthChange,
+            yearRange = yearRange
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         CalendarWeekHeader()
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(4.dp))
 
         val days = generateCalendarDates(currentMonth)
         val today = LocalDate.now()
@@ -55,6 +56,8 @@ fun CustomCalendar(
                     today = today,
                     selectedDate = selectedDate,
                     primaryColor = FutsalggColor.mint500,
+                    canSelectPreviousDate = canSelectPreviousDate,
+                    canSelectAfterDate = canSelectAfterDate,
                     onClick = onDateSelected
                 )
             }
@@ -80,19 +83,4 @@ fun generateCalendarDates(yearMonth: YearMonth): List<LocalDate> {
     }
 
     return days
-}
-
-
-@Preview
-@Composable
-fun PreviewCustomCalendar() {
-    var currentMonth by remember { mutableStateOf(YearMonth.now()) }
-
-    CustomCalendar(
-        currentMonth = currentMonth,
-        onPreviousMonth = { currentMonth = currentMonth.minusMonths(1) },
-        onNextMonth = { currentMonth = currentMonth.plusMonths(1) },
-        onMonthTitleClick = {},
-        onDateSelected = {}
-    )
 }

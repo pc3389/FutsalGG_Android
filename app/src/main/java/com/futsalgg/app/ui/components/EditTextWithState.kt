@@ -2,6 +2,7 @@ package com.futsalgg.app.ui.components
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,8 +15,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -41,7 +45,8 @@ fun EditTextWithState(
     showTrailingIcon: Boolean = false,
     onTrailingIconClick: (() -> Unit)? = null,
     isNumeric: Boolean = false,
-    visualTransformation: VisualTransformation = VisualTransformation.None
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    onFocusChanged: (Boolean) -> Unit = {}
 ) {
     val borderColor = when (state) {
         EditTextState.Default -> FutsalggColor.mono500
@@ -52,13 +57,16 @@ fun EditTextWithState(
 
     val messageText = messageProvider(state)
 
+    val focusRequester = remember { androidx.compose.ui.focus.FocusRequester() }
+
     Column(modifier = modifier.fillMaxWidth()) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp)
                 .border(1.dp, borderColor, RoundedCornerShape(8.dp))
-                .padding(horizontal = 8.dp),
+                .padding(horizontal = 8.dp)
+                .clickable { focusRequester.requestFocus() },
             contentAlignment = Alignment.CenterStart
         ) {
             BasicTextField(
@@ -80,7 +88,11 @@ fun EditTextWithState(
                     KeyboardOptions.Default
                 },
                 modifier = Modifier
-                    .padding(8.dp),
+                    .padding(8.dp)
+                    .focusRequester(focusRequester)
+                    .onFocusChanged { focusState ->
+                        onFocusChanged(focusState.isFocused)
+                    },
                 decorationBox = { innerTextField ->
                     if (value.isEmpty()) {
                         Text(

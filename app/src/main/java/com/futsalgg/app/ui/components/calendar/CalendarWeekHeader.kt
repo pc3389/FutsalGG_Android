@@ -5,11 +5,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
+import com.futsalgg.app.ui.theme.FutsalggColor
+import com.futsalgg.app.ui.theme.FutsalggTypography
 import java.time.DayOfWeek
 
 @Composable
@@ -32,17 +30,10 @@ fun CalendarWeekHeader() {
             Text(
                 text = label,
                 modifier = Modifier.weight(1f),
-                color = if (isSunday) Color(0xFFFF9800) else Color.Unspecified,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 14.sp,
+                color = if (isSunday) FutsalggColor.orange else FutsalggColor.mono500,
+                style = FutsalggTypography.regular_15_100,
                 textAlign = TextAlign.Center
             )
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewCalendarWeekHeader() {
-    CalendarWeekHeader()
 }
