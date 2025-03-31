@@ -131,7 +131,7 @@ fun SignupScreen(navController: NavController, viewModel: SignupViewModel = hilt
                 isCheckEnabled = isCheckEnabled
             )
 
-            Spacer(Modifier.height(56.dp))
+            VerticalSpacer56()
 
             BirthdayUi(
                 context = context,
@@ -146,28 +146,28 @@ fun SignupScreen(navController: NavController, viewModel: SignupViewModel = hilt
                 onDismissRequest = viewModel::onDismissCalendar
             )
 
-            Spacer(Modifier.height(56.dp))
+            VerticalSpacer56()
 
             GenderUi(
                 gender = gender,
                 onGenderButtonSelect = viewModel::onGenderChange
             )
 
-            Spacer(Modifier.height(56.dp))
+            VerticalSpacer56()
 
             ProfilePictureUi(
                 onSelectImageClick = { launchGalleryWithPermission() },
                 croppedImage = croppedImage
             )
 
-            Spacer(Modifier.height(56.dp))
+            VerticalSpacer56()
 
             NotificationUi(
                 isChecked = notificationChecked,
                 onToggle = { viewModel.toggleNotification() }
             )
 
-            Spacer(Modifier.height(56.dp))
+            VerticalSpacer56()
 
             SingleButton(
                 text = stringResource(R.string.signup_button),
@@ -177,7 +177,12 @@ fun SignupScreen(navController: NavController, viewModel: SignupViewModel = hilt
                 enabled = signupButtonEnabled
             )
 
-            Spacer(Modifier.height(56.dp))
+            VerticalSpacer56()
         }
     }
+}
+
+@Composable
+fun VerticalSpacer56() {
+    Spacer(modifier = Modifier.height(56.dp))
 }
