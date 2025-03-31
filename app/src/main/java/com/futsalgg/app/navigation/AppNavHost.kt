@@ -1,14 +1,20 @@
 package com.futsalgg.app.navigation
 
+import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.credentials.CredentialManager
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.futsalgg.app.presentation.imagecrop.ProfileImageCropScreen
 import com.futsalgg.app.presentation.login.LoginScreen
 import com.futsalgg.app.presentation.main.MainScreen
 import com.futsalgg.app.presentation.signup.SignupScreen
+import com.futsalgg.app.presentation.signup.SignupViewModel
 import com.futsalgg.app.presentation.termsandcondition.TermsAndConditionScreen
 
 @Composable
@@ -38,6 +44,24 @@ fun AppNavHost(
         composable(Screen.TermsAndCondition.route) { TermsAndConditionScreen() }
         composable(Screen.Signup.route) {
             SignupScreen(navController)
+        }
+        composable(
+            route = "cropImage?uri={uri}",
+            arguments = listOf(navArgument("uri") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val uriStr = backStackEntry.arguments?.getString("uri") ?: ""
+            val uri = Uri.parse(uriStr)
+
+            val signupViewModel: SignupViewModel = hiltViewModel()
+
+            ProfileImageCropScreen(
+                imageUri = uri,
+                onBack = { navController.popBackStack() },
+                onConfirm = { bitmap ->
+                    signupViewModel.setCroppedImage(bitmap)
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }

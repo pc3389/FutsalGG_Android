@@ -1,6 +1,7 @@
 package com.futsalgg.app.ui.components
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -29,7 +30,8 @@ fun FutsalggTopBar(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(56.dp),
+            .height(56.dp)
+            .background(FutsalggColor.white),
         contentAlignment = Alignment.Center
     ) {
         // 중앙 타이틀

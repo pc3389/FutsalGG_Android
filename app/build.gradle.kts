@@ -66,6 +66,12 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
+    // Coil
+    implementation(libs.coil.compose)
+
+    // Permission
+    implementation(libs.accompanist.permissions)
+
     // Testing
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)

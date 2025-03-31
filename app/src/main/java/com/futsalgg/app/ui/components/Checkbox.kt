@@ -22,9 +22,9 @@ fun Checkbox(
 ) {
     // 체크 상태에 따라 보여줄 이미지 선택
     val imageRes = if (checked) {
-        R.drawable.ic_cheakbox_true  // 체크된 상태 이미지
+        R.drawable.ic_checkbox_true_24  // 체크된 상태 이미지
     } else {
-        R.drawable.ic_cheakbox_false  // 체크되지 않은 상태 이미지
+        R.drawable.ic_checkbox_false_24  // 체크되지 않은 상태 이미지
     }
 
     Image(

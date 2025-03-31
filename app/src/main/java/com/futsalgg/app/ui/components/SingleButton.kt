@@ -46,6 +46,7 @@ fun SingleButton(
     containerColor: Color = FutsalggColor.mono900,
     contentColor: Color = FutsalggColor.white,
     textStyle: TextStyle = FutsalggTypography.bold_17_200,
+    enabled: Boolean = true,
     hasBorder: Boolean = false,
     hasIcon: Boolean = false,
     @DrawableRes icon: Int = R.drawable.ic_add_14
@@ -55,9 +56,12 @@ fun SingleButton(
         modifier = modifier
             .fillMaxWidth()
             .height(48.dp),
+        enabled = enabled,
         colors = ButtonDefaults.buttonColors(
             containerColor = containerColor,
-            contentColor = contentColor
+            contentColor = contentColor,
+            disabledContainerColor = FutsalggColor.mono100,
+            disabledContentColor = FutsalggColor.mono500
         ),
         shape = RoundedCornerShape(8.dp),
         border = if (hasBorder) BorderStroke(1.dp, FutsalggColor.mono500) else null,

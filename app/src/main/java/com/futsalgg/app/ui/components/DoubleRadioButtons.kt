@@ -26,7 +26,7 @@ fun <T : Enum<T>> DoubleRadioButtonsEnum(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = horizontalPadding, vertical = verticalPadding),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         val selectedColor = FutsalggColor.mono900
         val unselectedColor = FutsalggColor.white
