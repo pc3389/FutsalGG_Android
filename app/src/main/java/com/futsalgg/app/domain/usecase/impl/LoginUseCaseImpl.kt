@@ -1,9 +1,11 @@
-package com.futsalgg.app.domain.usecase
+package com.futsalgg.app.domain.usecase.impl
 
 import com.futsalgg.app.core.token.ITokenManager
 import com.futsalgg.app.data.model.response.LoginResponse
 import com.futsalgg.app.domain.repository.GoogleLoginRepository
 import com.futsalgg.app.domain.repository.LoginRepository
+import com.futsalgg.app.domain.repository.UserRepository
+import com.futsalgg.app.domain.usecase.LoginUseCase
 import javax.inject.Inject
 
 class LoginUseCaseImpl @Inject constructor(

@@ -12,13 +12,13 @@ import java.io.File
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
-    private val api: UserApi,
+    private val userApi: UserApi,
     private val fileUploader: FileUploader
 ) : UserRepository {
 
     override suspend fun isNicknameUnique(nickname: String): Result<Boolean> {
         return try {
-            val response = api.checkNickname(nickname)
+            val response = userApi.checkNickname(nickname)
             if (response.isSuccessful) {
                 response.body()?.let { body ->
                     Result.success(body.unique)
@@ -40,7 +40,7 @@ class UserRepositoryImpl @Inject constructor(
         notification: Boolean
     ): Result<Unit> {
         return try {
-            val response = api.createUser(
+            val response = userApi.createUser(
                 authHeader = "Bearer $accessToken",
                 request = CreateUserRequest(
                     nickname = nickname,
@@ -62,7 +62,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun getProfilePresignedUrl(accessToken: String): Result<ProfilePresignedUrlResponse> {
         return try {
-            val response = api.getProfilePresignedUrl("Bearer $accessToken")
+            val response = userApi.getProfilePresignedUrl("Bearer $accessToken")
             if (response.isSuccessful) {
                 response.body()?.let { body ->
                     Result.success(body)
@@ -80,7 +80,7 @@ class UserRepositoryImpl @Inject constructor(
         uri: String
     ): Result<UpdateProfileResponse> {
         return try {
-            val response = api.updateUserProfile(
+            val response = userApi.updateUserProfile(
                 authHeader = "Bearer $accessToken",
                 request = UpdateProfileRequest(uri)
             )

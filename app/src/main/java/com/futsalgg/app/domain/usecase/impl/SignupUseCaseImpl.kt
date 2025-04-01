@@ -1,8 +1,9 @@
-package com.futsalgg.app.domain.usecase
+package com.futsalgg.app.domain.usecase.impl
 
 import com.futsalgg.app.data.model.response.UpdateProfileResponse
 import com.futsalgg.app.domain.model.Gender
 import com.futsalgg.app.domain.repository.UserRepository
+import com.futsalgg.app.domain.usecase.SignupUseCase
 import java.io.File
 import javax.inject.Inject
 

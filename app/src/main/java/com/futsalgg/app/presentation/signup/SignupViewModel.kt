@@ -224,7 +224,7 @@ class SignupViewModel @Inject constructor(
                 return@launch
             }
 
-            // Repository의 업로드 플로우 실행
+            // Usecase의 업로드 플로우 실행
             val result = signupUseCase.uploadProfileImage(accessToken, file)
             result.onSuccess { response ->
                 // response.url 또는 response.uri를 활용해 UI 상태 업데이트
