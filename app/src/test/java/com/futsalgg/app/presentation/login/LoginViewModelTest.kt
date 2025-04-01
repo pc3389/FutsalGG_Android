@@ -1,10 +1,8 @@
 package com.futsalgg.app.presentation.login
 
-import com.futsalgg.app.core.token.FakeTokenManager
 import com.futsalgg.app.data.model.Platform
 import com.futsalgg.app.data.model.response.LoginResponse
-import com.futsalgg.app.domain.repository.GoogleLoginRepository
-import com.futsalgg.app.domain.repository.LoginRepository
+import com.futsalgg.app.domain.usecase.LoginUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -21,37 +19,28 @@ import org.junit.Test
 class LoginViewModelTest {
 
     private lateinit var viewModel: LoginViewModel
-    private lateinit var fakeGoogleLoginRepository: FakeGoogleLoginRepository
-    private lateinit var fakeLoginRepository: FakeLoginRepository
-    private lateinit var fakeTokenManager: FakeTokenManager
-
+    private lateinit var fakeLoginUseCase: FakeLoginUseCase
     private val testDispatcher = StandardTestDispatcher()
 
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
-
-        fakeGoogleLoginRepository = FakeGoogleLoginRepository()
-        fakeLoginRepository = FakeLoginRepository()
-        fakeTokenManager = FakeTokenManager()
-
-        viewModel = LoginViewModel(
-            loginRepository = fakeLoginRepository,
-            googleLoginRepository = fakeGoogleLoginRepository,
-            tokenManager = fakeTokenManager
-        )
+        fakeLoginUseCase = FakeLoginUseCase()
+        viewModel = LoginViewModel(loginUseCase = fakeLoginUseCase)
     }
 
     @After
     fun tearDown() {
-        Dispatchers.resetMain() // ✅ 테스트 종료 시 Main dispatcher 복원
+        Dispatchers.resetMain()
     }
 
+    /**
+     * 유효한 Google ID 토큰으로 로그인 시도 시 성공적으로 로그인이 완료되어야 합니다.
+     */
     @Test
     fun `signInWithGoogleIdToken success calls onSuccess`() = runTest {
         // given
-        fakeGoogleLoginRepository.shouldSucceed = true
-        fakeLoginRepository.shouldSucceed = true
+        fakeLoginUseCase.shouldSucceed = true
         var successCalled = false
         var failureCalled = false
 
@@ -64,18 +53,18 @@ class LoginViewModelTest {
 
         advanceUntilIdle()
 
-
         // then
         assertTrue(successCalled)
         assertFalse(failureCalled)
-        assertEquals("accessToken", fakeTokenManager.getAccessToken())
-        assertEquals("refreshToken", fakeTokenManager.getRefreshToken())
     }
 
+    /**
+     * 유효하지 않은 Google ID 토큰으로 로그인 시도 시 실패 콜백이 호출되어야 합니다.
+     */
     @Test
-    fun `signInWithGoogleIdToken fails on firebase login`() = runTest {
+    fun `signInWithGoogleIdToken failure calls onFailure`() = runTest {
         // given
-        fakeGoogleLoginRepository.shouldSucceed = false
+        fakeLoginUseCase.shouldSucceed = false
         var successCalled = false
         var failureCalled = false
 
@@ -93,44 +82,15 @@ class LoginViewModelTest {
         assertTrue(failureCalled)
     }
 
-    @Test
-    fun `signInWithGoogleIdToken fails on server login`() = runTest {
-        // given
-        fakeGoogleLoginRepository.shouldSucceed = true
-        fakeLoginRepository.shouldSucceed = false
-        var successCalled = false
-        var failureCalled = false
-
-        // when
-        viewModel.signInWithGoogleIdToken(
-            idToken = "validIdToken",
-            onSuccess = { successCalled = true },
-            onFailure = { failureCalled = true }
-        )
-
-        advanceUntilIdle()
-
-        // then
-        assertFalse(successCalled)
-        assertTrue(failureCalled)
-    }
-
-    // Fakes
-
-    class FakeGoogleLoginRepository : GoogleLoginRepository {
+    // Fake UseCase
+    class FakeLoginUseCase : LoginUseCase {
         var shouldSucceed = true
-        override suspend fun signInWithGoogleIdToken(idToken: String): Result<Unit> {
-            return if (shouldSucceed) Result.success(Unit)
-            else Result.failure(Exception("Firebase login failed"))
-        }
-    }
-
-    class FakeLoginRepository : LoginRepository {
-        var shouldSucceed = true
-        override suspend fun loginWithGoogleToken(token: String, platform: Platform): Result<LoginResponse> {
-            return if (shouldSucceed)
+        override suspend operator fun invoke(idToken: String): Result<LoginResponse> {
+            return if (shouldSucceed) {
                 Result.success(LoginResponse("accessToken", "refreshToken", false))
-            else Result.failure(Exception("Server login failed"))
+            } else {
+                Result.failure(Exception("Login failed"))
+            }
         }
     }
 }

@@ -20,17 +20,14 @@ class UserRepositoryImpl @Inject constructor(
         return try {
             val response = api.checkNickname(nickname)
             if (response.isSuccessful) {
-                val body = response.body()
-                if (body != null) {
+                response.body()?.let { body ->
                     Result.success(body.unique)
-                } else {
-                    Result.failure(Throwable("응답 본문이 비어있습니다."))
-                }
+                } ?: Result.failure(Throwable("서버 응답이 비어있습니다."))
             } else {
                 Result.failure(Throwable("서버 오류: ${response.code()}"))
             }
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(Throwable("네트워크 오류: ${e.message}"))
         }
     }
 
@@ -56,10 +53,10 @@ class UserRepositoryImpl @Inject constructor(
             if (response.isSuccessful) {
                 Result.success(Unit)
             } else {
-                Result.failure(Throwable("Create user failed with code: ${response.code()}"))
+                Result.failure(Throwable("회원가입 실패: ${response.code()}"))
             }
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(Throwable("네트워크 오류: ${e.message}"))
         }
     }
 
@@ -69,12 +66,12 @@ class UserRepositoryImpl @Inject constructor(
             if (response.isSuccessful) {
                 response.body()?.let { body ->
                     Result.success(body)
-                } ?: Result.failure(Throwable("응답 본문이 비어있습니다."))
+                } ?: Result.failure(Throwable("서버 응답이 비어있습니다."))
             } else {
-                Result.failure(Throwable("API 오류: ${response.code()}"))
+                Result.failure(Throwable("서버 오류: ${response.code()}"))
             }
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(Throwable("네트워크 오류: ${e.message}"))
         }
     }
 
@@ -90,12 +87,12 @@ class UserRepositoryImpl @Inject constructor(
             if (response.isSuccessful) {
                 response.body()?.let { body ->
                     Result.success(body)
-                } ?: Result.failure(Throwable("응답 본문이 비어있습니다."))
+                } ?: Result.failure(Throwable("서버 응답이 비어있습니다."))
             } else {
-                Result.failure(Throwable("API 오류: ${response.code()}"))
+                Result.failure(Throwable("서버 오류: ${response.code()}"))
             }
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(Throwable("네트워크 오류: ${e.message}"))
         }
     }
 
@@ -105,14 +102,14 @@ class UserRepositoryImpl @Inject constructor(
             val presignedResult = getProfilePresignedUrl(accessToken)
             val presignedResponse = presignedResult.getOrElse { return Result.failure(it) }
 
-            // 2. presigned URL로 파일 업로드, 이제 fileUploader를 사용함.
+            // 2. presigned URL로 파일 업로드
             val uploadResult = fileUploader.uploadFileToPresignedUrl(presignedResponse.url, file)
             uploadResult.getOrElse { return Result.failure(it) }
 
             // 3. 업로드 성공 후, updateProfile API 호출
             updateProfile(accessToken, presignedResponse.uri)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(Throwable("프로필 이미지 업로드 실패: ${e.message}"))
         }
     }
 }

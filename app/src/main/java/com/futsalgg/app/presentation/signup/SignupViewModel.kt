@@ -14,7 +14,7 @@ import com.futsalgg.app.data.model.response.ProfilePresignedUrlResponse
 import com.futsalgg.app.data.model.response.UpdateProfileResponse
 import com.futsalgg.app.domain.model.EditTextState
 import com.futsalgg.app.domain.model.Gender
-import com.futsalgg.app.domain.repository.UserRepository
+import com.futsalgg.app.domain.usecase.SignupUseCase
 import com.futsalgg.app.presentation.signup.components.isValidBirthday
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,7 +32,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignupViewModel @Inject constructor(
-    private val userRepository: UserRepository,
+    private val signupUseCase: SignupUseCase,
     private val tokenManager: ITokenManager
 ) : ViewModel() {
 
@@ -136,7 +136,7 @@ class SignupViewModel @Inject constructor(
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val result = userRepository.isNicknameUnique(currentNickname)
+                val result = signupUseCase.isNicknameUnique(currentNickname)
                 result.onSuccess { isUnique ->
                     _nicknameState.value = if (isUnique) {
                         EditTextState.Available
@@ -182,11 +182,12 @@ class SignupViewModel @Inject constructor(
                     return@launch
                 }
 
-                val result = userRepository.createUser(
+                val result = signupUseCase.createUser(
                     accessToken = accessToken,
                     nickname = _nickname.value,
                     birthDate = formattedBirthDate,
                     gender = _gender.value,
+                    agreement = true,
                     notification = _notificationChecked.value
                 )
                 result.onSuccess {
@@ -224,7 +225,7 @@ class SignupViewModel @Inject constructor(
             }
 
             // Repository의 업로드 플로우 실행
-            val result = userRepository.uploadProfileImage(accessToken, file)
+            val result = signupUseCase.uploadProfileImage(accessToken, file)
             result.onSuccess { response ->
                 // response.url 또는 response.uri를 활용해 UI 상태 업데이트
                 _profileImageUrl.value = response.url
