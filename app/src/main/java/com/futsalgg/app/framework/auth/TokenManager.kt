@@ -1,10 +1,17 @@
-package com.futsalgg.app.core.token
+package com.futsalgg.app.framework.auth
 
 import android.content.Context
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.futsalgg.app.domain.auth.repository.ITokenManager
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class TokenManager(context: Context) : ITokenManager {
+@Singleton
+class TokenManager @Inject constructor(
+    @ApplicationContext private val context: Context
+) : ITokenManager {
 
     private val masterKey = MasterKey.Builder(context)
         .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)

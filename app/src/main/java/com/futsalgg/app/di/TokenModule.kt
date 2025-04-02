@@ -1,8 +1,8 @@
 package com.futsalgg.app.di
 
 import android.content.Context
-import com.futsalgg.app.core.token.ITokenManager
-import com.futsalgg.app.core.token.TokenManager
+import com.futsalgg.app.domain.auth.repository.ITokenManager
+import com.futsalgg.app.framework.auth.TokenManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

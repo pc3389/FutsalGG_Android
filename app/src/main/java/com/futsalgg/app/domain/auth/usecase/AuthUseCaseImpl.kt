@@ -1,6 +1,6 @@
 package com.futsalgg.app.domain.auth.usecase
 
-import com.futsalgg.app.core.token.ITokenManager
+import com.futsalgg.app.domain.auth.repository.ITokenManager
 import com.futsalgg.app.domain.auth.model.LoginResponseModel
 import com.futsalgg.app.domain.auth.repository.AuthRepository
 import com.futsalgg.app.domain.common.error.DomainError

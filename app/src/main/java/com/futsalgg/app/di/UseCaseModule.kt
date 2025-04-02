@@ -1,6 +1,6 @@
 package com.futsalgg.app.di
 
-import com.futsalgg.app.core.token.ITokenManager
+import com.futsalgg.app.domain.auth.repository.ITokenManager
 import com.futsalgg.app.domain.auth.repository.AuthRepository
 import com.futsalgg.app.domain.team.usecase.CreateTeamUseCase
 import com.futsalgg.app.domain.auth.usecase.AuthUseCase

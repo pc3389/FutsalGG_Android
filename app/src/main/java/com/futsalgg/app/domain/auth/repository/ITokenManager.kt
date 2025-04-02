@@ -1,4 +1,4 @@
-package com.futsalgg.app.core.token
+package com.futsalgg.app.domain.auth.repository
 
 interface ITokenManager {
     fun saveTokens(accessToken: String, refreshToken: String)
@@ -6,4 +6,4 @@ interface ITokenManager {
     fun getRefreshToken(): String?
     fun isAccessTokenExpired(): Boolean
     fun clearTokens()
-}
+} 

@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.futsalgg.app.core.token.ITokenManager
+import com.futsalgg.app.domain.auth.repository.ITokenManager
 import com.futsalgg.app.presentation.common.state.EditTextState
 import com.futsalgg.app.domain.user.model.Gender
 import com.futsalgg.app.domain.user.usecase.SignupUseCase
