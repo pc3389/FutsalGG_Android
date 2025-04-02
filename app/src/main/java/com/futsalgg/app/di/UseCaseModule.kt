@@ -1,16 +1,15 @@
 package com.futsalgg.app.di
 
 import com.futsalgg.app.core.token.ITokenManager
-import com.futsalgg.app.domain.repository.CreateTeamRepository
-import com.futsalgg.app.domain.repository.GoogleLoginRepository
-import com.futsalgg.app.domain.repository.LoginRepository
-import com.futsalgg.app.domain.repository.UserRepository
-import com.futsalgg.app.domain.usecase.CreateTeamUseCase
-import com.futsalgg.app.domain.usecase.LoginUseCase
-import com.futsalgg.app.domain.usecase.SignupUseCase
-import com.futsalgg.app.domain.usecase.impl.CreateTeamUseCaseImpl
-import com.futsalgg.app.domain.usecase.impl.LoginUseCaseImpl
-import com.futsalgg.app.domain.usecase.impl.SignupUseCaseImpl
+import com.futsalgg.app.domain.auth.repository.AuthRepository
+import com.futsalgg.app.domain.team.usecase.CreateTeamUseCase
+import com.futsalgg.app.domain.auth.usecase.AuthUseCase
+import com.futsalgg.app.domain.user.usecase.SignupUseCase
+import com.futsalgg.app.domain.team.usecase.CreateTeamUseCaseImpl
+import com.futsalgg.app.domain.auth.usecase.AuthUseCaseImpl
+import com.futsalgg.app.domain.team.repository.TeamRepository
+import com.futsalgg.app.domain.user.repository.UserRepository
+import com.futsalgg.app.domain.user.usecase.SignupUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,12 +22,11 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideLoginUseCase(
-        loginRepository: LoginRepository,
-        googleLoginRepository: GoogleLoginRepository,
+    fun provideAuthUseCase(
+        authRepository: AuthRepository,
         tokenManager: ITokenManager
-    ): LoginUseCase {
-        return LoginUseCaseImpl(loginRepository, googleLoginRepository, tokenManager)
+    ): AuthUseCase {
+        return AuthUseCaseImpl(authRepository, tokenManager)
     }
 
     @Provides
@@ -42,8 +40,8 @@ object UseCaseModule {
     @Provides
     @Singleton
     fun provideCreateTeamUseCase(
-        createTeamRepository: CreateTeamRepository
+        teamRepository: TeamRepository
     ): CreateTeamUseCase {
-        return CreateTeamUseCaseImpl(createTeamRepository)
+        return CreateTeamUseCaseImpl(teamRepository)
     }
 } 

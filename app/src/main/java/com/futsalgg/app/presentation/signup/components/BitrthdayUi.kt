@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.futsalgg.app.R
-import com.futsalgg.app.domain.model.EditTextState
+import com.futsalgg.app.presentation.common.state.EditTextState
 import com.futsalgg.app.ui.components.EditTextWithState
 import com.futsalgg.app.ui.components.TextWithStar
 import com.futsalgg.app.ui.components.calendar.CalendarBottomSheet

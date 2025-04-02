@@ -2,14 +2,14 @@ package com.futsalgg.app.presentation.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.futsalgg.app.domain.usecase.LoginUseCase
+import com.futsalgg.app.domain.auth.usecase.AuthUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginUseCase: LoginUseCase
+    private val authUseCase: AuthUseCase
 ) : ViewModel() {
 
     fun signInWithGoogleIdToken(
@@ -18,7 +18,7 @@ class LoginViewModel @Inject constructor(
         onFailure: (Throwable?) -> Unit
     ) {
         viewModelScope.launch {
-            val result = loginUseCase(idToken)
+            val result = authUseCase(idToken)
             result.onSuccess {
                 onSuccess()
             }.onFailure {

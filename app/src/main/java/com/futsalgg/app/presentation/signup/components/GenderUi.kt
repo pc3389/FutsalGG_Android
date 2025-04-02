@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.futsalgg.app.R
-import com.futsalgg.app.domain.model.Gender
+import com.futsalgg.app.domain.user.model.Gender
 import com.futsalgg.app.ui.components.DoubleRadioButtonsEnum
 import com.futsalgg.app.ui.components.TextWithStar
 

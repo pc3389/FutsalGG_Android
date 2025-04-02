@@ -1,15 +1,13 @@
 package com.futsalgg.app.di
 
-import com.futsalgg.app.data.repository.CreateTeamRepositoryImpl
-import com.futsalgg.app.data.repository.GoogleLoginRepositoryImpl
-import com.futsalgg.app.data.repository.LoginRepositoryImpl
-import com.futsalgg.app.data.repository.OkHttpFileUploader
-import com.futsalgg.app.data.repository.UserRepositoryImpl
-import com.futsalgg.app.domain.repository.CreateTeamRepository
-import com.futsalgg.app.domain.repository.FileUploader
-import com.futsalgg.app.domain.repository.GoogleLoginRepository
-import com.futsalgg.app.domain.repository.LoginRepository
-import com.futsalgg.app.domain.repository.UserRepository
+import com.futsalgg.app.data.auth.repository.AuthRepositoryImpl
+import com.futsalgg.app.data.file.repository.OkHttpFileUploaderImpl
+import com.futsalgg.app.data.team.repository.TeamRepositoryImpl
+import com.futsalgg.app.data.user.repository.UserRepositoryImpl
+import com.futsalgg.app.domain.auth.repository.AuthRepository
+import com.futsalgg.app.domain.file.repository.OkHttpFileUploader
+import com.futsalgg.app.domain.team.repository.TeamRepository
+import com.futsalgg.app.domain.user.repository.UserRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -20,14 +18,9 @@ import dagger.hilt.components.SingletonComponent
 abstract class RepositoryModule {
 
     @Binds
-    abstract fun bindGoogleLoginRepository(
-        impl: GoogleLoginRepositoryImpl
-    ): GoogleLoginRepository
-
-    @Binds
     abstract fun bindLoginRepository(
-        impl: LoginRepositoryImpl
-    ): LoginRepository
+        impl: AuthRepositoryImpl
+    ): AuthRepository
 
     @Binds
     abstract fun bindUserRepository(
@@ -36,11 +29,11 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindCreateTeamRepository(
-        impl: CreateTeamRepositoryImpl
-    ): CreateTeamRepository
+        impl: TeamRepositoryImpl
+    ): TeamRepository
 
     @Binds
     abstract fun bindFileUploader(
-        impl: OkHttpFileUploader
-    ): FileUploader
+        impl: OkHttpFileUploaderImpl
+    ): OkHttpFileUploader
 }

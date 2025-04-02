@@ -1,8 +1,7 @@
 package com.futsalgg.app.presentation.login
 
-import com.futsalgg.app.data.model.Platform
-import com.futsalgg.app.data.model.response.LoginResponse
-import com.futsalgg.app.domain.usecase.LoginUseCase
+import com.futsalgg.app.domain.auth.model.LoginResponseModel
+import com.futsalgg.app.domain.auth.usecase.AuthUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -19,14 +18,14 @@ import org.junit.Test
 class LoginViewModelTest {
 
     private lateinit var viewModel: LoginViewModel
-    private lateinit var fakeLoginUseCase: FakeLoginUseCase
+    private lateinit var fakeLoginUseCase: FakeAuthUseCase
     private val testDispatcher = StandardTestDispatcher()
 
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
-        fakeLoginUseCase = FakeLoginUseCase()
-        viewModel = LoginViewModel(loginUseCase = fakeLoginUseCase)
+        fakeLoginUseCase = FakeAuthUseCase()
+        viewModel = LoginViewModel(authUseCase = fakeLoginUseCase)
     }
 
     @After
@@ -83,11 +82,11 @@ class LoginViewModelTest {
     }
 
     // Fake UseCase
-    class FakeLoginUseCase : LoginUseCase {
+    class FakeAuthUseCase : AuthUseCase {
         var shouldSucceed = true
-        override suspend operator fun invoke(idToken: String): Result<LoginResponse> {
+        override suspend operator fun invoke(idToken: String): Result<LoginResponseModel> {
             return if (shouldSucceed) {
-                Result.success(LoginResponse("accessToken", "refreshToken", false))
+                Result.success(LoginResponseModel("accessToken", "refreshToken", false))
             } else {
                 Result.failure(Exception("Login failed"))
             }

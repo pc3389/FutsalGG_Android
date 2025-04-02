@@ -23,9 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
@@ -37,7 +35,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.futsalgg.app.R
 import com.futsalgg.app.presentation.base.BaseScreen
-import com.futsalgg.app.domain.model.EditTextState
+import com.futsalgg.app.presentation.common.state.EditTextState
 import com.futsalgg.app.presentation.signup.components.BirthdayUi
 import com.futsalgg.app.presentation.signup.components.GenderUi
 import com.futsalgg.app.presentation.signup.components.NicknameUi

@@ -1,20 +1,13 @@
 package com.futsalgg.app.presentation.signup
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.futsalgg.app.core.token.ITokenManager
-import com.futsalgg.app.data.model.request.UpdateProfileRequest
-import com.futsalgg.app.data.model.response.ProfilePresignedUrlResponse
-import com.futsalgg.app.data.model.response.UpdateProfileResponse
-import com.futsalgg.app.domain.model.EditTextState
-import com.futsalgg.app.domain.model.Gender
-import com.futsalgg.app.domain.usecase.SignupUseCase
+import com.futsalgg.app.presentation.common.state.EditTextState
+import com.futsalgg.app.domain.user.model.Gender
+import com.futsalgg.app.domain.user.usecase.SignupUseCase
 import com.futsalgg.app.presentation.signup.components.isValidBirthday
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +18,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.io.File
-import java.io.FileOutputStream
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject

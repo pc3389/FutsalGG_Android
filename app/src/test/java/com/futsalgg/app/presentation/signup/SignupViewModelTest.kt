@@ -1,10 +1,10 @@
 package com.futsalgg.app.presentation.signup
 
 import com.futsalgg.app.core.token.FakeTokenManager
-import com.futsalgg.app.data.model.response.UpdateProfileResponse
-import com.futsalgg.app.domain.model.EditTextState
-import com.futsalgg.app.domain.model.Gender
-import com.futsalgg.app.domain.usecase.SignupUseCase
+import com.futsalgg.app.presentation.common.state.EditTextState
+import com.futsalgg.app.domain.user.model.Gender
+import com.futsalgg.app.domain.user.model.UpdateProfileResponseModel
+import com.futsalgg.app.domain.user.usecase.SignupUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -176,9 +176,9 @@ class SignupViewModelTest {
         override suspend fun uploadProfileImage(
             accessToken: String,
             file: File
-        ): Result<UpdateProfileResponse> {
+        ): Result<UpdateProfileResponseModel> {
             return if (shouldSucceed) {
-                Result.success(UpdateProfileResponse("testUrl", "testUri"))
+                Result.success(UpdateProfileResponseModel("testUrl", "testUri"))
             } else {
                 Result.failure(Exception("Upload failed"))
             }
