@@ -5,6 +5,7 @@ import com.futsalgg.app.presentation.common.state.EditTextState
 import com.futsalgg.app.domain.user.model.Gender
 import com.futsalgg.app.domain.user.model.UpdateProfileResponseModel
 import com.futsalgg.app.domain.user.usecase.SignupUseCase
+import com.futsalgg.app.presentation.user.signup.SignupViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher

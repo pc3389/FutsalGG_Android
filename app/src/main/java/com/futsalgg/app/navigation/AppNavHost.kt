@@ -10,12 +10,12 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.futsalgg.app.presentation.imagecrop.ProfileImageCropScreen
-import com.futsalgg.app.presentation.login.LoginScreen
+import com.futsalgg.app.presentation.common.imagecrop.ProfileImageCropScreen
+import com.futsalgg.app.presentation.auth.login.LoginScreen
 import com.futsalgg.app.presentation.main.MainScreen
-import com.futsalgg.app.presentation.signup.SignupScreen
-import com.futsalgg.app.presentation.signup.SignupViewModel
-import com.futsalgg.app.presentation.termsandcondition.TermsAndConditionScreen
+import com.futsalgg.app.presentation.user.signup.SignupScreen
+import com.futsalgg.app.presentation.user.signup.SignupViewModel
+import com.futsalgg.app.presentation.auth.termsandcondition.TermsAndConditionScreen
 
 @Composable
 fun AppNavHost(

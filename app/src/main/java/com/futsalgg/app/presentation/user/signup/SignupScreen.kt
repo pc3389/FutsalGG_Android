@@ -1,4 +1,4 @@
-package com.futsalgg.app.presentation.signup
+package com.futsalgg.app.presentation.user.signup
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -34,15 +34,15 @@ import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.futsalgg.app.R
-import com.futsalgg.app.presentation.base.BaseScreen
+import com.futsalgg.app.presentation.common.screen.BaseScreen
 import com.futsalgg.app.presentation.common.screen.LoadingScreen
 import com.futsalgg.app.presentation.common.state.EditTextState
 import com.futsalgg.app.presentation.common.state.UiState
-import com.futsalgg.app.presentation.signup.components.BirthdayUi
-import com.futsalgg.app.presentation.signup.components.GenderUi
-import com.futsalgg.app.presentation.signup.components.NicknameUi
-import com.futsalgg.app.presentation.signup.components.NotificationUi
-import com.futsalgg.app.presentation.signup.components.ProfilePictureUi
+import com.futsalgg.app.presentation.user.signup.components.BirthdayUi
+import com.futsalgg.app.presentation.user.signup.components.GenderUi
+import com.futsalgg.app.presentation.user.signup.components.NicknameUi
+import com.futsalgg.app.presentation.user.signup.components.NotificationUi
+import com.futsalgg.app.presentation.user.signup.components.ProfilePictureUi
 import com.futsalgg.app.ui.components.SingleButton
 import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.util.toFile

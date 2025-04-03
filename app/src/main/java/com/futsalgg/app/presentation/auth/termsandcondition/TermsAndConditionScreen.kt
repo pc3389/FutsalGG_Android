@@ -1,4 +1,4 @@
-package com.futsalgg.app.presentation.termsandcondition
+package com.futsalgg.app.presentation.auth.termsandcondition
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image

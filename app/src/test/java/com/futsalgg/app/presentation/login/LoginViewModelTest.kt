@@ -2,6 +2,7 @@ package com.futsalgg.app.presentation.login
 
 import com.futsalgg.app.domain.auth.model.LoginResponseModel
 import com.futsalgg.app.domain.auth.usecase.AuthUseCase
+import com.futsalgg.app.presentation.auth.login.LoginViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher

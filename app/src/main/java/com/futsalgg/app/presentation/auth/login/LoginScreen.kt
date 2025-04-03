@@ -1,4 +1,4 @@
-package com.futsalgg.app.presentation.login
+package com.futsalgg.app.presentation.auth.login
 
 import android.content.Context
 import android.util.Log

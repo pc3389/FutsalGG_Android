@@ -1,4 +1,4 @@
-package com.futsalgg.app.presentation.imagecrop
+package com.futsalgg.app.presentation.common.imagecrop
 
 import android.graphics.Bitmap
 import android.net.Uri

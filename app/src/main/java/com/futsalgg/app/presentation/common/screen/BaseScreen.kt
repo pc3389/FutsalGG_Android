@@ -1,4 +1,4 @@
-package com.futsalgg.app.presentation.base
+package com.futsalgg.app.presentation.common.screen
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

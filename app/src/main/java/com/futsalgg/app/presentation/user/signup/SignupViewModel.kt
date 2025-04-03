@@ -1,4 +1,4 @@
-package com.futsalgg.app.presentation.signup
+package com.futsalgg.app.presentation.user.signup
 
 import android.graphics.Bitmap
 import android.util.Log
@@ -12,7 +12,7 @@ import com.futsalgg.app.domain.user.model.Gender
 import com.futsalgg.app.domain.user.usecase.SignupUseCase
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.error.toUiError
-import com.futsalgg.app.presentation.signup.components.isValidBirthday
+import com.futsalgg.app.presentation.user.signup.components.isValidBirthday
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
