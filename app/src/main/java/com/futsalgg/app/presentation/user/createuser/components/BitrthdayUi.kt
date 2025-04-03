@@ -5,8 +5,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.futsalgg.app.R
 import com.futsalgg.app.presentation.common.state.EditTextState
@@ -31,13 +36,26 @@ fun BirthdayUi(
     birthdayState: EditTextState,
     onValidateBirthday: () -> Unit
 ) {
+    val focusManager = LocalFocusManager.current
+    val focusRequester = remember { FocusRequester() }
+
+    val messageProvider = remember {
+        { state: EditTextState ->
+            when (state) {
+                EditTextState.ErrorCannotUse -> context.getString(R.string.signup_birthday_error_invalid)
+                else -> null
+            }
+        }
+    }
+
     TextWithStar(textRes = R.string.signup_birthday)
     Spacer(Modifier.height(8.dp))
 
     EditTextWithState(
+        modifier = Modifier.fillMaxWidth()
+            .focusRequester(focusRequester),
         value = birthday,
         onValueChange = onBirthdayChange,
-        modifier = Modifier.fillMaxWidth(),
         hint = R.string.signup_birthday_hint, // YYYY-MM-DD
         state = birthdayState,
         trailingIcon = androidx.compose.ui.graphics.vector.ImageVector.vectorResource(R.drawable.ic_calendar_20),
@@ -45,25 +63,30 @@ fun BirthdayUi(
         onTrailingIconClick = onCalendarClick,
         isNumeric = true,
         visualTransformation = DateTransformation(),
-        messageProvider = { state ->
-            when (state) {
-                EditTextState.ErrorCannotUse -> context.getString(R.string.signup_birthday_error_invalid)
-                else -> null
-            }
-        },
+        messageProvider = messageProvider,
         onFocusChanged = { isFocused ->
-            // 포커스가 사라질 때 유효성 검사 수행
-            if (birthday.isNotEmpty() && !isFocused) {
+            if (!isFocused) {
                 onValidateBirthday()
             }
+        },
+        imeAction = ImeAction.Done,
+        onImeAction = {
+            focusManager.clearFocus()
+            onValidateBirthday()
         }
     )
 
     if (showCalendarSheet) {
         CalendarBottomSheet(
             initialDate = birthday.toLocalDateOrNull() ?: LocalDate.now(),
-            onConfirm = onCalendarConfirm,
-            onDismissRequest = onDismissRequest,
+            onConfirm = { date ->
+                focusManager.clearFocus()
+                onCalendarConfirm(date)
+            },
+            onDismissRequest = {
+                focusManager.clearFocus()
+                onDismissRequest()
+            },
             canSelectPreviousDate = true
         )
     }

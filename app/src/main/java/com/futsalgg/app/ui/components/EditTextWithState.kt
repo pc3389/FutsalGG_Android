@@ -1,6 +1,9 @@
 package com.futsalgg.app.ui.components
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -10,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -24,6 +28,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,7 +51,11 @@ fun EditTextWithState(
     onTrailingIconClick: (() -> Unit)? = null,
     isNumeric: Boolean = false,
     visualTransformation: VisualTransformation = VisualTransformation.None,
-    onFocusChanged: (Boolean) -> Unit = {}
+    onFocusChanged: (Boolean) -> Unit = {},
+    imeAction: ImeAction = ImeAction.Default,
+    onImeAction: () -> Unit = {},
+    singleLine: Boolean = true,
+    maxLines: Int = 1
 ) {
     val borderColor = when (state) {
         EditTextState.Default -> FutsalggColor.mono500
@@ -76,18 +85,22 @@ fun EditTextWithState(
                         onValueChange(it)
                     }
                 },
-                singleLine = true,
+                singleLine = singleLine,
+                maxLines = maxLines,
                 textStyle = FutsalggTypography.regular_17_200.copy(
                     color = FutsalggColor.mono900
                 ),
                 cursorBrush = SolidColor(FutsalggColor.mint500),
                 visualTransformation = visualTransformation,
-                keyboardOptions = if (isNumeric) {
-                    KeyboardOptions(keyboardType = KeyboardType.Number)
-                } else {
-                    KeyboardOptions.Default
-                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = if (isNumeric) KeyboardType.Number else KeyboardType.Text,
+                    imeAction = imeAction
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = { onImeAction() }
+                ),
                 modifier = Modifier
+                    .fillMaxWidth()
                     .padding(8.dp)
                     .focusRequester(focusRequester)
                     .onFocusChanged { focusState ->
@@ -119,9 +132,13 @@ fun EditTextWithState(
             }
         }
 
-        if (messageText != null) {
+        AnimatedVisibility(
+            visible = messageText != null,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
             Text(
-                text = messageText,
+                text = messageText ?: "",
                 color = borderColor,
                 style = FutsalggTypography.regular_17_200,
                 modifier = Modifier.padding(start = 16.dp, top = 4.dp)

@@ -56,6 +56,7 @@ class CreateUserViewModel @Inject constructor(
         _createUserState.value = _createUserState.value.copy(
             birthday = date.format(DateTimeFormatter.ofPattern("yyyyMMdd"))
         )
+        validateBirthday()
     }
 
     internal fun onCalendarClick() {
@@ -90,14 +91,18 @@ class CreateUserViewModel @Inject constructor(
     }
 
     fun validateBirthday() {
+        _uiState.value = UiState.Loading
         val state = _createUserState.value
         _createUserState.value = state.copy(
-            birthdayState = if (!isValidBirthday(state.birthday)) {
+            birthdayState = if (state.birthday.isEmpty()) {
+                EditTextState.Default
+            } else if (!isValidBirthday(state.birthday)) {
                 EditTextState.ErrorCannotUse
             } else {
                 EditTextState.Available
             }
         )
+        _uiState.value = UiState.Success
     }
 
     internal fun checkNicknameDuplication() {

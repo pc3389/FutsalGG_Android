@@ -22,6 +22,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
@@ -72,26 +73,31 @@ fun CreateUserScreen(navController: NavController, viewModel: CreateUserViewMode
         }
     )
 
-    fun launchGalleryWithPermission() {
-        val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            Manifest.permission.READ_MEDIA_IMAGES
-        } else {
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        }
+    val launchGalleryWithPermission = remember {
+        {
+            val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                Manifest.permission.READ_MEDIA_IMAGES
+            } else {
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            }
 
-        if (ContextCompat.checkSelfPermission(
-                context,
-                permission
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            imagePickerLauncher.launch("image/*")
-        } else {
-            permissionLauncher.launch(permission)
+            if (ContextCompat.checkSelfPermission(
+                    context,
+                    permission
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                imagePickerLauncher.launch("image/*")
+            } else {
+                permissionLauncher.launch(permission)
+            }
         }
     }
 
+    val scrollState = rememberScrollState()
+
     if (uiState == UiState.Loading) {
         LoadingScreen()
+        return
     }
 
     BaseScreen(
@@ -99,17 +105,18 @@ fun CreateUserScreen(navController: NavController, viewModel: CreateUserViewMode
         title = R.string.signup_toolbar_title
     ) { innerPadding ->
         Column(
-            Modifier
-                .pointerInput(Unit) {
-                    detectTapGestures(onTap = {
-                        focusManager.clearFocus()
-                    })
-                }
-                .padding(innerPadding)
-                .padding(horizontal = 16.dp)
-                .windowInsetsPadding(WindowInsets.navigationBars)
-                .verticalScroll(rememberScrollState())
-                .background(FutsalggColor.white),
+            modifier = Modifier
+                    .pointerInput(Unit) {
+                        detectTapGestures(onTap = {
+                            focusManager.clearFocus()
+                        })
+                    }
+                    .padding(innerPadding)
+                    .padding(horizontal = 16.dp)
+                    .windowInsetsPadding(WindowInsets.navigationBars)
+                    .verticalScroll(scrollState)
+                    .background(FutsalggColor.white)
+            ,
             verticalArrangement = Arrangement.Top
         ) {
             NicknameUi(
@@ -148,7 +155,7 @@ fun CreateUserScreen(navController: NavController, viewModel: CreateUserViewMode
             VerticalSpacer56()
 
             ProfilePictureUi(
-                onSelectImageClick = { launchGalleryWithPermission() },
+                onSelectImageClick = launchGalleryWithPermission,
                 croppedImage = createUserState.croppedProfileImage
             )
 

@@ -1,6 +1,7 @@
 package com.futsalgg.app.remote
 
 import com.futsalgg.app.remote.api.auth.LoginApi
+import com.futsalgg.app.remote.api.team.TeamApi
 import com.futsalgg.app.remote.api.user.UserApi
 import dagger.Module
 import dagger.Provides
@@ -40,4 +41,8 @@ class NetworkModule {
     @Provides
     fun provideUserApi(retrofit: Retrofit): UserApi =
         retrofit.create(UserApi::class.java)
+
+    @Provides
+    fun teamApi(retrofit: Retrofit): TeamApi =
+        retrofit.create(TeamApi::class.java)
 }
