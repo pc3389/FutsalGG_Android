@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.lottie.compose)
 
     // Navigation
     implementation(libs.androidx.navigation.compose)
@@ -68,7 +69,6 @@ dependencies {
 
     // Coil
     implementation(libs.coil.compose)
-    implementation(libs.coil.gif)
 
     // Permission
     implementation(libs.accompanist.permissions)
