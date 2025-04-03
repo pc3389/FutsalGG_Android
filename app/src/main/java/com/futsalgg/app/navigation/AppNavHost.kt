@@ -13,8 +13,8 @@ import androidx.navigation.navArgument
 import com.futsalgg.app.presentation.common.imagecrop.ProfileImageCropScreen
 import com.futsalgg.app.presentation.auth.login.LoginScreen
 import com.futsalgg.app.presentation.main.MainScreen
-import com.futsalgg.app.presentation.user.signup.SignupScreen
-import com.futsalgg.app.presentation.user.signup.SignupViewModel
+import com.futsalgg.app.presentation.user.createuser.CreateUserScreen
+import com.futsalgg.app.presentation.user.createuser.CreateUserViewModel
 import com.futsalgg.app.presentation.auth.termsandcondition.TermsAndConditionScreen
 
 @Composable
@@ -43,7 +43,7 @@ fun AppNavHost(
         composable(Screen.Main.route) { MainScreen(navController) }
         composable(Screen.TermsAndCondition.route) { TermsAndConditionScreen() }
         composable(Screen.Signup.route) {
-            SignupScreen(navController)
+            CreateUserScreen(navController)
         }
         composable(
             route = "cropImage?uri={uri}",
@@ -53,7 +53,7 @@ fun AppNavHost(
             val uri = Uri.parse(uriStr)
 
             val parentEntry = navController.getBackStackEntry(RoutePath.SIGNUP)
-            val signupViewModel: SignupViewModel = hiltViewModel(parentEntry)
+            val signupViewModel: CreateUserViewModel = hiltViewModel(parentEntry)
 
             ProfileImageCropScreen(
                 imageUri = uri,

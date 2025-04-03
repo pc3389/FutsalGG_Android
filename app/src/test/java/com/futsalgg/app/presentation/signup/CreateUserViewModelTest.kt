@@ -5,7 +5,7 @@ import com.futsalgg.app.presentation.common.state.EditTextState
 import com.futsalgg.app.domain.user.model.Gender
 import com.futsalgg.app.domain.user.model.UpdateProfileResponseModel
 import com.futsalgg.app.domain.user.usecase.SignupUseCase
-import com.futsalgg.app.presentation.user.signup.SignupViewModel
+import com.futsalgg.app.presentation.user.createuser.CreateUserViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -23,9 +23,9 @@ import java.io.File
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(RobolectricTestRunner::class)
-class SignupViewModelTest {
+class CreateUserViewModelTest {
 
-    private lateinit var viewModel: SignupViewModel
+    private lateinit var viewModel: CreateUserViewModel
     private lateinit var fakeSignupUseCase: FakeSignupUseCase
     private lateinit var fakeTokenManager: FakeTokenManager
     private val testDispatcher = StandardTestDispatcher()
@@ -35,7 +35,7 @@ class SignupViewModelTest {
         Dispatchers.setMain(testDispatcher)
         fakeSignupUseCase = FakeSignupUseCase()
         fakeTokenManager = FakeTokenManager()
-        viewModel = SignupViewModel(
+        viewModel = CreateUserViewModel(
             signupUseCase = fakeSignupUseCase,
             tokenManager = fakeTokenManager
         )

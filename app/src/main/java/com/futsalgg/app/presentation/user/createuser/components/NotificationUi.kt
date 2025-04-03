@@ -1,4 +1,4 @@
-package com.futsalgg.app.presentation.user.signup.components
+package com.futsalgg.app.presentation.user.createuser.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer

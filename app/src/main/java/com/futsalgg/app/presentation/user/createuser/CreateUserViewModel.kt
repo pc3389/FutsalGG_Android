@@ -1,4 +1,4 @@
-package com.futsalgg.app.presentation.user.signup
+package com.futsalgg.app.presentation.user.createuser
 
 import android.graphics.Bitmap
 import android.util.Log
@@ -12,7 +12,7 @@ import com.futsalgg.app.domain.user.model.Gender
 import com.futsalgg.app.domain.user.usecase.SignupUseCase
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.error.toUiError
-import com.futsalgg.app.presentation.user.signup.components.isValidBirthday
+import com.futsalgg.app.presentation.user.createuser.components.isValidBirthday
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -27,114 +27,108 @@ import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel
-class SignupViewModel @Inject constructor(
+class CreateUserViewModel @Inject constructor(
     private val signupUseCase: SignupUseCase,
     private val tokenManager: ITokenManager
 ) : ViewModel() {
 
-    private val _nickname = MutableStateFlow("")
-    val nickname: StateFlow<String> = _nickname.asStateFlow()
-
-    val isNicknameValid: StateFlow<Boolean> = nickname.map { it.length >= 3 }
-        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
-
-    private val _nicknameState = MutableStateFlow(EditTextState.Default)
-    val nicknameState: StateFlow<EditTextState> = _nicknameState.asStateFlow()
-
     private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
-    private val _profileUpdateResponse = MutableStateFlow<String?>(null)
-    val profileUpdateResponse: StateFlow<String?> = _profileUpdateResponse
-
-    private val _birthday = MutableStateFlow("")
-    val birthday: StateFlow<String> = _birthday.asStateFlow()
-
-    private val _birthdayState = MutableStateFlow(EditTextState.Default)
-    val birthdayState: StateFlow<EditTextState> = _birthdayState.asStateFlow()
-
-    private val _showCalendarSheet = MutableStateFlow(false)
-    val showCalendarSheet: StateFlow<Boolean> = _showCalendarSheet.asStateFlow()
-
-    private val _gender = MutableStateFlow(Gender.MALE)
-    val gender: StateFlow<Gender> = _gender.asStateFlow()
-
-    private val _croppedProfileImage = MutableStateFlow<Bitmap?>(null)
-    val croppedProfileImage: StateFlow<Bitmap?> = _croppedProfileImage.asStateFlow()
-
-    private val _profileImageUrl = MutableStateFlow<String?>(null)
-    val profileImageUrl: StateFlow<String?> = _profileImageUrl.asStateFlow()
-
-    private val _notificationChecked = MutableStateFlow(false)
-    val notificationChecked: StateFlow<Boolean> = _notificationChecked.asStateFlow()
+    private val _createUserState = MutableStateFlow(CreateUserState())
+    val createUserState: StateFlow<CreateUserState> = _createUserState.asStateFlow()
 
     internal fun onNicknameChange(newValue: String) {
-        _nickname.value = newValue
-        _nicknameState.value = EditTextState.Default
+        _createUserState.value = _createUserState.value.copy(
+            nickname = newValue,
+            nicknameState = EditTextState.Default
+        )
     }
 
     internal fun onBirthdayChange(value: String) {
-        _birthday.value = value
-        _birthdayState.value = EditTextState.Default
+        _createUserState.value = _createUserState.value.copy(
+            birthday = value,
+            birthdayState = EditTextState.Default
+        )
     }
 
     internal fun onBirthdaySelect(date: LocalDate) {
-        _birthday.value = date.format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+        _createUserState.value = _createUserState.value.copy(
+            birthday = date.format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+        )
     }
 
     internal fun onCalendarClick() {
-        _showCalendarSheet.value = true
+        _createUserState.value = _createUserState.value.copy(
+            showCalendarSheet = true
+        )
     }
 
     internal fun onDismissCalendar() {
-        _showCalendarSheet.value = false
+        _createUserState.value = _createUserState.value.copy(
+            showCalendarSheet = false
+        )
         validateBirthday()
     }
 
     internal fun onGenderChange(gender: Gender) {
-        _gender.value = gender
+        _createUserState.value = _createUserState.value.copy(
+            gender = gender
+        )
     }
 
     internal fun setCroppedImage(bitmap: Bitmap) {
-        _croppedProfileImage.value = bitmap
+        _createUserState.value = _createUserState.value.copy(
+            croppedProfileImage = bitmap
+        )
     }
 
     internal fun toggleNotification() {
-        _notificationChecked.value = !_notificationChecked.value
+        _createUserState.value = _createUserState.value.copy(
+            notificationChecked = !_createUserState.value.notificationChecked
+        )
     }
 
     fun validateBirthday() {
-        if (!isValidBirthday(_birthday.value)) {
-            _birthdayState.value = EditTextState.ErrorCannotUse
-        } else {
-            _birthdayState.value = EditTextState.Available
-        }
+        val state = _createUserState.value
+        _createUserState.value = state.copy(
+            birthdayState = if (!isValidBirthday(state.birthday)) {
+                EditTextState.ErrorCannotUse
+            } else {
+                EditTextState.Available
+            }
+        )
     }
 
     internal fun checkNicknameDuplication() {
-        val currentNickname = _nickname.value
+        val currentNickname = _createUserState.value.nickname
 
         if (!currentNickname.matches(Regex("^[가-힣]+$"))) {
-            _nicknameState.value = EditTextState.ErrorCannotUse
+            _createUserState.value = _createUserState.value.copy(
+                nicknameState = EditTextState.ErrorCannotUse
+            )
             return
         }
 
         viewModelScope.launch {
             _uiState.value = UiState.Loading
+            
             try {
                 val result = signupUseCase.isNicknameUnique(currentNickname)
                 result.fold(
                     onSuccess = { isUnique ->
-                        _nicknameState.value = if (isUnique) {
-                            EditTextState.Available
-                        } else {
-                            EditTextState.ErrorAlreadyExisting
-                        }
+                        _createUserState.value = _createUserState.value.copy(
+                            nicknameState = if (isUnique) {
+                                EditTextState.Available
+                            } else {
+                                EditTextState.ErrorAlreadyExisting
+                            }
+                        )
                         _uiState.value = UiState.Success
                     },
                     onFailure = { error ->
                         Log.e(
-                            "SignupViewModel",
+                            "CreateUserViewModel",
                             "Nickname check 에러: ${error.message}",
                             error
                         )
@@ -142,13 +136,17 @@ class SignupViewModel @Inject constructor(
                             (error as? DomainError)?.toUiError()
                                 ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
                         )
-                        _nicknameState.value = EditTextState.ErrorAlreadyExisting
+                        _createUserState.value = _createUserState.value.copy(
+                            nicknameState = EditTextState.ErrorAlreadyExisting
+                        )
                     }
                 )
             } catch (e: Exception) {
-                Log.e("SignupViewModel", "Exception during nickname check", e)
+                Log.e("CreateUserViewModel", "Exception during nickname check", e)
                 _uiState.value = UiState.Error(UiError.UnknownError("알 수 없는 오류가 발생했습니다."))
-                _nicknameState.value = EditTextState.ErrorAlreadyExisting
+                _createUserState.value = _createUserState.value.copy(
+                    nicknameState = EditTextState.ErrorAlreadyExisting
+                )
             }
         }
     }
@@ -158,26 +156,27 @@ class SignupViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             _uiState.value = UiState.Loading
+            
             try {
                 val formattedBirthDate = LocalDate.parse(
-                    _birthday.value, DateTimeFormatter.ofPattern("yyyyMMdd")
+                    _createUserState.value.birthday, DateTimeFormatter.ofPattern("yyyyMMdd")
                 ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 
                 val accessToken = tokenManager.getAccessToken()
 
                 if (accessToken.isNullOrEmpty()) {
-                    Log.e("SignupViewModel", "엑세스 토큰이 존재하지 않습니다")
+                    Log.e("CreateUserViewModel", "엑세스 토큰이 존재하지 않습니다")
                     _uiState.value = UiState.Error(UiError.AuthError("엑세스 토큰이 존재하지 않습니다"))
                     return@launch
                 }
 
                 val result = signupUseCase.createUser(
                     accessToken = accessToken,
-                    nickname = _nickname.value,
+                    nickname = _createUserState.value.nickname,
                     birthDate = formattedBirthDate,
-                    gender = _gender.value,
+                    gender = _createUserState.value.gender,
                     agreement = true,
-                    notification = _notificationChecked.value
+                    notification = _createUserState.value.notificationChecked
                 )
                 result.fold(
                     onSuccess = {
@@ -186,7 +185,7 @@ class SignupViewModel @Inject constructor(
                     },
                     onFailure = { error ->
                         Log.e(
-                            "SignupViewModel",
+                            "CreateUserViewModel",
                             "Signup 에러: ${error.message}",
                             error
                         )
@@ -194,11 +193,17 @@ class SignupViewModel @Inject constructor(
                             (error as? DomainError)?.toUiError()
                                 ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
                         )
+                        _createUserState.value = _createUserState.value.copy(
+                            errorMessage = error.message
+                        )
                     }
                 )
             } catch (e: Exception) {
-                Log.e("SignupViewModel", "Exception during Signup", e)
+                Log.e("CreateUserViewModel", "Exception during Signup", e)
                 _uiState.value = UiState.Error(UiError.UnknownError("알 수 없는 오류가 발생했습니다."))
+                _createUserState.value = _createUserState.value.copy(
+                    errorMessage = e.message
+                )
             }
         }
     }
@@ -217,7 +222,9 @@ class SignupViewModel @Inject constructor(
             val result = signupUseCase.uploadProfileImage(accessToken, file)
             result.fold(
                 onSuccess = { response ->
-                    _profileImageUrl.value = response.url
+                    _createUserState.value = _createUserState.value.copy(
+                        profileImageUrl = response.url
+                    )
                     _uiState.value = UiState.Success
                 },
                 onFailure = { throwable ->
@@ -226,12 +233,15 @@ class SignupViewModel @Inject constructor(
                         (throwable as? DomainError)?.toUiError()
                             ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
                     )
+                    _createUserState.value = _createUserState.value.copy(
+                        errorMessage = throwable.message
+                    )
                 }
             )
         }
     }
 
     private fun logError(message: String) {
-        Log.e("SignupViewModel", message)
+        Log.e("CreateUserViewModel", message)
     }
 }
