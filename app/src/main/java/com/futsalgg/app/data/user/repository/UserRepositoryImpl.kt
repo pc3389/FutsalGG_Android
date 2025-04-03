@@ -8,7 +8,7 @@ import com.futsalgg.app.domain.user.model.Gender
 import com.futsalgg.app.domain.user.model.ProfilePresignedUrlResponseModel
 import com.futsalgg.app.domain.user.model.UpdateProfileResponseModel
 import com.futsalgg.app.domain.user.repository.UserRepository
-import com.futsalgg.app.domain.common.error.DomainError
+import com.futsalgg.app.data.common.error.DataError
 import java.io.File
 import java.io.IOException
 import javax.inject.Inject
@@ -25,32 +25,32 @@ class UserRepositoryImpl @Inject constructor(
                 response.body()?.let { body ->
                     Result.success(body.unique)
                 } ?: Result.failure(
-                    DomainError.ServerError(
-                        code = response.code(),
-                        message = "서버 응답이 비어있습니다."
-                    )
+                    DataError.ServerError(
+                        message = "서버 응답이 비어있습니다.",
+                        cause = null
+                    ) as Throwable
                 )
             } else {
                 Result.failure(
-                    DomainError.ServerError(
-                        code = response.code(),
-                        message = "서버 오류: ${response.code()}"
-                    )
+                    DataError.ServerError(
+                        message = "서버 오류: ${response.code()}",
+                        cause = null
+                    ) as Throwable
                 )
             }
         } catch (e: IOException) {
             Result.failure(
-                DomainError.NetworkError(
+                DataError.NetworkError(
                     message = "네트워크 연결을 확인해주세요.",
                     cause = e
-                )
+                ) as Throwable
             )
         } catch (e: Exception) {
             Result.failure(
-                DomainError.UnknownError(
+                DataError.UnknownError(
                     message = "알 수 없는 오류가 발생했습니다.",
                     cause = e
-                )
+                ) as Throwable
             )
         }
     }
@@ -78,25 +78,25 @@ class UserRepositoryImpl @Inject constructor(
                 Result.success(Unit)
             } else {
                 Result.failure(
-                    DomainError.ServerError(
-                        code = response.code(),
-                        message = "회원가입 실패: ${response.code()}"
-                    )
+                    DataError.ServerError(
+                        message = "회원가입 실패: ${response.code()}",
+                        cause = null
+                    ) as Throwable
                 )
             }
         } catch (e: IOException) {
             Result.failure(
-                DomainError.NetworkError(
+                DataError.NetworkError(
                     message = "네트워크 연결을 확인해주세요.",
                     cause = e
-                )
+                ) as Throwable
             )
         } catch (e: Exception) {
             Result.failure(
-                DomainError.UnknownError(
+                DataError.UnknownError(
                     message = "알 수 없는 오류가 발생했습니다.",
                     cause = e
-                )
+                ) as Throwable
             )
         }
     }
@@ -113,32 +113,32 @@ class UserRepositoryImpl @Inject constructor(
                         )
                     )
                 } ?: Result.failure(
-                    DomainError.ServerError(
-                        code = response.code(),
-                        message = "서버 응답이 비어있습니다."
-                    )
+                    DataError.ServerError(
+                        message = "서버 응답이 비어있습니다.",
+                        cause = null
+                    ) as Throwable
                 )
             } else {
                 Result.failure(
-                    DomainError.ServerError(
-                        code = response.code(),
-                        message = "서버 오류: ${response.code()}"
-                    )
+                    DataError.ServerError(
+                        message = "서버 오류: ${response.code()}",
+                        cause = null
+                    ) as Throwable
                 )
             }
         } catch (e: IOException) {
             Result.failure(
-                DomainError.NetworkError(
+                DataError.NetworkError(
                     message = "네트워크 연결을 확인해주세요.",
                     cause = e
-                )
+                ) as Throwable
             )
         } catch (e: Exception) {
             Result.failure(
-                DomainError.UnknownError(
+                DataError.UnknownError(
                     message = "알 수 없는 오류가 발생했습니다.",
                     cause = e
-                )
+                ) as Throwable
             )
         }
     }
@@ -161,32 +161,32 @@ class UserRepositoryImpl @Inject constructor(
                         )
                     )
                 } ?: Result.failure(
-                    DomainError.ServerError(
-                        code = response.code(),
-                        message = "서버 응답이 비어있습니다."
-                    )
+                    DataError.ServerError(
+                        message = "서버 응답이 비어있습니다.",
+                        cause = null
+                    ) as Throwable
                 )
             } else {
                 Result.failure(
-                    DomainError.ServerError(
-                        code = response.code(),
-                        message = "서버 오류: ${response.code()}"
-                    )
+                    DataError.ServerError(
+                        message = "서버 오류: ${response.code()}",
+                        cause = null
+                    ) as Throwable
                 )
             }
         } catch (e: IOException) {
             Result.failure(
-                DomainError.NetworkError(
+                DataError.NetworkError(
                     message = "네트워크 연결을 확인해주세요.",
                     cause = e
-                )
+                ) as Throwable
             )
         } catch (e: Exception) {
             Result.failure(
-                DomainError.UnknownError(
+                DataError.UnknownError(
                     message = "알 수 없는 오류가 발생했습니다.",
                     cause = e
-                )
+                ) as Throwable
             )
         }
     }
@@ -209,10 +209,10 @@ class UserRepositoryImpl @Inject constructor(
             updateProfile(accessToken, presignedResponse.uri)
         } catch (e: Exception) {
             Result.failure(
-                DomainError.UnknownError(
+                DataError.UnknownError(
                     message = "프로필 이미지 업로드 실패: ${e.message}",
                     cause = e
-                )
+                ) as Throwable
             )
         }
     }

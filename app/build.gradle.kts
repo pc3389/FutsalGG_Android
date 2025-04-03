@@ -68,6 +68,7 @@ dependencies {
 
     // Coil
     implementation(libs.coil.compose)
+    implementation(libs.coil.gif)
 
     // Permission
     implementation(libs.accompanist.permissions)

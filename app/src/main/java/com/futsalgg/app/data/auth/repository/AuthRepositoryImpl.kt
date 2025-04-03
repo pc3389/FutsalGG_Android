@@ -12,7 +12,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 import kotlin.coroutines.resume
-import com.futsalgg.app.domain.common.error.DomainError
+import com.futsalgg.app.data.common.error.DataError
 import java.io.IOException
 
 class AuthRepositoryImpl @Inject constructor(
@@ -35,21 +35,21 @@ class AuthRepositoryImpl @Inject constructor(
                     )
                 )
             } else {
-                Result.failure(DomainError.ServerError(
-                    code = response.code(),
-                    message = "서버 로그인 실패: ${response.code()}"
-                ))
+                Result.failure(DataError.ServerError(
+                    message = "서버 로그인 실패: ${response.code()}",
+                    cause = null
+                ) as Throwable)
             }
         } catch (e: IOException) {
-            Result.failure(DomainError.NetworkError(
+            Result.failure(DataError.NetworkError(
                 message = "네트워크 연결을 확인해주세요.",
                 cause = e
-            ))
+            ) as Throwable)
         } catch (e: Exception) {
-            Result.failure(DomainError.UnknownError(
+            Result.failure(DataError.UnknownError(
                 message = "알 수 없는 오류가 발생했습니다.",
                 cause = e
-            ))
+            ) as Throwable)
         }
     }
 
@@ -62,9 +62,10 @@ class AuthRepositoryImpl @Inject constructor(
                     if (task.isSuccessful) {
                         continuation.resume(Result.success(Unit))
                     } else {
-                        continuation.resume(Result.failure(DomainError.AuthError(
-                            message = task.exception?.message ?: "Google 로그인 실패"
-                        )))
+                        continuation.resume(Result.failure(DataError.AuthError(
+                            message = task.exception?.message ?: "Google 로그인 실패",
+                            cause = task.exception
+                        ) as Throwable))
                     }
                 }
         }

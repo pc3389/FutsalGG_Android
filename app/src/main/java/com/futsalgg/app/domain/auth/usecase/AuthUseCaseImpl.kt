@@ -4,6 +4,7 @@ import com.futsalgg.app.domain.auth.repository.ITokenManager
 import com.futsalgg.app.domain.auth.model.LoginResponseModel
 import com.futsalgg.app.domain.auth.repository.AuthRepository
 import com.futsalgg.app.domain.common.error.DomainError
+import com.futsalgg.app.domain.common.error.toDomainError
 import javax.inject.Inject
 
 class AuthUseCaseImpl @Inject constructor(
@@ -16,23 +17,15 @@ class AuthUseCaseImpl @Inject constructor(
             // 1. Firebase 인증
             val firebaseResult = authRepository.signInWithGoogleIdToken(idToken)
             if (firebaseResult.isFailure) {
-                return Result.failure(
-                    DomainError.AuthError(
-                        message = "Firebase 인증 실패",
-                        cause = firebaseResult.exceptionOrNull()
-                    )
-                )
+                val error = firebaseResult.exceptionOrNull()
+                return Result.failure(error?.toDomainError() ?: DomainError.UnknownError("알 수 없는 오류가 발생했습니다."))
             }
 
             // 2. 서버 로그인
             val serverResult = authRepository.loginWithGoogleToken(idToken)
             if (serverResult.isFailure) {
-                return Result.failure(
-                    DomainError.AuthError(
-                        message = "서버 로그인 실패",
-                        cause = serverResult.exceptionOrNull()
-                    )
-                )
+                val error = serverResult.exceptionOrNull()
+                return Result.failure(error?.toDomainError() ?: DomainError.UnknownError("알 수 없는 오류가 발생했습니다."))
             }
 
             // 3. 토큰 저장
@@ -42,12 +35,7 @@ class AuthUseCaseImpl @Inject constructor(
 
             serverResult
         } catch (e: Exception) {
-            Result.failure(
-                DomainError.UnknownError(
-                    message = "알 수 없는 오류가 발생했습니다.",
-                    cause = e
-                )
-            )
+            Result.failure(e.toDomainError())
         }
     }
 } 

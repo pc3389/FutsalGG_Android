@@ -5,6 +5,8 @@ import com.futsalgg.app.domain.team.model.MatchType
 import com.futsalgg.app.domain.team.model.TeamLogoPresignedUrlResponseModel
 import com.futsalgg.app.domain.team.repository.TeamRepository
 import com.futsalgg.app.domain.common.error.DomainError
+import com.futsalgg.app.data.common.error.DataError
+import com.futsalgg.app.domain.common.error.toDomainError
 import javax.inject.Inject
 
 class CreateTeamUseCaseImpl @Inject constructor(
@@ -15,12 +17,7 @@ class CreateTeamUseCaseImpl @Inject constructor(
         return try {
             createTeamRepository.isTeamNicknameUnique(nickname)
         } catch (e: Exception) {
-            Result.failure(
-                DomainError.ValidationError(
-                    message = "팀 닉네임 중복 확인 중 오류가 발생했습니다.",
-                    cause = e
-                )
-            )
+            Result.failure(e.toDomainError())
         }
     }
 
@@ -31,12 +28,7 @@ class CreateTeamUseCaseImpl @Inject constructor(
         return try {
             createTeamRepository.getTeamLogoPresignedUrl(accessToken, teamId)
         } catch (e: Exception) {
-            Result.failure(
-                DomainError.ValidationError(
-                    message = "팀 로고 presigned URL 획득 중 오류가 발생했습니다.",
-                    cause = e
-                )
-            )
+            Result.failure(e.toDomainError())
         }
     }
 
@@ -48,12 +40,7 @@ class CreateTeamUseCaseImpl @Inject constructor(
         return try {
             createTeamRepository.updateTeamLogo(accessToken, teamId, uri)
         } catch (e: Exception) {
-            Result.failure(
-                DomainError.ValidationError(
-                    message = "팀 로고 업데이트 중 오류가 발생했습니다.",
-                    cause = e
-                )
-            )
+            Result.failure(e.toDomainError())
         }
     }
 
@@ -77,12 +64,7 @@ class CreateTeamUseCaseImpl @Inject constructor(
                 dues = dues
             )
         } catch (e: Exception) {
-            Result.failure(
-                DomainError.ValidationError(
-                    message = "팀 생성 중 오류가 발생했습니다.",
-                    cause = e
-                )
-            )
+            Result.failure(e.toDomainError())
         }
     }
 } 

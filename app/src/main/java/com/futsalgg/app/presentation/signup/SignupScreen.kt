@@ -35,13 +35,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.futsalgg.app.R
 import com.futsalgg.app.presentation.base.BaseScreen
+import com.futsalgg.app.presentation.common.screen.LoadingScreen
 import com.futsalgg.app.presentation.common.state.EditTextState
+import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.presentation.signup.components.BirthdayUi
 import com.futsalgg.app.presentation.signup.components.GenderUi
 import com.futsalgg.app.presentation.signup.components.NicknameUi
 import com.futsalgg.app.presentation.signup.components.NotificationUi
 import com.futsalgg.app.presentation.signup.components.ProfilePictureUi
-import com.futsalgg.app.ui.components.LoadingScreen
 import com.futsalgg.app.ui.components.SingleButton
 import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.util.toFile
@@ -71,7 +72,7 @@ fun SignupScreen(navController: NavController, viewModel: SignupViewModel = hilt
         }
     }
 
-    val isLoading by viewModel.isLoading.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
     val imagePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
@@ -196,12 +197,10 @@ fun SignupScreen(navController: NavController, viewModel: SignupViewModel = hilt
                 },
                 enabled = signupButtonEnabled
             )
-
-            VerticalSpacer56()
         }
     }
 
-    if (isLoading) {
+    if (uiState == UiState.Loading) {
         LoadingScreen()
     }
 }

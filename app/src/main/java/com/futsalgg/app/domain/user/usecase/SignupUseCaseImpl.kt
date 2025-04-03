@@ -4,6 +4,8 @@ import com.futsalgg.app.domain.user.model.Gender
 import com.futsalgg.app.domain.user.model.UpdateProfileResponseModel
 import com.futsalgg.app.domain.user.repository.UserRepository
 import com.futsalgg.app.domain.common.error.DomainError
+import com.futsalgg.app.data.common.error.DataError
+import com.futsalgg.app.domain.common.error.toDomainError
 import java.io.File
 import javax.inject.Inject
 
@@ -15,12 +17,7 @@ class SignupUseCaseImpl @Inject constructor(
         return try {
             userRepository.isNicknameUnique(nickname)
         } catch (e: Exception) {
-            Result.failure(
-                DomainError.ValidationError(
-                    message = "닉네임 중복 체크 중 오류가 발생했습니다.",
-                    cause = e
-                )
-            )
+            Result.failure(e.toDomainError())
         }
     }
 
@@ -42,12 +39,7 @@ class SignupUseCaseImpl @Inject constructor(
                 notification = notification
             )
         } catch (e: Exception) {
-            Result.failure(
-                DomainError.ValidationError(
-                    message = "회원가입 중 오류가 발생했습니다.",
-                    cause = e
-                )
-            )
+            Result.failure(e.toDomainError())
         }
     }
 
