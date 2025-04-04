@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -48,7 +49,7 @@ fun BirthdayUi(
         }
     }
 
-    TextWithStar(textRes = R.string.signup_birthday)
+    TextWithStar(text = stringResource(R.string.signup_birthday))
     Spacer(Modifier.height(8.dp))
 
     EditTextWithState(

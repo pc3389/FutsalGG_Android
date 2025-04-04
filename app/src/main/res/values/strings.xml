@@ -3,6 +3,10 @@
 
     <string name="select">선택</string>
     <string name="select_long">선택하기</string>
+    <string name="required">*필수</string>
+    <string name="check_duplication">중복확인</string>
+    <string name="info_number_keyboard">숫자와 ,만 가능합니다</string>
+    <string name="select_please">선택해주세요.</string>
 
     <!--  T&C  -->
     <string name="terms_and_condition_title">이용약관 동의</string>
@@ -13,13 +17,11 @@
 
     <!--  SignUp  -->
     <string name="signup_toolbar_title">회원가입</string>
-    <string name="signup_must">*필수</string>
     <string name="signup_nickname">닉네임</string>
     <string name="signup_nickname_hint">사용하실 닉네임을 입력해주세요.</string>
     <string name="signup_nickname_error_message_cannot_use">영어, 특수 문자는 사용 불가합니다.</string>
     <string name="signup_nickname_error_message_already">이미 존재하는 닉네임입니다.</string>
     <string name="signup_nickname_available">사용 가능한 닉네임입니다.</string>
-    <string name="signup_nickname_ckeck_button">중복확인</string>
     <string name="signup_birthday_hint">YYYY-MM-DD</string>
     <string name="signup_birthday_error_invalid">YYYY-MM-DD의 형태로 입력해주세요.</string>
     <string name="signup_birthday">생년월일</string>
@@ -27,5 +29,16 @@
     <string name="signup_profile_title">프로필 사진</string>
     <string name="signup_profile_info">사진 미 업로드 시,\n기본 프로필이 적용됩니다.</string>
     <string name="signup_button">회원가입</string>
+
+    <!-- CreateTeam -->
+    <string name="create_team_title">팀 생성하기</string>
+    <string name="team_name">팀 명</string>
+    <string name="team_description">팀 소개</string>
+    <string name="team_rules">팀 규칙</string>
+    <string name="team_admin_scope">관리자 범위</string>
+    <string name="team_game_type">게임 유형</string>
+    <string name="team_fee">회비</string>
+    <string name="team_logo">팀 로고</string>
+    <string name="create_team">팀 생성하기</string>
 
 </resources>

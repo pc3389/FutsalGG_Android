@@ -1,14 +1,14 @@
 package com.futsalgg.app.ui.components.calendar
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.futsalgg.app.R
 import com.futsalgg.app.ui.components.SingleButton
+import com.futsalgg.app.ui.theme.FutsalggColor
 import java.time.LocalDate
 import java.time.YearMonth
 
@@ -31,7 +32,7 @@ fun CalendarBottomSheet(
     onConfirm: (LocalDate) -> Unit,
     onDismissRequest: () -> Unit,
     canSelectPreviousDate: Boolean = true,
-    canSelectAfterDate: Boolean = false,
+    canSelectAfterDate: Boolean = false
 ) {
     var currentMonth by remember { mutableStateOf(YearMonth.now()) }
     var selectedDate by remember { mutableStateOf(initialDate) }
@@ -41,6 +42,7 @@ fun CalendarBottomSheet(
         sheetState = rememberModalBottomSheetState(
             skipPartiallyExpanded = true
         ),
+        modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars),
         shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
     ) {
         CalendarBottomSheetContent(
@@ -53,7 +55,7 @@ fun CalendarBottomSheet(
             onConfirm = {
                 onConfirm(selectedDate)
                 onDismissRequest()
-            }
+            },
         )
     }
 }
@@ -72,8 +74,7 @@ fun CalendarBottomSheetContent(
 
     Column(
         modifier = Modifier.padding(horizontal = 16.dp)
-            .padding(bottom = 48.dp)
-            .windowInsetsPadding(WindowInsets.navigationBars)
+            .padding(bottom = 24.dp)
     ) {
         CustomCalendar(
             currentMonth = currentMonth,
@@ -86,9 +87,17 @@ fun CalendarBottomSheetContent(
                 isDateSelected = true
             }
         )
+    }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
+    HorizontalDivider(
+        thickness = 1.dp,
+        color = FutsalggColor.mono200
+    )
+    
+    Box(
+        modifier = Modifier
+            .padding(16.dp)
+    ) {
         SingleButton(
             text = stringResource(R.string.select),
             onClick = onConfirm,

@@ -6,9 +6,9 @@ import com.futsalgg.app.presentation.common.state.EditTextState
 
 data class CreateUserState(
     val nickname: String = "",
-    val nicknameState: EditTextState = EditTextState.Default,
+    val nicknameState: EditTextState = EditTextState.Initial,
     val birthday: String = "",
-    val birthdayState: EditTextState = EditTextState.Default,
+    val birthdayState: EditTextState = EditTextState.Initial,
     val gender: Gender = Gender.MALE,
     val croppedProfileImage: Bitmap? = null,
     val profileImageUrl: String? = null,
@@ -18,5 +18,5 @@ data class CreateUserState(
 ) {
     val isFormValid: Boolean
         get() = nicknameState == EditTextState.Available && 
-                birthdayState == EditTextState.Available
+                birthdayState == EditTextState.Default
 } 

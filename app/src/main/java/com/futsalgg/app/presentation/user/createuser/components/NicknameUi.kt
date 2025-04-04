@@ -1,9 +1,6 @@
 package com.futsalgg.app.presentation.user.createuser.components
 
 import android.content.Context
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -57,7 +54,7 @@ fun NicknameUi(
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
-            text = stringResource(R.string.signup_must),
+            text = stringResource(R.string.required),
             style = FutsalggTypography.bold_17_200,
             color = FutsalggColor.mint500,
             modifier = Modifier
@@ -65,7 +62,7 @@ fun NicknameUi(
                 .align(Alignment.TopEnd)
         )
         TextWithStar(
-            textRes = R.string.signup_nickname,
+            text = stringResource(R.string.signup_nickname),
             modifier = Modifier.padding(top = 40.dp)
         )
     }
@@ -97,7 +94,7 @@ fun NicknameUi(
         )
 
         SingleButton(
-            text = stringResource(R.string.signup_nickname_ckeck_button),
+            text = stringResource(R.string.check_duplication),
             onClick = {
                 nicknameCheck()
                 focusManager.clearFocus()

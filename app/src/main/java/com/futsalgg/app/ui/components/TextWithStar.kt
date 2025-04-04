@@ -12,10 +12,10 @@ import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.ui.theme.FutsalggTypography
 
 @Composable
-fun TextWithStar(@StringRes textRes: Int, modifier: Modifier = Modifier) {
+fun TextWithStar(text: String, modifier: Modifier = Modifier) {
     Text(
         buildAnnotatedString {
-            append("${stringResource(textRes)} ")
+            append("$text ")
             withStyle(style = SpanStyle(color = FutsalggColor.mint500)) {
                 append("*")
             }

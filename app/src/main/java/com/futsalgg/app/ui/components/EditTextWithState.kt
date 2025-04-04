@@ -7,7 +7,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -44,7 +43,7 @@ fun EditTextWithState(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     @StringRes hint: Int = R.string.signup_nickname_hint,
-    state: EditTextState = EditTextState.Default,
+    state: EditTextState = EditTextState.Initial,
     messageProvider: (EditTextState) -> String? = { null },
     trailingIcon: ImageVector? = null,
     showTrailingIcon: Boolean = false,
@@ -55,9 +54,12 @@ fun EditTextWithState(
     imeAction: ImeAction = ImeAction.Default,
     onImeAction: () -> Unit = {},
     singleLine: Boolean = true,
-    maxLines: Int = 1
+    maxLines: Int = 1,
+    maxLength: Int? = null
 ) {
+    //TODO MaxLength!!
     val borderColor = when (state) {
+        EditTextState.Initial -> FutsalggColor.mono500
         EditTextState.Default -> FutsalggColor.mono500
         EditTextState.ErrorCannotUse,
         EditTextState.ErrorAlreadyExisting -> FutsalggColor.orange
@@ -68,7 +70,8 @@ fun EditTextWithState(
 
     val focusRequester = remember { androidx.compose.ui.focus.FocusRequester() }
 
-    Column(modifier = modifier.fillMaxWidth()) {
+    Box(modifier = modifier.fillMaxWidth()
+        .height(78.dp)) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -135,13 +138,15 @@ fun EditTextWithState(
         AnimatedVisibility(
             visible = messageText != null,
             enter = fadeIn(),
-            exit = fadeOut()
+            exit = fadeOut(),
+            modifier = Modifier
+                .align(Alignment.BottomStart)
         ) {
             Text(
                 text = messageText ?: "",
                 color = borderColor,
                 style = FutsalggTypography.regular_17_200,
-                modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+                modifier = Modifier.padding(start = 16.dp)
             )
         }
     }

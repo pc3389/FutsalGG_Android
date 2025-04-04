@@ -4,6 +4,10 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,7 +27,8 @@ fun BaseScreen(
     Scaffold(
         modifier = Modifier.background(
             FutsalggColor.white
-        ),
+        )
+            .windowInsetsPadding(WindowInsets.systemBars),
         topBar = {
             FutsalggTopBar(
                 title = stringResource(title),

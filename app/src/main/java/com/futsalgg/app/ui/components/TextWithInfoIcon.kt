@@ -27,7 +27,8 @@ import com.futsalgg.app.ui.theme.FutsalggTypography
 
 @Composable
 fun TextWithInfoIcon(
-    text: String,
+    text: String? = null,
+    textWithStar: String? = null,
     info: String,
     modifier: Modifier = Modifier
 ) {
@@ -37,10 +38,15 @@ fun TextWithInfoIcon(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = text,
-            style = FutsalggTypography.bold_20_300
-        )
+        if (text != null) {
+            Text(
+                text = text,
+                style = FutsalggTypography.bold_20_300
+            )
+        }
+        if (textWithStar != null) {
+            TextWithStar(textWithStar)
+        }
 
         Box {
             Image(

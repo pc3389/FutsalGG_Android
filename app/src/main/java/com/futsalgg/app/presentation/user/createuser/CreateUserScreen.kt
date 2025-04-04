@@ -128,7 +128,7 @@ fun CreateUserScreen(navController: NavController, viewModel: CreateUserViewMode
                 isCheckEnabled = createUserState.nickname.isNotEmpty()
             )
 
-            VerticalSpacer56()
+            Spacer(Modifier.height(26.dp))
 
             BirthdayUi(
                 context = context,
@@ -145,7 +145,7 @@ fun CreateUserScreen(navController: NavController, viewModel: CreateUserViewMode
                 onValidateBirthday = viewModel::validateBirthday
             )
 
-            VerticalSpacer56()
+            Spacer(Modifier.height(26.dp))
 
             GenderUi(
                 gender = createUserState.gender,
@@ -183,6 +183,7 @@ fun CreateUserScreen(navController: NavController, viewModel: CreateUserViewMode
                 },
                 enabled = createUserState.isFormValid
             )
+            Spacer(Modifier.height(16.dp))
         }
     }
 }

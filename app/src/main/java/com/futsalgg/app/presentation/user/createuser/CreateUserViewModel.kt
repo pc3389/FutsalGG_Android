@@ -15,11 +15,8 @@ import com.futsalgg.app.presentation.common.error.toUiError
 import com.futsalgg.app.presentation.user.createuser.components.isValidBirthday
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.io.File
 import java.time.LocalDate
@@ -41,14 +38,14 @@ class CreateUserViewModel @Inject constructor(
     internal fun onNicknameChange(newValue: String) {
         _createUserState.value = _createUserState.value.copy(
             nickname = newValue,
-            nicknameState = EditTextState.Default
+            nicknameState = EditTextState.Initial
         )
     }
 
     internal fun onBirthdayChange(value: String) {
         _createUserState.value = _createUserState.value.copy(
             birthday = value,
-            birthdayState = EditTextState.Default
+            birthdayState = EditTextState.Initial
         )
     }
 
@@ -95,11 +92,11 @@ class CreateUserViewModel @Inject constructor(
         val state = _createUserState.value
         _createUserState.value = state.copy(
             birthdayState = if (state.birthday.isEmpty()) {
-                EditTextState.Default
+                EditTextState.Initial
             } else if (!isValidBirthday(state.birthday)) {
                 EditTextState.ErrorCannotUse
             } else {
-                EditTextState.Available
+                EditTextState.Default
             }
         )
         _uiState.value = UiState.Success
@@ -108,7 +105,7 @@ class CreateUserViewModel @Inject constructor(
     internal fun checkNicknameDuplication() {
         val currentNickname = _createUserState.value.nickname
 
-        if (!currentNickname.matches(Regex("^[가-힣]+$"))) {
+        if (!currentNickname.matches(Regex("^[ㄱ-힣]+$"))) {
             _createUserState.value = _createUserState.value.copy(
                 nicknameState = EditTextState.ErrorCannotUse
             )

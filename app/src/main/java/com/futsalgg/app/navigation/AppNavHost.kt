@@ -16,6 +16,7 @@ import com.futsalgg.app.presentation.main.MainScreen
 import com.futsalgg.app.presentation.user.createuser.CreateUserScreen
 import com.futsalgg.app.presentation.user.createuser.CreateUserViewModel
 import com.futsalgg.app.presentation.auth.termsandcondition.TermsAndConditionScreen
+import com.futsalgg.app.presentation.team.createteam.CreateTeamScreen
 
 @Composable
 fun AppNavHost(
@@ -25,7 +26,8 @@ fun AppNavHost(
     NavHost(
         navController = navController,
 //        startDestination = Screen.Login.route
-        startDestination = Screen.Signup.route
+        startDestination = Screen.CreateUser.route
+//        startDestination = Screen.CreateTeam.route
     ) {
         composable(Screen.Login.route) {
             LoginScreen(
@@ -42,8 +44,11 @@ fun AppNavHost(
         }
         composable(Screen.Main.route) { MainScreen(navController) }
         composable(Screen.TermsAndCondition.route) { TermsAndConditionScreen() }
-        composable(Screen.Signup.route) {
+        composable(Screen.CreateUser.route) {
             CreateUserScreen(navController)
+        }
+        composable(Screen.CreateTeam.route) {
+            CreateTeamScreen(navController)
         }
         composable(
             route = "cropImage?uri={uri}",
@@ -52,7 +57,7 @@ fun AppNavHost(
             val uriStr = backStackEntry.arguments?.getString("uri") ?: ""
             val uri = Uri.parse(uriStr)
 
-            val parentEntry = navController.getBackStackEntry(RoutePath.SIGNUP)
+            val parentEntry = navController.getBackStackEntry(RoutePath.CREATE_USER)
             val signupViewModel: CreateUserViewModel = hiltViewModel(parentEntry)
 
             ProfileImageCropScreen(

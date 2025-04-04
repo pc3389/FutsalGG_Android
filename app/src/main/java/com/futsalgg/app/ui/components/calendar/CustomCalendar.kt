@@ -27,9 +27,9 @@ fun CustomCalendar(
     val yearRange: IntRange = if (canSelectAfterDate) {
         thisYear..thisYear + 5
     } else if (canSelectPreviousDate) {
-        1900..thisYear
+        1950..thisYear
     } else {
-        1900..thisYear+5
+        1950..thisYear+5
     }
     Column(
         modifier = modifier

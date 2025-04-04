@@ -7,6 +7,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import java.time.LocalDate
 
 class DateTransformation : VisualTransformation {
+    //TODO '-' 다루는거 제대로
     override fun filter(text: AnnotatedString): TransformedText {
         return dateFilter(text)
     }

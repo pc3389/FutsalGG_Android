@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.futsalgg.app.R
 import com.futsalgg.app.domain.user.model.Gender
@@ -15,7 +16,7 @@ fun GenderUi(
     gender: Gender,
     onGenderButtonSelect: (Gender) -> Unit
 ) {
-    TextWithStar(textRes = R.string.signup_gender)
+    TextWithStar(text = stringResource(R.string.signup_gender))
     Spacer(Modifier.height(8.dp))
 
     DoubleRadioButtonsEnum(
