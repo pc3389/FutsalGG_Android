@@ -6,11 +6,15 @@ import com.futsalgg.app.domain.team.model.TeamLogoPresignedUrlResponseModel
 import com.futsalgg.app.domain.team.repository.TeamRepository
 import com.futsalgg.app.remote.api.team.TeamApi
 import com.futsalgg.app.data.common.error.DataError
+import com.futsalgg.app.domain.file.repository.OkHttpFileUploader
+import com.futsalgg.app.domain.team.model.TeamLogoResponseModel
+import java.io.File
 import java.io.IOException
 import javax.inject.Inject
 
 class TeamRepositoryImpl @Inject constructor(
-    private val teamApi: TeamApi
+    private val teamApi: TeamApi,
+    private val okHttpFileUploader: OkHttpFileUploader
 ) : TeamRepository {
 
     override suspend fun isTeamNicknameUnique(nickname: String): Result<Boolean> {
@@ -51,13 +55,11 @@ class TeamRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getTeamLogoPresignedUrl(
-        accessToken: String,
-        teamId: String
+        accessToken: String
     ): Result<TeamLogoPresignedUrlResponseModel> {
         return try {
             val response = teamApi.getTeamLogoPresignedUrl(
-                authHeader = "Bearer $accessToken",
-                teamId = teamId
+                authHeader = "Bearer $accessToken"
             )
             if (response.isSuccessful) {
                 response.body()?.let { body ->
@@ -100,19 +102,17 @@ class TeamRepositoryImpl @Inject constructor(
 
     override suspend fun updateTeamLogo(
         accessToken: String,
-        teamId: String,
         uri: String
-    ): Result<TeamLogoPresignedUrlResponseModel> {
+    ): Result<TeamLogoResponseModel> {
         return try {
             val response = teamApi.updateTeamLogo(
                 authHeader = "Bearer $accessToken",
-                teamId = teamId,
                 request = UpdateTeamLogoRequest(uri)
             )
             if (response.isSuccessful) {
                 response.body()?.let { body ->
                     Result.success(
-                        TeamLogoPresignedUrlResponseModel(
+                        TeamLogoResponseModel(
                             url = body.url,
                             uri = body.uri
                         )
@@ -142,6 +142,32 @@ class TeamRepositoryImpl @Inject constructor(
             Result.failure(
                 DataError.UnknownError(
                     message = "알 수 없는 오류가 발생했습니다.",
+                    cause = e
+                ) as Throwable
+            )
+        }
+    }
+
+    override suspend fun uploadLogoImage(
+        accessToken: String,
+        file: File
+    ): Result<TeamLogoResponseModel> {
+        return try {
+            // 1. presigned URL 획득
+            val presignedResult = getTeamLogoPresignedUrl(accessToken)
+            val presignedResponse = presignedResult.getOrElse { return Result.failure(it) }
+
+            // 2. presigned URL로 파일 업로드
+            val uploadResult =
+                okHttpFileUploader.uploadFileToPresignedUrl(presignedResponse.url, file)
+            uploadResult.getOrElse { return Result.failure(it) }
+
+            // 3. 업로드 성공 후, updateProfile API 호출
+            updateTeamLogo(accessToken, presignedResponse.uri)
+        } catch (e: Exception) {
+            Result.failure(
+                DataError.UnknownError(
+                    message = "프로필 이미지 업로드 실패: ${e.message}",
                     cause = e
                 ) as Throwable
             )

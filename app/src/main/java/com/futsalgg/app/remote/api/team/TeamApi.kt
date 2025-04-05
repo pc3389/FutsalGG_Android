@@ -22,13 +22,11 @@ interface TeamApi {
     @GET("teams/{id}/logo-presigned-url")
     suspend fun getTeamLogoPresignedUrl(
         @Header("Authorization") authHeader: String,
-        @Path("id") teamId: String
     ): Response<TeamLogoPresignedUrlResponse>
 
     @PATCH("teams/{id}/logo")
     suspend fun updateTeamLogo(
         @Header("Authorization") authHeader: String,
-        @Path("id") teamId: String,
         @Body request: UpdateTeamLogoRequest
     ): Response<TeamLogoPresignedUrlResponse>
 

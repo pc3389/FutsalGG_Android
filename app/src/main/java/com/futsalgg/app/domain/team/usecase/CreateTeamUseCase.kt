@@ -3,13 +3,16 @@ package com.futsalgg.app.domain.team.usecase
 import com.futsalgg.app.domain.team.model.Access
 import com.futsalgg.app.domain.team.model.MatchType
 import com.futsalgg.app.domain.team.model.TeamLogoPresignedUrlResponseModel
+import com.futsalgg.app.domain.team.model.TeamLogoResponseModel
+import java.io.File
 
 interface CreateTeamUseCase {
     suspend fun isTeamNicknameUnique(nickname: String): Result<Boolean>
 
-    suspend fun getTeamLogoPresignedUrl(accessToken: String, teamId: String): Result<TeamLogoPresignedUrlResponseModel>
-
-    suspend fun updateTeamLogo(accessToken: String, teamId: String, uri: String): Result<TeamLogoPresignedUrlResponseModel>
+    suspend fun updateTeamLogo(
+        accessToken: String,
+        file: File
+    ): Result<TeamLogoResponseModel>
 
     suspend fun createTeam(
         accessToken: String,

@@ -2,11 +2,10 @@ package com.futsalgg.app.domain.team.usecase
 
 import com.futsalgg.app.domain.team.model.Access
 import com.futsalgg.app.domain.team.model.MatchType
-import com.futsalgg.app.domain.team.model.TeamLogoPresignedUrlResponseModel
 import com.futsalgg.app.domain.team.repository.TeamRepository
-import com.futsalgg.app.domain.common.error.DomainError
-import com.futsalgg.app.data.common.error.DataError
 import com.futsalgg.app.domain.common.error.toDomainError
+import com.futsalgg.app.domain.team.model.TeamLogoResponseModel
+import java.io.File
 import javax.inject.Inject
 
 class CreateTeamUseCaseImpl @Inject constructor(
@@ -21,24 +20,12 @@ class CreateTeamUseCaseImpl @Inject constructor(
         }
     }
 
-    override suspend fun getTeamLogoPresignedUrl(
-        accessToken: String,
-        teamId: String
-    ): Result<TeamLogoPresignedUrlResponseModel> {
-        return try {
-            createTeamRepository.getTeamLogoPresignedUrl(accessToken, teamId)
-        } catch (e: Exception) {
-            Result.failure(e.toDomainError())
-        }
-    }
-
     override suspend fun updateTeamLogo(
         accessToken: String,
-        teamId: String,
-        uri: String
-    ): Result<TeamLogoPresignedUrlResponseModel> {
+        file: File
+    ): Result<TeamLogoResponseModel> {
         return try {
-            createTeamRepository.updateTeamLogo(accessToken, teamId, uri)
+            createTeamRepository.uploadLogoImage(accessToken, file)
         } catch (e: Exception) {
             Result.failure(e.toDomainError())
         }

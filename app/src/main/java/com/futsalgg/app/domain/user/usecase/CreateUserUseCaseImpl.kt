@@ -4,14 +4,13 @@ import com.futsalgg.app.domain.user.model.Gender
 import com.futsalgg.app.domain.user.model.UpdateProfileResponseModel
 import com.futsalgg.app.domain.user.repository.UserRepository
 import com.futsalgg.app.domain.common.error.DomainError
-import com.futsalgg.app.data.common.error.DataError
 import com.futsalgg.app.domain.common.error.toDomainError
 import java.io.File
 import javax.inject.Inject
 
-class SignupUseCaseImpl @Inject constructor(
+class CreateUserUseCaseImpl @Inject constructor(
     private val userRepository: UserRepository
-) : SignupUseCase {
+) : CreateUserUseCase {
 
     override suspend fun isNicknameUnique(nickname: String): Result<Boolean> {
         return try {

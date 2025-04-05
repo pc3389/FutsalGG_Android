@@ -139,8 +139,8 @@ class CreateTeamViewModel @Inject constructor(
                     name = _createTeamState.value.teamName,
                     introduction = _createTeamState.value.introduction,
                     rule = _createTeamState.value.rule,
-                    matchType = MatchType.toDomain(_createTeamState.value.matchType),
-                    access = Access.toDomain(_createTeamState.value.access),
+                    matchType = MatchType.toDomain(_createTeamState.value.matchType!!),
+                    access = Access.toDomain(_createTeamState.value.access!!),
                     dues = _createTeamState.value.dues.toIntOrNull() ?: 0
                 )
                 result.fold(
@@ -186,9 +186,7 @@ class CreateTeamViewModel @Inject constructor(
 
             val result = createTeamUseCase.updateTeamLogo(
                 accessToken,
-                // TODO Team ID and Uri
-                teamId = "",
-                uri = ""
+                file
             )
             result.fold(
                 onSuccess = { response ->

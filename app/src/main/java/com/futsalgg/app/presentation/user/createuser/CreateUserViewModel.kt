@@ -9,7 +9,7 @@ import com.futsalgg.app.domain.common.error.DomainError
 import com.futsalgg.app.presentation.common.state.EditTextState
 import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.domain.user.model.Gender
-import com.futsalgg.app.domain.user.usecase.SignupUseCase
+import com.futsalgg.app.domain.user.usecase.CreateUserUseCase
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.error.toUiError
 import com.futsalgg.app.presentation.user.createuser.components.isValidBirthday
@@ -25,7 +25,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateUserViewModel @Inject constructor(
-    private val signupUseCase: SignupUseCase,
+    private val createUserUseCase: CreateUserUseCase,
     private val tokenManager: ITokenManager
 ) : ViewModel() {
 
@@ -116,7 +116,7 @@ class CreateUserViewModel @Inject constructor(
             _uiState.value = UiState.Loading
             
             try {
-                val result = signupUseCase.isNicknameUnique(currentNickname)
+                val result = createUserUseCase.isNicknameUnique(currentNickname)
                 result.fold(
                     onSuccess = { isUnique ->
                         _createUserState.value = _createUserState.value.copy(
@@ -172,7 +172,7 @@ class CreateUserViewModel @Inject constructor(
                     return@launch
                 }
 
-                val result = signupUseCase.createUser(
+                val result = createUserUseCase.createUser(
                     accessToken = accessToken,
                     nickname = _createUserState.value.nickname,
                     birthDate = formattedBirthDate,
@@ -221,7 +221,7 @@ class CreateUserViewModel @Inject constructor(
                 return@launch
             }
 
-            val result = signupUseCase.uploadProfileImage(accessToken, file)
+            val result = createUserUseCase.uploadProfileImage(accessToken, file)
             result.fold(
                 onSuccess = { response ->
                     _createUserState.value = _createUserState.value.copy(

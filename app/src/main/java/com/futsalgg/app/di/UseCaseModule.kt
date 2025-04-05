@@ -4,12 +4,12 @@ import com.futsalgg.app.domain.auth.repository.ITokenManager
 import com.futsalgg.app.domain.auth.repository.AuthRepository
 import com.futsalgg.app.domain.team.usecase.CreateTeamUseCase
 import com.futsalgg.app.domain.auth.usecase.AuthUseCase
-import com.futsalgg.app.domain.user.usecase.SignupUseCase
+import com.futsalgg.app.domain.user.usecase.CreateUserUseCase
 import com.futsalgg.app.domain.team.usecase.CreateTeamUseCaseImpl
 import com.futsalgg.app.domain.auth.usecase.AuthUseCaseImpl
 import com.futsalgg.app.domain.team.repository.TeamRepository
 import com.futsalgg.app.domain.user.repository.UserRepository
-import com.futsalgg.app.domain.user.usecase.SignupUseCaseImpl
+import com.futsalgg.app.domain.user.usecase.CreateUserUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,8 +33,8 @@ object UseCaseModule {
     @Singleton
     fun provideSignupUseCase(
         userRepository: UserRepository
-    ): SignupUseCase {
-        return SignupUseCaseImpl(userRepository)
+    ): CreateUserUseCase {
+        return CreateUserUseCaseImpl(userRepository)
     }
 
     @Provides

@@ -4,7 +4,7 @@ import com.futsalgg.app.domain.user.model.Gender
 import com.futsalgg.app.domain.user.model.UpdateProfileResponseModel
 import java.io.File
 
-interface SignupUseCase {
+interface CreateUserUseCase {
     suspend fun isNicknameUnique(nickname: String): Result<Boolean>
     
     suspend fun createUser(

@@ -4,7 +4,7 @@ import com.futsalgg.app.core.token.FakeTokenManager
 import com.futsalgg.app.presentation.common.state.EditTextState
 import com.futsalgg.app.domain.user.model.Gender
 import com.futsalgg.app.domain.user.model.UpdateProfileResponseModel
-import com.futsalgg.app.domain.user.usecase.SignupUseCase
+import com.futsalgg.app.domain.user.usecase.CreateUserUseCase
 import com.futsalgg.app.presentation.user.createuser.CreateUserViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,17 +26,17 @@ import java.io.File
 class CreateUserViewModelTest {
 
     private lateinit var viewModel: CreateUserViewModel
-    private lateinit var fakeSignupUseCase: FakeSignupUseCase
+    private lateinit var fakeSignupUseCase: FakeCreateUserUseCase
     private lateinit var fakeTokenManager: FakeTokenManager
     private val testDispatcher = StandardTestDispatcher()
 
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
-        fakeSignupUseCase = FakeSignupUseCase()
+        fakeSignupUseCase = FakeCreateUserUseCase()
         fakeTokenManager = FakeTokenManager()
         viewModel = CreateUserViewModel(
-            signupUseCase = fakeSignupUseCase,
+            createUserUseCase = fakeSignupUseCase,
             tokenManager = fakeTokenManager
         )
     }
@@ -147,7 +147,7 @@ class CreateUserViewModelTest {
     }
 
     // Fake UseCase
-    class FakeSignupUseCase : SignupUseCase {
+    class FakeCreateUserUseCase : CreateUserUseCase {
         var shouldSucceed = true
         var isUnique = true
 

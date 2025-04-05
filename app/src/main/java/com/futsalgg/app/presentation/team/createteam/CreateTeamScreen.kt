@@ -60,6 +60,7 @@ import com.futsalgg.app.ui.components.TextWithInfoIcon
 import com.futsalgg.app.ui.components.TextWithStar
 import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.ui.theme.FutsalggTypography
+import com.futsalgg.app.util.toFile
 
 @Composable
 fun CreateTeamScreen(
@@ -77,7 +78,8 @@ fun CreateTeamScreen(
         onResult = { uri: Uri? ->
             uri?.let {
                 navController.navigate(
-                    "cropImage?uri=${Uri.encode(it.toString())}&viewModelType=${RoutePath.CREATE_TEAM}")
+                    "cropImage?uri=${Uri.encode(it.toString())}&viewModelType=${RoutePath.CREATE_TEAM}"
+                )
             }
         }
     )
@@ -292,11 +294,20 @@ fun CreateTeamScreen(
             // 생성하기 버튼
             SingleButton(
                 text = stringResource(R.string.create_team),
-                onClick = { viewModel.createTeam {} },
+                onClick = {
+                    if (createTeamState.croppedTeamImage != null) {
+                        val file =
+                            createTeamState.croppedTeamImage!!.toFile(context, "logo.jpg")
+                        viewModel.uploadTeamImage(file)
+                    }
+                    viewModel.createTeam {
+                        // TODO 팀 생성 이후
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 32.dp),
-                enabled = createTeamState.teamNameState == EditTextState.Available
+                enabled = createTeamState.isFormValid
             )
         }
     }

@@ -183,7 +183,7 @@ fun CreateUserScreen(
                     }
                     viewModel.createUser(
                         onSuccess = {
-                            // TODO 유저 등록 성공
+                            // TODO 유저 등록 성공 이후
                         }
                     )
                 },
