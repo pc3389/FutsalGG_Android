@@ -45,13 +45,6 @@ class UserRepositoryImpl @Inject constructor(
                     cause = e
                 ) as Throwable
             )
-        } catch (e: Exception) {
-            Result.failure(
-                DataError.UnknownError(
-                    message = "알 수 없는 오류가 발생했습니다.",
-                    cause = e
-                ) as Throwable
-            )
         }
     }
 
@@ -91,13 +84,6 @@ class UserRepositoryImpl @Inject constructor(
                     cause = e
                 ) as Throwable
             )
-        } catch (e: Exception) {
-            Result.failure(
-                DataError.UnknownError(
-                    message = "알 수 없는 오류가 발생했습니다.",
-                    cause = e
-                ) as Throwable
-            )
         }
     }
 
@@ -130,13 +116,6 @@ class UserRepositoryImpl @Inject constructor(
             Result.failure(
                 DataError.NetworkError(
                     message = "네트워크 연결을 확인해주세요.",
-                    cause = e
-                ) as Throwable
-            )
-        } catch (e: Exception) {
-            Result.failure(
-                DataError.UnknownError(
-                    message = "알 수 없는 오류가 발생했습니다.",
                     cause = e
                 ) as Throwable
             )
@@ -178,13 +157,6 @@ class UserRepositoryImpl @Inject constructor(
             Result.failure(
                 DataError.NetworkError(
                     message = "네트워크 연결을 확인해주세요.",
-                    cause = e
-                ) as Throwable
-            )
-        } catch (e: Exception) {
-            Result.failure(
-                DataError.UnknownError(
-                    message = "알 수 없는 오류가 발생했습니다.",
                     cause = e
                 ) as Throwable
             )
