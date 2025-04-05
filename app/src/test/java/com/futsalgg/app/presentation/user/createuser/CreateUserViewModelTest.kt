@@ -1,11 +1,10 @@
-package com.futsalgg.app.presentation.signup
+package com.futsalgg.app.presentation.user.createuser
 
 import com.futsalgg.app.core.token.FakeTokenManager
 import com.futsalgg.app.presentation.common.state.EditTextState
 import com.futsalgg.app.domain.user.model.Gender
 import com.futsalgg.app.domain.user.model.UpdateProfileResponseModel
 import com.futsalgg.app.domain.user.usecase.CreateUserUseCase
-import com.futsalgg.app.presentation.user.createuser.CreateUserViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -53,7 +52,7 @@ class CreateUserViewModelTest {
     fun `validateBirthday returns Available for correct date format within range`() = runTest {
         viewModel.onBirthdayChange("20000101")
         viewModel.validateBirthday()
-        assertEquals(EditTextState.Available, viewModel.birthdayState.value)
+        assertEquals(EditTextState.Default, viewModel.createUserState.value.birthdayState)
     }
 
     /**
@@ -69,7 +68,7 @@ class CreateUserViewModelTest {
         advanceUntilIdle()
 
         // then
-        assertEquals(EditTextState.ErrorCannotUse, viewModel.nicknameState.value)
+        assertEquals(EditTextState.ErrorCannotUse, viewModel.createUserState.value.nicknameState)
     }
 
     /**
@@ -87,7 +86,7 @@ class CreateUserViewModelTest {
         advanceUntilIdle()
 
         // then
-        assertEquals(EditTextState.Available, viewModel.nicknameState.value)
+        assertEquals(EditTextState.Available, viewModel.createUserState.value.nicknameState)
     }
 
     /**
@@ -105,7 +104,7 @@ class CreateUserViewModelTest {
         advanceUntilIdle()
 
         // then
-        assertEquals(EditTextState.ErrorAlreadyExisting, viewModel.nicknameState.value)
+        assertEquals(EditTextState.ErrorAlreadyExisting, viewModel.createUserState.value.nicknameState)
     }
 
     /**
@@ -133,7 +132,7 @@ class CreateUserViewModelTest {
      * 프로필 이미지 업로드가 성공하면 profileImageUrl이 업데이트되어야 합니다.
      */
     @Test
-    fun `uploadProfileImage success`() = runTest {
+    fun `uploadProfileImage success updates profileImageUrl`() = runTest {
         // given
         fakeSignupUseCase.shouldSucceed = true
         val testFile = File("test.jpg")
@@ -143,7 +142,7 @@ class CreateUserViewModelTest {
         advanceUntilIdle()
 
         // then
-        assertEquals("testUrl", viewModel.profileImageUrl.value)
+        assertEquals("testUrl", viewModel.createUserState.value.profileImageUrl)
     }
 
     // Fake UseCase

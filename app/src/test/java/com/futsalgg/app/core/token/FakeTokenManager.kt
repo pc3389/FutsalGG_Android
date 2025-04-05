@@ -1,5 +1,7 @@
 package com.futsalgg.app.core.token
 
+import com.futsalgg.app.domain.auth.repository.ITokenManager
+
 class FakeTokenManager : ITokenManager {
     private var _accessToken: String? = "Any_Token"
     private var _refreshToken: String? = "Refresh_Token"
