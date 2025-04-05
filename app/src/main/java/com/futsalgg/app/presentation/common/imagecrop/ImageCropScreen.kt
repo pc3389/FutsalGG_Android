@@ -44,7 +44,7 @@ import com.futsalgg.app.util.cropImageFromUri
 fun ProfileImageCropScreen(
     imageUri: Uri,
     onBack: () -> Unit,
-    onConfirm: (Bitmap) -> Unit
+    onConfirm: (Bitmap) -> Unit,
 ) {
     val context = LocalContext.current
 

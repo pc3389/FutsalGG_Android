@@ -1,5 +1,13 @@
 package com.futsalgg.app.presentation.team.createteam
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -17,24 +25,36 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.futsalgg.app.R
-import com.futsalgg.app.domain.team.model.Access
+import com.futsalgg.app.navigation.RoutePath
 import com.futsalgg.app.presentation.common.screen.BaseScreen
+import com.futsalgg.app.presentation.common.screen.LoadingScreen
 import com.futsalgg.app.presentation.common.state.EditTextState
+import com.futsalgg.app.presentation.common.state.UiState
+import com.futsalgg.app.presentation.team.model.Access
 import com.futsalgg.app.presentation.team.model.MatchType
+import com.futsalgg.app.presentation.user.createuser.components.ProfilePictureUi
 import com.futsalgg.app.ui.components.DropdownBox
 import com.futsalgg.app.ui.components.EditTextBox
 import com.futsalgg.app.ui.components.EditTextWithState
+import com.futsalgg.app.ui.components.ProfileImageWithCameraButton
 import com.futsalgg.app.ui.components.SingleButton
 import com.futsalgg.app.ui.components.TextWithInfoIcon
 import com.futsalgg.app.ui.components.TextWithStar
@@ -48,8 +68,57 @@ fun CreateTeamScreen(
 ) {
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
-
     val scrollState = rememberScrollState()
+    val createTeamState by viewModel.createTeamState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
+
+    val imagePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri: Uri? ->
+            uri?.let {
+                navController.navigate(
+                    "cropImage?uri=${Uri.encode(it.toString())}&viewModelType=${RoutePath.CREATE_TEAM}")
+            }
+        }
+    )
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            if (isGranted) {
+                imagePickerLauncher.launch("image/*")
+            } else {
+                Toast.makeText(context, "앨범 접근 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    )
+
+    val launchGalleryWithPermission = remember {
+        {
+            val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                Manifest.permission.READ_MEDIA_IMAGES
+            } else {
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            }
+
+            if (ContextCompat.checkSelfPermission(
+                    context,
+                    permission
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                imagePickerLauncher.launch("image/*")
+            } else {
+                permissionLauncher.launch(permission)
+            }
+        }
+    }
+
+    LaunchedEffect(uiState) {
+        when (uiState) {
+            is UiState.Success -> navController.popBackStack()
+            else -> {}
+        }
+    }
 
     BaseScreen(
         navController = navController,
@@ -69,7 +138,7 @@ fun CreateTeamScreen(
                 .background(FutsalggColor.white),
             verticalArrangement = Arrangement.Top
         ) {
-            // 팀명 입력
+            // 팀명 입력 필드와 중복확인 버튼
             Box(
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -89,7 +158,6 @@ fun CreateTeamScreen(
 
             Spacer(Modifier.height(8.dp))
 
-            // 팀명 입력 필드와 중복확인 버튼
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.Top
@@ -98,12 +166,13 @@ fun CreateTeamScreen(
                     modifier = Modifier
                         .weight(3f)
                         .padding(end = 8.dp),
-                    value = "", // TODO: ViewModel에서 상태 관리
-                    onValueChange = { /* TODO */ },
-                    state = EditTextState.Initial,
-                    messageProvider = { /* TODO */ "" },
+                    value = createTeamState.teamName,
+                    onValueChange = viewModel::onTeamNameChange,
+                    hint = stringResource(R.string.team_name_hint),
+                    state = createTeamState.teamNameState,
+                    messageProvider = { "" },
                     imeAction = ImeAction.Done,
-                    onImeAction = { /* TODO */ },
+                    onImeAction = { focusManager.clearFocus() },
                     singleLine = true,
                     maxLines = 1,
                     maxLength = 10
@@ -111,14 +180,13 @@ fun CreateTeamScreen(
 
                 SingleButton(
                     text = stringResource(R.string.check_duplication),
-                    onClick = { /* TODO */ },
+                    onClick = { viewModel.checkTeamNameDuplication() },
                     modifier = Modifier.weight(1f),
-                    enabled = true // TODO: 상태에 따라 변경
+                    enabled = createTeamState.teamName.isNotEmpty()
                 )
             }
 
             Spacer(Modifier.height(26.dp))
-
 
             // 팀 소개
             TextWithStar(
@@ -126,14 +194,16 @@ fun CreateTeamScreen(
             )
             Spacer(Modifier.height(8.dp))
             EditTextBox(
-                value = "", // TODO: ViewModel에서 상태 관리
-                onValueChange = { /* TODO */ },
+                value = createTeamState.introduction,
+                onValueChange = viewModel::onIntroductionChange,
+                hint = stringResource(R.string.team_description_hint),
                 imeAction = ImeAction.Done,
-                onImeAction = { /* TODO */ },
+                onImeAction = { focusManager.clearFocus() },
                 singleLine = false,
                 maxLines = 2,
+                minLines = 2,
                 maxLength = 20,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.padding(vertical = 16.dp)
             )
 
             VerticalSpacer56()
@@ -143,15 +213,16 @@ fun CreateTeamScreen(
                 text = stringResource(R.string.team_rules),
             )
             Spacer(Modifier.height(8.dp))
-
             EditTextBox(
-                value = "", // TODO: ViewModel에서 상태 관리
-                onValueChange = { /* TODO */ },
+                modifier = Modifier.padding(vertical = 16.dp),
+                value = createTeamState.rule,
+                onValueChange = viewModel::onRuleChange,
+                hint = stringResource(R.string.team_rules_hint),
                 imeAction = ImeAction.Done,
-                onImeAction = { /* TODO */ },
+                onImeAction = { focusManager.clearFocus() },
                 singleLine = false,
                 maxLines = 2,
-                modifier = Modifier.fillMaxWidth()
+                minLines = 2
             )
 
             VerticalSpacer56()
@@ -164,7 +235,7 @@ fun CreateTeamScreen(
             DropdownBox(
                 text = stringResource(R.string.select_please),
                 items = MatchType.entries,
-                onItemSelected = {},
+                onItemSelected = viewModel::onMatchTypeChange,
             )
 
             VerticalSpacer56()
@@ -177,7 +248,7 @@ fun CreateTeamScreen(
             DropdownBox(
                 text = stringResource(R.string.select_please),
                 items = Access.entries,
-                onItemSelected = {},
+                onItemSelected = viewModel::onAccessChange,
             )
 
             VerticalSpacer56()
@@ -189,15 +260,15 @@ fun CreateTeamScreen(
             )
             Spacer(Modifier.height(8.dp))
             EditTextBox(
-                value = "", // TODO: ViewModel에서 상태 관리
-                onValueChange = { /* TODO */ },
+                value = createTeamState.dues,
+                onValueChange = viewModel::onDuesChange,
                 imeAction = ImeAction.Done,
-                onImeAction = { /* TODO */ },
+                onImeAction = { focusManager.clearFocus() },
                 singleLine = true,
                 maxLines = 1,
-                isNumeric = true,
-                modifier = Modifier.fillMaxWidth()
+                isNumeric = true
             )
+
             VerticalSpacer56()
 
             // 로고
@@ -205,20 +276,33 @@ fun CreateTeamScreen(
                 textWithStar = stringResource(R.string.team_logo),
                 info = stringResource(R.string.info_number_keyboard),
             )
+
             Spacer(Modifier.height(8.dp))
-            // TODO: 로고 업로드 구현
+
+            val croppedImage = createTeamState.croppedTeamImage
+
+            ProfileImageWithCameraButton(
+                image = croppedImage?.asImageBitmap()?.let { remember { BitmapPainter(it) } }
+                    ?: painterResource(R.drawable.img_team_default),
+                onCameraClick = launchGalleryWithPermission
+            )
 
             VerticalSpacer56()
 
             // 생성하기 버튼
             SingleButton(
                 text = stringResource(R.string.create_team),
-                onClick = { /* TODO */ },
+                onClick = { viewModel.createTeam {} },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 32.dp)
+                    .padding(bottom = 32.dp),
+                enabled = createTeamState.teamNameState == EditTextState.Available
             )
         }
+    }
+
+    if (uiState is UiState.Loading) {
+        LoadingScreen()
     }
 }
 

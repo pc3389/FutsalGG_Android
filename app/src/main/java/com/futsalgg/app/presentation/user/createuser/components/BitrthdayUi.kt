@@ -57,7 +57,7 @@ fun BirthdayUi(
             .focusRequester(focusRequester),
         value = birthday,
         onValueChange = onBirthdayChange,
-        hint = R.string.signup_birthday_hint, // YYYY-MM-DD
+        hint = stringResource(R.string.signup_birthday_hint), // YYYY-MM-DD
         state = birthdayState,
         trailingIcon = androidx.compose.ui.graphics.vector.ImageVector.vectorResource(R.drawable.ic_calendar_20),
         showTrailingIcon = true,

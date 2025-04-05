@@ -1,11 +1,9 @@
 package com.futsalgg.app.ui.components
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -31,13 +29,14 @@ import com.futsalgg.app.ui.theme.FutsalggTypography
 fun EditTextBox(
     value: String,
     onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier,
-    @StringRes hint: Int = R.string.signup_nickname_hint,
+    modifier: Modifier = Modifier.padding(vertical = 12.dp),
+    hint: String = stringResource(R.string.signup_nickname_hint),
     onFocusChanged: (Boolean) -> Unit = {},
     imeAction: ImeAction = ImeAction.Default,
     onImeAction: () -> Unit = {},
     singleLine: Boolean = true,
     maxLines: Int = 1,
+    minLines: Int = 1,
     isNumeric: Boolean = false,
     maxLength: Int? = null
 ) {
@@ -46,49 +45,51 @@ fun EditTextBox(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(48.dp)
             .border(1.dp, FutsalggColor.mono500, RoundedCornerShape(8.dp))
-            .padding(horizontal = 8.dp)
             .clickable { focusRequester.requestFocus() },
         contentAlignment = Alignment.CenterStart
     ) {
-        BasicTextField(
-            value = value,
-            onValueChange = {
-                if (!isNumeric || it.all { c -> c.isDigit() || c == '.' }) {
-                    onValueChange(it)
-                }
-            },
-            singleLine = singleLine,
-            maxLines = maxLines,
-            textStyle = FutsalggTypography.regular_17_200.copy(
-                color = FutsalggColor.mono900
-            ),
-            cursorBrush = SolidColor(FutsalggColor.mint500),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = if (isNumeric) KeyboardType.Number else KeyboardType.Text,
-                imeAction = imeAction
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = { onImeAction() }
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-                .focusRequester(focusRequester)
-                .onFocusChanged { focusState ->
-                    onFocusChanged(focusState.isFocused)
+        Box(
+            modifier = modifier.padding(horizontal = 16.dp)
+        ){
+            BasicTextField(
+                value = value,
+                onValueChange = {
+                    if (!isNumeric || it.all { c -> c.isDigit() || c == '.' }) {
+                        onValueChange(it)
+                    }
                 },
-            decorationBox = { innerTextField ->
-                if (value.isEmpty()) {
-                    Text(
-                        text = stringResource(hint),
-                        color = FutsalggColor.mono400,
-                        style = FutsalggTypography.regular_17_200
-                    )
+                singleLine = singleLine,
+                maxLines = maxLines,
+                minLines = minLines,
+                textStyle = FutsalggTypography.regular_17_200.copy(
+                    color = FutsalggColor.mono900
+                ),
+                cursorBrush = SolidColor(FutsalggColor.mint500),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = if (isNumeric) KeyboardType.Number else KeyboardType.Text,
+                    imeAction = imeAction
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = { onImeAction() }
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .focusRequester(focusRequester)
+                    .onFocusChanged { focusState ->
+                        onFocusChanged(focusState.isFocused)
+                    },
+                decorationBox = { innerTextField ->
+                    if (value.isEmpty()) {
+                        Text(
+                            text = hint,
+                            color = FutsalggColor.mono400,
+                            style = FutsalggTypography.regular_17_200
+                        )
+                    }
+                    innerTextField()
                 }
-                innerTextField()
-            }
-        )
+            )
+        }
     }
 }

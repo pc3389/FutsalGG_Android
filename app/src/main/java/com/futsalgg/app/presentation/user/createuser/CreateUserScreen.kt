@@ -33,6 +33,7 @@ import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.futsalgg.app.R
+import com.futsalgg.app.navigation.RoutePath
 import com.futsalgg.app.presentation.common.screen.BaseScreen
 import com.futsalgg.app.presentation.common.screen.LoadingScreen
 import com.futsalgg.app.presentation.common.state.UiState
@@ -46,7 +47,10 @@ import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.util.toFile
 
 @Composable
-fun CreateUserScreen(navController: NavController, viewModel: CreateUserViewModel = hiltViewModel()) {
+fun CreateUserScreen(
+    navController: NavController,
+    viewModel: CreateUserViewModel = hiltViewModel()
+) {
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
 
@@ -57,7 +61,9 @@ fun CreateUserScreen(navController: NavController, viewModel: CreateUserViewMode
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri: Uri? ->
             uri?.let {
-                navController.navigate("cropImage?uri=${Uri.encode(it.toString())}")
+                navController.navigate(
+                    "cropImage?uri=${Uri.encode(it.toString())}&viewModelType=${RoutePath.CREATE_USER}"
+                )
             }
         }
     )
@@ -106,17 +112,16 @@ fun CreateUserScreen(navController: NavController, viewModel: CreateUserViewMode
     ) { innerPadding ->
         Column(
             modifier = Modifier
-                    .pointerInput(Unit) {
-                        detectTapGestures(onTap = {
-                            focusManager.clearFocus()
-                        })
-                    }
-                    .padding(innerPadding)
-                    .padding(horizontal = 16.dp)
-                    .windowInsetsPadding(WindowInsets.navigationBars)
-                    .verticalScroll(scrollState)
-                    .background(FutsalggColor.white)
-            ,
+                .pointerInput(Unit) {
+                    detectTapGestures(onTap = {
+                        focusManager.clearFocus()
+                    })
+                }
+                .padding(innerPadding)
+                .padding(horizontal = 16.dp)
+                .windowInsetsPadding(WindowInsets.navigationBars)
+                .verticalScroll(scrollState)
+                .background(FutsalggColor.white),
             verticalArrangement = Arrangement.Top
         ) {
             NicknameUi(
@@ -172,7 +177,8 @@ fun CreateUserScreen(navController: NavController, viewModel: CreateUserViewMode
                 text = stringResource(R.string.signup_button),
                 onClick = {
                     if (createUserState.croppedProfileImage != null) {
-                        val file = createUserState.croppedProfileImage!!.toFile(context, "profile.jpg")
+                        val file =
+                            createUserState.croppedProfileImage!!.toFile(context, "profile.jpg")
                         viewModel.uploadProfileImage(file)
                     }
                     viewModel.createUser(

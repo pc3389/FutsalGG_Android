@@ -42,7 +42,7 @@ fun EditTextWithState(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    @StringRes hint: Int = R.string.signup_nickname_hint,
+    hint: String = stringResource(R.string.signup_nickname_hint),
     state: EditTextState = EditTextState.Initial,
     messageProvider: (EditTextState) -> String? = { null },
     trailingIcon: ImageVector? = null,
@@ -77,7 +77,7 @@ fun EditTextWithState(
                 .fillMaxWidth()
                 .height(48.dp)
                 .border(1.dp, borderColor, RoundedCornerShape(8.dp))
-                .padding(horizontal = 8.dp)
+                .padding(horizontal = 16.dp)
                 .clickable { focusRequester.requestFocus() },
             contentAlignment = Alignment.CenterStart
         ) {
@@ -104,7 +104,6 @@ fun EditTextWithState(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp)
                     .focusRequester(focusRequester)
                     .onFocusChanged { focusState ->
                         onFocusChanged(focusState.isFocused)
@@ -112,7 +111,7 @@ fun EditTextWithState(
                 decorationBox = { innerTextField ->
                     if (value.isEmpty()) {
                         Text(
-                            text = stringResource(hint),
+                            text = hint,
                             color = FutsalggColor.mono400,
                             style = FutsalggTypography.regular_17_200
                         )

@@ -40,6 +40,8 @@ fun <T : Enum<T>> DropdownBox(
     onItemSelected: (T) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    //TODO 드랍다운 이미 선택된 값은 에메랄드색 배경
+
     var expanded by remember { mutableStateOf(false) }
 
     Box(modifier = modifier) {
@@ -113,6 +115,7 @@ fun <T : Enum<T>> DropdownBox(
                                         style = FutsalggTypography.regular_17_200,
                                         color = FutsalggColor.mono900,
                                         modifier = Modifier.padding(16.dp)
+                                            .align(Alignment.Center)
                                     )
                                 }
                                 if (index < items.size - 1) {

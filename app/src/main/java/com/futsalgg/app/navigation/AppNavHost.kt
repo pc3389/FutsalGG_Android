@@ -17,6 +17,7 @@ import com.futsalgg.app.presentation.user.createuser.CreateUserScreen
 import com.futsalgg.app.presentation.user.createuser.CreateUserViewModel
 import com.futsalgg.app.presentation.auth.termsandcondition.TermsAndConditionScreen
 import com.futsalgg.app.presentation.team.createteam.CreateTeamScreen
+import com.futsalgg.app.presentation.team.createteam.CreateTeamViewModel
 
 @Composable
 fun AppNavHost(
@@ -26,8 +27,8 @@ fun AppNavHost(
     NavHost(
         navController = navController,
 //        startDestination = Screen.Login.route
-        startDestination = Screen.CreateUser.route
-//        startDestination = Screen.CreateTeam.route
+//        startDestination = Screen.CreateUser.route
+        startDestination = Screen.CreateTeam.route
     ) {
         composable(Screen.Login.route) {
             LoginScreen(
@@ -51,23 +52,42 @@ fun AppNavHost(
             CreateTeamScreen(navController)
         }
         composable(
-            route = "cropImage?uri={uri}",
-            arguments = listOf(navArgument("uri") { type = NavType.StringType })
+            route = "cropImage?uri={uri}&viewModelType={viewModelType}",
+            arguments = listOf(
+                navArgument("uri") { type = NavType.StringType },
+                navArgument("viewModelType") { type = NavType.StringType }
+            )
         ) { backStackEntry ->
             val uriStr = backStackEntry.arguments?.getString("uri") ?: ""
+            val viewModelType = backStackEntry.arguments?.getString("viewModelType") ?: ""
             val uri = Uri.parse(uriStr)
 
-            val parentEntry = navController.getBackStackEntry(RoutePath.CREATE_USER)
-            val signupViewModel: CreateUserViewModel = hiltViewModel(parentEntry)
-
-            ProfileImageCropScreen(
-                imageUri = uri,
-                onBack = { navController.popBackStack() },
-                onConfirm = { bitmap ->
-                    signupViewModel.setCroppedImage(bitmap)
-                    navController.popBackStack()
+            when (viewModelType) {
+                RoutePath.CREATE_USER -> {
+                    val parentEntry = navController.getBackStackEntry(RoutePath.CREATE_USER)
+                    val viewModel: CreateUserViewModel = hiltViewModel(parentEntry)
+                    ProfileImageCropScreen(
+                        imageUri = uri,
+                        onBack = { navController.popBackStack() },
+                        onConfirm = { bitmap ->
+                            viewModel.setCroppedImage(bitmap)
+                            navController.popBackStack()
+                        }
+                    )
                 }
-            )
+                RoutePath.CREATE_TEAM -> {
+                    val parentEntry = navController.getBackStackEntry(RoutePath.CREATE_TEAM)
+                    val viewModel: CreateTeamViewModel = hiltViewModel(parentEntry)
+                    ProfileImageCropScreen(
+                        imageUri = uri,
+                        onBack = { navController.popBackStack() },
+                        onConfirm = { bitmap ->
+                            viewModel.setCroppedImage(bitmap)
+                            navController.popBackStack()
+                        }
+                    )
+                }
+            }
         }
     }
 }
