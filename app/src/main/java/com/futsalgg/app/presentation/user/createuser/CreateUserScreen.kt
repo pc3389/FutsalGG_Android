@@ -108,7 +108,7 @@ fun CreateUserScreen(
 
     BaseScreen(
         navController = navController,
-        title = R.string.signup_toolbar_title
+        title = stringResource(R.string.signup_toolbar_title)
     ) { innerPadding ->
         Column(
             modifier = Modifier

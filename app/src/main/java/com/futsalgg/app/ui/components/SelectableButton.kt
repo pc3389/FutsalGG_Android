@@ -1,5 +1,6 @@
 package com.futsalgg.app.ui.components
 
+import android.graphics.drawable.Icon
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -7,6 +8,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import com.futsalgg.app.R
+import com.futsalgg.app.ui.components.state.IconState
 import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.ui.theme.FutsalggTypography
 
@@ -26,8 +28,7 @@ fun SelectableButton(
     unSelectedContainerColor: Color = FutsalggColor.white,
     unSelectedContentColor: Color = FutsalggColor.mono900,
     textStyle: TextStyle = FutsalggTypography.bold_17_200,
-    hasIcon: Boolean = false,
-    @DrawableRes icon: Int = R.drawable.ic_add_14
+    iconState: IconState? = null
 ) {
     val containerColor = if (isSelected) selectedContainerColor else unSelectedContainerColor
     val contentColor = if (isSelected) selectedContentColor else unSelectedContentColor
@@ -41,8 +42,7 @@ fun SelectableButton(
         contentColor = contentColor,
         textStyle = textStyle,
         hasBorder = hasBorder,
-        hasIcon = hasIcon,
-        icon = icon
+        iconState = iconState
     )
 }
 
@@ -52,7 +52,6 @@ fun PreviewSelectableButton() {
     SelectableButton(
         text = "Text",
         isSelected = false,
-        onClick = {},
-        hasIcon = true
+        onClick = {}
     )
 }

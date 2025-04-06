@@ -46,11 +46,9 @@ import com.futsalgg.app.R
 import com.futsalgg.app.navigation.RoutePath
 import com.futsalgg.app.presentation.common.screen.BaseScreen
 import com.futsalgg.app.presentation.common.screen.LoadingScreen
-import com.futsalgg.app.presentation.common.state.EditTextState
 import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.presentation.team.model.Access
 import com.futsalgg.app.presentation.team.model.MatchType
-import com.futsalgg.app.presentation.user.createuser.components.ProfilePictureUi
 import com.futsalgg.app.ui.components.DropdownBox
 import com.futsalgg.app.ui.components.EditTextBox
 import com.futsalgg.app.ui.components.EditTextWithState
@@ -124,7 +122,7 @@ fun CreateTeamScreen(
 
     BaseScreen(
         navController = navController,
-        title = R.string.create_team_title,
+        title = stringResource(R.string.create_team_title),
     ) { innerPadding ->
         Column(
             modifier = Modifier

@@ -19,7 +19,7 @@ import com.futsalgg.app.ui.theme.FutsalggColor
 @Composable
 fun BaseScreen(
     navController: NavController,
-    @StringRes title: Int,
+    title: String,
     @DrawableRes rightIcon: Int? = null,
     onRightClick: (() -> Unit)? = null,
     content: @Composable (PaddingValues) -> Unit
@@ -31,7 +31,7 @@ fun BaseScreen(
             .windowInsetsPadding(WindowInsets.systemBars),
         topBar = {
             FutsalggTopBar(
-                title = stringResource(title),
+                title = title,
                 onBackClick = { navController.popBackStack() },
                 rightIcon = rightIcon,
                 onRightClick = onRightClick

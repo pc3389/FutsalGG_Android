@@ -14,15 +14,23 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.futsalgg.app.R
+import com.futsalgg.app.ui.components.state.IconState
 import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.ui.theme.FutsalggTypography
 
@@ -35,8 +43,6 @@ import com.futsalgg.app.ui.theme.FutsalggTypography
  * @param containerColor container color
  * @param textStyle text style
  * @param hasBorder true시 회색 바탕을 보여준다.
- * @param hasIcon 기본적으로 표시하지 않으며, 아이콘을 따로 설정하지 않을 시 + 아이콘을 텍스트 옆에 표시
- * @param icon icon drawable res
  */
 @Composable
 fun SingleButton(
@@ -48,9 +54,11 @@ fun SingleButton(
     textStyle: TextStyle = FutsalggTypography.bold_17_200,
     enabled: Boolean = true,
     hasBorder: Boolean = false,
-    hasIcon: Boolean = false,
-    @DrawableRes icon: Int = R.drawable.ic_add_14
+    iconState: IconState? = null,
 ) {
+    var textWidth by remember { mutableStateOf(0.dp) }
+    val density = LocalDensity.current
+
     Button(
         onClick = onClick,
         modifier = modifier
@@ -65,7 +73,7 @@ fun SingleButton(
         ),
         shape = RoundedCornerShape(8.dp),
         border = if (hasBorder) BorderStroke(1.dp, FutsalggColor.mono500) else null,
-        contentPadding = PaddingValues(8.dp)
+        contentPadding = PaddingValues(8.dp),
     ) {
         Box(
             modifier = Modifier.fillMaxWidth(),
@@ -73,17 +81,27 @@ fun SingleButton(
         ) {
             Text(
                 text = text,
-                style = textStyle
+                style = textStyle,
+                onTextLayout = { textLayoutResult ->
+                    textWidth = with(density) { textLayoutResult.size.width.toDp() }
+                }
+
             )
 
-            if (hasIcon) {
+            if (iconState != null) {
+                val iconImage = ImageVector.vectorResource(iconState.iconRes)
+                val offset = if (iconState.isIconLocationStart) {
+                    -(textWidth/2 + iconState.iconPaddingFromText + 20.dp)
+                } else {
+                    (textWidth/2 + iconState.iconPaddingFromText)
+                }
                 Box(
                     modifier = Modifier
                         .align(Alignment.Center)
-                        .offset(x = -((text.length * 4).dp + 16.dp))
+                        .offset(x = offset)
                 ) {
                     Icon(
-                        imageVector = ImageVector.vectorResource(icon),
+                        imageVector = iconImage,
                         contentDescription = "",
                         modifier = Modifier
                             .size(14.dp),
@@ -99,9 +117,9 @@ fun SingleButton(
 @Composable
 fun PreviewButton() {
     SingleButton(
-        text = "Text",
+        text = "경기aaajhasㅣㅁ라ㅓㅁ나ㅣㅇ럼",
         onClick = {},
         modifier = Modifier,
-        hasIcon = true
+        iconState = IconState()
     )
 }
