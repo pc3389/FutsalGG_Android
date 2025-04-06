@@ -4,7 +4,7 @@ import com.futsalgg.app.remote.api.auth.model.request.LoginRequest
 import com.futsalgg.app.domain.auth.model.Platform
 import com.futsalgg.app.domain.auth.model.LoginResponseModel
 import com.futsalgg.app.domain.auth.repository.AuthRepository
-import com.futsalgg.app.remote.api.auth.LoginApi
+import com.futsalgg.app.remote.api.auth.AuthApi
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
@@ -16,14 +16,14 @@ import com.futsalgg.app.data.common.error.DataError
 import java.io.IOException
 
 class AuthRepositoryImpl @Inject constructor(
-    private val loginApi: LoginApi
+    private val authApi: AuthApi
 ) : AuthRepository {
     private val auth: FirebaseAuth = Firebase.auth
 
     override suspend fun loginWithGoogleToken(token: String, platform: Platform): Result<LoginResponseModel> {
         return try {
             val request = LoginRequest(token = token, platform = platform.name)
-            val response = loginApi.login(request)
+            val response = authApi.login(request)
 
             if (response.isSuccessful && response.body() != null) {
                 val body = response.body()!!

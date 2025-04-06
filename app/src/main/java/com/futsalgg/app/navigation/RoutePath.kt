@@ -6,4 +6,5 @@ object RoutePath {
     const val TERMS = "TermsAndCondition"
     const val CREATE_USER = "CreateUser"
     const val CREATE_TEAM = "CreateTeam"
+    const val MATCH_RESULT = "MatchResult"
 }

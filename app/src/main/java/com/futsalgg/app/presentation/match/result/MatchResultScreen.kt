@@ -1,65 +1,60 @@
 package com.futsalgg.app.presentation.match.result
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.futsalgg.app.presentation.common.screen.BaseScreen
-import com.futsalgg.app.presentation.match.model.Match
-import com.futsalgg.app.presentation.match.model.MatchStatus
-import com.futsalgg.app.presentation.match.model.MatchType
-import com.futsalgg.app.presentation.match.model.VoteStatus
+import com.futsalgg.app.presentation.common.screen.LoadingScreen
+import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.presentation.match.result.component.MatchResultPerDay
 
 @Composable
 fun MatchResultScreen(
     navController: NavController,
-    onBackClick: () -> Unit
+    viewModel: MatchResultViewModel = hiltViewModel(),
 ) {
+    val matchesByDate by viewModel.matchesByDate.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
+
     BaseScreen(
         navController = navController,
         title = "경기 결과"
     ) { innerPadding ->
-        MatchResultPerDay(
-            innerPadding = innerPadding,
-            date = "05.31",
-            matches = listOf(
-                Match(
-                    id = "1123123123",
-                    opponentTeamName = "상대팀",
-                    description = "팀",
-                    type = MatchType.INTER_TEAM,
-                    matchDate = "05.26",
-                    startTime = "05:12",
-                    endTime = "05:12",
-                    location = "Location",
-                    voteStatus = VoteStatus.NONE,
-                    status = MatchStatus.COMPLETED,
-                    createdTime = "TODO()"
-                ), Match(
-                    id = "1123123123",
-                    opponentTeamName = null,
-                    description = "Description",
-                    type = MatchType.INTRA_SQUAD,
-                    matchDate = "05.26",
-                    startTime = "05:12",
-                    endTime = "05:12",
-                    location = "Location",
-                    voteStatus = VoteStatus.NONE,
-                    status = MatchStatus.COMPLETED,
-                    createdTime = "TODO()"
-                )
-            ),
-            {}
-        )
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
+            VerticalDivider(
+                thickness = 2.dp,
+                modifier = Modifier.padding(start = 19.dp)
+            )
+
+            LazyColumn(
+                modifier = Modifier.padding(top = 16.dp)
+            ) {
+                items(matchesByDate.entries.toList()) { (date, matches) ->
+                    MatchResultPerDay(
+                        date = date,
+                        matches = matches,
+                        onResultClick = {}
+                    )
+                }
+            }
+        }
+    }
+
+    if (uiState is UiState.Loading) {
+        LoadingScreen()
     }
 }
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-private fun MatchResultScreenPreview() {
-    MatchResultScreen(
-        onBackClick = {},
-        navController = rememberNavController()
-    )
-} 

@@ -90,7 +90,7 @@ fun MatchResultItem(
 
                 SingleButton(
                     onClick = onResultClick,
-                    modifier = Modifier.padding(vertical = 16.dp),
+                    modifier = Modifier.padding(vertical = 12.dp),
                     text = "경기 결과 확인하기",
                     containerColor = FutsalggColor.white,
                     contentColor = FutsalggColor.mono900,

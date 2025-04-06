@@ -7,9 +7,17 @@ import com.futsalgg.app.domain.auth.usecase.AuthUseCase
 import com.futsalgg.app.domain.user.usecase.CreateUserUseCase
 import com.futsalgg.app.domain.team.usecase.CreateTeamUseCaseImpl
 import com.futsalgg.app.domain.auth.usecase.AuthUseCaseImpl
+import com.futsalgg.app.domain.match.repository.MatchRepository
 import com.futsalgg.app.domain.team.repository.TeamRepository
 import com.futsalgg.app.domain.user.repository.UserRepository
 import com.futsalgg.app.domain.user.usecase.CreateUserUseCaseImpl
+import com.futsalgg.app.domain.match.usecase.CreateMatchUseCase
+import com.futsalgg.app.domain.match.usecase.CreateMatchUseCaseImpl
+import com.futsalgg.app.domain.match.usecase.DeleteMatchUseCase
+import com.futsalgg.app.domain.match.usecase.DeleteMatchUseCaseImpl
+import com.futsalgg.app.domain.match.usecase.GetMatchesUseCase
+import com.futsalgg.app.domain.match.usecase.GetMatchesUseCaseImpl
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -43,5 +51,29 @@ object UseCaseModule {
         teamRepository: TeamRepository
     ): CreateTeamUseCase {
         return CreateTeamUseCaseImpl(teamRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetMatchesUseCase(
+        matchRepository: MatchRepository
+    ): GetMatchesUseCase {
+        return GetMatchesUseCaseImpl(matchRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCreateMatchUseCase(
+        matchRepository: MatchRepository
+    ): CreateMatchUseCase {
+        return CreateMatchUseCaseImpl(matchRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDeleteMatchUseCase(
+        matchRepository: MatchRepository
+    ): DeleteMatchUseCase {
+        return DeleteMatchUseCaseImpl(matchRepository)
     }
 } 

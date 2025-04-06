@@ -1,6 +1,7 @@
 package com.futsalgg.app.remote.api.match
 
 import com.futsalgg.app.remote.api.match.model.request.CreateMatchRequest
+import com.futsalgg.app.remote.api.match.model.response.GetMatchesResponse
 import com.futsalgg.app.remote.api.match.model.response.MatchResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -31,7 +32,3 @@ interface MatchApi {
         @Body request: CreateMatchRequest
     ): Response<MatchResponse>
 }
-
-data class GetMatchesResponse(
-    val matches: List<MatchResponse>
-) 
