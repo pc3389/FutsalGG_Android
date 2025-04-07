@@ -101,14 +101,10 @@ fun CreateUserScreen(
 
     val scrollState = rememberScrollState()
 
-    if (uiState == UiState.Loading) {
-        LoadingScreen()
-        return
-    }
-
     BaseScreen(
         navController = navController,
-        title = stringResource(R.string.signup_toolbar_title)
+        title = stringResource(R.string.signup_toolbar_title),
+        uiState = uiState
     ) { innerPadding ->
         Column(
             modifier = Modifier

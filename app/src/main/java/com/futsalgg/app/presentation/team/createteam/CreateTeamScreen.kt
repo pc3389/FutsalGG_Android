@@ -113,16 +113,10 @@ fun CreateTeamScreen(
         }
     }
 
-    LaunchedEffect(uiState) {
-        when (uiState) {
-            is UiState.Success -> navController.popBackStack()
-            else -> {}
-        }
-    }
-
     BaseScreen(
         navController = navController,
         title = stringResource(R.string.create_team_title),
+        uiState = uiState
     ) { innerPadding ->
         Column(
             modifier = Modifier

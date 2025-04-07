@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.ui.components.FutsalggTopBar
 import com.futsalgg.app.ui.theme.FutsalggColor
 
@@ -22,6 +23,7 @@ fun BaseScreen(
     title: String,
     @DrawableRes rightIcon: Int? = null,
     onRightClick: (() -> Unit)? = null,
+    uiState: UiState = UiState.Initial,
     content: @Composable (PaddingValues) -> Unit
 ) {
     Scaffold(
@@ -39,4 +41,8 @@ fun BaseScreen(
         },
         content = content
     )
+
+    if (uiState is UiState.Loading) {
+        LoadingScreen()
+    }
 }

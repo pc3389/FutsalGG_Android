@@ -14,8 +14,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.futsalgg.app.presentation.common.screen.BaseScreen
-import com.futsalgg.app.presentation.common.screen.LoadingScreen
-import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.presentation.match.result.component.MatchResultPerDay
 
 @Composable
@@ -28,7 +26,8 @@ fun MatchResultScreen(
 
     BaseScreen(
         navController = navController,
-        title = "경기 결과"
+        title = "경기 결과",
+        uiState = uiState
     ) { innerPadding ->
         Box(
             modifier = Modifier
@@ -52,9 +51,5 @@ fun MatchResultScreen(
                 }
             }
         }
-    }
-
-    if (uiState is UiState.Loading) {
-        LoadingScreen()
     }
 }
