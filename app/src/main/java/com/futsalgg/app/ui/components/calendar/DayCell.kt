@@ -25,7 +25,7 @@ fun DayCell(
     selectedDate: LocalDate?,
     primaryColor: Color = FutsalggColor.mint500,
     canSelectPreviousDate: Boolean,
-    canSelectAfterDate: Boolean,
+    canSelectFutureDate: Boolean,
     onClick: (LocalDate) -> Unit
 ) {
     val isToday = date == today
@@ -34,7 +34,7 @@ fun DayCell(
     val isFuture = date.isAfter(today)
 
     val bgColor = if (isToday) primaryColor else Color.Transparent
-    val textColor = if ((!canSelectPreviousDate && isPast) || (!canSelectAfterDate && isFuture)) {
+    val textColor = if ((!canSelectPreviousDate && isPast) || (!canSelectFutureDate && isFuture)) {
         FutsalggColor.mono200
     } else {
         if (isToday) {
@@ -65,7 +65,7 @@ fun DayCell(
                 ) else Modifier
             )
             .clickable(
-                enabled = (!((!canSelectPreviousDate && isPast) || (!canSelectAfterDate && isFuture)))
+                enabled = (!((!canSelectPreviousDate && isPast) || (!canSelectFutureDate && isFuture)))
             ) {
                 onClick(date)
             },

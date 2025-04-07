@@ -2,7 +2,6 @@ package com.futsalgg.app.domain.match.repository
 
 import com.futsalgg.app.domain.match.model.Match
 import com.futsalgg.app.domain.match.model.MatchType
-import com.futsalgg.app.domain.common.error.DomainError
 
 interface MatchRepository {
     suspend fun getMatches(

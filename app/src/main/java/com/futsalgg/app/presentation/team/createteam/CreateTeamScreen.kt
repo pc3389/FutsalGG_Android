@@ -11,7 +11,6 @@ import androidx.core.content.ContextCompat
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,9 +22,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -52,12 +49,12 @@ import com.futsalgg.app.presentation.team.model.MatchType
 import com.futsalgg.app.ui.components.DropdownBox
 import com.futsalgg.app.ui.components.EditTextBox
 import com.futsalgg.app.ui.components.EditTextWithState
+import com.futsalgg.app.ui.components.FormRequiredAndHeader
 import com.futsalgg.app.ui.components.ProfileImageWithCameraButton
 import com.futsalgg.app.ui.components.SingleButton
 import com.futsalgg.app.ui.components.TextWithInfoIcon
 import com.futsalgg.app.ui.components.TextWithStar
 import com.futsalgg.app.ui.theme.FutsalggColor
-import com.futsalgg.app.ui.theme.FutsalggTypography
 import com.futsalgg.app.util.toFile
 
 @Composable
@@ -133,22 +130,9 @@ fun CreateTeamScreen(
             verticalArrangement = Arrangement.Top
         ) {
             // 팀명 입력 필드와 중복확인 버튼
-            Box(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = stringResource(R.string.required),
-                    style = FutsalggTypography.bold_17_200,
-                    color = FutsalggColor.mint500,
-                    modifier = Modifier
-                        .padding(top = 16.dp)
-                        .align(Alignment.TopEnd)
-                )
-                TextWithStar(
-                    text = stringResource(R.string.team_name),
-                    modifier = Modifier.padding(top = 40.dp)
-                )
-            }
+            FormRequiredAndHeader(
+                headerText = stringResource(R.string.team_name)
+            )
 
             Spacer(Modifier.height(8.dp))
 

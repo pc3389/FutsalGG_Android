@@ -5,7 +5,6 @@ import com.futsalgg.app.remote.api.team.model.request.CreateTeamRequest
 import com.futsalgg.app.remote.api.team.model.request.UpdateTeamLogoRequest
 import com.futsalgg.app.remote.api.team.model.response.CheckTeamNicknameResponse
 import com.futsalgg.app.remote.api.team.model.response.TeamLogoPresignedUrlResponse
-import com.futsalgg.app.remote.api.team.model.response.TeamLogoResponse
 import retrofit2.Response
 
 class FakeTeamApi : TeamApi {

@@ -7,43 +7,25 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.futsalgg.app.R
-import com.futsalgg.app.presentation.common.state.EditTextState
-import com.futsalgg.app.ui.components.EditTextWithState
+import com.futsalgg.app.presentation.common.state.DateState
+import com.futsalgg.app.ui.components.DateInputField
 import com.futsalgg.app.ui.components.TextWithStar
-import com.futsalgg.app.ui.components.calendar.CalendarBottomSheet
-import com.futsalgg.app.util.DateTransformation
-import com.futsalgg.app.util.toLocalDateOrNull
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeParseException
 
 @Composable
 fun BirthdayUi(
     context: Context,
     birthday: String,
     onBirthdayChange: (String) -> Unit,
-    onCalendarClick: () -> Unit,
-    showCalendarSheet: Boolean,
-    onCalendarConfirm: (LocalDate) -> Unit,
-    onDismissRequest: () -> Unit,
-    birthdayState: EditTextState,
-    onValidateBirthday: () -> Unit
+    birthdayState: DateState,
 ) {
-    val focusManager = LocalFocusManager.current
-    val focusRequester = remember { FocusRequester() }
-
     val messageProvider = remember {
-        { state: EditTextState ->
+        { state: DateState ->
             when (state) {
-                EditTextState.ErrorCannotUse -> context.getString(R.string.signup_birthday_error_invalid)
+                DateState.ErrorNotInRange -> context.getString(R.string.date_error_future_date_not_available)
+                DateState.ErrorStyle -> context.getString(R.string.date_error_wrong_date_format)
                 else -> null
             }
         }
@@ -52,64 +34,11 @@ fun BirthdayUi(
     TextWithStar(text = stringResource(R.string.signup_birthday))
     Spacer(Modifier.height(8.dp))
 
-    EditTextWithState(
-        modifier = Modifier.fillMaxWidth()
-            .focusRequester(focusRequester),
+    DateInputField(
         value = birthday,
         onValueChange = onBirthdayChange,
-        hint = stringResource(R.string.signup_birthday_hint), // YYYY-MM-DD
+        modifier = Modifier.fillMaxWidth(),
         state = birthdayState,
-        trailingIcon = androidx.compose.ui.graphics.vector.ImageVector.vectorResource(R.drawable.ic_calendar_20),
-        showTrailingIcon = true,
-        onTrailingIconClick = onCalendarClick,
-        isNumeric = true,
-        visualTransformation = DateTransformation(),
-        messageProvider = messageProvider,
-        onFocusChanged = { isFocused ->
-            if (!isFocused) {
-                onValidateBirthday()
-            }
-        },
-        imeAction = ImeAction.Done,
-        onImeAction = {
-            focusManager.clearFocus()
-            onValidateBirthday()
-        }
+        messageProvider = messageProvider
     )
-
-    if (showCalendarSheet) {
-        CalendarBottomSheet(
-            initialDate = birthday.toLocalDateOrNull() ?: LocalDate.now(),
-            onConfirm = { date ->
-                focusManager.clearFocus()
-                onCalendarConfirm(date)
-            },
-            onDismissRequest = {
-                focusManager.clearFocus()
-                onDismissRequest()
-            },
-            canSelectPreviousDate = true
-        )
-    }
-}
-
-/**
- * 주어진 생년월일 문자열이 지정된 날짜 포맷에 맞고,
- * 오늘 날짜 이전이며 1900년 1월 1일 이후(또는 같은 날짜)인지 확인합니다.
- *
- * @param birthday 검증할 생년월일 문자열
- * @param pattern 날짜 포맷 (기본값: "yyyyMMdd"; 필요에 따라 "yyyy-MM-dd" 등으로 변경 가능)
- * @return 조건에 맞으면 true, 아니면 false
- */
-fun isValidBirthday(birthday: String, pattern: String = "yyyyMMdd"): Boolean {
-    return try {
-        val parsedDate = LocalDate.parse(birthday, DateTimeFormatter.ofPattern(pattern))
-        val earliest = LocalDate.of(1900, 1, 1)
-        val today = LocalDate.now()
-        // parsedDate가 1900-01-01보다 이전이면 안 되고, 오늘보다 이후이면 안 됩니다.
-        // 여기서는 1900-01-01은 유효하며, 오늘 날짜는 아직 도달하지 않은 경우로 가정합니다.
-        !parsedDate.isBefore(earliest) && parsedDate.isBefore(today)
-    } catch (e: DateTimeParseException) {
-        false
-    }
 }

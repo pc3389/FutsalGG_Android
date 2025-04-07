@@ -7,6 +7,9 @@
     <string name="check_duplication">중복확인</string>
     <string name="info_number_keyboard">숫자와 ,만 가능합니다</string>
     <string name="select_please">선택해주세요.</string>
+    <string name="date_hint">YYYY-MM-DD</string>
+    <string name="date_error_wrong_date_format">YYYY-MM-DD의 형태로 입력해주세요.</string>
+    <string name="date_error_future_date_not_available">미래 날짜는 입력할 수 없습니다.</string>
 
     <!--  T&C  -->
     <string name="terms_and_condition_title">이용약관 동의</string>
@@ -22,8 +25,6 @@
     <string name="signup_nickname_error_message_cannot_use">영어, 특수 문자는 사용 불가합니다.</string>
     <string name="signup_nickname_error_message_already">이미 존재하는 닉네임입니다.</string>
     <string name="signup_nickname_available">사용 가능한 닉네임입니다.</string>
-    <string name="signup_birthday_hint">YYYY-MM-DD</string>
-    <string name="signup_birthday_error_invalid">YYYY-MM-DD의 형태로 입력해주세요.</string>
     <string name="signup_birthday">생년월일</string>
     <string name="signup_gender">성별</string>
     <string name="signup_profile_title">프로필 사진</string>
@@ -44,4 +45,7 @@
     <string name="team_name_hint">팀 명을 입력해주세요. (10자 이내)</string>
     <string name="team_description_hint">팀 소개를 작성해주세요. (20자 이내)</string>
 
+    <!-- CreateMatch -->
+    <string name="create_match_title">경기 일정 생성하기</string>
+    <string name="create_match_date">날짜</string>
 </resources>

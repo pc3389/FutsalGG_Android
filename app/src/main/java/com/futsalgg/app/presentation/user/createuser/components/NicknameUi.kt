@@ -14,13 +14,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.futsalgg.app.R
 import com.futsalgg.app.presentation.common.state.EditTextState
 import com.futsalgg.app.ui.components.EditTextWithState
+import com.futsalgg.app.ui.components.FormRequiredAndHeader
 import com.futsalgg.app.ui.components.SingleButton
 import com.futsalgg.app.ui.components.TextWithStar
 import com.futsalgg.app.ui.theme.FutsalggColor
@@ -50,22 +53,9 @@ fun NicknameUi(
         }
     }
 
-    Box(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Text(
-            text = stringResource(R.string.required),
-            style = FutsalggTypography.bold_17_200,
-            color = FutsalggColor.mint500,
-            modifier = Modifier
-                .padding(top = 16.dp)
-                .align(Alignment.TopEnd)
-        )
-        TextWithStar(
-            text = stringResource(R.string.signup_nickname),
-            modifier = Modifier.padding(top = 40.dp)
-        )
-    }
+    FormRequiredAndHeader(
+        headerText = stringResource(R.string.signup_nickname)
+    )
 
     Spacer(Modifier.height(8.dp))
 

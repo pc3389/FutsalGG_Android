@@ -20,11 +20,11 @@ fun CustomCalendar(
     selectedDate: LocalDate? = null,
     onMonthChange: (YearMonth) -> Unit,
     canSelectPreviousDate: Boolean,
-    canSelectAfterDate: Boolean,
+    canSelectFutureDate: Boolean,
     onDateSelected: (LocalDate) -> Unit
 ) {
     val thisYear = YearMonth.now().year
-    val yearRange: IntRange = if (canSelectAfterDate) {
+    val yearRange: IntRange = if (canSelectFutureDate) {
         thisYear..thisYear + 5
     } else if (canSelectPreviousDate) {
         1950..thisYear
@@ -57,7 +57,7 @@ fun CustomCalendar(
                     selectedDate = selectedDate,
                     primaryColor = FutsalggColor.mint500,
                     canSelectPreviousDate = canSelectPreviousDate,
-                    canSelectAfterDate = canSelectAfterDate,
+                    canSelectFutureDate = canSelectFutureDate,
                     onClick = onDateSelected
                 )
             }

@@ -32,7 +32,7 @@ fun CalendarBottomSheet(
     onConfirm: (LocalDate) -> Unit,
     onDismissRequest: () -> Unit,
     canSelectPreviousDate: Boolean = true,
-    canSelectAfterDate: Boolean = false
+    canSelectFutureDate: Boolean = false
 ) {
     var currentMonth by remember { mutableStateOf(YearMonth.now()) }
     var selectedDate by remember { mutableStateOf(initialDate) }
@@ -51,7 +51,7 @@ fun CalendarBottomSheet(
             onMonthChange = { currentMonth = it },
             onDateSelected = { selectedDate = it },
             canSelectPreviousDate = canSelectPreviousDate,
-            canSelectAfterDate = canSelectAfterDate,
+            canSelectFutureDate = canSelectFutureDate,
             onConfirm = {
                 onConfirm(selectedDate)
                 onDismissRequest()
@@ -67,7 +67,7 @@ fun CalendarBottomSheetContent(
     onMonthChange: (YearMonth) -> Unit,
     onDateSelected: (LocalDate) -> Unit,
     canSelectPreviousDate: Boolean,
-    canSelectAfterDate: Boolean,
+    canSelectFutureDate: Boolean,
     onConfirm: () -> Unit
 ) {
     var isDateSelected by remember { mutableStateOf(false) }
@@ -81,7 +81,7 @@ fun CalendarBottomSheetContent(
             selectedDate = selectedDate,
             onMonthChange = onMonthChange,
             canSelectPreviousDate = canSelectPreviousDate,
-            canSelectAfterDate = canSelectAfterDate,
+            canSelectFutureDate = canSelectFutureDate,
             onDateSelected = {
                 onDateSelected(it)
                 isDateSelected = true

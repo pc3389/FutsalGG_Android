@@ -5,6 +5,7 @@ import com.futsalgg.app.presentation.common.state.EditTextState
 import com.futsalgg.app.domain.user.model.Gender
 import com.futsalgg.app.domain.user.model.UpdateProfileResponseModel
 import com.futsalgg.app.domain.user.usecase.CreateUserUseCase
+import com.futsalgg.app.presentation.common.state.DateState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -50,9 +51,10 @@ class CreateUserViewModelTest {
      */
     @Test
     fun `validateBirthday returns Available for correct date format within range`() = runTest {
-        viewModel.onBirthdayChange("20000101")
-        viewModel.validateBirthday()
-        assertEquals(EditTextState.Default, viewModel.createUserState.value.birthdayState)
+        val sampleDateText = "20000101"
+        viewModel.onBirthdayChange(sampleDateText)
+        assertEquals(DateState.Available, viewModel.createUserState.value.birthdayState)
+        assertEquals(sampleDateText, viewModel.createUserState.value.birthday)
     }
 
     /**

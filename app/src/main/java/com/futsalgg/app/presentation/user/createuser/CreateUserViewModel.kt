@@ -12,7 +12,8 @@ import com.futsalgg.app.domain.user.model.Gender
 import com.futsalgg.app.domain.user.usecase.CreateUserUseCase
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.error.toUiError
-import com.futsalgg.app.presentation.user.createuser.components.isValidBirthday
+import com.futsalgg.app.presentation.common.state.DateState
+import com.futsalgg.app.util.isValidDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,6 +22,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -43,30 +45,13 @@ class CreateUserViewModel @Inject constructor(
     }
 
     internal fun onBirthdayChange(value: String) {
-        _createUserState.value = _createUserState.value.copy(
+        val state = _createUserState.value
+        _createUserState.value = state.copy(
             birthday = value,
-            birthdayState = EditTextState.Initial
+            birthdayState = if (value.isEmpty()) {
+                DateState.Initial
+            } else isValidDate(value)
         )
-    }
-
-    internal fun onBirthdaySelect(date: LocalDate) {
-        _createUserState.value = _createUserState.value.copy(
-            birthday = date.format(DateTimeFormatter.ofPattern("yyyyMMdd"))
-        )
-        validateBirthday()
-    }
-
-    internal fun onCalendarClick() {
-        _createUserState.value = _createUserState.value.copy(
-            showCalendarSheet = true
-        )
-    }
-
-    internal fun onDismissCalendar() {
-        _createUserState.value = _createUserState.value.copy(
-            showCalendarSheet = false
-        )
-        validateBirthday()
     }
 
     internal fun onGenderChange(gender: Gender) {
@@ -85,21 +70,6 @@ class CreateUserViewModel @Inject constructor(
         _createUserState.value = _createUserState.value.copy(
             notificationChecked = !_createUserState.value.notificationChecked
         )
-    }
-
-    fun validateBirthday() {
-        _uiState.value = UiState.Loading
-        val state = _createUserState.value
-        _createUserState.value = state.copy(
-            birthdayState = if (state.birthday.isEmpty()) {
-                EditTextState.Initial
-            } else if (!isValidBirthday(state.birthday)) {
-                EditTextState.ErrorCannotUse
-            } else {
-                EditTextState.Default
-            }
-        )
-        _uiState.value = UiState.Success
     }
 
     internal fun checkNicknameDuplication() {

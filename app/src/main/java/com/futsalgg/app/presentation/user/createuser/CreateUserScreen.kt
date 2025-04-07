@@ -35,8 +35,6 @@ import androidx.navigation.NavController
 import com.futsalgg.app.R
 import com.futsalgg.app.navigation.RoutePath
 import com.futsalgg.app.presentation.common.screen.BaseScreen
-import com.futsalgg.app.presentation.common.screen.LoadingScreen
-import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.presentation.user.createuser.components.BirthdayUi
 import com.futsalgg.app.presentation.user.createuser.components.GenderUi
 import com.futsalgg.app.presentation.user.createuser.components.NicknameUi
@@ -135,15 +133,7 @@ fun CreateUserScreen(
                 context = context,
                 birthday = createUserState.birthday,
                 onBirthdayChange = viewModel::onBirthdayChange,
-                onCalendarClick = viewModel::onCalendarClick,
-                showCalendarSheet = createUserState.showCalendarSheet,
-                onCalendarConfirm = {
-                    viewModel.onBirthdaySelect(it)
-                    viewModel.onDismissCalendar()
-                },
-                onDismissRequest = viewModel::onDismissCalendar,
                 birthdayState = createUserState.birthdayState,
-                onValidateBirthday = viewModel::validateBirthday
             )
 
             Spacer(Modifier.height(26.dp))
