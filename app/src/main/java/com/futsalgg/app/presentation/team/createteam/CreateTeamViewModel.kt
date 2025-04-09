@@ -12,7 +12,7 @@ import com.futsalgg.app.presentation.common.error.toUiError
 import com.futsalgg.app.presentation.common.state.EditTextState
 import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.presentation.team.model.Access
-import com.futsalgg.app.presentation.team.model.MatchType
+import com.futsalgg.app.presentation.common.model.MatchType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

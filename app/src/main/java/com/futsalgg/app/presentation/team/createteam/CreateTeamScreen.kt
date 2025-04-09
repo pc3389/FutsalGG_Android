@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -45,12 +46,14 @@ import com.futsalgg.app.presentation.common.screen.BaseScreen
 import com.futsalgg.app.presentation.common.screen.LoadingScreen
 import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.presentation.team.model.Access
-import com.futsalgg.app.presentation.team.model.MatchType
+import com.futsalgg.app.presentation.common.model.MatchType
+import com.futsalgg.app.ui.components.BottomButton
 import com.futsalgg.app.ui.components.DropdownBox
 import com.futsalgg.app.ui.components.EditTextBox
 import com.futsalgg.app.ui.components.EditTextWithState
 import com.futsalgg.app.ui.components.FormRequiredAndHeader
 import com.futsalgg.app.ui.components.ProfileImageWithCameraButton
+import com.futsalgg.app.ui.components.SimpleTitleText
 import com.futsalgg.app.ui.components.SingleButton
 import com.futsalgg.app.ui.components.TextWithInfoIcon
 import com.futsalgg.app.ui.components.TextWithStar
@@ -112,163 +115,167 @@ fun CreateTeamScreen(
 
     BaseScreen(
         navController = navController,
-        title = stringResource(R.string.create_team_title),
+        title = stringResource(R.string.create_team),
         uiState = uiState
     ) { innerPadding ->
         Column(
             modifier = Modifier
-                .pointerInput(Unit) {
-                    detectTapGestures(onTap = {
-                        focusManager.clearFocus()
-                    })
-                }
                 .padding(innerPadding)
-                .padding(horizontal = 16.dp)
                 .windowInsetsPadding(WindowInsets.navigationBars)
                 .verticalScroll(scrollState)
-                .background(FutsalggColor.white),
-            verticalArrangement = Arrangement.Top
+                .background(FutsalggColor.white)
         ) {
-            // 팀명 입력 필드와 중복확인 버튼
-            FormRequiredAndHeader(
-                headerText = stringResource(R.string.team_name)
-            )
-
-            Spacer(Modifier.height(8.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.Top
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .pointerInput(Unit) {
+                        detectTapGestures(onTap = {
+                            focusManager.clearFocus()
+                        })
+                    },
+                verticalArrangement = Arrangement.Top
             ) {
-                EditTextWithState(
-                    modifier = Modifier
-                        .weight(3f)
-                        .padding(end = 8.dp),
-                    value = createTeamState.teamName,
-                    onValueChange = viewModel::onTeamNameChange,
-                    hint = stringResource(R.string.team_name_hint),
-                    state = createTeamState.teamNameState,
-                    messageProvider = { "" },
+                // 팀명 입력 필드와 중복확인 버튼
+                FormRequiredAndHeader(
+                    headerText = stringResource(R.string.team_name)
+                )
+
+                Spacer(Modifier.height(8.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.Top
+                ) {
+                    EditTextWithState(
+                        modifier = Modifier
+                            .weight(3f)
+                            .padding(end = 8.dp),
+                        value = createTeamState.teamName,
+                        onValueChange = viewModel::onTeamNameChange,
+                        hint = stringResource(R.string.team_name_hint),
+                        state = createTeamState.teamNameState,
+                        messageProvider = { "" },
+                        imeAction = ImeAction.Done,
+                        onImeAction = { focusManager.clearFocus() },
+                        singleLine = true,
+                        maxLines = 1,
+                        maxLength = 10
+                    )
+
+                    SingleButton(
+                        text = stringResource(R.string.check_duplication),
+                        onClick = { viewModel.checkTeamNameDuplication() },
+                        modifier = Modifier.weight(1f),
+                        enabled = createTeamState.teamName.isNotEmpty()
+                    )
+                }
+
+                Spacer(Modifier.height(26.dp))
+
+                // 팀 소개
+                SimpleTitleText(
+                    text = stringResource(R.string.team_description),
+                )
+                Spacer(Modifier.height(8.dp))
+                EditTextBox(
+                    value = createTeamState.introduction,
+                    onValueChange = viewModel::onIntroductionChange,
+                    hint = stringResource(R.string.team_description_hint),
+                    imeAction = ImeAction.Done,
+                    onImeAction = { focusManager.clearFocus() },
+                    singleLine = false,
+                    maxLines = 2,
+                    minLines = 2,
+                    maxLength = 20,
+                    modifier = Modifier.padding(vertical = 16.dp)
+                )
+
+                VerticalSpacer56()
+
+                // 팀 규칙
+                SimpleTitleText(
+                    text = stringResource(R.string.team_rules),
+                )
+                Spacer(Modifier.height(8.dp))
+                EditTextBox(
+                    modifier = Modifier.padding(vertical = 16.dp),
+                    value = createTeamState.rule,
+                    onValueChange = viewModel::onRuleChange,
+                    hint = stringResource(R.string.team_rules_hint),
+                    imeAction = ImeAction.Done,
+                    onImeAction = { focusManager.clearFocus() },
+                    singleLine = false,
+                    maxLines = 2,
+                    minLines = 2
+                )
+
+                VerticalSpacer56()
+
+                // 관리자 범위
+                TextWithStar(
+                    stringResource(R.string.team_admin_scope)
+                )
+                Spacer(Modifier.height(8.dp))
+                DropdownBox(
+                    text = stringResource(R.string.select_please),
+                    items = Access.entries,
+                    onItemSelected = viewModel::onAccessChange,
+                )
+
+                VerticalSpacer56()
+
+                // 게임 유형
+                TextWithStar(
+                    text = stringResource(R.string.team_game_type),
+                )
+                Spacer(Modifier.height(8.dp))
+                DropdownBox(
+                    text = stringResource(R.string.select_please),
+                    items = MatchType.entries,
+                    onItemSelected = viewModel::onMatchTypeChange,
+                )
+
+                VerticalSpacer56()
+
+                // 회비
+                TextWithInfoIcon(
+                    textWithStar = stringResource(R.string.team_fee),
+                    info = stringResource(R.string.info_number_keyboard),
+                )
+                Spacer(Modifier.height(8.dp))
+                EditTextBox(
+                    value = createTeamState.dues,
+                    onValueChange = viewModel::onDuesChange,
                     imeAction = ImeAction.Done,
                     onImeAction = { focusManager.clearFocus() },
                     singleLine = true,
                     maxLines = 1,
-                    maxLength = 10
+                    isNumeric = true
                 )
 
-                SingleButton(
-                    text = stringResource(R.string.check_duplication),
-                    onClick = { viewModel.checkTeamNameDuplication() },
-                    modifier = Modifier.weight(1f),
-                    enabled = createTeamState.teamName.isNotEmpty()
+                VerticalSpacer56()
+
+                // 로고
+                TextWithInfoIcon(
+                    textWithStar = stringResource(R.string.team_logo),
+                    info = stringResource(R.string.info_number_keyboard),
                 )
+
+                Spacer(Modifier.height(8.dp))
+
+                val croppedImage = createTeamState.croppedTeamImage
+
+                ProfileImageWithCameraButton(
+                    image = croppedImage?.asImageBitmap()?.let { remember { BitmapPainter(it) } }
+                        ?: painterResource(R.drawable.img_team_default),
+                    onCameraClick = launchGalleryWithPermission
+                )
+
+                VerticalSpacer56()
             }
 
-            Spacer(Modifier.height(26.dp))
-
-            // 팀 소개
-            TextWithStar(
-                text = stringResource(R.string.team_description),
-            )
-            Spacer(Modifier.height(8.dp))
-            EditTextBox(
-                value = createTeamState.introduction,
-                onValueChange = viewModel::onIntroductionChange,
-                hint = stringResource(R.string.team_description_hint),
-                imeAction = ImeAction.Done,
-                onImeAction = { focusManager.clearFocus() },
-                singleLine = false,
-                maxLines = 2,
-                minLines = 2,
-                maxLength = 20,
-                modifier = Modifier.padding(vertical = 16.dp)
-            )
-
-            VerticalSpacer56()
-
-            // 팀 규칙
-            TextWithStar(
-                text = stringResource(R.string.team_rules),
-            )
-            Spacer(Modifier.height(8.dp))
-            EditTextBox(
-                modifier = Modifier.padding(vertical = 16.dp),
-                value = createTeamState.rule,
-                onValueChange = viewModel::onRuleChange,
-                hint = stringResource(R.string.team_rules_hint),
-                imeAction = ImeAction.Done,
-                onImeAction = { focusManager.clearFocus() },
-                singleLine = false,
-                maxLines = 2,
-                minLines = 2
-            )
-
-            VerticalSpacer56()
-
-            // 게임 유형
-            TextWithStar(
-                text = stringResource(R.string.team_game_type),
-            )
-            Spacer(Modifier.height(8.dp))
-            DropdownBox(
-                text = stringResource(R.string.select_please),
-                items = MatchType.entries,
-                onItemSelected = viewModel::onMatchTypeChange,
-            )
-
-            VerticalSpacer56()
-
-            // 관리자 범위
-            TextWithStar(
-                stringResource(R.string.team_admin_scope)
-            )
-            Spacer(Modifier.height(8.dp))
-            DropdownBox(
-                text = stringResource(R.string.select_please),
-                items = Access.entries,
-                onItemSelected = viewModel::onAccessChange,
-            )
-
-            VerticalSpacer56()
-
-            // 회비
-            TextWithInfoIcon(
-                textWithStar = stringResource(R.string.team_fee),
-                info = stringResource(R.string.info_number_keyboard),
-            )
-            Spacer(Modifier.height(8.dp))
-            EditTextBox(
-                value = createTeamState.dues,
-                onValueChange = viewModel::onDuesChange,
-                imeAction = ImeAction.Done,
-                onImeAction = { focusManager.clearFocus() },
-                singleLine = true,
-                maxLines = 1,
-                isNumeric = true
-            )
-
-            VerticalSpacer56()
-
-            // 로고
-            TextWithInfoIcon(
-                textWithStar = stringResource(R.string.team_logo),
-                info = stringResource(R.string.info_number_keyboard),
-            )
-
-            Spacer(Modifier.height(8.dp))
-
-            val croppedImage = createTeamState.croppedTeamImage
-
-            ProfileImageWithCameraButton(
-                image = croppedImage?.asImageBitmap()?.let { remember { BitmapPainter(it) } }
-                    ?: painterResource(R.drawable.img_team_default),
-                onCameraClick = launchGalleryWithPermission
-            )
-
-            VerticalSpacer56()
-
             // 생성하기 버튼
-            SingleButton(
+            BottomButton(
                 text = stringResource(R.string.create_team),
                 onClick = {
                     if (createTeamState.croppedTeamImage != null) {
@@ -280,9 +287,6 @@ fun CreateTeamScreen(
                         // TODO 팀 생성 이후
                     }
                 },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 32.dp),
                 enabled = createTeamState.isFormValid
             )
         }

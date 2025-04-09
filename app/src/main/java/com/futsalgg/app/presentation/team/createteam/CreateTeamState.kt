@@ -3,7 +3,7 @@ package com.futsalgg.app.presentation.team.createteam
 import android.graphics.Bitmap
 import com.futsalgg.app.presentation.common.state.EditTextState
 import com.futsalgg.app.presentation.team.model.Access
-import com.futsalgg.app.presentation.team.model.MatchType
+import com.futsalgg.app.presentation.common.model.MatchType
 
 data class CreateTeamState(
     val teamName: String = "",

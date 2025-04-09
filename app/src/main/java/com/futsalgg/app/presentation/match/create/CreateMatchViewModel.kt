@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.futsalgg.app.domain.auth.repository.ITokenManager
 import com.futsalgg.app.domain.match.usecase.CreateMatchUseCase
 import com.futsalgg.app.presentation.common.error.UiError
-import com.futsalgg.app.presentation.match.model.MatchType
+import com.futsalgg.app.presentation.common.model.MatchType
 import com.futsalgg.app.presentation.common.state.DateState
 import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.util.isValidDate
@@ -33,41 +33,45 @@ class CreateMatchViewModel @Inject constructor(
             type = type,
         )
     }
-//
-//    internal fun onOpponentTeamNameChange(newValue: String) {
-//        _createMatchState.value = _createMatchState.value.copy(
-//            opponentTeamName = newValue,
-//            opponentTeamNameState = EditTextState.Initial
-//        )
-//    }
-//
-//    internal fun onLocationChange(newValue: String) {
-//        _createMatchState.value = _createMatchState.value.copy(
-//            location = newValue
-//        )
-//    }
-//
-//    internal fun onMatchDateChange(newValue: String) {
-//        _createMatchState.value = _createMatchState.value.copy(
-//            matchDate = newValue,
-//            matchDateState = EditTextState.Initial
-//        )
-//    }
-//
-//    internal fun onStartTimeChange(newValue: String) {
-//        _createMatchState.value = _createMatchState.value.copy(
-//            startTime = newValue,
-//            startTimeState = EditTextState.Initial
-//        )
-//    }
-//
-//    internal fun onEndTimeChange(newValue: String) {
-//        _createMatchState.value = _createMatchState.value.copy(
-//            endTime = newValue,
-//            endTimeState = EditTextState.Initial
-//        )
-//    }
-//
+
+    internal fun onLocationChange(newValue: String) {
+        _createMatchState.value = _createMatchState.value.copy(
+            location = newValue
+        )
+    }
+
+    internal fun onStartTimeChange(newValue: String) {
+        _createMatchState.value = _createMatchState.value.copy(
+            startTime = newValue,
+        )
+    }
+
+    internal fun onKnowsStartTimeChange(newValue: Boolean) {
+        val state = _createMatchState.value
+        _createMatchState.value = state.copy(
+            knowsStartTime = newValue
+        )
+    }
+
+    internal fun onEndTimeChange(newValue: String) {
+        _createMatchState.value = _createMatchState.value.copy(
+            endTime = newValue,
+        )
+    }
+
+    internal fun onKnowsEndTimeChange(newValue: Boolean) {
+        val state = _createMatchState.value
+        _createMatchState.value = state.copy(
+            knowsEndTime = newValue
+        )
+    }
+
+    internal fun onOpponentTeamNameChange(newValue: String) {
+        _createMatchState.value = _createMatchState.value.copy(
+            opponentTeamName = newValue,
+        )
+    }
+
 //    internal fun onDescriptionChange(newValue: String) {
 //        _createMatchState.value = _createMatchState.value.copy(
 //            description = newValue
@@ -107,7 +111,8 @@ class CreateMatchViewModel @Inject constructor(
                     endTime = _createMatchState.value.endTime.takeIf { it.isNotEmpty() },
                     opponentTeamName = _createMatchState.value.opponentTeamName.takeIf { it.isNotEmpty() },
                     description = _createMatchState.value.description.takeIf { it.isNotEmpty() },
-                    isVote = _createMatchState.value.isVote
+                    isVote = _createMatchState.value.isVote,
+                    substituteTeamMemberId = _createMatchState.value.substituteTeamMemberId.takeIf { it.isNotEmpty() }
                 )
 
                 if (result.isSuccess) {
@@ -123,8 +128,7 @@ class CreateMatchViewModel @Inject constructor(
     }
 
     internal fun onValidateMatchDate(value: String) {
-        val state = _createMatchState.value
-        _createMatchState.value = state.copy(
+        _createMatchState.value = _createMatchState.value.copy(
             matchDate = value,
             matchDateState = if (value.isEmpty()) {
                 DateState.Initial

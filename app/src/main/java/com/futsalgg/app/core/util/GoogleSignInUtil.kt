@@ -15,7 +15,7 @@ object GoogleSignInUtil {
     fun createGoogleCredentialRequest(context: Context): GetCredentialRequest {
         val googleIdOption = GetGoogleIdOption.Builder()
             .setServerClientId(context.getString(R.string.default_web_client_id)) // Firebase에서 제공하는 Web Client ID
-            .setFilterByAuthorizedAccounts(false) // 이전 로그인 계정 필터 여부
+            .setFilterByAuthorizedAccounts(true) // 이전 로그인 계정 필터 여부
             .build()
 
         return GetCredentialRequest.Builder()

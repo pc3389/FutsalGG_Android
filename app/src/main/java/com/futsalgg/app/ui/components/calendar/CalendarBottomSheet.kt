@@ -73,7 +73,8 @@ fun CalendarBottomSheetContent(
     var isDateSelected by remember { mutableStateOf(false) }
 
     Column(
-        modifier = Modifier.padding(horizontal = 16.dp)
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
             .padding(bottom = 24.dp)
     ) {
         CustomCalendar(
@@ -93,7 +94,7 @@ fun CalendarBottomSheetContent(
         thickness = 1.dp,
         color = FutsalggColor.mono200
     )
-    
+
     Box(
         modifier = Modifier
             .padding(16.dp)

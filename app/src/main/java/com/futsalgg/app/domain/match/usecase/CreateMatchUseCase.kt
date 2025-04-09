@@ -1,7 +1,7 @@
 package com.futsalgg.app.domain.match.usecase
 
 import com.futsalgg.app.domain.match.model.Match
-import com.futsalgg.app.domain.match.model.MatchType
+import com.futsalgg.app.domain.common.model.MatchType
 
 interface CreateMatchUseCase {
     suspend operator fun invoke(

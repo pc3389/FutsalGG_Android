@@ -1,4 +1,4 @@
-package com.futsalgg.app.domain.team.model
+package com.futsalgg.app.domain.common.model
 
 enum class MatchType {
     INTRA_SQUAD,    // 자체전

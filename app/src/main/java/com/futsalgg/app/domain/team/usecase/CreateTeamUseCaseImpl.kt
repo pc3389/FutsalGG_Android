@@ -1,7 +1,7 @@
 package com.futsalgg.app.domain.team.usecase
 
 import com.futsalgg.app.domain.team.model.Access
-import com.futsalgg.app.domain.team.model.MatchType
+import com.futsalgg.app.domain.common.model.MatchType
 import com.futsalgg.app.domain.team.repository.TeamRepository
 import com.futsalgg.app.domain.common.error.toDomainError
 import com.futsalgg.app.domain.team.model.TeamLogoResponseModel

@@ -1,7 +1,7 @@
 package com.futsalgg.app.presentation.team.createteam
 
 import com.futsalgg.app.domain.team.model.Access
-import com.futsalgg.app.domain.team.model.MatchType
+import com.futsalgg.app.domain.common.model.MatchType
 import com.futsalgg.app.domain.team.model.TeamLogoResponseModel
 import com.futsalgg.app.domain.team.usecase.CreateTeamUseCase
 import java.io.File

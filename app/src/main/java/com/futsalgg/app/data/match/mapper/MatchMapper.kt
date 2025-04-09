@@ -6,7 +6,7 @@ import com.futsalgg.app.data.match.model.MatchType as DataMatchType
 import com.futsalgg.app.data.match.model.VoteStatus as DataVoteStatus
 import com.futsalgg.app.domain.match.model.Match as DomainMatch
 import com.futsalgg.app.domain.match.model.MatchStatus as DomainMatchStatus
-import com.futsalgg.app.domain.match.model.MatchType as DomainMatchType
+import com.futsalgg.app.domain.common.model.MatchType as DomainMatchType
 import com.futsalgg.app.domain.match.model.VoteStatus as DomainVoteStatus
 import com.futsalgg.app.remote.api.match.model.response.MatchResponse
 

@@ -1,26 +1,26 @@
 package com.futsalgg.app.presentation.match.create
 
 import com.futsalgg.app.presentation.common.state.DateState
-import com.futsalgg.app.presentation.common.state.EditTextState
-import com.futsalgg.app.presentation.match.model.MatchType
+import com.futsalgg.app.presentation.common.model.MatchType
 
 data class CreateMatchState(
+    val teamId: String = "",
     val matchDate: String = "",
     val matchDateState: DateState = DateState.Initial,
-    val type: MatchType = MatchType.INTER_TEAM,
-    val opponentTeamName: String = "",
-    val opponentTeamNameState: EditTextState = EditTextState.Initial,
+    val type: MatchType = MatchType.INTRA_SQUAD,
     val location: String = "",
     val startTime: String = "",
-    val startTimeState: EditTextState = EditTextState.Initial,
+    val knowsStartTime: Boolean = false,
     val endTime: String = "",
-    val endTimeState: EditTextState = EditTextState.Initial,
+    val knowsEndTime: Boolean = false,
+    val opponentTeamName: String = "",
+    val substituteTeamMemberId: String = "",
     val description: String = "",
-    val teamId: String = "",
     val isVote: Boolean = false,
     val errorMessage: String? = null
 ) {
     val isFormValid: Boolean
         get() = matchDateState == DateState.Available &&
-                (type == MatchType.INTRA_SQUAD || opponentTeamNameState == EditTextState.Available)
+                location.isNotEmpty()
+
 } 

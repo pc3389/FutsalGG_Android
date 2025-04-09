@@ -3,6 +3,7 @@
 
     <string name="select">선택</string>
     <string name="select_long">선택하기</string>
+    <string name="create_button_text">생성하기</string>
     <string name="required">*필수</string>
     <string name="check_duplication">중복확인</string>
     <string name="info_number_keyboard">숫자와 ,만 가능합니다</string>
@@ -10,6 +11,7 @@
     <string name="date_hint">YYYY-MM-DD</string>
     <string name="date_error_wrong_date_format">YYYY-MM-DD의 형태로 입력해주세요.</string>
     <string name="date_error_future_date_not_available">미래 날짜는 입력할 수 없습니다.</string>
+    <string name="edit_text_hint_within_15">15자 이내로 입력해주세요.</string>
 
     <!--  T&C  -->
     <string name="terms_and_condition_title">이용약관 동의</string>
@@ -32,7 +34,6 @@
     <string name="signup_button">회원가입</string>
 
     <!-- CreateTeam -->
-    <string name="create_team_title">팀 생성하기</string>
     <string name="team_name">팀 명</string>
     <string name="team_description">팀 소개</string>
     <string name="team_rules">팀 규칙</string>
@@ -48,4 +49,14 @@
     <!-- CreateMatch -->
     <string name="create_match_title">경기 일정 생성하기</string>
     <string name="create_match_date">날짜</string>
+    <string name="create_match_type">경기 유형</string>
+    <string name="create_match_location">장소</string>
+    <string name="create_match_start_time_title">경기 시작 시간</string>
+    <string name="create_match_end_time_title">경기 종료 시간</string>
+    <string name="create_match_opponent_title">상대 팀</string>
+    <string name="create_match_time_known">예정</string>
+    <string name="create_match_time_unknown">미정</string>
+    <string name="create_match_sub_editor">대리 기록자 선택</string>
+    <string name="create_match_enter_nickname">닉네임을 입력해주세요.</string>
+
 </resources>

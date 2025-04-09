@@ -7,13 +7,13 @@ import com.futsalgg.app.domain.auth.repository.ITokenManager
 import com.futsalgg.app.domain.match.model.MatchStatus as DomainMatchStatus
 import com.futsalgg.app.domain.match.model.VoteStatus as DomainVoteStatus
 import com.futsalgg.app.domain.match.model.Match as DomainMatch
-import com.futsalgg.app.domain.match.model.MatchType as DomainMatchType
+import com.futsalgg.app.domain.common.model.MatchType as DomainMatchType
 import com.futsalgg.app.domain.match.usecase.GetMatchesUseCase
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.presentation.match.model.Match
 import com.futsalgg.app.presentation.match.model.MatchStatus
-import com.futsalgg.app.presentation.match.model.MatchType
+import com.futsalgg.app.presentation.common.model.MatchType
 import com.futsalgg.app.presentation.match.model.VoteStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -128,27 +128,15 @@ class MatchResultViewModel @Inject constructor(
     private fun DomainMatch.toPresentation(): Match {
         return Match(
             id = id,
-            type = when (type) {
-                DomainMatchType.INTER_TEAM -> MatchType.INTER_TEAM
-                DomainMatchType.INTRA_SQUAD -> MatchType.INTRA_SQUAD
-            },
+            type = MatchType.fromDomain(type),
             opponentTeamName = opponentTeamName,
             location = location,
             matchDate = matchDate,
             startTime = startTime,
             endTime = endTime,
             description = description,
-            voteStatus = when (voteStatus) {
-                DomainVoteStatus.NONE -> VoteStatus.NONE
-                DomainVoteStatus.ENDED -> VoteStatus.ENDED
-                DomainVoteStatus.REGISTERED -> VoteStatus.REGISTERED
-            },
-            status = when (status) {
-                DomainMatchStatus.DRAFT -> MatchStatus.DRAFT
-                DomainMatchStatus.ONGOING -> MatchStatus.ONGOING
-                DomainMatchStatus.CANCELLED -> MatchStatus.CANCELLED
-                DomainMatchStatus.COMPLETED -> MatchStatus.COMPLETED
-            },
+            voteStatus = VoteStatus.fromDomain(voteStatus),
+            status = MatchStatus.fromDomain(status),
             createdTime = createdTime
         )
     }

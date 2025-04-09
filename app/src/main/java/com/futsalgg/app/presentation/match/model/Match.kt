@@ -1,5 +1,7 @@
 package com.futsalgg.app.presentation.match.model
 
+import com.futsalgg.app.presentation.common.model.MatchType
+
 data class Match (
     val id: String,
     val opponentTeamName: String?,

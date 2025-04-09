@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import com.futsalgg.app.R
-import com.futsalgg.app.domain.team.model.MatchType
+import com.futsalgg.app.domain.common.model.MatchType
 import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.ui.theme.FutsalggTypography
 import com.futsalgg.app.util.toPx

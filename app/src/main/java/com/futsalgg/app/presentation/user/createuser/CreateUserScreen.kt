@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -40,7 +41,9 @@ import com.futsalgg.app.presentation.user.createuser.components.GenderUi
 import com.futsalgg.app.presentation.user.createuser.components.NicknameUi
 import com.futsalgg.app.presentation.user.createuser.components.NotificationUi
 import com.futsalgg.app.presentation.user.createuser.components.ProfilePictureUi
+import com.futsalgg.app.ui.components.BottomButton
 import com.futsalgg.app.ui.components.SingleButton
+import com.futsalgg.app.ui.components.spacers.VerticalSpacer56
 import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.util.toFile
 
@@ -106,60 +109,64 @@ fun CreateUserScreen(
     ) { innerPadding ->
         Column(
             modifier = Modifier
-                .pointerInput(Unit) {
-                    detectTapGestures(onTap = {
-                        focusManager.clearFocus()
-                    })
-                }
                 .padding(innerPadding)
-                .padding(horizontal = 16.dp)
                 .windowInsetsPadding(WindowInsets.navigationBars)
                 .verticalScroll(scrollState)
-                .background(FutsalggColor.white),
-            verticalArrangement = Arrangement.Top
+                .background(FutsalggColor.white)
         ) {
-            NicknameUi(
-                context = context,
-                nickname = createUserState.nickname,
-                nicknameState = createUserState.nicknameState,
-                onNicknameChange = viewModel::onNicknameChange,
-                nicknameCheck = { viewModel.checkNicknameDuplication() },
-                isCheckEnabled = createUserState.nickname.isNotEmpty()
-            )
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .pointerInput(Unit) {
+                        detectTapGestures(onTap = {
+                            focusManager.clearFocus()
+                        })
+                    },
+                verticalArrangement = Arrangement.Top
+            ) {
+                NicknameUi(
+                    context = context,
+                    nickname = createUserState.nickname,
+                    nicknameState = createUserState.nicknameState,
+                    onNicknameChange = viewModel::onNicknameChange,
+                    nicknameCheck = { viewModel.checkNicknameDuplication() },
+                    isCheckEnabled = createUserState.nickname.isNotEmpty()
+                )
 
-            Spacer(Modifier.height(26.dp))
+                Spacer(Modifier.height(26.dp))
 
-            BirthdayUi(
-                context = context,
-                birthday = createUserState.birthday,
-                onBirthdayChange = viewModel::onBirthdayChange,
-                birthdayState = createUserState.birthdayState,
-            )
+                BirthdayUi(
+                    context = context,
+                    birthday = createUserState.birthday,
+                    onBirthdayChange = viewModel::onBirthdayChange,
+                    birthdayState = createUserState.birthdayState,
+                )
 
-            Spacer(Modifier.height(26.dp))
+                Spacer(Modifier.height(26.dp))
 
-            GenderUi(
-                gender = createUserState.gender,
-                onGenderButtonSelect = viewModel::onGenderChange
-            )
+                GenderUi(
+                    gender = createUserState.gender,
+                    onGenderButtonSelect = viewModel::onGenderChange
+                )
 
-            VerticalSpacer56()
+                VerticalSpacer56()
 
-            ProfilePictureUi(
-                onSelectImageClick = launchGalleryWithPermission,
-                croppedImage = createUserState.croppedProfileImage
-            )
+                ProfilePictureUi(
+                    onSelectImageClick = launchGalleryWithPermission,
+                    croppedImage = createUserState.croppedProfileImage
+                )
 
-            VerticalSpacer56()
+                VerticalSpacer56()
 
-            NotificationUi(
-                isChecked = createUserState.notificationChecked,
-                onToggle = { viewModel.toggleNotification() }
-            )
+                NotificationUi(
+                    isChecked = createUserState.notificationChecked,
+                    onToggle = { viewModel.toggleNotification() }
+                )
 
-            VerticalSpacer56()
+                VerticalSpacer56()
+            }
 
-            SingleButton(
+            BottomButton(
                 text = stringResource(R.string.signup_button),
                 onClick = {
                     if (createUserState.croppedProfileImage != null) {
@@ -175,12 +182,6 @@ fun CreateUserScreen(
                 },
                 enabled = createUserState.isFormValid
             )
-            Spacer(Modifier.height(16.dp))
         }
     }
-}
-
-@Composable
-private fun VerticalSpacer56() {
-    Spacer(modifier = Modifier.height(56.dp))
 }

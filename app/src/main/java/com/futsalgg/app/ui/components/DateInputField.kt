@@ -274,6 +274,10 @@ fun DateInputField(
                                     TextRange(dayText.length)
                                 )
                                 focusManager.clearFocus()
+                                val newDate = "${year.text}${month.text}${day.text}"
+                                if (newDate != value) {
+                                    onValueChange(newDate)
+                                }
                             } catch (e: Exception) {
                                 // 파싱 실패 시 현재 값 유지
                             }

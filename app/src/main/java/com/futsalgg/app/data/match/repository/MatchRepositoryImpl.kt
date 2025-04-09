@@ -4,7 +4,7 @@ import com.futsalgg.app.data.common.error.DataError
 import com.futsalgg.app.data.match.mapper.toData
 import com.futsalgg.app.data.match.mapper.toDomain
 import com.futsalgg.app.domain.match.repository.MatchRepository
-import com.futsalgg.app.domain.match.model.MatchType as DomainMatchType
+import com.futsalgg.app.domain.common.model.MatchType as DomainMatchType
 import com.futsalgg.app.remote.api.match.MatchApi
 import com.futsalgg.app.remote.api.match.model.request.CreateMatchRequest
 import com.futsalgg.app.remote.api.match.model.response.MatchType as RemoteMatchType
