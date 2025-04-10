@@ -29,10 +29,10 @@ fun AppNavHost(
     NavHost(
         navController = navController,
 //        startDestination = Screen.Login.route
-        startDestination = Screen.CreateUser.route
+//        startDestination = Screen.CreateUser.route
 //        startDestination = Screen.CreateTeam.route
 //        startDestination = Screen.MatchResult.route
-//        startDestination = Screen.CreateMatch.route
+        startDestination = Screen.CreateMatch.route
     ) {
         composable(Screen.Login.route) {
             LoginScreen(

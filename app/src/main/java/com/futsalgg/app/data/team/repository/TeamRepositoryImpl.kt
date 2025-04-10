@@ -7,6 +7,7 @@ import com.futsalgg.app.domain.team.repository.TeamRepository
 import com.futsalgg.app.remote.api.team.TeamApi
 import com.futsalgg.app.data.common.error.DataError
 import com.futsalgg.app.domain.file.repository.OkHttpFileUploader
+import com.futsalgg.app.domain.team.model.SearchTeamResponseModel
 import com.futsalgg.app.domain.team.model.TeamLogoResponseModel
 import java.io.File
 import java.io.IOException
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 class TeamRepositoryImpl @Inject constructor(
     private val teamApi: TeamApi,
-    private val okHttpFileUploader: OkHttpFileUploader
+    private val okHttpFileUploader: OkHttpFileUploader,
+    private val accessToken: String
 ) : TeamRepository {
 
     override suspend fun isTeamNicknameUnique(nickname: String): Result<Boolean> {
@@ -191,6 +193,28 @@ class TeamRepositoryImpl @Inject constructor(
                     cause = e
                 ) as Throwable
             )
+        }
+    }
+
+    override suspend fun searchTeams(name: String): Result<SearchTeamResponseModel> {
+        return try {
+            val response = teamApi.searchTeams(
+                accessToken = "Bearer $accessToken",
+                name = name
+            )
+            Result.success(
+                SearchTeamResponseModel(
+                    teams = response.teams.map { remoteTeam ->
+                        SearchTeamResponseModel.Team(
+                            id = remoteTeam.id,
+                            name = remoteTeam.name,
+                            createdTime = remoteTeam.createdTime
+                        )
+                    }
+                )
+            )
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 } 

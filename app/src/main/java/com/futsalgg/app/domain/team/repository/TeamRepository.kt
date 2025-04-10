@@ -1,5 +1,6 @@
 package com.futsalgg.app.domain.team.repository
 
+import com.futsalgg.app.domain.team.model.SearchTeamResponseModel
 import com.futsalgg.app.domain.team.model.TeamLogoPresignedUrlResponseModel
 import com.futsalgg.app.domain.team.model.TeamLogoResponseModel
 import java.io.File
@@ -22,4 +23,6 @@ interface TeamRepository {
         access: String,
         dues: Int
     ): Result<Unit>
+
+    suspend fun searchTeams(name: String): Result<SearchTeamResponseModel>
 } 
