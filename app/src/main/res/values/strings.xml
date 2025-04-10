@@ -46,6 +46,12 @@
     <string name="team_name_hint">팀 명을 입력해주세요. (10자 이내)</string>
     <string name="team_description_hint">팀 소개를 작성해주세요. (20자 이내)</string>
 
+    <!-- Join Team -->
+    <string name="join_team_title">팀 가입하기</string>
+    <string name="join_team_search_bar_title">가입하고자 하는 팀을 검색해보세요!</string>
+    <string name="join_team_search_bar_hint">팀 명을 입력해주세요.</string>
+    <string name="join_team_button_text">가입 신청하기</string>
+
     <!-- CreateMatch -->
     <string name="create_match_title">경기 일정 생성하기</string>
     <string name="create_match_date">날짜</string>

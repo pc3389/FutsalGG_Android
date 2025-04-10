@@ -3,16 +3,17 @@ package com.futsalgg.app.presentation.team.jointeam
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.futsalgg.app.domain.common.error.DomainError
-import com.futsalgg.app.domain.team.model.SearchTeamResponseModel
 import com.futsalgg.app.domain.team.usecase.JoinTeamUseCase
 import com.futsalgg.app.domain.team.usecase.SearchTeamsUseCase
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.error.toUiError
 import com.futsalgg.app.presentation.common.state.UiState
+import com.futsalgg.app.presentation.team.jointeam.model.Team
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,15 +26,125 @@ class JoinTeamViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
-    private val _searchResults = MutableStateFlow<List<SearchTeamResponseModel.Team>>(emptyList())
-    val searchResults: StateFlow<List<SearchTeamResponseModel.Team>> = _searchResults.asStateFlow()
+    private val _state = MutableStateFlow(JoinTeamState())
+    val state: StateFlow<JoinTeamState> = _state.asStateFlow()
+
+    fun onNameChange(name: String) {
+        _state.update { it.copy(name = name) }
+    }
 
     fun searchTeams(name: String) {
+//        _state.update {
+//            it.copy(
+//                searchResults = listOf(
+//                    Team(
+//                        id = "1",
+//                        name = "바르셀로나",
+//                        createdTime = "2024-03-20"
+//                    ),
+//                    Team(
+//                        id = "2",
+//                        name = "레알마드리드",
+//                        createdTime = "2024-03-19"
+//                    ),
+//                    Team(
+//                        id = "3",
+//                        name = "맨체스터유나이티드",
+//                        createdTime = "2024-03-18"
+//                    ),
+//                    Team(
+//                        id = "4",
+//                        name = "리버풀",
+//                        createdTime = "2024-03-17"
+//                    ),
+//                    Team(
+//                        id = "5",
+//                        name = "아스날",
+//                        createdTime = "2024-03-16"
+//                    ),
+//                    Team(
+//                        id = "3",
+//                        name = "맨체스터유나이티드",
+//                        createdTime = "2024-03-18"
+//                    ),
+//                    Team(
+//                        id = "4",
+//                        name = "리버풀",
+//                        createdTime = "2024-03-17"
+//                    ),
+//                    Team(
+//                        id = "5",
+//                        name = "아스날",
+//                        createdTime = "2024-03-16"
+//                    ),
+//                    Team(
+//                        id = "4",
+//                        name = "리버풀",
+//                        createdTime = "2024-03-17"
+//                    ),
+//                    Team(
+//                        id = "5",
+//                        name = "아스날",
+//                        createdTime = "2024-03-16"
+//                    ),
+//                    Team(
+//                        id = "3",
+//                        name = "맨체스터유나이티드",
+//                        createdTime = "2024-03-18"
+//                    ),
+//                    Team(
+//                        id = "4",
+//                        name = "리버풀",
+//                        createdTime = "2024-03-17"
+//                    ),
+//                    Team(
+//                        id = "5",
+//                        name = "아스날",
+//                        createdTime = "2024-03-16"
+//                    ),
+//                    Team(
+//                        id = "4",
+//                        name = "리버풀",
+//                        createdTime = "2024-03-17"
+//                    ),
+//                    Team(
+//                        id = "5",
+//                        name = "아스날",
+//                        createdTime = "2024-03-16"
+//                    ),
+//                    Team(
+//                        id = "3",
+//                        name = "맨체스터유나이티드",
+//                        createdTime = "2024-03-18"
+//                    ),
+//                    Team(
+//                        id = "4",
+//                        name = "리버풀",
+//                        createdTime = "2024-03-17"
+//                    ),
+//                    Team(
+//                        id = "5",
+//                        name = "아스날",
+//                        createdTime = "2024-03-16"
+//                    )
+//                )
+//            )
+//        }
         viewModelScope.launch {
             _uiState.value = UiState.Loading
             searchTeamsUseCase(name).fold(
                 onSuccess = { response ->
-                    _searchResults.value = response.teams
+                    _state.update {
+                        it.copy(
+                            searchResults = response.teams.map { team ->
+                                Team(
+                                    id = team.id,
+                                    name = team.name,
+                                    createdTime = team.createdTime
+                                )
+                            }
+                        )
+                    }
                     _uiState.value = UiState.Success
                 },
                 onFailure = { error ->
@@ -46,12 +157,16 @@ class JoinTeamViewModel @Inject constructor(
         }
     }
 
-    fun joinTeam(teamId: String) {
+    fun joinTeam(
+        teamId: String,
+        onSuccess: () -> Unit
+    ) {
         viewModelScope.launch {
             _uiState.value = UiState.Loading
             joinTeamUseCase(teamId).fold(
                 onSuccess = {
                     _uiState.value = UiState.Success
+                    onSuccess()
                 },
                 onFailure = { error ->
                     _uiState.value = UiState.Error(
@@ -59,6 +174,15 @@ class JoinTeamViewModel @Inject constructor(
                             ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
                     )
                 }
+            )
+        }
+    }
+
+    fun onTeamSelected(teamId: String) {
+        _state.update { currentState ->
+            currentState.copy(
+                selectedTeamId = if (currentState.selectedTeamId == teamId) null else teamId,
+                buttonEnabled = if (currentState.selectedTeamId == teamId) false else true
             )
         }
     }

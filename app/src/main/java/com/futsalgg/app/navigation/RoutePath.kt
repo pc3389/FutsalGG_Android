@@ -8,4 +8,5 @@ object RoutePath {
     const val CREATE_TEAM = "CreateTeam"
     const val MATCH_RESULT = "MatchResult"
     const val CREATE_MATCH = "CreateMatch"
+    const val JOIN_TEAM = "JoinTeam"
 }

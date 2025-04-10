@@ -40,7 +40,6 @@ import com.futsalgg.app.ui.components.DoubleRadioButtonsEnum
 import com.futsalgg.app.ui.components.EditTextBox
 import com.futsalgg.app.ui.components.FormRequiredAndHeader
 import com.futsalgg.app.ui.components.SimpleTitleText
-import com.futsalgg.app.ui.components.SingleButton
 import com.futsalgg.app.ui.components.TextWithStar
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer56
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer8

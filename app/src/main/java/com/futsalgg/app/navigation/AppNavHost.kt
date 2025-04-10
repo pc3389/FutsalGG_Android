@@ -20,6 +20,7 @@ import com.futsalgg.app.presentation.match.create.CreateMatchScreen
 import com.futsalgg.app.presentation.match.result.MatchResultScreen
 import com.futsalgg.app.presentation.team.createteam.CreateTeamScreen
 import com.futsalgg.app.presentation.team.createteam.CreateTeamViewModel
+import com.futsalgg.app.presentation.team.jointeam.JoinTeamScreen
 
 @Composable
 fun AppNavHost(
@@ -32,7 +33,8 @@ fun AppNavHost(
 //        startDestination = Screen.CreateUser.route
 //        startDestination = Screen.CreateTeam.route
 //        startDestination = Screen.MatchResult.route
-        startDestination = Screen.CreateMatch.route
+//        startDestination = Screen.CreateMatch.route
+        startDestination = Screen.JoinTeam.route
     ) {
         composable(Screen.Login.route) {
             LoginScreen(
@@ -60,6 +62,9 @@ fun AppNavHost(
         }
         composable(Screen.CreateMatch.route) {
             CreateMatchScreen(navController)
+        }
+        composable(Screen.JoinTeam.route) {
+            JoinTeamScreen(navController)
         }
         composable(
             route = "cropImage?uri={uri}&viewModelType={viewModelType}",
