@@ -21,7 +21,6 @@ import com.futsalgg.app.domain.team.usecase.SearchTeamsUseCase
 import com.futsalgg.app.domain.team.usecase.SearchTeamsUseCaseImpl
 import com.futsalgg.app.domain.team.usecase.JoinTeamUseCase
 import com.futsalgg.app.domain.team.usecase.JoinTeamUseCaseImpl
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
