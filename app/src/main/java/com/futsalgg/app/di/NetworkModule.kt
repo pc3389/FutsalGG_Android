@@ -3,6 +3,7 @@ package com.futsalgg.app.di
 import com.futsalgg.app.remote.api.auth.AuthApi
 import com.futsalgg.app.remote.api.match.MatchApi
 import com.futsalgg.app.remote.api.team.TeamApi
+import com.futsalgg.app.remote.api.teammember.TeamMemberApi
 import com.futsalgg.app.remote.api.user.UserApi
 import dagger.Module
 import dagger.Provides
@@ -51,6 +52,12 @@ class NetworkModule {
     @Singleton
     fun provideTeamApi(retrofit: Retrofit): TeamApi {
         return retrofit.create(TeamApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTeamMemberApi(retrofit: Retrofit): TeamMemberApi {
+        return retrofit.create(TeamMemberApi::class.java)
     }
 
     @Provides

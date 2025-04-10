@@ -42,10 +42,4 @@ interface TeamApi {
         @Header("Authorization") accessToken: String,
         @Query("name") name: String
     ): SearchTeamResponse
-
-    @POST("team-members")
-    suspend fun joinTeam(
-        @Header("Authorization") accessToken: String,
-        @Body request: JoinTeamRequest
-    ): Response<Unit>
 } 

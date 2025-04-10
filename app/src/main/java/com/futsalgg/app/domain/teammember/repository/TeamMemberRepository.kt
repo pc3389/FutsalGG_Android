@@ -8,4 +8,9 @@ interface TeamMemberRepository {
         name: String,
         role: String = "TEAM-MEMBER"
     ): Result<List<TeamMember>>
+
+    suspend fun joinTeam(
+        accessToken: String,
+        teamId: String
+    ): Result<Unit>
 } 

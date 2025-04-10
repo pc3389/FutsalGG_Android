@@ -218,30 +218,4 @@ class TeamRepositoryImpl @Inject constructor(
             Result.failure(e)
         }
     }
-
-    override suspend fun joinTeam(teamId: String): Result<Unit> {
-        return try {
-            val response = teamApi.joinTeam(
-                accessToken = "Bearer $accessToken",
-                request = JoinTeamRequest(teamId)
-            )
-            if (response.isSuccessful) {
-                Result.success(Unit)
-            } else {
-                Result.failure(
-                    DataError.ServerError(
-                        message = "팀 가입 실패: ${response.code()}",
-                        cause = null
-                    ) as Throwable
-                )
-            }
-        } catch (e: IOException) {
-            Result.failure(
-                DataError.NetworkError(
-                    message = "네트워크 연결을 확인해주세요.",
-                    cause = e
-                ) as Throwable
-            )
-        }
-    }
 } 

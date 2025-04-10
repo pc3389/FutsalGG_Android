@@ -191,7 +191,7 @@ fun JoinTeamScreen(
                     .offset {
                         IntOffset(
                             x = 0,
-                            y = searchSectionOffsetPx.value.roundToInt()
+                            y = searchSectionOffsetPx.floatValue.roundToInt()
                         )
                     }
                     .background(FutsalggColor.white)

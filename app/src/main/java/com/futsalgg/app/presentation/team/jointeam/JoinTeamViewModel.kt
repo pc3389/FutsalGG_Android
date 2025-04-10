@@ -1,9 +1,11 @@
 package com.futsalgg.app.presentation.team.jointeam
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.futsalgg.app.domain.auth.repository.ITokenManager
 import com.futsalgg.app.domain.common.error.DomainError
-import com.futsalgg.app.domain.team.usecase.JoinTeamUseCase
+import com.futsalgg.app.domain.teammember.usecase.JoinTeamUseCase
 import com.futsalgg.app.domain.team.usecase.SearchTeamsUseCase
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.error.toUiError
@@ -20,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class JoinTeamViewModel @Inject constructor(
     private val searchTeamsUseCase: SearchTeamsUseCase,
-    private val joinTeamUseCase: JoinTeamUseCase
+    private val joinTeamUseCase: JoinTeamUseCase,
+    private val tokenManager: ITokenManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
@@ -163,7 +166,19 @@ class JoinTeamViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             _uiState.value = UiState.Loading
-            joinTeamUseCase(teamId).fold(
+
+            val accessToken = tokenManager.getAccessToken()
+
+            if (accessToken.isNullOrEmpty()) {
+                Log.e("CreateUserViewModel", "엑세스 토큰이 존재하지 않습니다")
+                _uiState.value = UiState.Error(UiError.AuthError("엑세스 토큰이 존재하지 않습니다"))
+                return@launch
+            }
+
+            joinTeamUseCase(
+                accessToken = accessToken,
+                teamId = teamId
+            ).fold(
                 onSuccess = {
                     _uiState.value = UiState.Success
                     onSuccess()

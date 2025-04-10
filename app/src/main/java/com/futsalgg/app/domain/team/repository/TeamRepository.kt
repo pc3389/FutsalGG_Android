@@ -25,6 +25,4 @@ interface TeamRepository {
     ): Result<Unit>
 
     suspend fun searchTeams(name: String): Result<SearchTeamResponseModel>
-
-    suspend fun joinTeam(teamId: String): Result<Unit>
 } 
