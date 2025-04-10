@@ -7,9 +7,11 @@ import com.futsalgg.app.domain.team.repository.TeamRepository
 import com.futsalgg.app.remote.api.team.TeamApi
 import com.futsalgg.app.data.common.error.DataError
 import com.futsalgg.app.domain.file.repository.OkHttpFileUploader
+import com.futsalgg.app.domain.team.model.MyTeam
 import com.futsalgg.app.domain.team.model.SearchTeamResponseModel
 import com.futsalgg.app.domain.team.model.TeamLogoResponseModel
-import com.futsalgg.app.remote.api.team.model.request.JoinTeamRequest
+import com.futsalgg.app.domain.team.model.TeamRole
+import com.futsalgg.app.remote.api.team.model.response.TeamRole as RemoteTeamRole
 import java.io.File
 import java.io.IOException
 import javax.inject.Inject
@@ -217,5 +219,51 @@ class TeamRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             Result.failure(e)
         }
+    }
+
+    override suspend fun getMyTeam(accessToken: String): Result<MyTeam> = try {
+        val response = teamApi.getMyTeam(
+            accessToken = "Bearer $accessToken"
+        )
+
+        if (response.isSuccessful) {
+            response.body()?.let { body ->
+                Result.success(
+                    MyTeam(
+                        id = body.id,
+                        teamMemberId = body.teamMemberId,
+                        name = body.name,
+                        logoUrl = body.logoUrl,
+                        role = when (body.role) {
+                            RemoteTeamRole.OWNER -> TeamRole.OWNER
+                            RemoteTeamRole.TEAM_LEADER -> TeamRole.TEAM_LEADER
+                            RemoteTeamRole.TEAM_DEPUTY_LEADER -> TeamRole.TEAM_DEPUTY_LEADER
+                            RemoteTeamRole.TEAM_SECRETARY -> TeamRole.TEAM_SECRETARY
+                            RemoteTeamRole.TEAM_MEMBER -> TeamRole.TEAM_MEMBER
+                        },
+                        createdTime = body.createdTime
+                    )
+                )
+            } ?: Result.failure(
+                DataError.ServerError(
+                    message = "서버 응답이 비어있습니다.",
+                    cause = null
+                ) as Throwable
+            )
+        } else {
+            Result.failure(
+                DataError.ServerError(
+                    message = "서버 오류: ${response.code()}",
+                    cause = null
+                ) as Throwable
+            )
+        }
+    } catch (e: IOException) {
+        Result.failure(
+            DataError.NetworkError(
+                message = "네트워크 연결을 확인해주세요.",
+                cause = e
+            ) as Throwable
+        )
     }
 } 

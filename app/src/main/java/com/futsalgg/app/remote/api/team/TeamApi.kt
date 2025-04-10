@@ -6,6 +6,7 @@ import com.futsalgg.app.remote.api.team.model.request.UpdateTeamLogoRequest
 import com.futsalgg.app.remote.api.team.model.request.JoinTeamRequest
 import com.futsalgg.app.remote.api.team.model.response.CheckTeamNicknameResponse
 import com.futsalgg.app.remote.api.team.model.response.TeamLogoPresignedUrlResponse
+import com.futsalgg.app.remote.api.team.model.response.GetMyTeamResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -42,4 +43,9 @@ interface TeamApi {
         @Header("Authorization") accessToken: String,
         @Query("name") name: String
     ): SearchTeamResponse
+
+    @GET("teams/me")
+    suspend fun getMyTeam(
+        @Header("Authorization") accessToken: String
+    ): Response<GetMyTeamResponse>
 } 
