@@ -19,6 +19,8 @@ import com.futsalgg.app.domain.match.usecase.GetMatchesUseCase
 import com.futsalgg.app.domain.match.usecase.GetMatchesUseCaseImpl
 import com.futsalgg.app.domain.team.usecase.SearchTeamsUseCase
 import com.futsalgg.app.domain.team.usecase.SearchTeamsUseCaseImpl
+import com.futsalgg.app.domain.team.usecase.JoinTeamUseCase
+import com.futsalgg.app.domain.team.usecase.JoinTeamUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -57,10 +59,18 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun bindSearchTeamsUseCase(
+    fun provideSearchTeamsUseCase(
         teamRepository: TeamRepository
     ): SearchTeamsUseCase {
         return SearchTeamsUseCaseImpl(teamRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideJoinTeamUseCase(
+        teamRepository: TeamRepository
+    ): JoinTeamUseCase {
+        return JoinTeamUseCaseImpl(teamRepository)
     }
 
     @Provides

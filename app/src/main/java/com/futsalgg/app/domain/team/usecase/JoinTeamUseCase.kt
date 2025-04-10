@@ -1,0 +1,16 @@
+package com.futsalgg.app.domain.team.usecase
+
+import com.futsalgg.app.domain.team.repository.TeamRepository
+import javax.inject.Inject
+
+interface JoinTeamUseCase {
+    suspend operator fun invoke(teamId: String): Result<Unit>
+}
+
+class JoinTeamUseCaseImpl @Inject constructor(
+    private val teamRepository: TeamRepository
+) : JoinTeamUseCase {
+    override suspend fun invoke(teamId: String): Result<Unit> {
+        return teamRepository.joinTeam(teamId)
+    }
+} 
