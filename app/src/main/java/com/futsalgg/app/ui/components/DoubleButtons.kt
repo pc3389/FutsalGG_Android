@@ -20,10 +20,7 @@ import com.futsalgg.app.ui.theme.FutsalggColor
  * @param rightText right text
  * @param onLeftClick onClick with left button
  * @param onRightClick onClick with right button
- * @param leftContainerColor Left container color, default : White
- * @param rightContentColor right container color, default: Black
- * @param leftContentColor left content color, default: Black
- * @param rightContainerColor right content color, default: White
+ * @param isLeftBlack It's black and white buttons, left black or White when false
  * @param modifier modifier
  * @param horizontalPadding horizontal padding
  * @param verticalPadding vertical padding
@@ -34,14 +31,18 @@ fun DoubleButtons(
     rightText: String,
     onLeftClick: () -> Unit,
     onRightClick: () -> Unit,
-    leftContainerColor: Color = FutsalggColor.mono900,
-    rightContainerColor: Color = FutsalggColor.white,
-    leftContentColor: Color = FutsalggColor.white,
-    rightContentColor: Color = FutsalggColor.mono900,
+    isLeftBlack: Boolean = false,
     modifier: Modifier = Modifier,
     horizontalPadding: Dp = 0.dp,
     verticalPadding: Dp = 0.dp
 ) {
+
+    val white = FutsalggColor.white
+    val black = FutsalggColor.mono900
+    val leftContainerColor: Color = if (isLeftBlack) black else white
+    val rightContainerColor: Color = if (isLeftBlack) white else black
+    val leftContentColor: Color = rightContainerColor
+    val rightContentColor: Color = leftContainerColor
 
     Row(
         modifier =modifier.fillMaxWidth()
@@ -68,15 +69,4 @@ fun DoubleButtons(
             hasBorder = rightContainerColor == FutsalggColor.white
         )
     }
-}
-
-@Preview
-@Composable
-fun PreviewDualButtons() {
-    DoubleButtons(
-        "LeftText",
-        "RightText",
-        onLeftClick = {},
-        onRightClick = {}
-    )
 }

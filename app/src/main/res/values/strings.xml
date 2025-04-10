@@ -12,6 +12,8 @@
     <string name="date_error_wrong_date_format">YYYY-MM-DD의 형태로 입력해주세요.</string>
     <string name="date_error_future_date_not_available">미래 날짜는 입력할 수 없습니다.</string>
     <string name="edit_text_hint_within_15">15자 이내로 입력해주세요.</string>
+    <string name="cancel_text">취소</string>
+    <string name="apply_text">신청</string>
 
     <!--  T&C  -->
     <string name="terms_and_condition_title">이용약관 동의</string>
@@ -51,6 +53,7 @@
     <string name="join_team_search_bar_title">가입하고자 하는 팀을 검색해보세요!</string>
     <string name="join_team_search_bar_hint">팀 명을 입력해주세요.</string>
     <string name="join_team_button_text">가입 신청하기</string>
+    <string name="join_team_dialog_title">‘${팀명}’ 팀에\n가입을 신청하시겠습니까?</string>
 
     <!-- CreateMatch -->
     <string name="create_match_title">경기 일정 생성하기</string>

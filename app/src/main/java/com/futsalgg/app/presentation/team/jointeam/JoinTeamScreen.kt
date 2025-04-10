@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,8 +26,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,9 +41,11 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -52,6 +57,7 @@ import com.futsalgg.app.ui.components.spacers.VerticalSpacer8
 import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.ui.theme.FutsalggTypography
 import androidx.compose.ui.unit.IntOffset
+import com.futsalgg.app.ui.components.DoubleButtons
 import kotlin.math.roundToInt
 
 @Composable
@@ -65,18 +71,20 @@ fun JoinTeamScreen(
     val buttonEnabled = state.buttonEnabled
     val searchResults = state.searchResults
     val selectedTeamId = state.selectedTeamId
+    var showJoinDialog by remember { mutableStateOf(false) }
+    val focusManager = LocalFocusManager.current
 
     val searchSectionHeight = 108.dp
     val searchSectionHeightPx =
         with(LocalDensity.current) { searchSectionHeight.roundToPx().toFloat() }
-    val searchSectionOffsetPx = remember { mutableStateOf(0f) }
+    val searchSectionOffsetPx = remember { mutableFloatStateOf(0f) }
 
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
                 val delta = available.y
-                val newOffset = searchSectionOffsetPx.value + delta
-                searchSectionOffsetPx.value = newOffset.coerceIn(-searchSectionHeightPx, 0f)
+                val newOffset = searchSectionOffsetPx.floatValue + delta
+                searchSectionOffsetPx.floatValue = newOffset.coerceIn(-searchSectionHeightPx, 0f)
                 return Offset.Zero
             }
         }
@@ -224,7 +232,10 @@ fun JoinTeamScreen(
                                 imeAction = ImeAction.Done
                             ),
                             keyboardActions = KeyboardActions(
-                                onDone = { viewModel.searchTeams(name) }
+                                onDone = {
+                                    viewModel.searchTeams(name)
+                                    focusManager.clearFocus()
+                                }
                             ),
                         )
 
@@ -233,6 +244,7 @@ fun JoinTeamScreen(
                                 .padding(end = 16.dp)
                                 .clickable {
                                     viewModel.searchTeams(name)
+                                    focusManager.clearFocus()
                                 },
                             imageVector = ImageVector.vectorResource(R.drawable.ic_search_18),
                             contentDescription = ""
@@ -249,15 +261,65 @@ fun JoinTeamScreen(
                     .background(FutsalggColor.white),
                 text = stringResource(R.string.create_button_text),
                 onClick = {
-                    viewModel.joinTeam(
-                        teamId = state.selectedTeamId!!,
-                        onSuccess = {
-                            // TODO On Success
-                        }
-                    )
+                    showJoinDialog = true
                 },
                 enabled = buttonEnabled
             )
+
+            if (showJoinDialog) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(FutsalggColor.mono900.copy(alpha = 0.5f))
+                        .clickable { showJoinDialog = false }
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .padding(horizontal = 16.dp)
+                            .fillMaxWidth()
+                            .background(
+                                color = FutsalggColor.white,
+                                shape = RoundedCornerShape(16.dp)
+                            )
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(
+                                horizontal = 16.dp
+                            )
+                        ) {
+                            Text(
+                                modifier = Modifier
+                                    .padding(vertical = 32.dp)
+                                    .fillMaxWidth(),
+                                text = stringResource(R.string.join_team_dialog_title),
+                                style = FutsalggTypography.bold_20_300,
+                                color = FutsalggColor.mono900,
+                                textAlign = TextAlign.Center
+                            )
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                            ) {
+                                DoubleButtons(
+                                    leftText = stringResource(R.string.cancel_text),
+                                    rightText = stringResource(R.string.apply_text),
+                                    onLeftClick = { showJoinDialog = false },
+                                    onRightClick = {
+                                        viewModel.joinTeam(
+                                            state.selectedTeamId!!,
+                                            {
+                                                // TODO On success
+                                            }
+                                        )
+                                    }
+                                )
+                            }
+                            Spacer(Modifier.height(16.dp))
+                        }
+                    }
+                }
+            }
         }
     }
 }
