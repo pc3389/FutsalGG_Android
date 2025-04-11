@@ -29,8 +29,8 @@ class MainViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
-    private val _state = MutableStateFlow(MainState())
-    val state: StateFlow<MainState> = _state.asStateFlow()
+    private val _mainState = MutableStateFlow(MainState())
+    val mainState: StateFlow<MainState> = _mainState.asStateFlow()
 
     fun getMyTeam(accessToken: String) {
         viewModelScope.launch {
@@ -39,7 +39,7 @@ class MainViewModel @Inject constructor(
             getMyTeamUseCase(accessToken)
                 .onSuccess { domainMyTeam ->
                     _uiState.value = UiState.Success
-                    _state.update { it.copy(myTeam = MyTeamMapper.toPresentation(domainMyTeam)) }
+                    _mainState.update { it.copy(myTeam = MyTeamMapper.toPresentation(domainMyTeam)) }
                 }
                 .onFailure { error ->
                     _uiState.value = UiState.Error(

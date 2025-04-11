@@ -6,7 +6,8 @@ data class MyTeam(
     val name: String,
     val logoUrl: String,
     val role: TeamRole,
-    val createdTime: String
+    val createdTime: String,
+    val isManager: Boolean = true
 )
 
 enum class TeamRole {
