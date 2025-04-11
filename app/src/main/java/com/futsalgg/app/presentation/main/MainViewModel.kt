@@ -2,8 +2,13 @@ package com.futsalgg.app.presentation.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.futsalgg.app.domain.team.model.MyTeam
+import com.futsalgg.app.domain.common.error.DomainError
 import com.futsalgg.app.domain.team.usecase.GetMyTeamUseCase
+import com.futsalgg.app.presentation.common.error.UiError
+import com.futsalgg.app.presentation.common.error.toUiError
+import com.futsalgg.app.presentation.common.state.UiState
+import com.futsalgg.app.presentation.main.model.MyTeam
+import com.futsalgg.app.presentation.main.model.MyTeamMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,11 +16,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-data class MainUiState(
-    val isLoading: Boolean = false,
-    val error: String? = null
-)
 
 data class MainState(
     val myTeam: MyTeam? = null
@@ -26,28 +26,26 @@ class MainViewModel @Inject constructor(
     private val getMyTeamUseCase: GetMyTeamUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(MainUiState())
-    val uiState: StateFlow<MainUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
+    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
     private val _state = MutableStateFlow(MainState())
     val state: StateFlow<MainState> = _state.asStateFlow()
 
     fun getMyTeam(accessToken: String) {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true, error = null) }
+            _uiState.value = UiState.Loading
 
             getMyTeamUseCase(accessToken)
-                .onSuccess { myTeam ->
-                    _uiState.update { it.copy(isLoading = false) }
-                    _state.update { it.copy(myTeam = myTeam) }
+                .onSuccess { domainMyTeam ->
+                    _uiState.value = UiState.Success
+                    _state.update { it.copy(myTeam = MyTeamMapper.toPresentation(domainMyTeam)) }
                 }
-                .onFailure { throwable ->
-                    _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            error = throwable.message ?: "알 수 없는 오류가 발생했습니다."
-                        )
-                    }
+                .onFailure { error ->
+                    _uiState.value = UiState.Error(
+                        (error as? DomainError)?.toUiError()
+                            ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
+                    )
                 }
         }
     }
