@@ -22,6 +22,8 @@ import com.futsalgg.app.domain.team.usecase.SearchTeamsUseCaseImpl
 import com.futsalgg.app.domain.teammember.repository.TeamMemberRepository
 import com.futsalgg.app.domain.teammember.usecase.JoinTeamUseCase
 import com.futsalgg.app.domain.teammember.usecase.JoinTeamUseCaseImpl
+import com.futsalgg.app.domain.team.usecase.GetMyTeamUseCase
+import com.futsalgg.app.domain.team.usecase.GetMyTeamUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -95,5 +97,13 @@ object UseCaseModule {
         matchRepository: MatchRepository
     ): DeleteMatchUseCase {
         return DeleteMatchUseCaseImpl(matchRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetMyTeamUseCase(
+        teamRepository: TeamRepository
+    ): GetMyTeamUseCase {
+        return GetMyTeamUseCaseImpl(teamRepository)
     }
 }
