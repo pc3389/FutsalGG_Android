@@ -68,4 +68,7 @@
     <string name="create_match_sub_editor">대리 기록자 선택</string>
     <string name="create_match_enter_nickname">닉네임을 입력해주세요.</string>
 
+    <!-- MyProfile -->
+    <string name="my_profile_title">내 정보 보기</string>
+    <string name="my_profile_back_number_label">No.</string>
 </resources>
