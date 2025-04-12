@@ -2,9 +2,11 @@ package com.futsalgg.app.remote.api.user
 
 import com.futsalgg.app.remote.api.user.model.request.CreateUserRequest
 import com.futsalgg.app.remote.api.user.model.request.UpdateProfileRequest
+import com.futsalgg.app.remote.api.user.model.request.UpdateNotificationRequest
 import com.futsalgg.app.remote.api.user.model.response.CheckNicknameResponse
 import com.futsalgg.app.remote.api.user.model.response.ProfilePresignedUrlResponse
 import com.futsalgg.app.remote.api.user.model.response.UpdateProfileResponse
+import com.futsalgg.app.remote.api.user.model.response.GetMyProfileResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -38,4 +40,15 @@ interface UserApi {
         @Header("Authorization") authHeader: String,
         @Body request: UpdateProfileRequest
     ): Response<UpdateProfileResponse>
+
+    @GET("users/me")
+    suspend fun getMyProfile(
+        @Header("Authorization") accessToken: String
+    ): Response<GetMyProfileResponse>
+
+    @PATCH("users/me/notification")
+    suspend fun updateNotification(
+        @Header("Authorization") accessToken: String,
+        @Body request: UpdateNotificationRequest
+    ): Response<Unit>
 }

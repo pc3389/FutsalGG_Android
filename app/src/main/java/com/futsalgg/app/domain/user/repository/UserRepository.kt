@@ -4,6 +4,7 @@ import com.futsalgg.app.domain.user.model.ProfilePresignedUrlResponseModel
 import com.futsalgg.app.domain.user.model.UpdateProfileResponseModel
 import com.futsalgg.app.domain.user.model.Gender
 import java.io.File
+import com.futsalgg.app.domain.user.model.User
 
 interface UserRepository {
     suspend fun isNicknameUnique(nickname: String): Result<Boolean>
@@ -21,5 +22,12 @@ interface UserRepository {
 
     suspend fun updateProfile(accessToken: String, uri: String): Result<UpdateProfileResponseModel>
 
-    suspend fun uploadProfileImage(accessToken: String, file: File): Result<UpdateProfileResponseModel>
+    suspend fun uploadProfileImage(
+        accessToken: String,
+        file: File
+    ): Result<UpdateProfileResponseModel>
+
+    suspend fun getMyProfile(accessToken: String): Result<User>
+
+    suspend fun updateNotification(accessToken: String, notification: Boolean): Result<Unit>
 } 
