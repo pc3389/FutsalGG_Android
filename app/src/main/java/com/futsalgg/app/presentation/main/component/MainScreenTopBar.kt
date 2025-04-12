@@ -21,12 +21,13 @@ import com.futsalgg.app.ui.theme.FutsalggTypography
 @Composable
 fun MainScreenTopBar(
     title: String,
-    onRightIconClick: () -> Unit
+    onRightIconClick: () -> Unit,
+    modifier: Modifier = Modifier
     ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .height(56.dp)
+            .height(64.dp)
             .padding(horizontal = 16.dp)
             .background(FutsalggColor.white),
     ) {

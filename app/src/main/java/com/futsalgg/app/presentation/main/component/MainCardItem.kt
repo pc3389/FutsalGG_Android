@@ -70,7 +70,7 @@ fun MainCardItem(
                 color = FutsalggColor.mono900
             )
 
-            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.height(16.dp))
 
             Image(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -78,7 +78,7 @@ fun MainCardItem(
                 contentDescription = ""
             )
 
-            Spacer(Modifier.height(32.dp))
+            Spacer(Modifier.height(16.dp))
         }
     }
 }

@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -42,7 +41,6 @@ import com.futsalgg.app.presentation.user.createuser.components.NicknameUi
 import com.futsalgg.app.presentation.user.createuser.components.NotificationUi
 import com.futsalgg.app.presentation.user.createuser.components.ProfilePictureUi
 import com.futsalgg.app.ui.components.BottomButton
-import com.futsalgg.app.ui.components.SingleButton
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer56
 import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.util.toFile
