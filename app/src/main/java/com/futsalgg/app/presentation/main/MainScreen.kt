@@ -3,7 +3,6 @@ package com.futsalgg.app.presentation.main
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -127,7 +127,8 @@ fun MainScreen(
                                 )
                             }
                             Image(
-                                painterResource(R.mipmap.football),
+                                modifier = Modifier.size(72.dp),
+                                painter = painterResource(R.mipmap.football),
                                 contentDescription = ""
                             )
                             Spacer(Modifier.width(6.dp))
@@ -171,6 +172,7 @@ fun MainScreen(
                                 image = ImageVector.vectorResource(R.drawable.img_main_vote),
                                 color = FutsalggColor.mono100,
                                 color2 = FutsalggColor.mono100,
+                                textColor = FutsalggColor.mono500,
                                 modifier = Modifier.weight(1f)
                             )
                             Spacer(Modifier.width(16.dp))
@@ -180,10 +182,12 @@ fun MainScreen(
                                 image = ImageVector.vectorResource(R.drawable.img_main_due),
                                 color = FutsalggColor.mono100,
                                 color2 = FutsalggColor.mono100,
+                                textColor = FutsalggColor.mono500,
                                 modifier = Modifier.weight(1f)
                             )
                         }
                     }
+                    Spacer(Modifier.height(16.dp))
                 }
             }
             // TODO 관리자 after api update.

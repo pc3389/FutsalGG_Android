@@ -30,6 +30,7 @@ fun MainCardItem(
     image: ImageVector,
     color: Color,
     color2: Color = FutsalggColor.white,
+    textColor: Color = FutsalggColor.mono900,
     onClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
@@ -67,7 +68,7 @@ fun MainCardItem(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 text = text,
                 style = FutsalggTypography.bold_17_200,
-                color = FutsalggColor.mono900
+                color = textColor
             )
 
             Spacer(Modifier.height(16.dp))
