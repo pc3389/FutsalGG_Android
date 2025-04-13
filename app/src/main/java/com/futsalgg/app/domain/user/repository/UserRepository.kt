@@ -1,7 +1,7 @@
 package com.futsalgg.app.domain.user.repository
 
 import com.futsalgg.app.domain.user.model.ProfilePresignedUrlResponseModel
-import com.futsalgg.app.domain.user.model.UpdateProfileResponseModel
+import com.futsalgg.app.domain.user.model.UpdateProfilePhotoResponseModel
 import com.futsalgg.app.domain.user.model.Gender
 import java.io.File
 import com.futsalgg.app.domain.user.model.User
@@ -20,12 +20,12 @@ interface UserRepository {
 
     suspend fun getProfilePresignedUrl(accessToken: String): Result<ProfilePresignedUrlResponseModel>
 
-    suspend fun updateProfile(accessToken: String, uri: String): Result<UpdateProfileResponseModel>
+    suspend fun updateProfilePhoto(accessToken: String, uri: String): Result<UpdateProfilePhotoResponseModel>
 
     suspend fun uploadProfileImage(
         accessToken: String,
         file: File
-    ): Result<UpdateProfileResponseModel>
+    ): Result<UpdateProfilePhotoResponseModel>
 
     suspend fun getMyProfile(accessToken: String): Result<User>
 

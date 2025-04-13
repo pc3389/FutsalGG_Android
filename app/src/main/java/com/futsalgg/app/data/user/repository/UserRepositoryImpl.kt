@@ -4,13 +4,13 @@ import com.futsalgg.app.data.common.error.DataError
 import com.futsalgg.app.domain.file.repository.OkHttpFileUploader
 import com.futsalgg.app.domain.user.model.Gender
 import com.futsalgg.app.domain.user.model.ProfilePresignedUrlResponseModel
-import com.futsalgg.app.domain.user.model.UpdateProfileResponseModel
+import com.futsalgg.app.domain.user.model.UpdateProfilePhotoResponseModel
 import com.futsalgg.app.domain.user.model.User
 import com.futsalgg.app.domain.user.repository.UserRepository
 import com.futsalgg.app.remote.api.user.UserApi
 import com.futsalgg.app.remote.api.user.model.request.CreateUserRequest
 import com.futsalgg.app.remote.api.user.model.request.UpdateNotificationRequest
-import com.futsalgg.app.remote.api.user.model.request.UpdateProfileRequest
+import com.futsalgg.app.remote.api.user.model.request.UpdateProfilePhotoRequest
 import java.io.File
 import java.io.IOException
 import javax.inject.Inject
@@ -124,22 +124,23 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateProfile(
+    override suspend fun updateProfilePhoto(
         accessToken: String,
         uri: String
-    ): Result<UpdateProfileResponseModel> {
+    ): Result<UpdateProfilePhotoResponseModel> {
         return try {
-            val response = userApi.updateUserProfile(
+            val response = userApi.updateUserProfilePhoto(
                 authHeader = "Bearer $accessToken",
-                request = UpdateProfileRequest(uri)
+                request = UpdateProfilePhotoRequest(uri)
             )
             if (response.isSuccessful) {
                 response.body()?.let { body ->
                     Result.success(
-                        UpdateProfileResponseModel(
+                        UpdateProfilePhotoResponseModel(
                             url = body.url,
                             uri = body.uri
                         )
+
                     )
                 } ?: Result.failure(
                     DataError.ServerError(
@@ -168,7 +169,7 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun uploadProfileImage(
         accessToken: String,
         file: File
-    ): Result<UpdateProfileResponseModel> {
+    ): Result<UpdateProfilePhotoResponseModel> {
         return try {
             // 1. presigned URL 획득
             val presignedResult = getProfilePresignedUrl(accessToken)
@@ -180,7 +181,7 @@ class UserRepositoryImpl @Inject constructor(
             uploadResult.getOrElse { return Result.failure(it) }
 
             // 3. 업로드 성공 후, updateProfile API 호출
-            updateProfile(accessToken, presignedResponse.uri)
+            updateProfilePhoto(accessToken, presignedResponse.uri)
         } catch (e: Exception) {
             Result.failure(
                 DataError.UnknownError(

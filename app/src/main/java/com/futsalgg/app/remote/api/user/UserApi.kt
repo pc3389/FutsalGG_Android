@@ -1,11 +1,11 @@
 package com.futsalgg.app.remote.api.user
 
 import com.futsalgg.app.remote.api.user.model.request.CreateUserRequest
-import com.futsalgg.app.remote.api.user.model.request.UpdateProfileRequest
+import com.futsalgg.app.remote.api.user.model.request.UpdateProfilePhotoRequest
 import com.futsalgg.app.remote.api.user.model.request.UpdateNotificationRequest
 import com.futsalgg.app.remote.api.user.model.response.CheckNicknameResponse
 import com.futsalgg.app.remote.api.user.model.response.ProfilePresignedUrlResponse
-import com.futsalgg.app.remote.api.user.model.response.UpdateProfileResponse
+import com.futsalgg.app.remote.api.user.model.response.UpdateProfilePhotoResponse
 import com.futsalgg.app.remote.api.user.model.response.GetMyProfileResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -34,12 +34,12 @@ interface UserApi {
         @Header("Authorization") authHeader: String
     ): Response<ProfilePresignedUrlResponse>
 
-    // [GET] /user/profile-presigned-url로 가져온 다음 업로드가 성공했을 시 profile을 업데이트 하는 API 호출
+    // [GET] /user/profile-presigned-url로 가져온 다음 업로드가 성공했을 시 profile Photo를 업데이트 하는 API 호출
     @PATCH("/users/profile")
-    suspend fun updateUserProfile(
+    suspend fun updateUserProfilePhoto(
         @Header("Authorization") authHeader: String,
-        @Body request: UpdateProfileRequest
-    ): Response<UpdateProfileResponse>
+        @Body request: UpdateProfilePhotoRequest
+    ): Response<UpdateProfilePhotoResponse>
 
     @GET("users/me")
     suspend fun getMyProfile(

@@ -1,7 +1,7 @@
 package com.futsalgg.app.domain.user.usecase
 
 import com.futsalgg.app.domain.user.model.Gender
-import com.futsalgg.app.domain.user.model.UpdateProfileResponseModel
+import com.futsalgg.app.domain.user.model.UpdateProfilePhotoResponseModel
 import com.futsalgg.app.domain.user.repository.UserRepository
 import com.futsalgg.app.domain.common.error.DomainError
 import com.futsalgg.app.domain.common.error.toDomainError
@@ -45,7 +45,7 @@ class CreateUserUseCaseImpl @Inject constructor(
     override suspend fun uploadProfileImage(
         accessToken: String,
         file: File
-    ): Result<UpdateProfileResponseModel> {
+    ): Result<UpdateProfilePhotoResponseModel> {
         return try {
             userRepository.uploadProfileImage(accessToken, file)
         } catch (e: Exception) {

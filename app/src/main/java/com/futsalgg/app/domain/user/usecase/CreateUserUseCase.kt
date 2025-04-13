@@ -1,7 +1,7 @@
 package com.futsalgg.app.domain.user.usecase
 
 import com.futsalgg.app.domain.user.model.Gender
-import com.futsalgg.app.domain.user.model.UpdateProfileResponseModel
+import com.futsalgg.app.domain.user.model.UpdateProfilePhotoResponseModel
 import java.io.File
 
 interface CreateUserUseCase {
@@ -19,5 +19,5 @@ interface CreateUserUseCase {
     suspend fun uploadProfileImage(
         accessToken: String,
         file: File
-    ): Result<UpdateProfileResponseModel>
+    ): Result<UpdateProfilePhotoResponseModel>
 } 

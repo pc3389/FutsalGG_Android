@@ -3,7 +3,7 @@ package com.futsalgg.app.presentation.user.createuser
 import com.futsalgg.app.core.token.FakeTokenManager
 import com.futsalgg.app.presentation.common.state.EditTextState
 import com.futsalgg.app.domain.user.model.Gender
-import com.futsalgg.app.domain.user.model.UpdateProfileResponseModel
+import com.futsalgg.app.domain.user.model.UpdateProfilePhotoResponseModel
 import com.futsalgg.app.domain.user.usecase.CreateUserUseCase
 import com.futsalgg.app.presentation.common.state.DateState
 import kotlinx.coroutines.Dispatchers
@@ -178,9 +178,9 @@ class CreateUserViewModelTest {
         override suspend fun uploadProfileImage(
             accessToken: String,
             file: File
-        ): Result<UpdateProfileResponseModel> {
+        ): Result<UpdateProfilePhotoResponseModel> {
             return if (shouldSucceed) {
-                Result.success(UpdateProfileResponseModel("testUrl", "testUri"))
+                Result.success(UpdateProfilePhotoResponseModel("testUrl", "testUri"))
             } else {
                 Result.failure(Exception("Upload failed"))
             }

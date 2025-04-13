@@ -6,7 +6,7 @@ package com.futsalgg.app.remote.api.user.model.response
  * @param url 이미지를 볼 수 있는 presigned url
  * @param uri URI
  */
-data class UpdateProfileResponse(
+data class UpdateProfilePhotoResponse(
     val url: String,
     val uri: String
 ) 
