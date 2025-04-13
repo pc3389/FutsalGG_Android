@@ -10,4 +10,5 @@ sealed class Screen(val route: String) {
     object CreateMatch: Screen(RoutePath.CREATE_MATCH)
     object JoinTeam: Screen(RoutePath.JOIN_TEAM)
     object MyProfile: Screen(RoutePath.MY_PROFILE)
+    object Setting: Screen(RoutePath.SETTING)
 }

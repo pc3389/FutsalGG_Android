@@ -35,8 +35,10 @@ import com.futsalgg.app.ui.theme.FutsalggTypography
 @Composable
 fun MyProfileScreen(
     navController: NavController,
-    viewModel: MyProfileViewModel = hiltViewModel()
+    viewModel: MyProfielViewModel = hiltViewModel()
 ) {
+    // TODO API 보류..!
+
     val uiState = viewModel.uiState.collectAsState().value
     val state = viewModel.profileState.collectAsState()
 

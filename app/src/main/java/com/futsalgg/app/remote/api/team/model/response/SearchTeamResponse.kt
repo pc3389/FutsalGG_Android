@@ -12,6 +12,10 @@ data class Team(
     val id: String,
     @SerializedName("name")
     val name: String,
+    @SerializedName("leaderName")
+    val leaderName: String,
+    @SerializedName("memberCount")
+    val memberCount: String,
     @SerializedName("createdTime")
     val createdTime: String
 ) 

@@ -211,7 +211,9 @@ class TeamRepositoryImpl @Inject constructor(
                         SearchTeamResponseModel.Team(
                             id = remoteTeam.id,
                             name = remoteTeam.name,
-                            createdTime = remoteTeam.createdTime
+                            createdTime = remoteTeam.createdTime,
+                            leaderName = remoteTeam.leaderName,
+                            memberCount = remoteTeam.memberCount
                         )
                     }
                 )
@@ -241,7 +243,14 @@ class TeamRepositoryImpl @Inject constructor(
                             RemoteTeamRole.TEAM_SECRETARY -> TeamRole.TEAM_SECRETARY
                             RemoteTeamRole.TEAM_MEMBER -> TeamRole.TEAM_MEMBER
                         },
-                        createdTime = body.createdTime
+                        createdTime = body.createdTime,
+                        access = when (body.access) {
+                            RemoteTeamRole.OWNER -> TeamRole.OWNER
+                            RemoteTeamRole.TEAM_LEADER -> TeamRole.TEAM_LEADER
+                            RemoteTeamRole.TEAM_DEPUTY_LEADER -> TeamRole.TEAM_DEPUTY_LEADER
+                            RemoteTeamRole.TEAM_SECRETARY -> TeamRole.TEAM_SECRETARY
+                            RemoteTeamRole.TEAM_MEMBER -> TeamRole.TEAM_MEMBER
+                        }
                     )
                 )
             } ?: Result.failure(

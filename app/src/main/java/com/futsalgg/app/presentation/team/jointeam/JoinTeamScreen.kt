@@ -149,7 +149,7 @@ fun JoinTeamScreen(
                             ) {
                                 Text(
                                     modifier = Modifier.weight(1f),
-                                    text = "팀장닉네임닉네임",
+                                    text = item.leaderName,
                                     style = FutsalggTypography.regular_17_200,
                                     color = if (isSelected) FutsalggColor.mint500 else FutsalggColor.mono500
                                 )
@@ -168,7 +168,7 @@ fun JoinTeamScreen(
                                         tint = if (isSelected) FutsalggColor.white else FutsalggColor.mono500
                                     )
                                     Text(
-                                        text = "00",
+                                        text = item.memberCount,
                                         style = FutsalggTypography.regular_17_200,
                                         color = if (isSelected) FutsalggColor.white else FutsalggColor.mono500
                                     )

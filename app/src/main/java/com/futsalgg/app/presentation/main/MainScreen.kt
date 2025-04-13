@@ -190,8 +190,7 @@ fun MainScreen(
                     Spacer(Modifier.height(16.dp))
                 }
             }
-            // TODO 관리자 after api update.
-            if (state.value.myTeam?.isManager != false) {
+            if (state.value.myTeam?.isManager == true) {
                 FloatingActionButton(
                     onClick = {
                         // TODO 관리자 메뉴

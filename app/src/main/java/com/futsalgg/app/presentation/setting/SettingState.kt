@@ -1,9 +1,8 @@
-package com.futsalgg.app.presentation.user.profile
+package com.futsalgg.app.presentation.setting
 
-data class ProfileUserState(
+data class SettingState(
     val email: String = "",
     val name: String = "",
-    val squadNumber: Int? = null,
     val notification: Boolean = false,
     val profileUrl: String? = "",
 )

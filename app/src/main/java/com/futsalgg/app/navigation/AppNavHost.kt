@@ -18,6 +18,7 @@ import com.futsalgg.app.presentation.user.createuser.CreateUserViewModel
 import com.futsalgg.app.presentation.auth.termsandcondition.TermsAndConditionScreen
 import com.futsalgg.app.presentation.match.create.CreateMatchScreen
 import com.futsalgg.app.presentation.match.result.MatchResultScreen
+import com.futsalgg.app.presentation.setting.SettingScreen
 import com.futsalgg.app.presentation.team.createteam.CreateTeamScreen
 import com.futsalgg.app.presentation.team.createteam.CreateTeamViewModel
 import com.futsalgg.app.presentation.team.jointeam.JoinTeamScreen
@@ -37,7 +38,8 @@ fun AppNavHost(
 //        startDestination = Screen.CreateMatch.route
 //        startDestination = Screen.JoinTeam.route
 //        startDestination = Screen.Main.route
-        startDestination = Screen.MyProfile.route
+//        startDestination = Screen.MyProfile.route
+        startDestination = Screen.Setting.route
     ) {
         composable(Screen.Login.route) {
             LoginScreen(
@@ -71,6 +73,9 @@ fun AppNavHost(
         }
         composable(Screen.MyProfile.route) {
             MyProfileScreen(navController)
+        }
+        composable(Screen.Setting.route) {
+            SettingScreen(navController)
         }
         composable(
             route = "cropImage?uri={uri}&viewModelType={viewModelType}",

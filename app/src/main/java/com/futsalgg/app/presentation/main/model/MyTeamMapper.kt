@@ -17,7 +17,14 @@ object MyTeamMapper {
                 DomainTeamRole.TEAM_SECRETARY -> TeamRole.TEAM_SECRETARY
                 DomainTeamRole.TEAM_MEMBER -> TeamRole.TEAM_MEMBER
             },
-            createdTime = domain.createdTime
+            createdTime = domain.createdTime,
+            access = when (domain.access) {
+                DomainTeamRole.OWNER -> TeamRole.OWNER
+                DomainTeamRole.TEAM_LEADER -> TeamRole.TEAM_LEADER
+                DomainTeamRole.TEAM_DEPUTY_LEADER -> TeamRole.TEAM_DEPUTY_LEADER
+                DomainTeamRole.TEAM_SECRETARY -> TeamRole.TEAM_SECRETARY
+                DomainTeamRole.TEAM_MEMBER -> TeamRole.TEAM_MEMBER
+            }
         )
     }
 } 

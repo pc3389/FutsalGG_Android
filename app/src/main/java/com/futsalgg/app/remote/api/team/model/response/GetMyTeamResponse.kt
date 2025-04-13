@@ -1,5 +1,6 @@
 package com.futsalgg.app.remote.api.team.model.response
 
+import com.futsalgg.app.presentation.team.model.Access
 import com.google.gson.annotations.SerializedName
 
 data class GetMyTeamResponse(
@@ -14,7 +15,9 @@ data class GetMyTeamResponse(
     @SerializedName("role")
     val role: TeamRole,
     @SerializedName("createdTime")
-    val createdTime: String
+    val createdTime: String,
+    @SerializedName("access")
+    val access: TeamRole
 )
 
 enum class TeamRole {

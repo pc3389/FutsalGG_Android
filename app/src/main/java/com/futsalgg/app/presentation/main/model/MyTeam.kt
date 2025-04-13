@@ -7,13 +7,15 @@ data class MyTeam(
     val logoUrl: String,
     val role: TeamRole,
     val createdTime: String,
-    val isManager: Boolean = true
-)
+    val access: TeamRole,
+){
+    val isManager = (role.rank <= access.rank)
+}
 
-enum class TeamRole {
-    OWNER,
-    TEAM_LEADER,
-    TEAM_DEPUTY_LEADER,
-    TEAM_SECRETARY,
-    TEAM_MEMBER
+enum class TeamRole(val rank: Int) {
+    OWNER(0),
+    TEAM_LEADER(1),
+    TEAM_DEPUTY_LEADER(2),
+    TEAM_SECRETARY(3),
+    TEAM_MEMBER(4)
 } 

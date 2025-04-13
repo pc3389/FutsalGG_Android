@@ -143,6 +143,8 @@ class JoinTeamViewModel @Inject constructor(
                                 Team(
                                     id = team.id,
                                     name = team.name,
+                                    leaderName = team.leaderName,
+                                    memberCount = team.memberCount,
                                     createdTime = team.createdTime
                                 )
                             }

@@ -1,9 +1,8 @@
-package com.futsalgg.app.presentation.user.profile
+package com.futsalgg.app.presentation.setting
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.futsalgg.app.domain.common.error.DomainError
-import com.futsalgg.app.domain.user.model.User
 import com.futsalgg.app.domain.user.usecase.GetMyProfileUseCase
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.error.toUiError
@@ -16,25 +15,24 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MyProfileViewModel @Inject constructor(
+class SettingViewModel @Inject constructor(
     private val getMyProfileUseCase: GetMyProfileUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
-    private val _profileState = MutableStateFlow(ProfileUserState())
-    val profileState: StateFlow<ProfileUserState> = _profileState.asStateFlow()
+    private val _settingState = MutableStateFlow(SettingState())
+    val settingState: StateFlow<SettingState> = _settingState.asStateFlow()
 
     fun getProfile(accessToken: String) {
         viewModelScope.launch {
             _uiState.value = UiState.Loading
             getMyProfileUseCase(accessToken)
                 .onSuccess { user ->
-                    _profileState.value = ProfileUserState(
+                    _settingState.value = SettingState(
                         email = user.email,
                         name = user.name,
-                        squadNumber = user.squadNumber,
                         notification = user.notification,
                         profileUrl = user.profileUrl
                     )
