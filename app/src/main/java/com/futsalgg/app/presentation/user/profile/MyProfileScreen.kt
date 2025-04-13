@@ -35,7 +35,7 @@ import com.futsalgg.app.ui.theme.FutsalggTypography
 @Composable
 fun MyProfileScreen(
     navController: NavController,
-    viewModel: MyProfielViewModel = hiltViewModel()
+    viewModel: MyProfileViewModel = hiltViewModel()
 ) {
     // TODO API 보류..!
 

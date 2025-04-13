@@ -3,6 +3,7 @@ package com.futsalgg.app.remote.api.user
 import com.futsalgg.app.remote.api.user.model.request.CreateUserRequest
 import com.futsalgg.app.remote.api.user.model.request.UpdateProfilePhotoRequest
 import com.futsalgg.app.remote.api.user.model.request.UpdateNotificationRequest
+import com.futsalgg.app.remote.api.user.model.request.UpdateProfileRequest
 import com.futsalgg.app.remote.api.user.model.response.CheckNicknameResponse
 import com.futsalgg.app.remote.api.user.model.response.ProfilePresignedUrlResponse
 import com.futsalgg.app.remote.api.user.model.response.UpdateProfilePhotoResponse
@@ -51,4 +52,10 @@ interface UserApi {
         @Header("Authorization") accessToken: String,
         @Body request: UpdateNotificationRequest
     ): Response<Unit>
+
+    @PATCH("users/me")
+    suspend fun updateProfile(
+        @Header("Authorization") accessToken: String,
+        @Body request: UpdateProfileRequest
+    ): Response<GetMyProfileResponse>
 }

@@ -3,7 +3,7 @@ package com.futsalgg.app.presentation.setting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.futsalgg.app.domain.common.error.DomainError
-import com.futsalgg.app.domain.user.usecase.GetMyProfileUseCase
+import com.futsalgg.app.domain.user.usecase.GetMyProfileForSettingUseCase
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.error.toUiError
 import com.futsalgg.app.presentation.common.state.UiState
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
-    private val getMyProfileUseCase: GetMyProfileUseCase
+    private val getMyProfileForSettingUseCase: GetMyProfileForSettingUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
@@ -28,7 +28,7 @@ class SettingViewModel @Inject constructor(
     fun getProfile(accessToken: String) {
         viewModelScope.launch {
             _uiState.value = UiState.Loading
-            getMyProfileUseCase(accessToken)
+            getMyProfileForSettingUseCase(accessToken)
                 .onSuccess { user ->
                     _settingState.value = SettingState(
                         email = user.email,

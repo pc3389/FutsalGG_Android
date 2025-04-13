@@ -11,6 +11,7 @@ import com.futsalgg.app.remote.api.user.UserApi
 import com.futsalgg.app.remote.api.user.model.request.CreateUserRequest
 import com.futsalgg.app.remote.api.user.model.request.UpdateNotificationRequest
 import com.futsalgg.app.remote.api.user.model.request.UpdateProfilePhotoRequest
+import com.futsalgg.app.remote.api.user.model.request.UpdateProfileRequest
 import java.io.File
 import java.io.IOException
 import javax.inject.Inject
@@ -240,6 +241,50 @@ class UserRepositoryImpl @Inject constructor(
 
         if (response.isSuccessful) {
             Result.success(Unit)
+        } else {
+            Result.failure(
+                DataError.ServerError(
+                    message = "서버 오류: ${response.code()}",
+                    cause = null
+                ) as Throwable
+            )
+        }
+    } catch (e: IOException) {
+        Result.failure(
+            DataError.NetworkError(
+                message = "네트워크 연결을 확인해주세요.",
+                cause = e
+            ) as Throwable
+        )
+    }
+
+    override suspend fun updateProfile(accessToken: String, name: String, squadNumber: Int?): Result<User> = try {
+        val response = userApi.updateProfile(
+            accessToken = "Bearer $accessToken",
+            request = UpdateProfileRequest(
+                name = name,
+                squadNumber = squadNumber
+            )
+        )
+
+        if (response.isSuccessful) {
+            response.body()?.let { body ->
+                Result.success(
+                    User(
+                        email = body.email,
+                        name = body.name,
+                        squadNumber = body.squadNumber,
+                        profileUrl = body.profileUrl,
+                        notification = body.notification,
+                        createdTime = body.createdTime
+                    )
+                )
+            } ?: Result.failure(
+                DataError.ServerError(
+                    message = "서버 응답이 비어있습니다.",
+                    cause = null
+                ) as Throwable
+            )
         } else {
             Result.failure(
                 DataError.ServerError(

@@ -30,4 +30,6 @@ interface UserRepository {
     suspend fun getMyProfile(accessToken: String): Result<User>
 
     suspend fun updateNotification(accessToken: String, notification: Boolean): Result<Unit>
+
+    suspend fun updateProfile(accessToken: String, name: String, squadNumber: Int? = null): Result<User>
 } 

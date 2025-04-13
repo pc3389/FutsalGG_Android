@@ -17,6 +17,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -33,6 +35,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -93,6 +96,7 @@ fun SettingScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     VerticalSpacer32()
+
                     Image(
                         modifier = Modifier.size(80.dp),
                         imageVector = ImageVector.vectorResource(R.drawable.default_profile),
@@ -124,13 +128,22 @@ fun SettingScreen(
                                 color = FutsalggColor.mono700
                             )
                         }
-                        Image(
+                        IconButton(
+                            onClick = {
+                                // TODO OnCLick
+                            },
                             modifier = Modifier
                                 .align(Alignment.Center)
-                                .offset(x = (columnWidth / 2 + 32.dp)),
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_edit_24),
-                            contentDescription = ""
-                        )
+                                .offset{ IntOffset(
+                                    x = (columnWidth / 2 + 32.dp).roundToPx(),
+                                    y = 0
+                                ) }
+                        ) {
+                            Image(
+                                imageVector = ImageVector.vectorResource(R.drawable.ic_edit_24),
+                                contentDescription = ""
+                            )
+                        }
                     }
 
                     VerticalSpacer24()
