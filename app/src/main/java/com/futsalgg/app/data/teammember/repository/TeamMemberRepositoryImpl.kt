@@ -3,6 +3,7 @@ package com.futsalgg.app.data.teammember.repository
 import com.futsalgg.app.data.common.error.DataError
 import com.futsalgg.app.data.teammember.mapper.toDomain
 import com.futsalgg.app.domain.teammember.model.TeamMember
+import com.futsalgg.app.domain.teammember.model.TeamMemberProfile
 import com.futsalgg.app.domain.teammember.repository.TeamMemberRepository
 import com.futsalgg.app.remote.api.team.model.request.JoinTeamRequest
 import com.futsalgg.app.remote.api.teammember.TeamMemberApi
@@ -10,7 +11,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 class TeamMemberRepositoryImpl @Inject constructor(
-    private val teamMemberApi: TeamMemberApi
+    private val teamMemberApi: TeamMemberApi,
 ) : TeamMemberRepository {
 
     override suspend fun getTeamMembers(
@@ -53,18 +54,119 @@ class TeamMemberRepositoryImpl @Inject constructor(
     override suspend fun joinTeam(
         accessToken: String,
         teamId: String
-    ): Result<Unit> {
-        return try {
-            val response = teamMemberApi.joinTeam(
-                accessToken = "Bearer $accessToken",
-                request = JoinTeamRequest(teamId)
+    ): Result<Unit> = try {
+        val response = teamMemberApi.joinTeam(
+            accessToken = "Bearer $accessToken",
+            request = JoinTeamRequest(teamId)
+        )
+
+        if (response.isSuccessful) {
+            Result.success(Unit)
+        } else {
+            Result.failure(
+                DataError.ServerError(
+                    message = "서버 오류: ${response.code()}",
+                    cause = null
+                ) as Throwable
             )
+        }
+    } catch (e: IOException) {
+        Result.failure(
+            DataError.NetworkError(
+                message = "네트워크 연결을 확인해주세요.",
+                cause = e
+            ) as Throwable
+        )
+    }
+
+    override suspend fun getMyTeamMember(
+        accessToken: String
+    ): Result<TeamMemberProfile> {
+        return try {
+            val response = teamMemberApi.getMyTeamMember(accessToken)
             if (response.isSuccessful) {
-                Result.success(Unit)
+                response.body()?.let { body ->
+                    Result.success(
+                        TeamMemberProfile(
+                            name = body.name,
+                            birthDate = body.birthDate,
+                            createdTime = body.createdTime,
+                            team = TeamMemberProfile.TeamInfo(
+                                id = body.team.id,
+                                name = body.team.name,
+                                role = body.team.role
+                            ),
+                            match = TeamMemberProfile.MatchInfo(
+                                total = body.match.total,
+                                history = body.match.history.map { history ->
+                                    TeamMemberProfile.MatchInfo.MatchHistory(
+                                        id = history.id,
+                                        result = history.result.toDomain()
+                                    )
+                                }
+                            )
+                        )
+                    )
+                } ?: Result.failure(
+                    DataError.ServerError(
+                        message = "서버 응답이 비어있습니다.",
+                        cause = null
+                    ) as Throwable
+                )
             } else {
                 Result.failure(
                     DataError.ServerError(
-                        message = "팀 가입 실패: ${response.code()}",
+                        message = "서버 오류: ${response.code()}",
+                        cause = null
+                    ) as Throwable
+                )
+            }
+        } catch (e: IOException) {
+            Result.failure(
+                DataError.NetworkError(
+                    message = "네트워크 연결을 확인해주세요.",
+                    cause = e
+                ) as Throwable
+            )
+        }
+    }
+
+    override suspend fun getTeamMember(accessToken: String, id: String): Result<TeamMemberProfile> {
+        return try {
+            val response = teamMemberApi.getTeamMember(accessToken, id)
+            if (response.isSuccessful) {
+                response.body()?.let { body ->
+                    Result.success(
+                        TeamMemberProfile(
+                            name = body.name,
+                            birthDate = body.birthDate,
+                            createdTime = body.createdTime,
+                            team = TeamMemberProfile.TeamInfo(
+                                id = body.team.id,
+                                name = body.team.name,
+                                role = body.team.role
+                            ),
+                            match = TeamMemberProfile.MatchInfo(
+                                total = body.match.total,
+                                history = body.match.history.map { history ->
+                                    TeamMemberProfile.MatchInfo.MatchHistory(
+                                        id = history.id,
+                                        result = history.result.toDomain()
+                                    )
+                                }
+                            )
+                        )
+                    )
+                } ?: Result.failure(
+                    DataError.ServerError(
+                        message = "서버 응답이 비어있습니다.",
+                        cause = null
+                    ) as Throwable
+                )
+            } else {
+                Result.failure(
+                    DataError.ServerError(
+                        message = "서버 오류: ${response.code()}",
                         cause = null
                     ) as Throwable
                 )

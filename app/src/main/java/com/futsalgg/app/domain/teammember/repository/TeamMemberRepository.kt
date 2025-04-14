@@ -1,6 +1,7 @@
 package com.futsalgg.app.domain.teammember.repository
 
 import com.futsalgg.app.domain.teammember.model.TeamMember
+import com.futsalgg.app.domain.teammember.model.TeamMemberProfile
 
 interface TeamMemberRepository {
     suspend fun getTeamMembers(
@@ -13,4 +14,13 @@ interface TeamMemberRepository {
         accessToken: String,
         teamId: String
     ): Result<Unit>
+
+    suspend fun getMyTeamMember(
+        accessToken: String
+    ): Result<TeamMemberProfile>
+
+    suspend fun getTeamMember(
+        accessToken: String,
+        id: String
+    ): Result<TeamMemberProfile>
 } 
