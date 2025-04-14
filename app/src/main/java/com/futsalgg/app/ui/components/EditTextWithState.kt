@@ -1,6 +1,5 @@
 package com.futsalgg.app.ui.components
 
-import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -42,7 +41,7 @@ fun EditTextWithState(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    hint: String = stringResource(R.string.signup_nickname_hint),
+    hint: String = stringResource(R.string.nickname_hint),
     state: EditTextState = EditTextState.Initial,
     messageProvider: (EditTextState) -> String? = { null },
     trailingIcon: ImageVector? = null,

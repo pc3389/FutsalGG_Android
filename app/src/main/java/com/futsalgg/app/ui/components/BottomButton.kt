@@ -13,13 +13,16 @@ fun BottomButton(
     modifier: Modifier = Modifier,
     text: String,
     onClick: () -> Unit,
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    hasDivider: Boolean = true
 ) {
     Box(modifier = modifier) {
-        HorizontalDivider(
-            thickness = 1.dp,
-            color = FutsalggColor.mono400
-        )
+        if (hasDivider) {
+            HorizontalDivider(
+                thickness = 1.dp,
+                color = FutsalggColor.mono400
+            )
+        }
 
         SingleButton(
             modifier = Modifier.padding(16.dp),

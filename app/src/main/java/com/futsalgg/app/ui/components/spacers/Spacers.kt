@@ -12,6 +12,11 @@ fun VerticalSpacer56() {
 }
 
 @Composable
+fun VerticalSpacer4() {
+    Spacer(Modifier.height(4.dp))
+}
+
+@Composable
 fun VerticalSpacer8() {
     Spacer(Modifier.height(8.dp))
 }

@@ -13,6 +13,7 @@ import com.futsalgg.app.domain.user.usecase.CreateUserUseCase
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.error.toUiError
 import com.futsalgg.app.presentation.common.state.DateState
+import com.futsalgg.app.presentation.user.util.NicknameChecker
 import com.futsalgg.app.util.isValidDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,7 +29,8 @@ import javax.inject.Inject
 @HiltViewModel
 class CreateUserViewModel @Inject constructor(
     private val createUserUseCase: CreateUserUseCase,
-    private val tokenManager: ITokenManager
+    private val tokenManager: ITokenManager,
+    private val nicknameChecker: NicknameChecker
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
@@ -73,53 +75,19 @@ class CreateUserViewModel @Inject constructor(
     }
 
     internal fun checkNicknameDuplication() {
-        val currentNickname = _createUserState.value.nickname
-
-        if (!currentNickname.matches(Regex("^[ㄱ-힣]+$"))) {
-            _createUserState.value = _createUserState.value.copy(
-                nicknameState = EditTextState.ErrorCannotUse
-            )
-            return
-        }
-
         viewModelScope.launch {
             _uiState.value = UiState.Loading
-            
-            try {
-                val result = createUserUseCase.isNicknameUnique(currentNickname)
-                result.fold(
-                    onSuccess = { isUnique ->
-                        _createUserState.value = _createUserState.value.copy(
-                            nicknameState = if (isUnique) {
-                                EditTextState.Available
-                            } else {
-                                EditTextState.ErrorAlreadyExisting
-                            }
-                        )
-                        _uiState.value = UiState.Success
-                    },
-                    onFailure = { error ->
-                        Log.e(
-                            "CreateUserViewModel",
-                            "Nickname check 에러: ${error.message}",
-                            error
-                        )
-                        _uiState.value = UiState.Error(
-                            (error as? DomainError)?.toUiError()
-                                ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
-                        )
-                        _createUserState.value = _createUserState.value.copy(
-                            nicknameState = EditTextState.ErrorAlreadyExisting
-                        )
-                    }
-                )
-            } catch (e: Exception) {
-                Log.e("CreateUserViewModel", "Exception during nickname check", e)
-                _uiState.value = UiState.Error(UiError.UnknownError("알 수 없는 오류가 발생했습니다."))
-                _createUserState.value = _createUserState.value.copy(
-                    nicknameState = EditTextState.ErrorAlreadyExisting
-                )
-            }
+            nicknameChecker.checkNickname(
+                nickname = _createUserState.value.nickname,
+                onStateUpdate = { newState ->
+                    _createUserState.value = _createUserState.value.copy(
+                        nicknameState = newState
+                    )
+                },
+                onUiStateUpdate = { newState ->
+                    _uiState.value = newState
+                }
+            )
         }
     }
 

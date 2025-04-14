@@ -128,7 +128,7 @@ fun CreateUserScreen(
                     nicknameState = createUserState.nicknameState,
                     onNicknameChange = viewModel::onNicknameChange,
                     nicknameCheck = { viewModel.checkNicknameDuplication() },
-                    isCheckEnabled = createUserState.nickname.isNotEmpty()
+                    isCheckEnabled = createUserState.isNicknameCheckEnabled
                 )
 
                 Spacer(Modifier.height(26.dp))

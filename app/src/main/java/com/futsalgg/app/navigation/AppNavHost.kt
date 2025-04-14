@@ -23,6 +23,7 @@ import com.futsalgg.app.presentation.team.createteam.CreateTeamScreen
 import com.futsalgg.app.presentation.team.createteam.CreateTeamViewModel
 import com.futsalgg.app.presentation.team.jointeam.JoinTeamScreen
 import com.futsalgg.app.presentation.user.profile.MyProfileScreen
+import com.futsalgg.app.presentation.user.updateprofile.UpdateProfileScreen
 
 @Composable
 fun AppNavHost(
@@ -39,7 +40,8 @@ fun AppNavHost(
 //        startDestination = Screen.JoinTeam.route
 //        startDestination = Screen.Main.route
 //        startDestination = Screen.MyProfile.route
-        startDestination = Screen.Setting.route
+//        startDestination = Screen.Setting.route
+        startDestination = Screen.UpdateProfile.route
     ) {
         composable(Screen.Login.route) {
             LoginScreen(
@@ -76,6 +78,9 @@ fun AppNavHost(
         }
         composable(Screen.Setting.route) {
             SettingScreen(navController)
+        }
+        composable(Screen.UpdateProfile.route) {
+            UpdateProfileScreen(navController)
         }
         composable(
             route = "cropImage?uri={uri}&viewModelType={viewModelType}",

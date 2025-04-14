@@ -16,6 +16,9 @@ data class CreateUserState(
     val notificationChecked: Boolean = false,
     val errorMessage: String? = null
 ) {
+    val isNicknameCheckEnabled: Boolean
+        get() = nickname.length > 2
+
     val isFormValid: Boolean
         get() = nicknameState == EditTextState.Available && 
                 birthdayState == DateState.Available

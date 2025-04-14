@@ -28,6 +28,8 @@ import com.futsalgg.app.domain.user.usecase.GetMyProfileForSettingUseCase
 import com.futsalgg.app.domain.user.usecase.GetMyProfileForSettingUseCaseImpl
 import com.futsalgg.app.domain.user.usecase.UpdateNotificationUseCase
 import com.futsalgg.app.domain.user.usecase.UpdateNotificationUseCaseImpl
+import com.futsalgg.app.domain.user.usecase.UpdateProfileUseCase
+import com.futsalgg.app.domain.user.usecase.UpdateProfileUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -125,5 +127,13 @@ object UseCaseModule {
         userRepository: UserRepository
     ): UpdateNotificationUseCase {
         return UpdateNotificationUseCaseImpl(userRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUpdateProfileUseCase(
+        userRepository: UserRepository
+    ): UpdateProfileUseCase {
+        return UpdateProfileUseCaseImpl(userRepository)
     }
 }

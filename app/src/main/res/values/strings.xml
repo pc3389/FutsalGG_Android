@@ -15,6 +15,8 @@
     <string name="cancel_text">취소</string>
     <string name="apply_text">신청</string>
     <string name="setting_text">설정</string>
+    <string name="nickname_text">닉네임</string>
+    <string name="nickname_hint">사용할 닉네임을 입력해주세요.</string>
 
     <!--  T&C  -->
     <string name="terms_and_condition_title">이용약관 동의</string>
@@ -25,8 +27,6 @@
 
     <!--  SignUp  -->
     <string name="signup_toolbar_title">회원가입</string>
-    <string name="signup_nickname">닉네임</string>
-    <string name="signup_nickname_hint">사용하실 닉네임을 입력해주세요.</string>
     <string name="signup_nickname_error_message_cannot_use">영어, 특수 문자는 사용 불가합니다.</string>
     <string name="signup_nickname_error_message_already">이미 존재하는 닉네임입니다.</string>
     <string name="signup_nickname_available">사용 가능한 닉네임입니다.</string>
@@ -72,4 +72,10 @@
     <!-- MyProfile -->
     <string name="my_profile_title">내 정보 보기</string>
     <string name="my_profile_back_number_label">No.</string>
+
+    <!-- UpdateMyProfile -->
+    <string name="update_profile_title">내 정보 수정하기</string>
+    <string name="squad_number_title">등 번호</string>
+    <string name="squad_number_hint">사용하실 등 번호를 입력해주세요.</string>
+    <string name="squad_number_button_text">수정완료</string>
 </resources>

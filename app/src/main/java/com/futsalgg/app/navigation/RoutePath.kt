@@ -11,4 +11,5 @@ object RoutePath {
     const val JOIN_TEAM = "JoinTeam"
     const val MY_PROFILE = "MyProfile"
     const val SETTING = "Setting"
+    const val UPDATE_PROFILE = "UpdateProfile"
 }

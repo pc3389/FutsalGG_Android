@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.futsalgg.app.R
 import com.futsalgg.app.ui.theme.FutsalggColor
@@ -23,6 +24,7 @@ import com.futsalgg.app.ui.theme.FutsalggColor
 @Composable
 fun ProfileImageWithCameraButton(
     image: Painter = painterResource(R.drawable.default_profile),
+    imageSize: Dp = 120.dp,
     onCameraClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -36,7 +38,7 @@ fun ProfileImageWithCameraButton(
                 painter = image,
                 contentDescription = "Profile Image",
                 modifier = Modifier
-                    .size(120.dp)
+                    .size(imageSize)
                     .clip(CircleShape)
                     .border(2.dp, FutsalggColor.mono200, CircleShape)
             )
