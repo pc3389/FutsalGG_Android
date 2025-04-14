@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.HorizontalDivider
@@ -56,6 +57,7 @@ fun ProfileImageCropScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(FutsalggColor.mono900)
+            .windowInsetsPadding(WindowInsets.systemBars)
             .windowInsetsPadding(WindowInsets.navigationBars)
     ) {
         // 이미지 조작 가능한 캔버스
@@ -79,7 +81,6 @@ fun ProfileImageCropScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
                 .align(Alignment.TopCenter),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
@@ -92,9 +93,7 @@ fun ProfileImageCropScreen(
                 )
             }
 
-            Text(
-                text = stringResource(R.string.select_long),
-                color = FutsalggColor.mint500,
+            Box(
                 modifier = Modifier.clickable {
                     cropImageFromUri(
                         context = context,
@@ -106,7 +105,17 @@ fun ProfileImageCropScreen(
                         onCropped = onConfirm
                     )
                 }
-            )
+            ) {
+                Text(
+                    text = stringResource(R.string.select_long),
+                    color = FutsalggColor.mint500,
+                    modifier = Modifier
+                        .padding(
+                            horizontal = 16.dp,
+                            vertical = 12.dp
+                        )
+                )
+            }
         }
 
         Column(

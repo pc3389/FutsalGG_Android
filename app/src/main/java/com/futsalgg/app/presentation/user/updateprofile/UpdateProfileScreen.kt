@@ -12,16 +12,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.futsalgg.app.R
+import com.futsalgg.app.navigation.RoutePath
+import com.futsalgg.app.presentation.common.imagecrop.rememberImagePickerLauncher
 import com.futsalgg.app.presentation.common.screen.BaseScreen
 import com.futsalgg.app.presentation.user.util.NicknameContents
 import com.futsalgg.app.ui.components.BottomButton
@@ -44,6 +50,12 @@ fun UpdateProfileScreen(
     val state = viewModel.profileState.collectAsState()
     val context = LocalContext.current
 
+    val launchGalleryWithPermission = rememberImagePickerLauncher(
+        navController = navController,
+        viewModelType = RoutePath.UPDATE_PROFILE,
+        context = context
+    )
+
     BaseScreen(
         navController = navController,
         title = stringResource(R.string.update_profile_title),
@@ -62,7 +74,7 @@ fun UpdateProfileScreen(
         ) {
             Column(
                 modifier = Modifier.padding(horizontal = 16.dp)
-            ){
+            ) {
                 Box(
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -74,10 +86,15 @@ fun UpdateProfileScreen(
                             .padding(top = 16.dp)
                             .align(Alignment.TopEnd)
                     )
+
+                    val croppedImage = state.value.croppedProfileImage
+
                     ProfileImageWithCameraButton(
                         modifier = Modifier.padding(top = 40.dp),
-                        onCameraClick =
-                        {},
+                        image = croppedImage?.asImageBitmap()
+                            ?.let { remember { BitmapPainter(it) } }
+                            ?: painterResource(R.drawable.default_profile),
+                        onCameraClick = launchGalleryWithPermission,
                     )
                 }
 
@@ -107,11 +124,13 @@ fun UpdateProfileScreen(
                 VerticalSpacer8()
 
                 EditTextBox(
-                    value = state.value.squadNumber.toString(),
+                    value = state.value.squadNumber?.toString() ?: "",
                     onValueChange = viewModel::updateSquadNumber,
                     hint = stringResource(R.string.nickname_hint),
+                    onImeAction = { focusManager.clearFocus() },
                     singleLine = true,
                     isNumeric = true,
+                    hasDecimal = false
                 )
             }
             BottomButton(

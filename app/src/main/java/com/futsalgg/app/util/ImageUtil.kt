@@ -1,6 +1,8 @@
 package com.futsalgg.app.util
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
@@ -9,8 +11,10 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.Rect
 import android.net.Uri
+import android.os.Build
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Dp
+import androidx.core.content.ContextCompat
 import java.io.File
 import java.io.FileOutputStream
 

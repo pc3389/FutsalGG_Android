@@ -1,5 +1,6 @@
 package com.futsalgg.app.presentation.user.updateprofile
 
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -37,6 +38,12 @@ class UpdateProfileViewModel @Inject constructor(
     fun updateSquadNumber(newSquadNumber: String?) {
         _profileState.value = _profileState.value.copy(
             squadNumber = if (newSquadNumber.isNullOrEmpty()) null else newSquadNumber.toInt()
+        )
+    }
+
+    internal fun setCroppedImage(bitmap: Bitmap) {
+        _profileState.value = _profileState.value.copy(
+            croppedProfileImage = bitmap
         )
     }
 

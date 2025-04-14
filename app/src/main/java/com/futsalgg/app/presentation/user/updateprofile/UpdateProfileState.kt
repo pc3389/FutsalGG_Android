@@ -1,5 +1,6 @@
 package com.futsalgg.app.presentation.user.updateprofile
 
+import android.graphics.Bitmap
 import com.futsalgg.app.presentation.common.state.EditTextState
 
 data class UpdateProfileState(
@@ -7,6 +8,7 @@ data class UpdateProfileState(
     val nickname: String,
     val nicknameState: EditTextState = EditTextState.Initial,
     val squadNumber: Int?,
+    val croppedProfileImage: Bitmap? = null,
     val profileUrl: String?,
     val notification: Boolean,
     val createdTime: String

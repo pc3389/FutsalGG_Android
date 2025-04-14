@@ -1,13 +1,5 @@
 package com.futsalgg.app.presentation.team.createteam
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.net.Uri
-import android.os.Build
-import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -22,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -42,6 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.futsalgg.app.R
 import com.futsalgg.app.navigation.RoutePath
+import com.futsalgg.app.presentation.common.imagecrop.rememberImagePickerLauncher
 import com.futsalgg.app.presentation.common.screen.BaseScreen
 import com.futsalgg.app.presentation.common.screen.LoadingScreen
 import com.futsalgg.app.presentation.common.state.UiState
@@ -71,47 +63,11 @@ fun CreateTeamScreen(
     val createTeamState by viewModel.createTeamState.collectAsState()
     val uiState by viewModel.uiState.collectAsState()
 
-    val imagePickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult = { uri: Uri? ->
-            uri?.let {
-                navController.navigate(
-                    "cropImage?uri=${Uri.encode(it.toString())}&viewModelType=${RoutePath.CREATE_TEAM}"
-                )
-            }
-        }
+    val launchGalleryWithPermission = rememberImagePickerLauncher(
+        navController = navController,
+        viewModelType = RoutePath.CREATE_TEAM,
+        context = context
     )
-
-    val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission(),
-        onResult = { isGranted ->
-            if (isGranted) {
-                imagePickerLauncher.launch("image/*")
-            } else {
-                Toast.makeText(context, "앨범 접근 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
-            }
-        }
-    )
-
-    val launchGalleryWithPermission = remember {
-        {
-            val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                Manifest.permission.READ_MEDIA_IMAGES
-            } else {
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            }
-
-            if (ContextCompat.checkSelfPermission(
-                    context,
-                    permission
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                imagePickerLauncher.launch("image/*")
-            } else {
-                permissionLauncher.launch(permission)
-            }
-        }
-    }
 
     BaseScreen(
         navController = navController,

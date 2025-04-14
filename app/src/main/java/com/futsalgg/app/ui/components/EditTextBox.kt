@@ -38,6 +38,7 @@ fun EditTextBox(
     maxLines: Int = 1,
     minLines: Int = 1,
     isNumeric: Boolean = false,
+    hasDecimal: Boolean = true,
     maxLength: Int? = null
 ) {
     //TODO MaxLength!!
@@ -55,7 +56,7 @@ fun EditTextBox(
             BasicTextField(
                 value = value,
                 onValueChange = {
-                    if (!isNumeric || it.all { c -> c.isDigit() || c == '.' }) {
+                    if (!isNumeric || it.all { c -> c.isDigit() ||  (hasDecimal && c == '.')  }) {
                         onValueChange(it)
                     }
                 },

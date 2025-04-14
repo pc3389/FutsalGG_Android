@@ -23,7 +23,6 @@ fun ProfilePictureUi(
     image: Painter = painterResource(R.drawable.default_profile),
     croppedImage: Bitmap?,
     onSelectImageClick: () -> Unit,
-
     ) {
     TextWithInfoIcon(
         text = titleText,

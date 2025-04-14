@@ -1,12 +1,5 @@
 package com.futsalgg.app.presentation.user.createuser
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.net.Uri
-import android.os.Build
-import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -22,18 +15,17 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.futsalgg.app.R
 import com.futsalgg.app.navigation.RoutePath
+import com.futsalgg.app.presentation.common.imagecrop.rememberImagePickerLauncher
 import com.futsalgg.app.presentation.common.screen.BaseScreen
 import com.futsalgg.app.presentation.user.createuser.components.BirthdayUi
 import com.futsalgg.app.presentation.user.createuser.components.GenderUi
@@ -56,47 +48,12 @@ fun CreateUserScreen(
     val createUserState by viewModel.createUserState.collectAsState()
     val uiState by viewModel.uiState.collectAsState()
 
-    val imagePickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult = { uri: Uri? ->
-            uri?.let {
-                navController.navigate(
-                    "cropImage?uri=${Uri.encode(it.toString())}&viewModelType=${RoutePath.CREATE_USER}"
-                )
-            }
-        }
+
+    val launchGalleryWithPermission = rememberImagePickerLauncher(
+        navController = navController,
+        viewModelType = RoutePath.CREATE_USER,
+        context = context
     )
-
-    val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission(),
-        onResult = { isGranted ->
-            if (isGranted) {
-                imagePickerLauncher.launch("image/*")
-            } else {
-                Toast.makeText(context, "앨범 접근 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
-            }
-        }
-    )
-
-    val launchGalleryWithPermission = remember {
-        {
-            val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                Manifest.permission.READ_MEDIA_IMAGES
-            } else {
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            }
-
-            if (ContextCompat.checkSelfPermission(
-                    context,
-                    permission
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                imagePickerLauncher.launch("image/*")
-            } else {
-                permissionLauncher.launch(permission)
-            }
-        }
-    }
 
     val scrollState = rememberScrollState()
 
