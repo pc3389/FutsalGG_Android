@@ -35,7 +35,8 @@ fun NicknameContents(
     val messageProvider = remember {
         { state: EditTextState ->
             when (state) {
-                EditTextState.ErrorCannotUse -> context.getString(R.string.signup_nickname_error_message_cannot_use)
+                EditTextState.ErrorCannotUseSlang -> context.getString(R.string.signup_nickname_error_message_cannot_use_slang)
+                EditTextState.ErrorCannotUseSpecialChar -> context.getString(R.string.signup_nickname_error_message_cannot_use_special_char)
                 EditTextState.ErrorAlreadyExisting -> context.getString(R.string.signup_nickname_error_message_already)
                 EditTextState.Available -> context.getString(R.string.signup_nickname_available)
                 else -> null

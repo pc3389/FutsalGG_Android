@@ -4,6 +4,7 @@ enum class EditTextState {
     Initial,
     Default,
     ErrorAlreadyExisting,
-    ErrorCannotUse,
+    ErrorCannotUseSpecialChar,
+    ErrorCannotUseSlang,
     Available
 }

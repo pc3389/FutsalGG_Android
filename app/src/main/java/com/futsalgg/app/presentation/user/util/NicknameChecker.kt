@@ -8,6 +8,10 @@ import com.futsalgg.app.presentation.common.error.toUiError
 import com.futsalgg.app.presentation.common.state.EditTextState
 import com.futsalgg.app.presentation.common.state.UiState
 
+val slangList: List<String> = listOf(
+    "시발", "씨발", "병신", "새끼", "개새끼", "미친놈", "지랄", "좆밥", "니애미", "느금마", "창녀", "매춘부"
+)
+
 class NicknameChecker(
     private val userRepository: UserRepository
 ) {
@@ -16,10 +20,14 @@ class NicknameChecker(
         onStateUpdate: (EditTextState) -> Unit,
         onUiStateUpdate: (UiState) -> Unit
     ) {
-        if (!nickname.matches(Regex("^[ㄱ-힣]+$"))) {
-            onStateUpdate(EditTextState.ErrorCannotUse)
+        if (!nickname.matches(Regex("^[a-zA-Z가-힣0-9\\s\\-_]+$"))) {
+            onStateUpdate(EditTextState.ErrorCannotUseSpecialChar)
             onUiStateUpdate(UiState.Initial)
             return
+        }
+        if (slangList.any {nickname.contains(it)}) {
+            onStateUpdate(EditTextState.ErrorCannotUseSlang)
+            onUiStateUpdate(UiState.Initial)
         }
 
         try {

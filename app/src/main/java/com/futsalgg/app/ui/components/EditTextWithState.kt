@@ -60,7 +60,8 @@ fun EditTextWithState(
     val borderColor = when (state) {
         EditTextState.Initial -> FutsalggColor.mono500
         EditTextState.Default -> FutsalggColor.mono500
-        EditTextState.ErrorCannotUse,
+        EditTextState.ErrorCannotUseSlang,
+        EditTextState.ErrorCannotUseSpecialChar,
         EditTextState.ErrorAlreadyExisting -> FutsalggColor.orange
         EditTextState.Available -> FutsalggColor.mint500
     }
@@ -148,24 +149,4 @@ fun EditTextWithState(
             )
         }
     }
-}
-
-@Preview
-@Composable
-fun PreviewEditTextWithState() {
-    val context = LocalContext.current
-    EditTextWithState(
-        value = "텍스트 테스팅",
-//        value = "",
-        onValueChange = {},
-        state = EditTextState.ErrorCannotUse,
-        messageProvider = { st ->
-            when (st) {
-                EditTextState.ErrorCannotUse -> context.getString(R.string.signup_nickname_error_message_cannot_use)
-                EditTextState.ErrorAlreadyExisting -> context.getString(R.string.signup_nickname_error_message_already)
-                EditTextState.Available -> context.getString(R.string.signup_nickname_available)
-                else -> null
-            }
-        }
-    )
 }

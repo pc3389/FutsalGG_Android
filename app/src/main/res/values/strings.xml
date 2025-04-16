@@ -27,7 +27,8 @@
 
     <!--  SignUp  -->
     <string name="signup_toolbar_title">회원가입</string>
-    <string name="signup_nickname_error_message_cannot_use">영어, 특수 문자는 사용 불가합니다.</string>
+    <string name="signup_nickname_error_message_cannot_use_special_char">특수 문자는 사용 불가합니다.</string>
+    <string name="signup_nickname_error_message_cannot_use_slang">부적절한 단어가 입력되었습니다.</string>
     <string name="signup_nickname_error_message_already">이미 존재하는 닉네임입니다.</string>
     <string name="signup_nickname_available">사용 가능한 닉네임입니다.</string>
     <string name="signup_birthday">생년월일</string>

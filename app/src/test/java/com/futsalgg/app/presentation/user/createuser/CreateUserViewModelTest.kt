@@ -70,7 +70,7 @@ class CreateUserViewModelTest {
         advanceUntilIdle()
 
         // then
-        assertEquals(EditTextState.ErrorCannotUse, viewModel.createUserState.value.nicknameState)
+        assertEquals(EditTextState.ErrorCannotUseSpecialChar, viewModel.createUserState.value.nicknameState)
     }
 
     /**
