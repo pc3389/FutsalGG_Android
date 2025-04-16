@@ -1,7 +1,6 @@
 package com.futsalgg.app.data.match.repository
 
 import com.futsalgg.app.data.common.error.DataError
-import com.futsalgg.app.data.match.mapper.toData
 import com.futsalgg.app.data.match.mapper.toDomain
 import com.futsalgg.app.domain.match.repository.MatchRepository
 import com.futsalgg.app.domain.common.model.MatchType as DomainMatchType
@@ -27,7 +26,7 @@ class MatchRepositoryImpl @Inject constructor(
         
         if (response.isSuccessful) {
             response.body()?.let { body ->
-                Result.success(body.matches.map { it.toData().toDomain() })
+                Result.success(body.matches.map { it.toDomain() })
             } ?: Result.failure(
                 DataError.ServerError(
                     message = "서버 응답이 비어있습니다.",
@@ -110,7 +109,7 @@ class MatchRepositoryImpl @Inject constructor(
         
         if (response.isSuccessful) {
             response.body()?.let { body ->
-                Result.success(body.toData().toDomain())
+                Result.success(body.toDomain())
             } ?: Result.failure(
                 DataError.ServerError(
                     message = "서버 응답이 비어있습니다.",

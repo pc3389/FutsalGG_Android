@@ -3,6 +3,8 @@ package com.futsalgg.app.remote.api.match
 import com.futsalgg.app.remote.api.match.model.request.CreateMatchRequest
 import com.futsalgg.app.remote.api.match.model.response.GetMatchesResponse
 import com.futsalgg.app.remote.api.match.model.response.MatchResponse
+import com.futsalgg.app.remote.model.match.CreateMatchParticipantsRequest
+import com.futsalgg.app.remote.model.match.CreateMatchParticipantsResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -31,4 +33,10 @@ interface MatchApi {
         @Header("Authorization") authHeader: String,
         @Body request: CreateMatchRequest
     ): Response<MatchResponse>
+
+    @POST("match-participants")
+    suspend fun createMatchParticipants(
+        @Header("Authorization") accessToken: String,
+        @Body request: CreateMatchParticipantsRequest
+    ): Response<CreateMatchParticipantsResponse>
 }
