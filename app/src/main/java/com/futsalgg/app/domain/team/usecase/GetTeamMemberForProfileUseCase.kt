@@ -1,6 +1,6 @@
-package com.futsalgg.app.domain.teammember.usecase
+package com.futsalgg.app.domain.team.usecase
 
-import com.futsalgg.app.domain.teammember.model.TeamMemberProfile
+import com.futsalgg.app.domain.team.model.TeamMemberProfile
 
 interface GetTeamMemberForProfileUseCase {
     suspend operator fun invoke(

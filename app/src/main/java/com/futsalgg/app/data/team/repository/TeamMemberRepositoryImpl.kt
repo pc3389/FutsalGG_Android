@@ -1,14 +1,14 @@
-package com.futsalgg.app.data.teammember.repository
+package com.futsalgg.app.data.team.repository
 
 import com.futsalgg.app.data.common.error.DataError
-import com.futsalgg.app.data.teammember.mapper.toDomain
-import com.futsalgg.app.domain.teammember.model.TeamMember
-import com.futsalgg.app.domain.teammember.model.TeamMemberProfile
+import com.futsalgg.app.data.team.mapper.toDomain
+import com.futsalgg.app.domain.team.model.TeamMember
+import com.futsalgg.app.domain.team.model.TeamMemberProfile
 import com.futsalgg.app.domain.team.model.TeamRole
-import com.futsalgg.app.domain.teammember.repository.TeamMemberRepository
+import com.futsalgg.app.domain.team.repository.TeamMemberRepository
 import com.futsalgg.app.remote.api.team.model.TeamRole as RemoteTeamRole
 import com.futsalgg.app.remote.api.team.model.request.JoinTeamRequest
-import com.futsalgg.app.remote.api.teammember.TeamMemberApi
+import com.futsalgg.app.remote.api.team.TeamMemberApi
 import java.io.IOException
 import javax.inject.Inject
 

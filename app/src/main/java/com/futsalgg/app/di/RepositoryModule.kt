@@ -5,14 +5,14 @@ import com.futsalgg.app.data.file.repository.OkHttpFileUploaderImpl
 import com.futsalgg.app.data.match.repository.MatchParticipantRepositoryImpl
 import com.futsalgg.app.data.match.repository.MatchRepositoryImpl
 import com.futsalgg.app.data.team.repository.TeamRepositoryImpl
-import com.futsalgg.app.data.teammember.repository.TeamMemberRepositoryImpl
+import com.futsalgg.app.data.team.repository.TeamMemberRepositoryImpl
 import com.futsalgg.app.data.user.repository.UserRepositoryImpl
 import com.futsalgg.app.domain.auth.repository.AuthRepository
 import com.futsalgg.app.domain.file.repository.OkHttpFileUploader
 import com.futsalgg.app.domain.match.repository.MatchParticipantRepository
 import com.futsalgg.app.domain.match.repository.MatchRepository
 import com.futsalgg.app.domain.team.repository.TeamRepository
-import com.futsalgg.app.domain.teammember.repository.TeamMemberRepository
+import com.futsalgg.app.domain.team.repository.TeamMemberRepository
 import com.futsalgg.app.domain.user.repository.UserRepository
 import dagger.Binds
 import dagger.Module

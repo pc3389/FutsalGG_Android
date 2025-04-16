@@ -1,4 +1,4 @@
-package com.futsalgg.app.domain.teammember.model
+package com.futsalgg.app.domain.team.model
 
 data class TeamMember(
     val id: String,

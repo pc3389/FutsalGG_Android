@@ -1,6 +1,6 @@
-package com.futsalgg.app.domain.teammember.usecase
+package com.futsalgg.app.domain.team.usecase
 
-import com.futsalgg.app.domain.teammember.repository.TeamMemberRepository
+import com.futsalgg.app.domain.team.repository.TeamMemberRepository
 import javax.inject.Inject
 
 class JoinTeamUseCaseImpl @Inject constructor(

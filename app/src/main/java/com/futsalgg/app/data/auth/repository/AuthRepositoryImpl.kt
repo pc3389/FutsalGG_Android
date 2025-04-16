@@ -1,5 +1,6 @@
 package com.futsalgg.app.data.auth.repository
 
+import android.util.Log
 import com.futsalgg.app.remote.api.auth.model.request.LoginRequest
 import com.futsalgg.app.domain.auth.model.Platform
 import com.futsalgg.app.domain.auth.model.LoginResponseModel
@@ -20,9 +21,14 @@ class AuthRepositoryImpl @Inject constructor(
 ) : AuthRepository {
     private val auth: FirebaseAuth = Firebase.auth
 
-    override suspend fun loginWithGoogleToken(token: String, platform: Platform): Result<LoginResponseModel> {
+    override suspend fun loginWithGoogleToken(
+        token: String,
+        platform: Platform
+    ): Result<LoginResponseModel> {
         return try {
             val request = LoginRequest(token = token, platform = platform.name)
+            Log.d("Login Token", token)
+            Log.d("Login", Platform.GOOGLE.name)
             val response = authApi.login(request)
 
             if (response.isSuccessful && response.body() != null) {

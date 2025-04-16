@@ -1,10 +1,13 @@
 package com.futsalgg.app.di
 
+import android.util.Log
 import com.futsalgg.app.remote.api.auth.AuthApi
 import com.futsalgg.app.remote.api.match.MatchApi
 import com.futsalgg.app.remote.api.team.TeamApi
-import com.futsalgg.app.remote.api.teammember.TeamMemberApi
+import com.futsalgg.app.remote.api.team.TeamMemberApi
 import com.futsalgg.app.remote.api.user.UserApi
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,14 +29,27 @@ class NetworkModule {
     }
 
     @Provides
-    fun provideBaseUrl() = "https://futsalgg.duckdns.org/api/"
+    fun provideBaseUrl(): String {
+        return "https://futsalgg.duckdns.org/api/"
+    }
 
     @Provides
     @Singleton
-    fun provideRetrofit(baseUrl: String): Retrofit =
+    fun provideGson(): Gson = GsonBuilder()
+        .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+        .create()
+
+    @Provides
+    @Singleton
+    fun provideRetrofit(
+        baseUrl: String,
+        okHttpClient: OkHttpClient,
+        gson: Gson
+    ): Retrofit =
         Retrofit.Builder()
             .baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)  // OkHttpClient 설정
+            .addConverterFactory(GsonConverterFactory.create(gson))  // Gson 설정
             .build()
 
     @Provides

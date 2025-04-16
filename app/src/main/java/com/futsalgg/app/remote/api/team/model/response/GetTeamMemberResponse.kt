@@ -1,4 +1,4 @@
-package com.futsalgg.app.remote.api.teammember.model.response
+package com.futsalgg.app.remote.api.team.model.response
 
 import com.futsalgg.app.remote.api.team.model.TeamRole
 import com.google.gson.annotations.SerializedName

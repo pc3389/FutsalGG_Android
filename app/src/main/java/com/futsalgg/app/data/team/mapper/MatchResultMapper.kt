@@ -1,7 +1,7 @@
-package com.futsalgg.app.data.teammember.mapper
+package com.futsalgg.app.data.team.mapper
 
 import com.futsalgg.app.domain.match.model.MatchResult as DomainMatchResult
-import com.futsalgg.app.remote.api.teammember.model.response.GetTeamMemberResponse.MatchResult as RemoteMatchResult
+import com.futsalgg.app.remote.api.team.model.response.GetTeamMemberResponse.MatchResult as RemoteMatchResult
 
 fun RemoteMatchResult.toDomain(): DomainMatchResult {
     return when (this) {

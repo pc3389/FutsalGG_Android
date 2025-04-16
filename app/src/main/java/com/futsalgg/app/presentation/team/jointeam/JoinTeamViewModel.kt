@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.futsalgg.app.domain.auth.repository.ITokenManager
 import com.futsalgg.app.domain.common.error.DomainError
-import com.futsalgg.app.domain.teammember.usecase.JoinTeamUseCase
+import com.futsalgg.app.domain.team.usecase.JoinTeamUseCase
 import com.futsalgg.app.domain.team.usecase.SearchTeamsUseCase
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.error.toUiError

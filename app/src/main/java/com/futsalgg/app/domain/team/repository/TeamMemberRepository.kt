@@ -1,7 +1,7 @@
-package com.futsalgg.app.domain.teammember.repository
+package com.futsalgg.app.domain.team.repository
 
-import com.futsalgg.app.domain.teammember.model.TeamMember
-import com.futsalgg.app.domain.teammember.model.TeamMemberProfile
+import com.futsalgg.app.domain.team.model.TeamMember
+import com.futsalgg.app.domain.team.model.TeamMemberProfile
 
 interface TeamMemberRepository {
     suspend fun getTeamMembers(

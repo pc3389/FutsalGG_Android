@@ -34,7 +34,6 @@ import kotlinx.coroutines.launch
 fun LoginScreen(
     navController: NavController,
     viewModel: LoginViewModel = hiltViewModel(),
-    onClick: () -> Unit,
     credentialManager: CredentialManager,
     onLoginSuccess: () -> Unit,
     context: Context
@@ -57,8 +56,6 @@ fun LoginScreen(
                 Log.e("LoginScreen", "Google Sign-In failed", e)
             }
         }
-
-        onClick()
     })
 }
 

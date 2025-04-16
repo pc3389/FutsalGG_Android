@@ -3,7 +3,7 @@ package com.futsalgg.app.presentation.teammember.profilecard
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.futsalgg.app.domain.common.error.DomainError
-import com.futsalgg.app.domain.teammember.usecase.GetTeamMemberForProfileUseCase
+import com.futsalgg.app.domain.team.usecase.GetTeamMemberForProfileUseCase
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.error.toUiError
 import com.futsalgg.app.presentation.common.mapper.RoleMapper

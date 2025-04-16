@@ -1,8 +1,8 @@
-package com.futsalgg.app.remote.api.teammember
+package com.futsalgg.app.remote.api.team
 
 import com.futsalgg.app.remote.api.team.model.request.JoinTeamRequest
-import com.futsalgg.app.remote.api.teammember.model.response.GetTeamMemberResponse
-import com.futsalgg.app.remote.api.teammember.model.response.GetTeamMembersResponse
+import com.futsalgg.app.remote.api.team.model.response.GetTeamMemberResponse
+import com.futsalgg.app.remote.api.team.model.response.GetTeamMembersResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

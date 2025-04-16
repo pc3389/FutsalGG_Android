@@ -1,7 +1,6 @@
-package com.futsalgg.app.domain.teammember.model
+package com.futsalgg.app.domain.team.model
 
 import com.futsalgg.app.domain.match.model.MatchResult
-import com.futsalgg.app.domain.team.model.TeamRole
 
 
 data class TeamMemberProfile(

@@ -19,9 +19,9 @@ import com.futsalgg.app.domain.match.usecase.GetMatchesUseCase
 import com.futsalgg.app.domain.match.usecase.GetMatchesUseCaseImpl
 import com.futsalgg.app.domain.team.usecase.SearchTeamsUseCase
 import com.futsalgg.app.domain.team.usecase.SearchTeamsUseCaseImpl
-import com.futsalgg.app.domain.teammember.repository.TeamMemberRepository
-import com.futsalgg.app.domain.teammember.usecase.JoinTeamUseCase
-import com.futsalgg.app.domain.teammember.usecase.JoinTeamUseCaseImpl
+import com.futsalgg.app.domain.team.repository.TeamMemberRepository
+import com.futsalgg.app.domain.team.usecase.JoinTeamUseCase
+import com.futsalgg.app.domain.team.usecase.JoinTeamUseCaseImpl
 import com.futsalgg.app.domain.team.usecase.GetMyTeamUseCase
 import com.futsalgg.app.domain.team.usecase.GetMyTeamUseCaseImpl
 import com.futsalgg.app.domain.user.usecase.GetMyProfileForSettingUseCase
@@ -30,8 +30,8 @@ import com.futsalgg.app.domain.user.usecase.UpdateNotificationUseCase
 import com.futsalgg.app.domain.user.usecase.UpdateNotificationUseCaseImpl
 import com.futsalgg.app.domain.user.usecase.UpdateProfileUseCase
 import com.futsalgg.app.domain.user.usecase.UpdateProfileUseCaseImpl
-import com.futsalgg.app.domain.teammember.usecase.GetTeamMemberForProfileUseCase
-import com.futsalgg.app.domain.teammember.usecase.GetTeamMemberForProfileUseCaseImpl
+import com.futsalgg.app.domain.team.usecase.GetTeamMemberForProfileUseCase
+import com.futsalgg.app.domain.team.usecase.GetTeamMemberForProfileUseCaseImpl
 import com.futsalgg.app.domain.match.usecase.CreateMatchParticipantsUseCase
 import com.futsalgg.app.domain.match.usecase.CreateMatchParticipantsUseCaseImpl
 import dagger.Module

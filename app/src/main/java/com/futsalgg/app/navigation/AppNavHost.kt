@@ -33,8 +33,8 @@ fun AppNavHost(
 ) {
     NavHost(
         navController = navController,
-//        startDestination = Screen.Login.route
-        startDestination = Screen.CreateUser.route
+        startDestination = Screen.Login.route
+//        startDestination = Screen.CreateUser.route
 //        startDestination = Screen.CreateTeam.route
 //        startDestination = Screen.MatchResult.route
 //        startDestination = Screen.CreateMatch.route
@@ -47,13 +47,10 @@ fun AppNavHost(
         composable(Screen.Login.route) {
             LoginScreen(
                 navController = navController,
-                onClick = {
-                    //TODO On Login Click
-                },
                 credentialManager = credentialManager,
                 context = LocalContext.current,
                 onLoginSuccess = {
-                    // TODO On Login Success
+                    navController.navigate(Screen.CreateUser.route)
                 }
             )
         }
