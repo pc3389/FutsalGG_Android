@@ -30,8 +30,8 @@ import com.futsalgg.app.domain.user.usecase.UpdateNotificationUseCase
 import com.futsalgg.app.domain.user.usecase.UpdateNotificationUseCaseImpl
 import com.futsalgg.app.domain.user.usecase.UpdateProfileUseCase
 import com.futsalgg.app.domain.user.usecase.UpdateProfileUseCaseImpl
-import com.futsalgg.app.domain.teammember.usecase.GetTeamMemberUseCase
-import com.futsalgg.app.domain.teammember.usecase.GetTeamMemberUseCaseImpl
+import com.futsalgg.app.domain.teammember.usecase.GetTeamMemberForProfileUseCase
+import com.futsalgg.app.domain.teammember.usecase.GetTeamMemberForProfileUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -141,9 +141,9 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideGetTeamMemberUseCase(
+    fun provideGetTeamMemberForProfileUseCase(
         teamMemberRepository: TeamMemberRepository
-    ): GetTeamMemberUseCase {
-        return GetTeamMemberUseCaseImpl(teamMemberRepository)
+    ): GetTeamMemberForProfileUseCase {
+        return GetTeamMemberForProfileUseCaseImpl(teamMemberRepository)
     }
 }

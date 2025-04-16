@@ -11,7 +11,7 @@ import com.futsalgg.app.domain.team.model.MyTeam
 import com.futsalgg.app.domain.team.model.SearchTeamResponseModel
 import com.futsalgg.app.domain.team.model.TeamLogoResponseModel
 import com.futsalgg.app.domain.team.model.TeamRole
-import com.futsalgg.app.remote.api.team.model.response.TeamRole as RemoteTeamRole
+import com.futsalgg.app.remote.api.team.model.TeamRole as RemoteTeamRole
 import java.io.File
 import java.io.IOException
 import javax.inject.Inject

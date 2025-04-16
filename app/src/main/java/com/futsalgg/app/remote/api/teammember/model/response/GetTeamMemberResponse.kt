@@ -1,5 +1,6 @@
 package com.futsalgg.app.remote.api.teammember.model.response
 
+import com.futsalgg.app.remote.api.team.model.TeamRole
 import com.google.gson.annotations.SerializedName
 
 data class GetTeamMemberResponse(
@@ -20,7 +21,7 @@ data class GetTeamMemberResponse(
         @SerializedName("name")
         val name: String,
         @SerializedName("role")
-        val role: String
+        val role: TeamRole
     )
 
     data class MatchInfo(
@@ -47,4 +48,4 @@ data class GetTeamMemberResponse(
         @SerializedName("DRAW")
         DRAW
     }
-} 
+}

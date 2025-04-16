@@ -4,7 +4,9 @@ import com.futsalgg.app.data.common.error.DataError
 import com.futsalgg.app.data.teammember.mapper.toDomain
 import com.futsalgg.app.domain.teammember.model.TeamMember
 import com.futsalgg.app.domain.teammember.model.TeamMemberProfile
+import com.futsalgg.app.domain.team.model.TeamRole
 import com.futsalgg.app.domain.teammember.repository.TeamMemberRepository
+import com.futsalgg.app.remote.api.team.model.TeamRole as RemoteTeamRole
 import com.futsalgg.app.remote.api.team.model.request.JoinTeamRequest
 import com.futsalgg.app.remote.api.teammember.TeamMemberApi
 import java.io.IOException
@@ -94,7 +96,13 @@ class TeamMemberRepositoryImpl @Inject constructor(
                             team = TeamMemberProfile.TeamInfo(
                                 id = body.team.id,
                                 name = body.team.name,
-                                role = body.team.role
+                                role = when (body.team.role) {
+                                    RemoteTeamRole.OWNER -> TeamRole.OWNER
+                                    RemoteTeamRole.TEAM_LEADER -> TeamRole.TEAM_LEADER
+                                    RemoteTeamRole.TEAM_DEPUTY_LEADER -> TeamRole.TEAM_DEPUTY_LEADER
+                                    RemoteTeamRole.TEAM_SECRETARY -> TeamRole.TEAM_SECRETARY
+                                    RemoteTeamRole.TEAM_MEMBER -> TeamRole.TEAM_MEMBER
+                                }
                             ),
                             match = TeamMemberProfile.MatchInfo(
                                 total = body.match.total,
@@ -144,7 +152,13 @@ class TeamMemberRepositoryImpl @Inject constructor(
                             team = TeamMemberProfile.TeamInfo(
                                 id = body.team.id,
                                 name = body.team.name,
-                                role = body.team.role
+                                role = when (body.team.role) {
+                                    RemoteTeamRole.OWNER -> TeamRole.OWNER
+                                    RemoteTeamRole.TEAM_LEADER -> TeamRole.TEAM_LEADER
+                                    RemoteTeamRole.TEAM_DEPUTY_LEADER -> TeamRole.TEAM_DEPUTY_LEADER
+                                    RemoteTeamRole.TEAM_SECRETARY -> TeamRole.TEAM_SECRETARY
+                                    RemoteTeamRole.TEAM_MEMBER -> TeamRole.TEAM_MEMBER
+                                }
                             ),
                             match = TeamMemberProfile.MatchInfo(
                                 total = body.match.total,

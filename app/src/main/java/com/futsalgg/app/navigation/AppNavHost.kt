@@ -22,7 +22,7 @@ import com.futsalgg.app.presentation.setting.SettingScreen
 import com.futsalgg.app.presentation.team.createteam.CreateTeamScreen
 import com.futsalgg.app.presentation.team.createteam.CreateTeamViewModel
 import com.futsalgg.app.presentation.team.jointeam.JoinTeamScreen
-import com.futsalgg.app.presentation.user.profile.MyProfileScreen
+import com.futsalgg.app.presentation.teammember.profilecard.MyProfileScreen
 import com.futsalgg.app.presentation.user.updateprofile.UpdateProfileScreen
 import com.futsalgg.app.presentation.user.updateprofile.UpdateProfileViewModel
 
@@ -34,13 +34,13 @@ fun AppNavHost(
     NavHost(
         navController = navController,
 //        startDestination = Screen.Login.route
-        startDestination = Screen.CreateUser.route
+//        startDestination = Screen.CreateUser.route
 //        startDestination = Screen.CreateTeam.route
 //        startDestination = Screen.MatchResult.route
 //        startDestination = Screen.CreateMatch.route
 //        startDestination = Screen.JoinTeam.route
 //        startDestination = Screen.Main.route
-//        startDestination = Screen.MyProfile.route
+        startDestination = Screen.MyProfile.route
 //        startDestination = Screen.Setting.route
 //        startDestination = Screen.UpdateProfile.route
     ) {

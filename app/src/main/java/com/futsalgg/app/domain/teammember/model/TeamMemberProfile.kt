@@ -1,6 +1,8 @@
 package com.futsalgg.app.domain.teammember.model
 
 import com.futsalgg.app.domain.match.model.MatchResult
+import com.futsalgg.app.domain.team.model.TeamRole
+
 
 data class TeamMemberProfile(
     val name: String,
@@ -12,7 +14,7 @@ data class TeamMemberProfile(
     data class TeamInfo(
         val id: String,
         val name: String,
-        val role: String
+        val role: TeamRole
     )
 
     data class MatchInfo(

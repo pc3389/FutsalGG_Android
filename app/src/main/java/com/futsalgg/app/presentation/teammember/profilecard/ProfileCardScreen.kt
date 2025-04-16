@@ -1,4 +1,4 @@
-package com.futsalgg.app.presentation.user.profile
+package com.futsalgg.app.presentation.teammember.profilecard
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -27,6 +27,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.futsalgg.app.R
 import com.futsalgg.app.presentation.common.screen.BaseScreen
 import com.futsalgg.app.ui.theme.FutsalggColor
@@ -35,7 +36,7 @@ import com.futsalgg.app.ui.theme.FutsalggTypography
 @Composable
 fun MyProfileScreen(
     navController: NavController,
-    viewModel: MyProfileViewModel = hiltViewModel()
+    viewModel: ProfileCardViewModel = hiltViewModel()
 ) {
     // TODO API 보류..!
 
@@ -72,12 +73,11 @@ fun MyProfileScreen(
                     )
 
                     // 날짜
-                    // TODO 날짜 업데이트
                     Text(
                         modifier = Modifier
                             .padding(top = 12.dp, end = 16.dp)
                             .align(Alignment.TopEnd),
-                        text = "yyyy.MM.dd",
+                        text = state.value.createdTime,
                         style = FutsalggTypography.regular_15_100,
                         color = FutsalggColor.white
                     )
@@ -112,8 +112,7 @@ fun MyProfileScreen(
                                     )
                                     Spacer(Modifier.height(10.dp))
                                     Text(
-                                        // TODO Back Number
-                                        text = "00",
+                                        text = state.value.squadNumber?.toString() ?: "00",
                                         style = FutsalggTypography.bold_40_500,
                                         color = FutsalggColor.white
                                     )
@@ -123,10 +122,13 @@ fun MyProfileScreen(
                                         contentDescription = ""
                                     )
                                     Spacer(Modifier.height(32.dp))
-                                    Image(
-                                        modifier = Modifier.size(56.dp),
-                                        imageVector = ImageVector.vectorResource(R.drawable.ic_team_default_56),
-                                        contentDescription = ""
+                                    AsyncImage(
+                                        model = state.value.teamLogoUrl,
+                                        contentDescription = "프로필 이미지",
+                                        modifier = Modifier
+                                            .size(56.dp),
+                                        placeholder = painterResource(R.drawable.ic_team_default_56),
+                                        error = painterResource(R.drawable.ic_team_default_56)
                                     )
                                 }
                             }
@@ -146,16 +148,14 @@ fun MyProfileScreen(
                                 Spacer(Modifier.height(16.dp))
 
                                 // 닉네임
-                                // TODO 닉네임
                                 Text(
-                                    text = "닉네임을 입력해주세요",
+                                    text = state.value.name,
                                     style = FutsalggTypography.bold_17_200,
                                     color = FutsalggColor.white
                                 )
                                 Spacer(Modifier.height(4.dp))
-                                // TODO 팀 명
                                 Text(
-                                    text = "팀 명을 입력해주세요",
+                                    text = state.value.teamName,
                                     style = FutsalggTypography.regular_15_100,
                                     color = FutsalggColor.white
                                 )
@@ -178,7 +178,7 @@ fun MyProfileScreen(
                                 )
                                 Spacer(Modifier.height(4.dp))
                                 Text(
-                                    text = "00",
+                                    text = viewModel.getAgeGroup(state.value.birthday),
                                     style = FutsalggTypography.bold_17_200,
                                     color = FutsalggColor.white
                                 )
@@ -195,7 +195,7 @@ fun MyProfileScreen(
                                 )
                                 Spacer(Modifier.height(4.dp))
                                 Text(
-                                    text = "직책이름",
+                                    text = state.value.role.toString(),
                                     style = FutsalggTypography.bold_17_200,
                                     color = FutsalggColor.white
                                 )
@@ -226,7 +226,7 @@ fun MyProfileScreen(
                                 )
                                 Spacer(Modifier.height(4.dp))
                                 Text(
-                                    text = "nnn / nnn",
+                                    text = "${state.value.history.size} / ${state.value.totalGameNum}",
                                     style = FutsalggTypography.bold_17_200,
                                     color = FutsalggColor.white
                                 )
@@ -244,14 +244,14 @@ fun MyProfileScreen(
                                     )
                                     Spacer(Modifier.width(8.dp))
                                     Text(
-                                        text = "nnn%",
+                                        text = "${viewModel.getWinRate(state.value.history)}%",
                                         style = FutsalggTypography.bold_17_200,
                                         color = FutsalggColor.white
                                     )
                                 }
                                 Spacer(Modifier.height(4.dp))
                                 Text(
-                                    text = "nn승 / nn무 / nn패",
+                                    text = viewModel.getStatString(state.value.history),
                                     style = FutsalggTypography.light_15_100,
                                     color = FutsalggColor.white
                                 )

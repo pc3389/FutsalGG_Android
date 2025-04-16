@@ -2,9 +2,9 @@ package com.futsalgg.app.domain.teammember.usecase
 
 import com.futsalgg.app.domain.teammember.model.TeamMemberProfile
 
-interface GetTeamMemberUseCase {
+interface GetTeamMemberForProfileUseCase {
     suspend operator fun invoke(
         accessToken: String,
-        id: String
+        id: String?
     ): Result<TeamMemberProfile>
 }

@@ -4,14 +4,17 @@ import com.futsalgg.app.domain.teammember.model.TeamMemberProfile
 import com.futsalgg.app.domain.teammember.repository.TeamMemberRepository
 import javax.inject.Inject
 
-class GetTeamMemberUseCaseImpl @Inject constructor(
+class GetTeamMemberForProfileUseCaseImpl @Inject constructor(
     private val teamMemberRepository: TeamMemberRepository
-) : GetTeamMemberUseCase {
-
-    override suspend operator fun invoke(
+) : GetTeamMemberForProfileUseCase {
+    override suspend fun invoke(
         accessToken: String,
-        id: String
+        id: String?
     ): Result<TeamMemberProfile> {
-        return teamMemberRepository.getTeamMember(accessToken, id)
+        return if (id == null) {
+            teamMemberRepository.getMyTeamMember(accessToken)
+        } else {
+            teamMemberRepository.getTeamMember(accessToken, id)
+        }
     }
-} 
+}
