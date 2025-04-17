@@ -10,6 +10,11 @@ interface MatchRepository {
         size: Int = 20
     ): Result<List<Match>>
 
+    suspend fun getMatch(
+        accessToken: String,
+        id: String
+    ): Result<Match>
+
     suspend fun deleteMatch(
         accessToken: String,
         id: String

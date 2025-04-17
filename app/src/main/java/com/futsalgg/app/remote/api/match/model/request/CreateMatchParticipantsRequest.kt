@@ -1,4 +1,4 @@
-package com.futsalgg.app.remote.model.match
+package com.futsalgg.app.remote.api.match.model.request
 
 import com.google.gson.annotations.SerializedName
 

@@ -4,7 +4,7 @@ import com.futsalgg.app.domain.match.model.MatchParticipant
 import com.futsalgg.app.domain.match.model.SubTeam
 import com.futsalgg.app.domain.match.repository.MatchParticipantRepository
 import com.futsalgg.app.remote.api.match.MatchApi
-import com.futsalgg.app.remote.model.match.CreateMatchParticipantsRequest
+import com.futsalgg.app.remote.api.match.model.request.CreateMatchParticipantsRequest
 import java.io.IOException
 import javax.inject.Inject
 

@@ -3,8 +3,9 @@ package com.futsalgg.app.remote.api.match
 import com.futsalgg.app.remote.api.match.model.request.CreateMatchRequest
 import com.futsalgg.app.remote.api.match.model.response.GetMatchesResponse
 import com.futsalgg.app.remote.api.match.model.response.MatchResponse
-import com.futsalgg.app.remote.model.match.CreateMatchParticipantsRequest
-import com.futsalgg.app.remote.model.match.CreateMatchParticipantsResponse
+import com.futsalgg.app.remote.api.match.model.request.CreateMatchParticipantsRequest
+import com.futsalgg.app.remote.api.match.model.response.CreateMatchParticipantsResponse
+import com.futsalgg.app.remote.api.match.model.response.GetMatchResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -21,6 +22,12 @@ interface MatchApi {
         @Query("page") page: Int = 1,
         @Query("size") size: Int = 20
     ): Response<GetMatchesResponse>
+
+    @GET("matches/{id}")
+    suspend fun getMatch(
+        @Header("Authorization") authHeader: String,
+        @Path("id") id: String
+    ): Response<GetMatchResponse>
 
     @DELETE("matches/{id}")
     suspend fun deleteMatch(

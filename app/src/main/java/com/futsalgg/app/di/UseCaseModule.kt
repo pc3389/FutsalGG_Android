@@ -7,6 +7,7 @@ import com.futsalgg.app.domain.auth.usecase.AuthUseCase
 import com.futsalgg.app.domain.user.usecase.CreateUserUseCase
 import com.futsalgg.app.domain.team.usecase.CreateTeamUseCaseImpl
 import com.futsalgg.app.domain.auth.usecase.AuthUseCaseImpl
+import com.futsalgg.app.domain.match.repository.MatchParticipantRepository
 import com.futsalgg.app.domain.match.repository.MatchRepository
 import com.futsalgg.app.domain.team.repository.TeamRepository
 import com.futsalgg.app.domain.user.repository.UserRepository
@@ -34,6 +35,9 @@ import com.futsalgg.app.domain.team.usecase.GetTeamMemberForProfileUseCase
 import com.futsalgg.app.domain.team.usecase.GetTeamMemberForProfileUseCaseImpl
 import com.futsalgg.app.domain.match.usecase.CreateMatchParticipantsUseCase
 import com.futsalgg.app.domain.match.usecase.CreateMatchParticipantsUseCaseImpl
+import com.futsalgg.app.domain.match.usecase.GetMatchUseCase
+import com.futsalgg.app.domain.match.usecase.GetMatchUseCaseImpl
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -152,6 +156,16 @@ object UseCaseModule {
     @Provides
     @Singleton
     fun provideCreateMatchParticipantsUseCase(
-        impl: CreateMatchParticipantsUseCaseImpl
-    ): CreateMatchParticipantsUseCase = impl
+        matchParticipantRepository: MatchParticipantRepository
+    ): CreateMatchParticipantsUseCase {
+        return CreateMatchParticipantsUseCaseImpl(matchParticipantRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetMatchUseCase(
+        matchRepository: MatchRepository
+    ): GetMatchUseCase {
+        return GetMatchUseCaseImpl(matchRepository)
+    }
 }

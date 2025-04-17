@@ -50,6 +50,41 @@ class MatchRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun getMatch(
+        accessToken: String,
+        id: String
+    ): Result<com.futsalgg.app.domain.match.model.Match> = try {
+        val response = matchApi.getMatch(
+            authHeader = "Bearer $accessToken",
+            id = id
+        )
+        
+        if (response.isSuccessful) {
+            response.body()?.let { body ->
+                Result.success(body.toDomain())
+            } ?: Result.failure(
+                DataError.ServerError(
+                    message = "서버 응답이 비어있습니다.",
+                    cause = null
+                ) as Throwable
+            )
+        } else {
+            Result.failure(
+                DataError.ServerError(
+                    message = "서버 오류: ${response.code()}",
+                    cause = null
+                ) as Throwable
+            )
+        }
+    } catch (e: IOException) {
+        Result.failure(
+            DataError.NetworkError(
+                message = "네트워크 연결을 확인해주세요.",
+                cause = e
+            ) as Throwable
+        )
+    }
+
     override suspend fun deleteMatch(
         accessToken: String,
         id: String

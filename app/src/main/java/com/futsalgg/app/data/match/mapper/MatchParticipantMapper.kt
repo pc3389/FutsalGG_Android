@@ -2,7 +2,7 @@ package com.futsalgg.app.data.match.mapper
 
 import com.futsalgg.app.domain.match.model.MatchParticipant
 import com.futsalgg.app.domain.match.model.SubTeam
-import com.futsalgg.app.remote.model.match.MatchParticipant as RemoteMatchParticipant
+import com.futsalgg.app.remote.api.match.model.response.MatchParticipant as RemoteMatchParticipant
 
 fun RemoteMatchParticipant.toDomain(): MatchParticipant {
     return MatchParticipant(
