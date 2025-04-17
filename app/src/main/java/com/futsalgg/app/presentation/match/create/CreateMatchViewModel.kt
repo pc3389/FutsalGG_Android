@@ -119,10 +119,15 @@ class CreateMatchViewModel @Inject constructor(
                     _uiState.value = UiState.Success
                     onSuccess()
                 } else {
-                    _uiState.value = UiState.Error(UiError.UnknownError(result.exceptionOrNull()?.message ?: "알 수 없는 오류가 발생했습니다"))
+                    _uiState.value = UiState.Error(
+                        UiError.UnknownError(
+                            result.exceptionOrNull()?.message ?: "알 수 없는 오류가 발생했습니다"
+                        )
+                    )
                 }
             } catch (e: Exception) {
-                _uiState.value = UiState.Error(UiError.UnknownError(e.message ?: "알 수 없는 오류가 발생했습니다"))
+                _uiState.value =
+                    UiState.Error(UiError.UnknownError(e.message ?: "알 수 없는 오류가 발생했습니다"))
             }
         }
     }

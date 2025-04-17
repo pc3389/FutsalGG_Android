@@ -1,6 +1,5 @@
 package com.futsalgg.app.ui.components
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,7 +24,7 @@ import com.futsalgg.app.ui.theme.FutsalggTypography
 fun FutsalggTopBar(
     title: String,
     onBackClick: () -> Unit,
-    @DrawableRes rightIcon: Int? = null,
+    rightIcon: ImageVector? = null,
     onRightClick: (() -> Unit)? = null
 ) {
     Box(
@@ -59,7 +59,7 @@ fun FutsalggTopBar(
                 modifier = Modifier.align(Alignment.CenterEnd)
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(rightIcon),
+                    imageVector = rightIcon,
                     contentDescription = "오른쪽 아이콘"
                 )
             }
@@ -78,7 +78,7 @@ fun PreviewTopBar() {
     FutsalggTopBar(
         title = "경기 일정 생성하기",
         onBackClick = {},
-        rightIcon = R.drawable.ic_arrow_forward_16,
+        rightIcon = ImageVector.vectorResource(R.drawable.ic_arrow_forward_16),
         {}
     )
 }

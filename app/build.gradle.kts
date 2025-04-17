@@ -73,6 +73,9 @@ dependencies {
     // Permission
     implementation(libs.accompanist.permissions)
 
+    // System UI
+    implementation(libs.accompanist.systemuicontroller)
+
     // Testing
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)

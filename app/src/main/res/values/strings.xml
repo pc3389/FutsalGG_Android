@@ -17,6 +17,8 @@
     <string name="setting_text">설정</string>
     <string name="nickname_text">닉네임</string>
     <string name="nickname_hint">사용할 닉네임을 입력해주세요.</string>
+    <string name="select_all">전체 선택</string>
+    <string name="deselect_all">전체 해제</string>
 
     <!--  T&C  -->
     <string name="terms_and_condition_title">이용약관 동의</string>
@@ -79,4 +81,8 @@
     <string name="squad_number_title">등 번호</string>
     <string name="squad_number_hint">사용하실 등 번호를 입력해주세요.</string>
     <string name="squad_number_button_text">수정완료</string>
+
+    <!-- CreateMatchParticipants -->
+    <string name="create_match_participants_title">경기 참석 명단 등록하기</string>
+
 </resources>

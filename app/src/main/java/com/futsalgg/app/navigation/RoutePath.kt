@@ -12,4 +12,5 @@ object RoutePath {
     const val MY_PROFILE = "MyProfile"
     const val SETTING = "Setting"
     const val UPDATE_PROFILE = "UpdateProfile"
+    const val CREATE_MATCH_MEMBER = "CreateMatchMember"
 }
