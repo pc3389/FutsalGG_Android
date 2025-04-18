@@ -37,7 +37,8 @@ import com.futsalgg.app.domain.match.usecase.CreateMatchParticipantsUseCase
 import com.futsalgg.app.domain.match.usecase.CreateMatchParticipantsUseCaseImpl
 import com.futsalgg.app.domain.match.usecase.GetMatchUseCase
 import com.futsalgg.app.domain.match.usecase.GetMatchUseCaseImpl
-import dagger.Binds
+import com.futsalgg.app.domain.team.usecase.GetTeamMembersUseCase
+import com.futsalgg.app.domain.team.usecase.GetTeamMembersUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -167,5 +168,13 @@ object UseCaseModule {
         matchRepository: MatchRepository
     ): GetMatchUseCase {
         return GetMatchUseCaseImpl(matchRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetTeamMemberUseCase(
+        teamMemberRepository: TeamMemberRepository
+    ): GetTeamMembersUseCase {
+        return GetTeamMembersUseCaseImpl(teamMemberRepository)
     }
 }

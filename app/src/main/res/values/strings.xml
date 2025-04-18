@@ -85,4 +85,6 @@
     <!-- CreateMatchParticipants -->
     <string name="create_match_participants_title">경기 참석 명단 등록하기</string>
 
+    <string name="create_match_participants_button_text">경기 기록 등록하기</string>
+
 </resources>

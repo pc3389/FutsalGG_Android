@@ -19,7 +19,7 @@ interface TeamMemberRepository {
         accessToken: String
     ): Result<TeamMemberProfile>
 
-    suspend fun getTeamMember(
+    suspend fun getTeamMemberWithId(
         accessToken: String,
         id: String
     ): Result<TeamMemberProfile>

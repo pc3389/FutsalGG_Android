@@ -31,7 +31,7 @@ interface TeamMemberApi {
     ): Response<GetTeamMemberResponse>
 
     @GET("team-members/{id}")
-    suspend fun getTeamMember(
+    suspend fun getTeamMemberWithId(
         @Header("Authorization") accessToken: String,
         @Path("id") id: String
     ): Response<GetTeamMemberResponse>

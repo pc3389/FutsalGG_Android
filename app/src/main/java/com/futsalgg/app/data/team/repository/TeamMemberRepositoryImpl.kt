@@ -139,9 +139,9 @@ class TeamMemberRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getTeamMember(accessToken: String, id: String): Result<TeamMemberProfile> {
+    override suspend fun getTeamMemberWithId(accessToken: String, id: String): Result<TeamMemberProfile> {
         return try {
-            val response = teamMemberApi.getTeamMember(accessToken, id)
+            val response = teamMemberApi.getTeamMemberWithId(accessToken, id)
             if (response.isSuccessful) {
                 response.body()?.let { body ->
                     Result.success(

@@ -1,4 +1,4 @@
-package com.futsalgg.app.presentation.match.creatematchmember
+package com.futsalgg.app.presentation.match.creatematchparticipants
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -6,20 +6,28 @@ import androidx.lifecycle.viewModelScope
 import com.futsalgg.app.domain.auth.repository.ITokenManager
 import com.futsalgg.app.domain.common.error.DomainError
 import com.futsalgg.app.domain.match.usecase.CreateMatchParticipantsUseCase
+import com.futsalgg.app.domain.match.usecase.GetMatchUseCase
+import com.futsalgg.app.domain.team.usecase.GetTeamMembersUseCase
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.error.toUiError
+import com.futsalgg.app.presentation.common.model.MatchType
 import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.presentation.main.model.TeamRole
+import com.futsalgg.app.presentation.match.model.Match
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
 class CreateMatchParticipantsViewModel @Inject constructor(
     private val createMatchParticipantsUseCase: CreateMatchParticipantsUseCase,
+    private val getTeamMembersUseCase: GetTeamMembersUseCase,
+    private val getMatchUseCase: GetMatchUseCase,
     private val tokenManager: ITokenManager
 ) : ViewModel() {
 
@@ -31,10 +39,19 @@ class CreateMatchParticipantsViewModel @Inject constructor(
         _matchParticipantsState.asStateFlow()
 
     private val _createMatchParticipantsState = MutableStateFlow(CreateMatchParticipantsState())
-    val createMatchParticipantsState: StateFlow<CreateMatchParticipantsState> =
-        _createMatchParticipantsState.asStateFlow()
+
+    private val _matchState = MutableStateFlow(Match())
+    val matchState: StateFlow<Match> = _matchState.asStateFlow()
+
+    private val _isAllSelected = MutableStateFlow(false)
 
     init {
+        _matchState.value = Match(
+            matchDate = formatDate("2025-04-18"),
+            startTime = "12:34",
+            endTime = "06:12",
+            location = "장소장소장소",
+        )
         _matchParticipantsState.value = listOf(
             MatchParticipantState(
                 id = "Match Participant ID",
@@ -79,12 +96,6 @@ class CreateMatchParticipantsViewModel @Inject constructor(
         )
     }
 
-    internal fun onMatchIdChange(newValue: String) {
-        _createMatchParticipantsState.value = _createMatchParticipantsState.value.copy(
-            matchId = newValue
-        )
-    }
-
     fun addTeamMember(teamMemberId: String) {
         val currentList = _createMatchParticipantsState.value.teamMemberIds.toMutableList()
         if (!currentList.contains(teamMemberId)) {
@@ -101,6 +112,33 @@ class CreateMatchParticipantsViewModel @Inject constructor(
         _createMatchParticipantsState.value = _createMatchParticipantsState.value.copy(
             teamMemberIds = currentList
         )
+    }
+
+    fun toggleAllSelection() {
+        val currentList = _matchParticipantsState.value.toMutableList()
+        val shouldSelectAll = !_isAllSelected.value
+
+        currentList.forEachIndexed { index, _ ->
+            currentList[index] = currentList[index].copy(isSelected = shouldSelectAll)
+        }
+
+        _matchParticipantsState.value = currentList
+        _isAllSelected.value = shouldSelectAll
+    }
+
+    private fun updateAllSelectedIndicator() {
+        _isAllSelected.value = _matchParticipantsState.value.isNotEmpty() &&
+                _matchParticipantsState.value.all { it.isSelected }
+    }
+
+    fun updateIsSelected(index: Int) {
+        val currentList = _matchParticipantsState.value.toMutableList()
+        if (index in currentList.indices) {
+            currentList[index] =
+                currentList[index].copy(isSelected = !currentList[index].isSelected)
+            _matchParticipantsState.value = currentList
+            updateAllSelectedIndicator()
+        }
     }
 
     fun createMatchParticipants() {
@@ -137,6 +175,59 @@ class CreateMatchParticipantsViewModel @Inject constructor(
                                 createdTime = participant.createdTime
                             )
                         }
+                        _uiState.value = UiState.Success
+                    }
+                    .onFailure { throwable ->
+                        _uiState.value = UiState.Error(
+                            (throwable as? DomainError)?.toUiError()
+                                ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
+                        )
+                    }
+            } catch (e: Exception) {
+                _uiState.value = UiState.Error(
+                    UiError.UnknownError("예기치 않은 오류가 발생했습니다: ${e.message}")
+                )
+            }
+        }
+    }
+
+    private fun formatDate(dateString: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("yyyy년 MM월 dd일 (E)", Locale.getDefault())
+        return try {
+            val date = inputFormat.parse(dateString) ?: "0000년 00월 00일 (월)"
+            outputFormat.format(date)
+        } catch (e: Exception) {
+            dateString
+        }
+    }
+
+    fun loadMatch(matchId: String) {
+        viewModelScope.launch {
+            _uiState.value = UiState.Loading
+            try {
+                val accessToken = tokenManager.getAccessToken()
+
+                if (accessToken.isNullOrEmpty()) {
+                    Log.e("CreateMatchParticipantsViewModel", "엑세스 토큰이 존재하지 않습니다")
+                    _uiState.value = UiState.Error(UiError.AuthError("엑세스 토큰이 존재하지 않습니다"))
+                    return@launch
+                }
+
+                getMatchUseCase(
+                    accessToken = accessToken,
+                    id = matchId
+                )
+                    .onSuccess { match ->
+                        _matchState.value = _matchState.value.copy(
+                            id = match.id,
+                            opponentTeamName = match.opponentTeamName,
+                            type = MatchType.fromDomain(match.type),
+                            matchDate = formatDate(match.matchDate),
+                            startTime = match.startTime ?: "00:00",
+                            endTime = match.endTime ?: "00:00",
+                            location = match.location,
+                        )
                         _uiState.value = UiState.Success
                     }
                     .onFailure { throwable ->

@@ -1,4 +1,4 @@
-package com.futsalgg.app.presentation.match.creatematchmember
+package com.futsalgg.app.presentation.match.creatematchparticipants
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,7 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
@@ -36,6 +36,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.futsalgg.app.R
 import com.futsalgg.app.presentation.common.screen.BaseScreen
+import com.futsalgg.app.ui.components.BottomButton
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer16
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer4
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer8
@@ -51,8 +52,8 @@ fun CreateMatchMemberScreen(
     // TODO API 다시
 
     val uiState by viewModel.uiState.collectAsState()
-    val state by viewModel.createMatchParticipantsState.collectAsState()
     val matchParticipantsState by viewModel.matchParticipantsState.collectAsState()
+    val matchState by viewModel.matchState.collectAsState()
 
     BaseScreen(
         navController = navController,
@@ -81,20 +82,26 @@ fun CreateMatchMemberScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         VerticalSpacer16()
+
+                        // 날짜
                         Text(
-                            text = "0000년 00월 00일 (#)",
+                            text = matchState.matchDate,
                             style = FutsalggTypography.bold_20_300,
                             color = FutsalggColor.mono900
                         )
                         VerticalSpacer4()
+
+                        // 시간
                         Text(
-                            text = "00:00 ~ 00:00",
+                            text = "${matchState.startTime} ~ ${matchState.endTime}",
                             style = FutsalggTypography.bold_20_300,
                             color = FutsalggColor.mono900
                         )
                         VerticalSpacer8()
+
+                        // 장소
                         Text(
-                            text = "장소명을 입력해주세요.",
+                            text = matchState.location,
                             style = FutsalggTypography.light_15_100,
                             color = FutsalggColor.mono900
                         )
@@ -103,6 +110,8 @@ fun CreateMatchMemberScreen(
                             thickness = 1.dp,
                             color = FutsalggColor.mono200
                         )
+
+                        // 전체선택
                         Row(
                             modifier = Modifier
                                 .align(Alignment.Start),
@@ -110,13 +119,14 @@ fun CreateMatchMemberScreen(
                         ) {
                             Spacer(Modifier.width(16.dp))
                             Box(
-                                modifier = Modifier.clip(
-                                    RoundedCornerShape(8.dp)
-                                )
+                                modifier = Modifier
+                                    .clip(
+                                        RoundedCornerShape(8.dp)
+                                    )
                                     .clickable {
-                                        // TODO 전체선택
+                                        viewModel.toggleAllSelection()
                                     }
-                            ){
+                            ) {
                                 Image(
                                     modifier = Modifier.padding(16.dp),
                                     imageVector = ImageVector.vectorResource(R.drawable.ic_checkbox_true_24),
@@ -131,73 +141,86 @@ fun CreateMatchMemberScreen(
                         }
                     }
                 }
+
+                // 리스트
                 item {
                     Spacer(Modifier.height(12.dp))
                 }
-                items(listOf(matchParticipantsState)) { participant ->
-                    participant.forEach {
-                        val imageResource =
-                            if (true) R.drawable.ic_checkbox_true_24 else R.drawable.ic_checkbox_false_24
-                        val borderColor = if (true) FutsalggColor.mono900 else FutsalggColor.mono200
-                        Box(
+                itemsIndexed(matchParticipantsState) { index, participant ->
+                    val imageResource =
+                        if (participant.isSelected) R.drawable.ic_checkbox_true_24 else R.drawable.ic_checkbox_false_24
+                    val borderColor =
+                        if (participant.isSelected) FutsalggColor.mono900 else FutsalggColor.mono200
+                    Box(
+                        modifier = Modifier
+                            .padding(
+                                vertical = 4.dp,
+                                horizontal = 16.dp
+                            )
+                            .fillMaxWidth()
+                    ) {
+                        Row(
                             modifier = Modifier
-                                .padding(
-                                    vertical = 4.dp,
-                                    horizontal = 16.dp
-                                )
                                 .fillMaxWidth()
-                        ) {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clip(RoundedCornerShape(8.dp))
-                                    .border(
-                                        width = 1.dp,
-                                        color = borderColor,
-                                        shape = RoundedCornerShape(8.dp)
-                                    )
-                                    .clickable { },
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Spacer(Modifier.width(16.dp))
-                                Image(
-                                    modifier = Modifier
-                                        .padding(vertical = 12.dp),
-                                    imageVector = ImageVector.vectorResource(imageResource),
-                                    contentDescription = ""
+                                .clip(RoundedCornerShape(8.dp))
+                                .border(
+                                    width = 1.dp,
+                                    color = borderColor,
+                                    shape = RoundedCornerShape(8.dp)
                                 )
-                                Box(
-                                    modifier = Modifier
-                                        .padding(end = 16.dp)
-                                        .weight(1f)
-                                ) {
-                                    Row(
-                                        modifier = Modifier.align(Alignment.Center),
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        AsyncImage(
-                                            model = it.profileUrl,
-                                            contentDescription = "프로필 이미지",
-                                            modifier = Modifier
-                                                .size(32.dp),
-                                            placeholder = painterResource(R.drawable.ic_team_default_56),
-                                            error = painterResource(R.drawable.ic_team_default_56)
+                                .clickable {
+                                    if (participant.isSelected) {
+                                        viewModel.removeTeamMember(
+                                            participant.teamMemberId
                                         )
-                                        Spacer(Modifier.width(16.dp))
-                                        Text(
-                                            text = it.name,
-                                            style = FutsalggTypography.bold_17_200,
-                                            color = FutsalggColor.mono900
+                                        viewModel.updateIsSelected(index)
+                                    } else {
+                                        viewModel.addTeamMember(
+                                            participant.teamMemberId
                                         )
-                                        Spacer(Modifier.width(8.dp))
-                                        Text(
-                                            modifier = Modifier.width(44.dp),
-                                            text = it.role,
-                                            style = FutsalggTypography.regular_17_200,
-                                            color = FutsalggColor.mono900,
-                                            textAlign = TextAlign.Center
-                                        )
+                                        viewModel.updateIsSelected(index)
                                     }
+                                },
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Spacer(Modifier.width(16.dp))
+                            Image(
+                                modifier = Modifier
+                                    .padding(vertical = 12.dp),
+                                imageVector = ImageVector.vectorResource(imageResource),
+                                contentDescription = ""
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .padding(end = 16.dp)
+                                    .weight(1f)
+                            ) {
+                                Row(
+                                    modifier = Modifier.align(Alignment.Center),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    AsyncImage(
+                                        model = participant.profileUrl,
+                                        contentDescription = "프로필 이미지",
+                                        modifier = Modifier
+                                            .size(32.dp),
+                                        placeholder = painterResource(R.drawable.default_profile),
+                                        error = painterResource(R.drawable.default_profile)
+                                    )
+                                    Spacer(Modifier.width(16.dp))
+                                    Text(
+                                        text = participant.name,
+                                        style = FutsalggTypography.bold_17_200,
+                                        color = FutsalggColor.mono900
+                                    )
+                                    Spacer(Modifier.width(8.dp))
+                                    Text(
+                                        modifier = Modifier.width(44.dp),
+                                        text = participant.role,
+                                        style = FutsalggTypography.regular_17_200,
+                                        color = FutsalggColor.mono900,
+                                        textAlign = TextAlign.Center
+                                    )
                                 }
                             }
                         }
@@ -207,6 +230,16 @@ fun CreateMatchMemberScreen(
                     Spacer(Modifier.height(12.dp))
                 }
             }
+            BottomButton(
+                modifier = Modifier.align(Alignment.BottomCenter),
+                text = stringResource(R.string.create_match_participants_button_text),
+                onClick = viewModel::createMatchParticipants
+            )
         }
     }
+}
+
+@Composable
+fun ShowSearchBottomSheet() {
+    // TODO Bottom Sheet
 }

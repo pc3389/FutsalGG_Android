@@ -14,7 +14,7 @@ class GetTeamMemberForProfileUseCaseImpl @Inject constructor(
         return if (id == null) {
             teamMemberRepository.getMyTeamMember(accessToken)
         } else {
-            teamMemberRepository.getTeamMember(accessToken, id)
+            teamMemberRepository.getTeamMemberWithId(accessToken, id)
         }
     }
 }

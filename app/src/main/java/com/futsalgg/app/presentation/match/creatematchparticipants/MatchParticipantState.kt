@@ -1,4 +1,4 @@
-package com.futsalgg.app.presentation.match.creatematchmember
+package com.futsalgg.app.presentation.match.creatematchparticipants
 
 data class MatchParticipantState(
     val id: String,
@@ -8,6 +8,7 @@ data class MatchParticipantState(
     val role: String,
     val profileUrl: String,
     val subTeam: SubTeam,
+    val isSelected: Boolean = false,
     val createdTime: String
 )
 
