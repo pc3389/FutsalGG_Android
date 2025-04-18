@@ -191,6 +191,7 @@ object UseCaseModule {
     }
 
     @Provides
+    @Singleton
     fun provideUpdateMatchRoundsUseCase(
         matchRepository: MatchRepository
     ): UpdateMatchRoundsUseCase {

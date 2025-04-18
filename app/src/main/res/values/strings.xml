@@ -3,6 +3,7 @@
 
     <string name="select">선택</string>
     <string name="select_long">선택하기</string>
+    <string name="start_text">시작하기</string>
     <string name="create_button_text">생성하기</string>
     <string name="required">*필수</string>
     <string name="check_duplication">중복확인</string>
@@ -91,4 +92,8 @@
     <!-- UpdateMatchParticipantsSubTeam -->
     <string name="update_subteam_select_a_team_text">A팀만 선택해주세요.</string>
     <string name="update_subteam_sub_content_text">선택하지 않은 팀원은 자동으로 B팀이 됩니다.</string>
+    
+    <!-- UpdateRound -->
+    <string name="update_round_content_text">경기 판 수를 선택해주세요.</string>
+    <string name="update_round_sub_content_text">선택된 판 수로 경기가 구성됩니다.</string>
 </resources>

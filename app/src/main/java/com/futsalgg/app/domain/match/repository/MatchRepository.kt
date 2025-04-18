@@ -17,7 +17,7 @@ interface MatchRepository {
 
     suspend fun deleteMatch(
         accessToken: String,
-        matchId: String
+        id: String
     ): Result<Unit>
 
     suspend fun updateMatchRounds(
