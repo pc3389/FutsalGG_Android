@@ -11,13 +11,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.credentials.Credential
 import androidx.credentials.CredentialManager
@@ -26,6 +27,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.futsalgg.app.R
 import com.futsalgg.app.core.util.GoogleSignInUtil
+import com.futsalgg.app.presentation.common.screen.LoadingScreen
+import com.futsalgg.app.presentation.common.state.UiState
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential.Companion.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
 import kotlinx.coroutines.launch
@@ -39,28 +42,35 @@ fun LoginScreen(
     context: Context
 ) {
     val coroutineScope = rememberCoroutineScope()
+    val uiState by viewModel.uiState.collectAsState()
 
-    Contents(onClick = {
-        // Credential Manager 요청 생성
-        coroutineScope.launch {
-            try {
-                // 1. 요청 생성
-                val request = GoogleSignInUtil.createGoogleCredentialRequest(context)
+    Contents(
+        onClick = {
+            // Credential Manager 요청 생성
+            coroutineScope.launch {
+                try {
+                    // 1. 요청 생성
+                    val request = GoogleSignInUtil.createGoogleCredentialRequest(context)
 
-                // 2. Credential 요청 (suspend)
-                val credential = credentialManager.getCredential(context, request).credential
+                    // 2. Credential 요청 (suspend)
+                    val credential = credentialManager.getCredential(context, request).credential
 
-                // 3. idToken 추출 및 ViewModel에 전달
-                handleCredential(credential, viewModel, onLoginSuccess)
-            } catch (e: Exception) {
-                Log.e("LoginScreen", "Google Sign-In failed", e)
+                    // 3. idToken 추출 및 ViewModel에 전달
+                    handleCredential(credential, viewModel, onLoginSuccess)
+                } catch (e: Exception) {
+                    Log.e("LoginScreen", "Google Sign-In failed", e)
+                }
             }
-        }
-    })
+        },
+        uiState
+    )
 }
 
 @Composable
-fun Contents(onClick: () -> Unit) {
+fun Contents(
+    onClick: () -> Unit,
+    uiState: UiState
+) {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -103,6 +113,9 @@ fun Contents(onClick: () -> Unit) {
             )
         }
     }
+    if (uiState is UiState.Loading) {
+        LoadingScreen()
+    }
 }
 
 private fun handleCredential(
@@ -124,10 +137,4 @@ private fun handleCredential(
     } else {
         Log.w("LoginScreen", "Unsupported credential type")
     }
-}
-
-@Preview
-@Composable
-fun ContentPreview() {
-    Contents() {}
 }

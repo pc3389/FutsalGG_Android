@@ -37,14 +37,14 @@ fun AppNavHost(
 //        startDestination = Screen.Login.route
 //        startDestination = Screen.CreateUser.route
 //        startDestination = Screen.CreateTeam.route
-//        startDestination = Screen.MatchResult.route
+        startDestination = Screen.MatchResult.route
 //        startDestination = Screen.CreateMatch.route
 //        startDestination = Screen.JoinTeam.route
 //        startDestination = Screen.Main.route
 //        startDestination = Screen.MyProfile.route
 //        startDestination = Screen.Setting.route
 //        startDestination = Screen.UpdateProfile.route
-        startDestination = Screen.CreateMatchMemberScreen.route
+//        startDestination = Screen.CreateMatchMemberScreen.route
     ) {
         composable(Screen.Login.route) {
             LoginScreen(

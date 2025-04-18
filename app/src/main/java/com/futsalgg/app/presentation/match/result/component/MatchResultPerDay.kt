@@ -23,10 +23,11 @@ import com.futsalgg.app.presentation.common.model.MatchType
 import com.futsalgg.app.presentation.match.model.VoteStatus
 import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.ui.theme.FutsalggTypography
+import com.futsalgg.app.util.toMMddFormat
 
 @Composable
 fun MatchResultPerDay(
-    date: String, //MM.dd
+    date: String, //yyyy-MM-dd
     matches: List<Match>,
     onResultClick: (String) -> Unit
 ) {
@@ -54,7 +55,7 @@ fun MatchResultPerDay(
                     )
                     Spacer(Modifier.width(12.dp))
                     Text(
-                        text = date,
+                        text = date.toMMddFormat(),
                         style = FutsalggTypography.bold_20_300
                     )
                 }
@@ -82,6 +83,7 @@ fun MatchResultPerDay(
                         location = match.location,
                         matchStartTime = match.startTime,
                         matchEndTime = match.endTime,
+                        buttonEnabled = match.status == MatchStatus.COMPLETED,
                         onResultClick = { onResultClick(match.id) }
                     )
                 }

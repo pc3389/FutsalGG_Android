@@ -1,19 +1,21 @@
 package com.futsalgg.app.util
 
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.input.OffsetMapping
-import androidx.compose.ui.text.input.TransformedText
-import androidx.compose.ui.text.input.VisualTransformation
 import com.futsalgg.app.presentation.common.state.DateState
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
+import java.util.Locale
 
-fun String.toLocalDateOrNull(): LocalDate? {
+
+fun String.toMMddFormat(): String {
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    val outputFormat = SimpleDateFormat("MM.dd", Locale.getDefault())
     return try {
-        LocalDate.parse(this)
+        val date = inputFormat.parse(this)
+        outputFormat.format(date!!)
     } catch (e: Exception) {
-        null
+        this
     }
 }
 

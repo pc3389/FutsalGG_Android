@@ -5,6 +5,7 @@ import com.futsalgg.app.domain.match.model.SubTeam
 import com.futsalgg.app.domain.match.repository.MatchParticipantRepository
 import com.futsalgg.app.remote.api.match.MatchApi
 import com.futsalgg.app.remote.api.match.model.request.CreateMatchParticipantsRequest
+import com.futsalgg.app.remote.api.match.model.request.UpdateMatchParticipantsSubTeamRequest
 import java.io.IOException
 import javax.inject.Inject
 
@@ -46,6 +47,32 @@ class MatchParticipantRepositoryImpl @Inject constructor(
                         }
                     )
                 } ?: Result.failure(IOException("응답이 비어있습니다"))
+            } else {
+                Result.failure(IOException("서버 오류: ${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun updateMatchParticipantsSubTeam(
+        accessToken: String,
+        matchId: String,
+        participantIds: List<String>,
+        subTeam: SubTeam
+    ): Result<Unit> {
+        return try {
+            val response = matchApi.updateMatchParticipantsSubTeam(
+                accessToken = "Bearer $accessToken",
+                request = UpdateMatchParticipantsSubTeamRequest(
+                    matchId = matchId,
+                    ids = participantIds,
+                    subTeam = subTeam.name
+                )
+            )
+
+            if (response.isSuccessful) {
+                Result.success(Unit)
             } else {
                 Result.failure(IOException("서버 오류: ${response.code()}"))
             }

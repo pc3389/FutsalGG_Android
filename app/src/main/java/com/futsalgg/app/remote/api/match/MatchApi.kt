@@ -6,11 +6,13 @@ import com.futsalgg.app.remote.api.match.model.response.MatchResponse
 import com.futsalgg.app.remote.api.match.model.request.CreateMatchParticipantsRequest
 import com.futsalgg.app.remote.api.match.model.response.CreateMatchParticipantsResponse
 import com.futsalgg.app.remote.api.match.model.response.GetMatchResponse
+import com.futsalgg.app.remote.api.match.model.request.UpdateMatchParticipantsSubTeamRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -46,4 +48,10 @@ interface MatchApi {
         @Header("Authorization") accessToken: String,
         @Body request: CreateMatchParticipantsRequest
     ): Response<CreateMatchParticipantsResponse>
+
+    @PATCH("match-participants/bulk/sub-team")
+    suspend fun updateMatchParticipantsSubTeam(
+        @Header("Authorization") accessToken: String,
+        @Body request: UpdateMatchParticipantsSubTeamRequest
+    ): Response<Unit>
 }

@@ -4,10 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.futsalgg.app.domain.auth.repository.ITokenManager
-import com.futsalgg.app.domain.match.model.MatchStatus as DomainMatchStatus
-import com.futsalgg.app.domain.match.model.VoteStatus as DomainVoteStatus
 import com.futsalgg.app.domain.match.model.Match as DomainMatch
-import com.futsalgg.app.domain.common.model.MatchType as DomainMatchType
 import com.futsalgg.app.domain.match.usecase.GetMatchesUseCase
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.state.UiState
@@ -25,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MatchResultViewModel @Inject constructor(
     private val getMatchesUseCase: GetMatchesUseCase,
-    private val tokenManager: ITokenManager
+    tokenManager: ITokenManager
 ) : ViewModel() {
 
     val accessToken = tokenManager.getAccessToken()
@@ -49,12 +46,12 @@ class MatchResultViewModel @Inject constructor(
                     opponentTeamName = "상대팀",
                     description = "팀",
                     type = MatchType.INTER_TEAM,
-                    matchDate = "05.26",
+                    matchDate = "2025-04-19",
                     startTime = "05:12",
                     endTime = "05:12",
                     location = "Location",
                     voteStatus = VoteStatus.NONE,
-                    status = MatchStatus.COMPLETED,
+                    status = MatchStatus.DRAFT,
                     createdTime = "TODO()"
                 ),
                 Match(
@@ -62,12 +59,12 @@ class MatchResultViewModel @Inject constructor(
                     opponentTeamName = null,
                     description = "Description",
                     type = MatchType.INTRA_SQUAD,
-                    matchDate = "05.26",
+                    matchDate = "2025-04-19",
                     startTime = "05:12",
                     endTime = "05:12",
                     location = "Location",
                     voteStatus = VoteStatus.NONE,
-                    status = MatchStatus.COMPLETED,
+                    status = MatchStatus.ONGOING,
                     createdTime = "TODO()"
                 ),
                 Match(
@@ -75,7 +72,7 @@ class MatchResultViewModel @Inject constructor(
                     opponentTeamName = "상대팀",
                     description = "팀",
                     type = MatchType.INTER_TEAM,
-                    matchDate = "05.27",
+                    matchDate = "2025-04-15",
                     startTime = "05:12",
                     endTime = "05:12",
                     location = "Location",
@@ -88,7 +85,7 @@ class MatchResultViewModel @Inject constructor(
                     opponentTeamName = null,
                     description = "Description",
                     type = MatchType.INTRA_SQUAD,
-                    matchDate = "05.27",
+                    matchDate = "2012-12-31",
                     startTime = "05:12",
                     endTime = "05:12",
                     location = "Location",

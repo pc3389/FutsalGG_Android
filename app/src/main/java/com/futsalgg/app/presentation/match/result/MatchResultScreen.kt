@@ -1,5 +1,6 @@
 package com.futsalgg.app.presentation.match.result
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -15,6 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.futsalgg.app.presentation.common.screen.BaseScreen
 import com.futsalgg.app.presentation.match.result.component.MatchResultPerDay
+import com.futsalgg.app.ui.theme.FutsalggColor
 
 @Composable
 fun MatchResultScreen(
@@ -32,6 +34,7 @@ fun MatchResultScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .background(FutsalggColor.white)
                 .padding(innerPadding)
         ) {
             VerticalDivider(
