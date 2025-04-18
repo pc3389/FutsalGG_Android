@@ -17,6 +17,7 @@
     <string name="setting_text">설정</string>
     <string name="nickname_text">닉네임</string>
     <string name="nickname_hint">사용할 닉네임을 입력해주세요.</string>
+    <string name="enter_nickname_text">닉네임을 입력해주세요.</string>
     <string name="select_all">전체 선택</string>
     <string name="deselect_all">전체 해제</string>
 
@@ -70,7 +71,7 @@
     <string name="create_match_time_known">예정</string>
     <string name="create_match_time_unknown">미정</string>
     <string name="create_match_sub_editor">대리 기록자 선택</string>
-    <string name="create_match_enter_nickname">닉네임을 입력해주세요.</string>
+
 
     <!-- MyProfile -->
     <string name="my_profile_title">내 정보 보기</string>
@@ -84,7 +85,7 @@
 
     <!-- CreateMatchParticipants -->
     <string name="create_match_participants_title">경기 참석 명단 등록하기</string>
-
     <string name="create_match_participants_button_text">경기 기록 등록하기</string>
+    <string name="create_match_participants_bottom_sheet_title">참석할 팀원을 선택해주세요.</string>
 
 </resources>

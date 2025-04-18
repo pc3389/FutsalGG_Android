@@ -176,7 +176,7 @@ fun CreateMatchScreen(
                                 vertical = 12.dp,
                                 horizontal = 17.dp
                             ),
-                        text = stringResource(R.string.create_match_enter_nickname),
+                        text = stringResource(R.string.enter_nickname_text),
                         style = FutsalggTypography.regular_17_200,
                         color = FutsalggColor.mono400
                     )

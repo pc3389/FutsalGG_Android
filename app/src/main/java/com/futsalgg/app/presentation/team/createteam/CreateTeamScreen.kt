@@ -137,13 +137,12 @@ fun CreateTeamScreen(
                     value = createTeamState.introduction,
                     onValueChange = viewModel::onIntroductionChange,
                     hint = stringResource(R.string.team_description_hint),
-                    imeAction = ImeAction.Done,
-                    onImeAction = { focusManager.clearFocus() },
+                    onImeDone = { focusManager.clearFocus() },
                     singleLine = false,
                     maxLines = 2,
                     minLines = 2,
                     maxLength = 20,
-                    modifier = Modifier.padding(vertical = 16.dp)
+                    textModifier = Modifier.padding(vertical = 16.dp)
                 )
 
                 VerticalSpacer56()
@@ -154,12 +153,11 @@ fun CreateTeamScreen(
                 )
                 Spacer(Modifier.height(8.dp))
                 EditTextBox(
-                    modifier = Modifier.padding(vertical = 16.dp),
+                    textModifier = Modifier.padding(vertical = 16.dp),
                     value = createTeamState.rule,
                     onValueChange = viewModel::onRuleChange,
                     hint = stringResource(R.string.team_rules_hint),
-                    imeAction = ImeAction.Done,
-                    onImeAction = { focusManager.clearFocus() },
+                    onImeDone = { focusManager.clearFocus() },
                     singleLine = false,
                     maxLines = 2,
                     minLines = 2
@@ -202,8 +200,7 @@ fun CreateTeamScreen(
                 EditTextBox(
                     value = createTeamState.dues,
                     onValueChange = viewModel::onDuesChange,
-                    imeAction = ImeAction.Done,
-                    onImeAction = { focusManager.clearFocus() },
+                    onImeDone = { focusManager.clearFocus() },
                     singleLine = true,
                     maxLines = 1,
                     isNumeric = true

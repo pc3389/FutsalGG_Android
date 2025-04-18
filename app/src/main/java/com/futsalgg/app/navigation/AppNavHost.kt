@@ -17,7 +17,7 @@ import com.futsalgg.app.presentation.user.createuser.CreateUserScreen
 import com.futsalgg.app.presentation.user.createuser.CreateUserViewModel
 import com.futsalgg.app.presentation.auth.termsandcondition.TermsAndConditionScreen
 import com.futsalgg.app.presentation.match.create.CreateMatchScreen
-import com.futsalgg.app.presentation.match.creatematchparticipants.CreateMatchMemberScreen
+import com.futsalgg.app.presentation.match.creatematchparticipants.CreateMatchParticipantsScreen
 import com.futsalgg.app.presentation.match.result.MatchResultScreen
 import com.futsalgg.app.presentation.setting.SettingScreen
 import com.futsalgg.app.presentation.team.createteam.CreateTeamScreen
@@ -83,7 +83,7 @@ fun AppNavHost(
             UpdateProfileScreen(navController)
         }
         composable(Screen.CreateMatchMemberScreen.route) {
-            CreateMatchMemberScreen(navController)
+            CreateMatchParticipantsScreen(navController)
         }
         composable(
             route = "cropImage?uri={uri}&viewModelType={viewModelType}",

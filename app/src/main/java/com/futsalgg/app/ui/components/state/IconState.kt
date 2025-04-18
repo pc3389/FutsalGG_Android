@@ -7,5 +7,6 @@ import com.futsalgg.app.R
 data class IconState(
     val iconRes: Int = R.drawable.ic_arrow_forward_16,
     val isIconLocationStart: Boolean = false,
-    val iconPaddingFromText: Dp = 18.dp
+    val iconPaddingFromText: Dp = 18.dp,
+    val onClick: () -> Unit = {}
 )

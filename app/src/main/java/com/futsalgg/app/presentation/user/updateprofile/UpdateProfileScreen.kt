@@ -127,7 +127,7 @@ fun UpdateProfileScreen(
                     value = state.value.squadNumber?.toString() ?: "",
                     onValueChange = viewModel::updateSquadNumber,
                     hint = stringResource(R.string.nickname_hint),
-                    onImeAction = { focusManager.clearFocus() },
+                    onImeDone = { focusManager.clearFocus() },
                     singleLine = true,
                     isNumeric = true,
                     hasDecimal = false

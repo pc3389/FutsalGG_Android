@@ -46,6 +46,7 @@ class CreateMatchParticipantsViewModel @Inject constructor(
     private val _isAllSelected = MutableStateFlow(false)
 
     init {
+        // TODO Remove Stub..!
         _matchState.value = Match(
             matchDate = formatDate("2025-04-18"),
             startTime = "12:34",
@@ -53,6 +54,86 @@ class CreateMatchParticipantsViewModel @Inject constructor(
             location = "장소장소장소",
         )
         _matchParticipantsState.value = listOf(
+            MatchParticipantState(
+                id = "Match Participant ID",
+                matchId = "matchId",
+                teamMemberId = "teamMemberId1",
+                name = "닉네임닉네임닉네임쓰",
+                role = TeamRole.TEAM_LEADER.displayName,
+                profileUrl = "",
+                subTeam = SubTeam.NONE,
+                createdTime = "2015.12.03"
+            ),
+            MatchParticipantState(
+                id = "Match Participant ID",
+                matchId = "matchId",
+                teamMemberId = "teamMemberId1",
+                name = "닉네임닉네임닉네임쓰",
+                role = TeamRole.TEAM_SECRETARY.displayName,
+                profileUrl = "",
+                subTeam = SubTeam.NONE,
+                createdTime = "2015.12.03"
+            ),
+            MatchParticipantState(
+                id = "Match Participant ID",
+                matchId = "matchId",
+                teamMemberId = "teamMemberId1",
+                name = "닉네임닉네임닉네임쓰",
+                role = TeamRole.TEAM_DEPUTY_LEADER.displayName,
+                profileUrl = "",
+                subTeam = SubTeam.NONE,
+                createdTime = "2015.12.03"
+            ),
+            MatchParticipantState(
+                id = "Match Participant ID",
+                matchId = "matchId",
+                teamMemberId = "teamMemberId1",
+                name = "닉네임닉네임닉네임쓰",
+                role = TeamRole.TEAM_MEMBER.displayName,
+                profileUrl = "",
+                subTeam = SubTeam.NONE,
+                createdTime = "2015.12.03"
+            ),
+            MatchParticipantState(
+                id = "Match Participant ID",
+                matchId = "matchId",
+                teamMemberId = "teamMemberId1",
+                name = "닉네임닉네임닉네임쓰",
+                role = TeamRole.TEAM_LEADER.displayName,
+                profileUrl = "",
+                subTeam = SubTeam.NONE,
+                createdTime = "2015.12.03"
+            ),
+            MatchParticipantState(
+                id = "Match Participant ID",
+                matchId = "matchId",
+                teamMemberId = "teamMemberId1",
+                name = "닉네임닉네임닉네임쓰",
+                role = TeamRole.TEAM_SECRETARY.displayName,
+                profileUrl = "",
+                subTeam = SubTeam.NONE,
+                createdTime = "2015.12.03"
+            ),
+            MatchParticipantState(
+                id = "Match Participant ID",
+                matchId = "matchId",
+                teamMemberId = "teamMemberId1",
+                name = "닉네임닉네임닉네임쓰",
+                role = TeamRole.TEAM_DEPUTY_LEADER.displayName,
+                profileUrl = "",
+                subTeam = SubTeam.NONE,
+                createdTime = "2015.12.03"
+            ),
+            MatchParticipantState(
+                id = "Match Participant ID",
+                matchId = "matchId",
+                teamMemberId = "teamMemberId1",
+                name = "닉네임닉네임닉네임쓰",
+                role = TeamRole.TEAM_MEMBER.displayName,
+                profileUrl = "",
+                subTeam = SubTeam.NONE,
+                createdTime = "2015.12.03"
+            ),
             MatchParticipantState(
                 id = "Match Participant ID",
                 matchId = "matchId",
