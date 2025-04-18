@@ -12,8 +12,19 @@ fun String.toMMddFormat(): String {
     val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     val outputFormat = SimpleDateFormat("MM.dd", Locale.getDefault())
     return try {
-        val date = inputFormat.parse(this)
-        outputFormat.format(date!!)
+        val date = inputFormat.parse(this) ?: "00.00"
+        outputFormat.format(date)
+    } catch (e: Exception) {
+        this
+    }
+}
+
+fun String.toFullDateFormat(): String {
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    val outputFormat = SimpleDateFormat("yyyy년 MM월 dd일 (E)", Locale.getDefault())
+    return try {
+        val date = inputFormat.parse(this) ?: "0000년 00월 00일 (월)"
+        outputFormat.format(date)
     } catch (e: Exception) {
         this
     }

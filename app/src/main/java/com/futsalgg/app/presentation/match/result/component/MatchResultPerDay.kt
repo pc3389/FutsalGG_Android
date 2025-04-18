@@ -29,7 +29,7 @@ import com.futsalgg.app.util.toMMddFormat
 fun MatchResultPerDay(
     date: String, //yyyy-MM-dd
     matches: List<Match>,
-    onResultClick: (String) -> Unit
+    onResultClick: (Match) -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -84,7 +84,7 @@ fun MatchResultPerDay(
                         matchStartTime = match.startTime,
                         matchEndTime = match.endTime,
                         buttonEnabled = match.status == MatchStatus.COMPLETED,
-                        onResultClick = { onResultClick(match.id) }
+                        onResultClick = { onResultClick(match) }
                     )
                 }
             }

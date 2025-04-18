@@ -88,4 +88,7 @@
     <string name="create_match_participants_button_text">경기 기록 등록하기</string>
     <string name="create_match_participants_bottom_sheet_title">참석할 팀원을 선택해주세요.</string>
 
+    <!-- UpdateMatchParticipantsSubTeam -->
+    <string name="update_subteam_select_a_team_text">A팀만 선택해주세요.</string>
+    <string name="update_subteam_sub_content_text">선택하지 않은 팀원은 자동으로 B팀이 됩니다.</string>
 </resources>

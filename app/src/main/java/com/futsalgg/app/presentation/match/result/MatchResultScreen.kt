@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.futsalgg.app.presentation.common.screen.BaseScreen
+import com.futsalgg.app.presentation.match.MatchSharedViewModel
 import com.futsalgg.app.presentation.match.result.component.MatchResultPerDay
 import com.futsalgg.app.ui.theme.FutsalggColor
 
@@ -22,6 +23,7 @@ import com.futsalgg.app.ui.theme.FutsalggColor
 fun MatchResultScreen(
     navController: NavController,
     viewModel: MatchResultViewModel = hiltViewModel(),
+    sharedViewModel: MatchSharedViewModel = hiltViewModel()
 ) {
     val matchesByDate by viewModel.matchesByDate.collectAsState()
     val uiState by viewModel.uiState.collectAsState()
@@ -49,7 +51,11 @@ fun MatchResultScreen(
                     MatchResultPerDay(
                         date = date,
                         matches = matches,
-                        onResultClick = {}
+                        onResultClick = { match ->
+                            // TODO
+                            sharedViewModel.updateSelectedMatchId(match.id)
+                            sharedViewModel.updateMatch(match)
+                        }
                     )
                 }
             }

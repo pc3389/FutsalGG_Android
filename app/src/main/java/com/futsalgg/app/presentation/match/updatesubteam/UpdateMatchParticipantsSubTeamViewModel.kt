@@ -17,7 +17,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UpdateMatchParticipantsSubTeamViewModel @Inject constructor(
-    private val selectedMatchId: String,
     private val updateMatchParticipantsSubTeamUseCase: UpdateMatchParticipantsSubTeamUseCase
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
@@ -42,20 +41,24 @@ class UpdateMatchParticipantsSubTeamViewModel @Inject constructor(
     }
 
     fun updateMatchParticipantsSubTeam(
-        accessToken: String
+        accessToken: String,
+        matchId: String
     ) {
         viewModelScope.launch {
             _uiState.value = UiState.Loading
 
-            updateTeamA(accessToken)
-            updateTeamB(accessToken)
+            updateTeamA(accessToken, matchId)
+            updateTeamB(accessToken, matchId)
         }
     }
 
-    private suspend fun updateTeamA(accessToken: String) {
+    private suspend fun updateTeamA(
+        accessToken: String,
+        matchId: String
+    ) {
         updateMatchParticipantsSubTeamUseCase(
             accessToken = accessToken,
-            matchId = selectedMatchId,
+            matchId = matchId,
             participantIds = _selectedParticipantIds.value,
             subTeam = SubTeam.A
         ).onSuccess {
@@ -68,10 +71,10 @@ class UpdateMatchParticipantsSubTeamViewModel @Inject constructor(
         }
     }
 
-    private suspend fun updateTeamB(accessToken: String) {
+    private suspend fun updateTeamB(accessToken: String, matchId: String) {
         updateMatchParticipantsSubTeamUseCase(
             accessToken = accessToken,
-            matchId = selectedMatchId,
+            matchId = matchId,
             participantIds = _unSelectedParticipantIds.value,
             subTeam = SubTeam.B
         ).onSuccess {

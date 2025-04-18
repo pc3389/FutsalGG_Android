@@ -14,6 +14,7 @@ import com.futsalgg.app.presentation.common.model.MatchType
 import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.presentation.main.model.TeamRole
 import com.futsalgg.app.presentation.match.model.Match
+import com.futsalgg.app.util.toFullDateFormat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -48,7 +49,7 @@ class CreateMatchParticipantsViewModel @Inject constructor(
     init {
         // TODO Remove Stub..!
         _matchState.value = Match(
-            matchDate = formatDate("2025-04-18"),
+            matchDate = ("2025-04-18").toFullDateFormat(),
             startTime = "12:34",
             endTime = "06:12",
             location = "장소장소장소",
@@ -250,8 +251,7 @@ class CreateMatchParticipantsViewModel @Inject constructor(
                                 profileUrl = "",
                                 subTeam = when (participant.subTeam.name) {
                                     "A" -> SubTeam.A
-                                    "B" -> SubTeam.B
-                                    else -> SubTeam.NONE
+                                    else -> SubTeam.B
                                 },
                                 createdTime = participant.createdTime
                             )
@@ -269,17 +269,6 @@ class CreateMatchParticipantsViewModel @Inject constructor(
                     UiError.UnknownError("예기치 않은 오류가 발생했습니다: ${e.message}")
                 )
             }
-        }
-    }
-
-    private fun formatDate(dateString: String): String {
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("yyyy년 MM월 dd일 (E)", Locale.getDefault())
-        return try {
-            val date = inputFormat.parse(dateString) ?: "0000년 00월 00일 (월)"
-            outputFormat.format(date)
-        } catch (e: Exception) {
-            dateString
         }
     }
 
@@ -304,7 +293,7 @@ class CreateMatchParticipantsViewModel @Inject constructor(
                             id = match.id,
                             opponentTeamName = match.opponentTeamName,
                             type = MatchType.fromDomain(match.type),
-                            matchDate = formatDate(match.matchDate),
+                            matchDate = match.matchDate.toFullDateFormat(),
                             startTime = match.startTime ?: "00:00",
                             endTime = match.endTime ?: "00:00",
                             location = match.location,
