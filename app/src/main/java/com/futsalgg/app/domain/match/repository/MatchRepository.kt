@@ -17,7 +17,13 @@ interface MatchRepository {
 
     suspend fun deleteMatch(
         accessToken: String,
-        id: String
+        matchId: String
+    ): Result<Unit>
+
+    suspend fun updateMatchRounds(
+        accessToken: String,
+        matchId: String,
+        rounds: Int
     ): Result<Unit>
 
     suspend fun createMatch(

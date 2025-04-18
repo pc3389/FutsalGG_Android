@@ -6,6 +6,7 @@ import com.futsalgg.app.domain.match.repository.MatchRepository
 import com.futsalgg.app.domain.common.model.MatchType as DomainMatchType
 import com.futsalgg.app.remote.api.match.MatchApi
 import com.futsalgg.app.remote.api.match.model.request.CreateMatchRequest
+import com.futsalgg.app.remote.api.match.model.request.UpdateMatchRoundsRequest
 import com.futsalgg.app.remote.api.match.model.response.MatchType as RemoteMatchType
 import java.io.IOException
 import javax.inject.Inject
@@ -166,5 +167,37 @@ class MatchRepositoryImpl @Inject constructor(
                 cause = e
             ) as Throwable
         )
+    }
+
+    override suspend fun updateMatchRounds(
+        accessToken: String,
+        matchId: String,
+        rounds: Int
+    ): Result<Unit> {
+        return try {
+            val response = matchApi.updateMatchRounds(
+                accessToken = "Bearer $accessToken",
+                matchId = matchId,
+                request = UpdateMatchRoundsRequest(rounds = rounds)
+            )
+
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(
+                    DataError.ServerError(
+                        message = "서버 오류: ${response.code()}",
+                        cause = null
+                    ) as Throwable
+                )
+            }
+        } catch (e: IOException) {
+            Result.failure(
+                DataError.NetworkError(
+                    message = "네트워크 연결을 확인해주세요.",
+                    cause = e
+                ) as Throwable
+            )
+        }
     }
 } 

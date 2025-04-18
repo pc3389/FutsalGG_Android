@@ -41,6 +41,8 @@ import com.futsalgg.app.domain.team.usecase.GetTeamMembersUseCase
 import com.futsalgg.app.domain.team.usecase.GetTeamMembersUseCaseImpl
 import com.futsalgg.app.domain.match.usecase.UpdateMatchParticipantsSubTeamUseCase
 import com.futsalgg.app.domain.match.usecase.UpdateMatchParticipantsSubTeamUseCaseImpl
+import com.futsalgg.app.domain.match.usecase.UpdateMatchRoundsUseCase
+import com.futsalgg.app.domain.match.usecase.UpdateMatchRoundsUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -186,5 +188,12 @@ object UseCaseModule {
         matchParticipantRepository: MatchParticipantRepository
     ): UpdateMatchParticipantsSubTeamUseCase {
         return UpdateMatchParticipantsSubTeamUseCaseImpl(matchParticipantRepository)
+    }
+
+    @Provides
+    fun provideUpdateMatchRoundsUseCase(
+        matchRepository: MatchRepository
+    ): UpdateMatchRoundsUseCase {
+        return UpdateMatchRoundsUseCaseImpl(matchRepository)
     }
 }
