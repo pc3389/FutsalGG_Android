@@ -16,6 +16,8 @@ import com.futsalgg.app.remote.api.match.model.response.MatchStatus
 import com.futsalgg.app.remote.api.match.model.response.VoteStatus
 import retrofit2.Response
 import java.util.UUID
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class StubMatchApi : MatchApi {
     override suspend fun getMatches(
@@ -114,7 +116,164 @@ class StubMatchApi : MatchApi {
         accessToken: String,
         matchId: String
     ): Response<List<MatchParticipant>> {
-        return Response.success(emptyList())
+        return Response.success(
+            listOf(
+                MatchParticipant(
+                    id = "1123123",
+                    matchId = matchId,
+                    teamMemberId = "1324667",
+                    name = "테스트 선수 A 1",
+                    role = "PLAYER",
+                    subTeam = "A",
+                    createdTime = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)
+                        .toString(),
+                    profileUrl = ""
+                ),MatchParticipant(
+                    id = "1235",
+                    matchId = matchId,
+                    teamMemberId = "112341",
+                    name = "테스트 선수 A 2",
+                    role = "PLAYER",
+                    subTeam = "A",
+                    createdTime = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)
+                        .toString(),
+                    profileUrl = ""
+                ),MatchParticipant(
+                    id = "1134626",
+                    matchId = matchId,
+                    teamMemberId = "1234632465",
+                    name = "테스트 선수 A 3",
+                    role = "PLAYER",
+                    subTeam = "A",
+                    createdTime = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)
+                        .toString(),
+                    profileUrl = ""
+                ),MatchParticipant(
+                    id = "17171324",
+                    matchId = matchId,
+                    teamMemberId = "112351235",
+                    name = "테스트 선수 A 4",
+                    role = "PLAYER",
+                    subTeam = "A",
+                    createdTime = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)
+                        .toString(),
+                    profileUrl = ""
+                ),MatchParticipant(
+                    id = "12532151",
+                    matchId = matchId,
+                    teamMemberId = "11245324626",
+                    name = "테스트 선수 A 1",
+                    role = "PLAYER",
+                    subTeam = "A",
+                    createdTime = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)
+                        .toString(),
+                    profileUrl = ""
+                ),MatchParticipant(
+                    id = "1324627",
+                    matchId = matchId,
+                    teamMemberId = "123521341",
+                    name = "테스트 선수 A 2",
+                    role = "PLAYER",
+                    subTeam = "A",
+                    createdTime = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)
+                        .toString(),
+                    profileUrl = ""
+                ),MatchParticipant(
+                    id = "274561",
+                    matchId = matchId,
+                    teamMemberId = "11823",
+                    name = "테스트 선수 A 3",
+                    role = "PLAYER",
+                    subTeam = "A",
+                    createdTime = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)
+                        .toString(),
+                    profileUrl = ""
+                ),MatchParticipant(
+                    id = "24561",
+                    matchId = matchId,
+                    teamMemberId = "1123546727",
+                    name = "테스트 선수 A 4",
+                    role = "PLAYER",
+                    subTeam = "A",
+                    createdTime = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)
+                        .toString(),
+                    profileUrl = ""
+                ),MatchParticipant(
+                    id = "234623461",
+                    matchId = matchId,
+                    teamMemberId = "124362345",
+                    name = "테스트 선수 A 1",
+                    role = "PLAYER",
+                    subTeam = "A",
+                    createdTime = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)
+                        .toString(),
+                    profileUrl = ""
+                ),
+                MatchParticipant(
+                    id = "268769",
+                    matchId = matchId,
+                    teamMemberId = "24563426",
+                    name = "테스트 선수 B 1",
+                    role = "PLAYER",
+                    subTeam = "B",
+                    createdTime = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)
+                        .toString(),
+                    profileUrl = ""
+                ),MatchParticipant(
+                    id = "1678678",
+                    matchId = matchId,
+                    teamMemberId = "35261",
+                    name = "테스트 선수 A 2",
+                    role = "PLAYER",
+                    subTeam = "A",
+                    createdTime = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)
+                        .toString(),
+                    profileUrl = ""
+                ),
+                MatchParticipant(
+                    id = "2678678",
+                    matchId = matchId,
+                    teamMemberId = "2125234",
+                    name = "테스트 선수 B 2",
+                    role = "PLAYER",
+                    subTeam = "B",
+                    createdTime = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)
+                        .toString(),
+                    profileUrl = ""
+                ),MatchParticipant(
+                    id = "1",
+                    matchId = matchId,
+                    teamMemberId = "613512341",
+                    name = "테스트 선수 A 3",
+                    role = "PLAYER",
+                    subTeam = "A",
+                    createdTime = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)
+                        .toString(),
+                    profileUrl = ""
+                ),
+                MatchParticipant(
+                    id = "2",
+                    matchId = matchId,
+                    teamMemberId = "234523452",
+                    name = "테스트 선수 B 3",
+                    role = "PLAYER",
+                    subTeam = "B",
+                    createdTime = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)
+                        .toString(),
+                    profileUrl = ""
+                ),MatchParticipant(
+                    id = "1",
+                    matchId = matchId,
+                    teamMemberId = "112341234",
+                    name = "테스트 선수 A 4",
+                    role = "PLAYER",
+                    subTeam = "A",
+                    createdTime = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)
+                        .toString(),
+                    profileUrl = ""
+                )
+            )
+        )
     }
 
     override suspend fun getMatchStats(

@@ -32,21 +32,7 @@ class MatchParticipantRepositoryImpl @Inject constructor(
                 response.body()?.let { body ->
                     Result.success(
                         body.participants.map { participant ->
-                            MatchParticipant(
-                                id = participant.id,
-                                matchId = participant.matchId,
-                                teamMemberId = participant.teamMemberId,
-                                name = participant.name,
-                                role = participant.role,
-                                subTeam = when (participant.subTeam) {
-                                    "NONE" -> SubTeam.NONE
-                                    "A" -> SubTeam.A
-                                    "B" -> SubTeam.B
-                                    else -> SubTeam.NONE
-                                },
-                                profileUrl = participant.profileUrl ?: "",
-                                createdTime = participant.createdTime
-                            )
+                            participant.toDomain()
                         }
                     )
                 } ?: Result.failure(

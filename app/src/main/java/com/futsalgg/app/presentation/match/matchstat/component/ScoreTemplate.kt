@@ -14,7 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.futsalgg.app.presentation.match.matchstat.model.MatchParticipant
+import com.futsalgg.app.presentation.match.matchstat.model.MatchParticipantState
 import com.futsalgg.app.presentation.match.matchstat.model.RoundStats
 import com.futsalgg.app.ui.components.DoubleButtons
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer16
@@ -27,7 +27,7 @@ import com.futsalgg.app.ui.theme.FutsalggTypography
 @Composable
 fun ScoreTemplate(
     roundStatsList: List<RoundStats>,
-    participants: List<MatchParticipant>,
+    participants: List<MatchParticipantState>,
     isEditable: Boolean = false,
     onGoalClick: (Int, Int) -> Unit = { _, _ -> }, // roundIndex, team(0, 1)
     onAssistClick: (Int, Int, Int) -> Unit = { _, _, _ -> } // roudndIndex, team(0, 1), goalIndex

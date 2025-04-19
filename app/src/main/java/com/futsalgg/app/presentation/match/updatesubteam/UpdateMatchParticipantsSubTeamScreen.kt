@@ -22,7 +22,7 @@ import com.futsalgg.app.R
 import com.futsalgg.app.presentation.common.screen.BaseScreen
 import com.futsalgg.app.presentation.match.MatchSharedViewModel
 import com.futsalgg.app.presentation.match.component.SelectableMathParticipantBox
-import com.futsalgg.app.presentation.match.creatematchparticipants.SubTeam
+import com.futsalgg.app.presentation.match.matchstat.model.MatchParticipantState
 import com.futsalgg.app.ui.components.BottomButton
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer12
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer16
@@ -94,7 +94,7 @@ fun UpdateMatchParticipantsSubTeamScreen(
                             sharedViewModel.updateParticipantSubteam(index)
                         },
                         participant = participant,
-                        isSelected = participant.subTeam == SubTeam.A
+                        isSelected = participant.subTeam == MatchParticipantState.SubTeam.A
                     )
                 }
             }

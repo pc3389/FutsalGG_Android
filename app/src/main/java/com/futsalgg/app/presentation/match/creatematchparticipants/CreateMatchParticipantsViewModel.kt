@@ -13,6 +13,7 @@ import com.futsalgg.app.presentation.common.error.toUiError
 import com.futsalgg.app.presentation.common.model.MatchType
 import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.presentation.main.model.TeamRole
+import com.futsalgg.app.presentation.match.matchstat.model.MatchParticipantState
 import com.futsalgg.app.presentation.match.model.Match
 import com.futsalgg.app.util.toFullDateFormat
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,8 +21,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -62,9 +61,9 @@ class CreateMatchParticipantsViewModel @Inject constructor(
                 matchId = "matchId",
                 teamMemberId = "teamMemberId1",
                 name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_LEADER.displayName,
+                role = TeamRole.TEAM_LEADER,
                 profileUrl = "",
-                subTeam = SubTeam.NONE,
+                subTeam = MatchParticipantState.SubTeam.NONE,
                 createdTime = "2015.12.03"
             ),
             MatchParticipantState(
@@ -72,9 +71,9 @@ class CreateMatchParticipantsViewModel @Inject constructor(
                 matchId = "matchId",
                 teamMemberId = "teamMemberId1",
                 name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_SECRETARY.displayName,
+                role = TeamRole.TEAM_SECRETARY,
                 profileUrl = "",
-                subTeam = SubTeam.NONE,
+                subTeam = MatchParticipantState.SubTeam.NONE,
                 createdTime = "2015.12.03"
             ),
             MatchParticipantState(
@@ -82,9 +81,9 @@ class CreateMatchParticipantsViewModel @Inject constructor(
                 matchId = "matchId",
                 teamMemberId = "teamMemberId1",
                 name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_DEPUTY_LEADER.displayName,
+                role = TeamRole.TEAM_DEPUTY_LEADER,
                 profileUrl = "",
-                subTeam = SubTeam.NONE,
+                subTeam = MatchParticipantState.SubTeam.NONE,
                 createdTime = "2015.12.03"
             ),
             MatchParticipantState(
@@ -92,9 +91,9 @@ class CreateMatchParticipantsViewModel @Inject constructor(
                 matchId = "matchId",
                 teamMemberId = "teamMemberId1",
                 name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_MEMBER.displayName,
+                role = TeamRole.TEAM_MEMBER,
                 profileUrl = "",
-                subTeam = SubTeam.NONE,
+                subTeam = MatchParticipantState.SubTeam.NONE,
                 createdTime = "2015.12.03"
             ),
             MatchParticipantState(
@@ -102,9 +101,9 @@ class CreateMatchParticipantsViewModel @Inject constructor(
                 matchId = "matchId",
                 teamMemberId = "teamMemberId1",
                 name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_LEADER.displayName,
+                role = TeamRole.TEAM_LEADER,
                 profileUrl = "",
-                subTeam = SubTeam.NONE,
+                subTeam = MatchParticipantState.SubTeam.NONE,
                 createdTime = "2015.12.03"
             ),
             MatchParticipantState(
@@ -112,9 +111,9 @@ class CreateMatchParticipantsViewModel @Inject constructor(
                 matchId = "matchId",
                 teamMemberId = "teamMemberId1",
                 name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_SECRETARY.displayName,
+                role = TeamRole.TEAM_SECRETARY,
                 profileUrl = "",
-                subTeam = SubTeam.NONE,
+                subTeam = MatchParticipantState.SubTeam.NONE,
                 createdTime = "2015.12.03"
             ),
             MatchParticipantState(
@@ -122,9 +121,9 @@ class CreateMatchParticipantsViewModel @Inject constructor(
                 matchId = "matchId",
                 teamMemberId = "teamMemberId1",
                 name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_DEPUTY_LEADER.displayName,
+                role = TeamRole.TEAM_DEPUTY_LEADER,
                 profileUrl = "",
-                subTeam = SubTeam.NONE,
+                subTeam = MatchParticipantState.SubTeam.NONE,
                 createdTime = "2015.12.03"
             ),
             MatchParticipantState(
@@ -132,9 +131,9 @@ class CreateMatchParticipantsViewModel @Inject constructor(
                 matchId = "matchId",
                 teamMemberId = "teamMemberId1",
                 name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_MEMBER.displayName,
+                role = TeamRole.TEAM_MEMBER,
                 profileUrl = "",
-                subTeam = SubTeam.NONE,
+                subTeam = MatchParticipantState.SubTeam.NONE,
                 createdTime = "2015.12.03"
             ),
             MatchParticipantState(
@@ -142,9 +141,9 @@ class CreateMatchParticipantsViewModel @Inject constructor(
                 matchId = "matchId",
                 teamMemberId = "teamMemberId1",
                 name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_LEADER.displayName,
+                role = TeamRole.TEAM_LEADER,
                 profileUrl = "",
-                subTeam = SubTeam.NONE,
+                subTeam = MatchParticipantState.SubTeam.NONE,
                 createdTime = "2015.12.03"
             ),
             MatchParticipantState(
@@ -152,9 +151,9 @@ class CreateMatchParticipantsViewModel @Inject constructor(
                 matchId = "matchId",
                 teamMemberId = "teamMemberId1",
                 name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_SECRETARY.displayName,
+                role = TeamRole.TEAM_SECRETARY,
                 profileUrl = "",
-                subTeam = SubTeam.NONE,
+                subTeam = MatchParticipantState.SubTeam.NONE,
                 createdTime = "2015.12.03"
             ),
             MatchParticipantState(
@@ -162,9 +161,9 @@ class CreateMatchParticipantsViewModel @Inject constructor(
                 matchId = "matchId",
                 teamMemberId = "teamMemberId1",
                 name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_DEPUTY_LEADER.displayName,
+                role = TeamRole.TEAM_DEPUTY_LEADER,
                 profileUrl = "",
-                subTeam = SubTeam.NONE,
+                subTeam = MatchParticipantState.SubTeam.NONE,
                 createdTime = "2015.12.03"
             ),
             MatchParticipantState(
@@ -172,9 +171,9 @@ class CreateMatchParticipantsViewModel @Inject constructor(
                 matchId = "matchId",
                 teamMemberId = "teamMemberId1",
                 name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_MEMBER.displayName,
+                role = TeamRole.TEAM_MEMBER,
                 profileUrl = "",
-                subTeam = SubTeam.NONE,
+                subTeam = MatchParticipantState.SubTeam.NONE,
                 createdTime = "2015.12.03"
             )
         )
@@ -249,11 +248,11 @@ class CreateMatchParticipantsViewModel @Inject constructor(
                                 matchId = participant.matchId,
                                 teamMemberId = participant.teamMemberId,
                                 name = participant.name,
-                                role = participant.role,
+                                role = TeamRole.fromDomain(participant.role),
                                 profileUrl = "",
                                 subTeam = when (participant.subTeam.name) {
-                                    "A" -> SubTeam.A
-                                    else -> SubTeam.B
+                                    "A" -> MatchParticipantState.SubTeam.A
+                                    else -> MatchParticipantState.SubTeam.B
                                 },
                                 createdTime = participant.createdTime
                             )

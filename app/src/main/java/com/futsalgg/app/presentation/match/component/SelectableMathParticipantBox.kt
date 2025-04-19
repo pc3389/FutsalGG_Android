@@ -1,5 +1,6 @@
 package com.futsalgg.app.presentation.match.component
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -23,7 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.futsalgg.app.R
-import com.futsalgg.app.presentation.match.creatematchparticipants.MatchParticipantState
+import com.futsalgg.app.presentation.match.matchstat.model.MatchParticipantState
 import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.ui.theme.FutsalggTypography
 
@@ -31,10 +32,13 @@ import com.futsalgg.app.ui.theme.FutsalggTypography
 fun SelectableMathParticipantBox(
     onClick: () -> Unit,
     participant: MatchParticipantState,
-    isSelected: Boolean = participant.isSelected
+    isSelected: Boolean = participant.isSelected,
+    @DrawableRes iconTrue : Int = R.drawable.ic_checkbox_true_24,
+    @DrawableRes iconFalse : Int = R.drawable.ic_checkbox_false_24
+
 ) {
     val imageResource =
-        if (isSelected) R.drawable.ic_checkbox_true_24 else R.drawable.ic_checkbox_false_24
+        if (isSelected) iconTrue else iconFalse
     val borderColor =
         if (isSelected) FutsalggColor.mono900 else FutsalggColor.mono200
     Box(
@@ -92,7 +96,7 @@ fun SelectableMathParticipantBox(
                     Spacer(Modifier.width(8.dp))
                     Text(
                         modifier = Modifier.width(44.dp),
-                        text = participant.role,
+                        text = participant.role.displayName,
                         style = FutsalggTypography.regular_17_200,
                         color = FutsalggColor.mono900,
                         textAlign = TextAlign.Center

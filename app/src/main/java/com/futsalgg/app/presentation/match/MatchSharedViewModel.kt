@@ -3,8 +3,7 @@ package com.futsalgg.app.presentation.match
 import androidx.lifecycle.ViewModel
 import com.futsalgg.app.presentation.common.model.MatchType
 import com.futsalgg.app.presentation.main.model.TeamRole
-import com.futsalgg.app.presentation.match.creatematchparticipants.MatchParticipantState
-import com.futsalgg.app.presentation.match.creatematchparticipants.SubTeam
+import com.futsalgg.app.presentation.match.matchstat.model.MatchParticipantState
 import com.futsalgg.app.presentation.match.model.Match
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,9 +36,9 @@ class MatchSharedViewModel @Inject constructor() : ViewModel() {
         if (index in currentList.indices) {
             currentList[index] =
                 currentList[index].copy(
-                    subTeam = if (currentList[index].subTeam == SubTeam.A) {
-                        SubTeam.B
-                    } else SubTeam.A
+                    subTeam = if (currentList[index].subTeam == MatchParticipantState.SubTeam.A) {
+                        MatchParticipantState.SubTeam.B
+                    } else MatchParticipantState.SubTeam.A
                 )
             _matchParticipantsState.value = currentList
         }
@@ -64,9 +63,9 @@ class MatchSharedViewModel @Inject constructor() : ViewModel() {
                 matchId = "matchId",
                 teamMemberId = "teamMemberId1",
                 name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_LEADER.displayName,
+                role = TeamRole.TEAM_LEADER,
                 profileUrl = "",
-                subTeam = SubTeam.NONE,
+                subTeam = MatchParticipantState.SubTeam.NONE,
                 createdTime = "2015.12.03"
             ),
             MatchParticipantState(
@@ -74,9 +73,9 @@ class MatchSharedViewModel @Inject constructor() : ViewModel() {
                 matchId = "matchId",
                 teamMemberId = "teamMemberId1",
                 name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_SECRETARY.displayName,
+                role = TeamRole.TEAM_SECRETARY,
                 profileUrl = "",
-                subTeam = SubTeam.NONE,
+                subTeam = MatchParticipantState.SubTeam.NONE,
                 createdTime = "2015.12.03"
             ),
             MatchParticipantState(
@@ -84,9 +83,9 @@ class MatchSharedViewModel @Inject constructor() : ViewModel() {
                 matchId = "matchId",
                 teamMemberId = "teamMemberId1",
                 name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_DEPUTY_LEADER.displayName,
+                role = TeamRole.TEAM_DEPUTY_LEADER,
                 profileUrl = "",
-                subTeam = SubTeam.NONE,
+                subTeam = MatchParticipantState.SubTeam.NONE,
                 createdTime = "2015.12.03"
             ),
             MatchParticipantState(
@@ -94,9 +93,9 @@ class MatchSharedViewModel @Inject constructor() : ViewModel() {
                 matchId = "matchId",
                 teamMemberId = "teamMemberId1",
                 name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_MEMBER.displayName,
+                role = TeamRole.TEAM_MEMBER,
                 profileUrl = "",
-                subTeam = SubTeam.NONE,
+                subTeam = MatchParticipantState.SubTeam.NONE,
                 createdTime = "2015.12.03"
             ),
             MatchParticipantState(
@@ -104,9 +103,9 @@ class MatchSharedViewModel @Inject constructor() : ViewModel() {
                 matchId = "matchId",
                 teamMemberId = "teamMemberId1",
                 name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_LEADER.displayName,
+                role = TeamRole.TEAM_LEADER,
                 profileUrl = "",
-                subTeam = SubTeam.NONE,
+                subTeam = MatchParticipantState.SubTeam.NONE,
                 createdTime = "2015.12.03"
             ),
             MatchParticipantState(
@@ -114,9 +113,9 @@ class MatchSharedViewModel @Inject constructor() : ViewModel() {
                 matchId = "matchId",
                 teamMemberId = "teamMemberId1",
                 name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_SECRETARY.displayName,
+                role = TeamRole.TEAM_SECRETARY,
                 profileUrl = "",
-                subTeam = SubTeam.NONE,
+                subTeam = MatchParticipantState.SubTeam.NONE,
                 createdTime = "2015.12.03"
             ),
             MatchParticipantState(
@@ -124,9 +123,9 @@ class MatchSharedViewModel @Inject constructor() : ViewModel() {
                 matchId = "matchId",
                 teamMemberId = "teamMemberId1",
                 name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_DEPUTY_LEADER.displayName,
+                role = TeamRole.TEAM_DEPUTY_LEADER,
                 profileUrl = "",
-                subTeam = SubTeam.NONE,
+                subTeam = MatchParticipantState.SubTeam.NONE,
                 createdTime = "2015.12.03"
             ),
             MatchParticipantState(
@@ -134,9 +133,9 @@ class MatchSharedViewModel @Inject constructor() : ViewModel() {
                 matchId = "matchId",
                 teamMemberId = "teamMemberId1",
                 name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_MEMBER.displayName,
+                role = TeamRole.TEAM_MEMBER,
                 profileUrl = "",
-                subTeam = SubTeam.NONE,
+                subTeam = MatchParticipantState.SubTeam.NONE,
                 createdTime = "2015.12.03"
             ),
             MatchParticipantState(
@@ -144,9 +143,9 @@ class MatchSharedViewModel @Inject constructor() : ViewModel() {
                 matchId = "matchId",
                 teamMemberId = "teamMemberId1",
                 name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_LEADER.displayName,
+                role = TeamRole.TEAM_LEADER,
                 profileUrl = "",
-                subTeam = SubTeam.NONE,
+                subTeam = MatchParticipantState.SubTeam.NONE,
                 createdTime = "2015.12.03"
             ),
             MatchParticipantState(
@@ -154,9 +153,9 @@ class MatchSharedViewModel @Inject constructor() : ViewModel() {
                 matchId = "matchId",
                 teamMemberId = "teamMemberId1",
                 name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_SECRETARY.displayName,
+                role = TeamRole.TEAM_SECRETARY,
                 profileUrl = "",
-                subTeam = SubTeam.NONE,
+                subTeam = MatchParticipantState.SubTeam.NONE,
                 createdTime = "2015.12.03"
             ),
             MatchParticipantState(
@@ -164,9 +163,9 @@ class MatchSharedViewModel @Inject constructor() : ViewModel() {
                 matchId = "matchId",
                 teamMemberId = "teamMemberId1",
                 name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_DEPUTY_LEADER.displayName,
+                role = TeamRole.TEAM_DEPUTY_LEADER,
                 profileUrl = "",
-                subTeam = SubTeam.NONE,
+                subTeam = MatchParticipantState.SubTeam.NONE,
                 createdTime = "2015.12.03"
             ),
             MatchParticipantState(
@@ -174,9 +173,9 @@ class MatchSharedViewModel @Inject constructor() : ViewModel() {
                 matchId = "matchId",
                 teamMemberId = "teamMemberId1",
                 name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_MEMBER.displayName,
+                role = TeamRole.TEAM_MEMBER,
                 profileUrl = "",
-                subTeam = SubTeam.NONE,
+                subTeam = MatchParticipantState.SubTeam.NONE,
                 createdTime = "2015.12.03"
             )
         )

@@ -26,7 +26,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.futsalgg.app.R
-import com.futsalgg.app.presentation.match.matchstat.model.MatchParticipant
+import com.futsalgg.app.presentation.match.matchstat.model.MatchParticipantState
 import com.futsalgg.app.presentation.match.matchstat.model.MatchStat
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer8
 import com.futsalgg.app.ui.theme.FutsalggColor
@@ -35,7 +35,7 @@ import com.futsalgg.app.ui.theme.FutsalggTypography
 @Composable
 fun ScoreBox(
     scoreInfo: List<MatchStat>,
-    participants: List<MatchParticipant>,
+    participants: List<MatchParticipantState>,
     backgroundColor: Color = FutsalggColor.mono800,
     borderColor: Color = FutsalggColor.mono500,
     emptyBorderColor: Color = FutsalggColor.mono800,
@@ -81,7 +81,7 @@ fun ScoreBox(
                 if (hasGoal) {
                     val profileUrl = participants.find {
                         it.id == scoreInfo[0].id
-                    }?.profilUrl
+                    }?.profileUrl
                     AsyncImage(
                         model = profileUrl,
                         contentDescription = "프로필 이미지",
@@ -153,7 +153,7 @@ fun ScoreBox(
                 if (hasAssist) {
                     val profileUrl = participants.find {
                         scoreInfo.size == 2 && it.id == scoreInfo[1].id
-                    }?.profilUrl
+                    }?.profileUrl
                     AsyncImage(
                         model = profileUrl,
                         contentDescription = "프로필 이미지",

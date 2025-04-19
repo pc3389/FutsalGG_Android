@@ -10,7 +10,7 @@ import com.futsalgg.app.domain.match.usecase.GetMatchParticipantsUseCase
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.error.toUiError
 import com.futsalgg.app.presentation.common.state.UiState
-import com.futsalgg.app.presentation.match.matchstat.model.MatchParticipant
+import com.futsalgg.app.presentation.match.matchstat.model.MatchParticipantState
 import com.futsalgg.app.presentation.match.matchstat.model.RoundStats
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -29,8 +29,8 @@ abstract class MatchStatBaseViewModel(
     private val roundScoreState = MutableStateFlow<List<RoundStats>>(listOf())
     val roundScoreStateFlow: StateFlow<List<RoundStats>> = roundScoreState.asStateFlow()
 
-    private val participantsState = MutableStateFlow<List<MatchParticipant>>(listOf())
-    val participantsStateFlow: StateFlow<List<MatchParticipant>> = participantsState.asStateFlow()
+    private val participantsState = MutableStateFlow<List<MatchParticipantState>>(listOf())
+    val participantsStateFlow: StateFlow<List<MatchParticipantState>> = participantsState.asStateFlow()
 
     // TODO MatchId
     fun initial(onSuccess: (List<RoundStats>) -> Unit) {
@@ -87,7 +87,7 @@ abstract class MatchStatBaseViewModel(
             try {
                 getMatchParticipantsUseCase(accessToken!!, matchId)
                     .onSuccess { domainParticipants ->
-                        val presentationParticipants = domainParticipants.map { MatchParticipant.fromDomain(it) }
+                        val presentationParticipants = domainParticipants.map { MatchParticipantState.fromDomain(it) }
                         participantsState.value = presentationParticipants
                     }
                     .onFailure { error ->
