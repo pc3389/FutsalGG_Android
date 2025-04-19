@@ -96,14 +96,14 @@ fun UpdateMatchRoundScreen(
                 items(9) { index ->
                     val round = index + 1
                     val borderColor = if (selectedIndex.value == index) {
-                        FutsalggColor.mono900
-                    } else {
-                        FutsalggColor.mono200
-                    }
-                    val textColor = if (selectedIndex.value == index) {
-                        FutsalggColor.mono900
+                        FutsalggColor.mint500
                     } else {
                         FutsalggColor.mono500
+                    }
+                    val backgroundColor = if (selectedIndex.value == index) {
+                        FutsalggColor.mint50
+                    } else {
+                        FutsalggColor.white
                     }
                     Box(
                         modifier = Modifier
@@ -125,14 +125,14 @@ fun UpdateMatchRoundScreen(
                                     selectedIndex.value = index
                                 }
                             }
-                            .background(FutsalggColor.white)
+                            .background(backgroundColor)
                     ) {
                         Text(
                             modifier = Modifier.padding(vertical = 12.dp)
                                 .align(Alignment.Center),
                             text = "${round}판",
                             style = FutsalggTypography.bold_17_200,
-                            color = textColor
+                            color = FutsalggColor.mono900
                         )
                     }
                 }
@@ -144,9 +144,11 @@ fun UpdateMatchRoundScreen(
                 onClick = {
                     viewModel.updateRounds(
                         matchId = matchState.id,
-                        rounds = selectedIndex.value!!.plus(1)
+                        rounds = selectedIndex.value!!.plus(1),
+                        onSuccess = {
+                            // TODO 마지막 버튼 클릭
+                        }
                     )
-                    // TODO 마지막 버튼 클릭
                 }
             )
         }

@@ -25,7 +25,7 @@ class UpdateMatchRoundViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
-    fun updateRounds(matchId: String, rounds: Int) {
+    fun updateRounds(matchId: String, rounds: Int, onSuccess: () -> Unit) {
         viewModelScope.launch {
             try {
                 val accessToken = tokenManager.getAccessToken()
@@ -40,6 +40,7 @@ class UpdateMatchRoundViewModel @Inject constructor(
                 updateMatchRoundsUseCase(accessToken, matchId, rounds)
                     .onSuccess {
                         _uiState.value = UiState.Success
+                        onSuccess()
                     }
                     .onFailure { error ->
                         _uiState.value = UiState.Error(
