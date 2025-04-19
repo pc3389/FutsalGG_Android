@@ -80,4 +80,26 @@ class MatchParticipantRepositoryImpl @Inject constructor(
             Result.failure(e)
         }
     }
+
+    override suspend fun getMatchParticipants(
+        accessToken: String,
+        matchId: String
+    ): Result<List<MatchParticipant>> {
+        return try {
+            val response = matchApi.getMatchParticipants(
+                accessToken = "Bearer $accessToken",
+                matchId = matchId
+            )
+
+            if (response.isSuccessful) {
+                response.body()?.let { participants ->
+                    Result.success(participants.map { it.toDomain() })
+                } ?: Result.failure(IOException("응답이 비어있습니다."))
+            } else {
+                Result.failure(IOException("서버 오류: ${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 } 

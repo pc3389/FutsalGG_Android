@@ -16,4 +16,9 @@ interface MatchParticipantRepository {
         participantIds: List<String>,
         subTeam: SubTeam
     ): Result<Unit>
+
+    suspend fun getMatchParticipants(
+        accessToken: String,
+        matchId: String
+    ): Result<List<MatchParticipant>>
 } 
