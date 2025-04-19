@@ -2,6 +2,8 @@ package com.futsalgg.app.domain.match.repository
 
 import com.futsalgg.app.domain.match.model.Match
 import com.futsalgg.app.domain.common.model.MatchType
+import com.futsalgg.app.domain.match.model.MatchStat
+import com.futsalgg.app.domain.match.model.RoundStats
 
 interface MatchRepository {
     suspend fun getMatches(
@@ -39,4 +41,9 @@ interface MatchRepository {
         description: String? = null,
         isVote: Boolean
     ): Result<Match>
+
+    suspend fun getMatchStats(
+        accessToken: String,
+        matchId: String
+    ): Result<List<RoundStats>>
 } 

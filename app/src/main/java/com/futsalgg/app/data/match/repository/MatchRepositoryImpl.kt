@@ -2,6 +2,7 @@ package com.futsalgg.app.data.match.repository
 
 import com.futsalgg.app.data.common.error.DataError
 import com.futsalgg.app.data.match.mapper.toDomain
+import com.futsalgg.app.domain.match.model.RoundStats
 import com.futsalgg.app.domain.match.repository.MatchRepository
 import com.futsalgg.app.domain.common.model.MatchType as DomainMatchType
 import com.futsalgg.app.remote.api.match.MatchApi
@@ -198,6 +199,28 @@ class MatchRepositoryImpl @Inject constructor(
                     cause = e
                 ) as Throwable
             )
+        }
+    }
+
+    override suspend fun getMatchStats(
+        accessToken: String,
+        matchId: String
+    ): Result<List<RoundStats>> {
+        return try {
+            val response = matchApi.getMatchStats(
+                accessToken = "Bearer $accessToken",
+                matchId = matchId
+            )
+
+            if (response.isSuccessful) {
+                response.body()?.let { stats ->
+                    Result.success(stats.stats.toDomain())
+                } ?: Result.failure(IOException("응답이 비어있습니다."))
+            } else {
+                Result.failure(IOException("서버 오류: ${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 } 
