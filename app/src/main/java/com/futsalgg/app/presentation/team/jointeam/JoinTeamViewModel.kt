@@ -160,6 +160,33 @@ class JoinTeamViewModel @Inject constructor(
                 }
             )
         }
+//        viewModelScope.launch {
+//            _uiState.value = UiState.Loading
+//            searchTeamsUseCase(name).fold(
+//                onSuccess = { response ->
+//                    _state.update {
+//                        it.copy(
+//                            searchResults = response.teams.map { team ->
+//                                Team(
+//                                    id = team.id,
+//                                    name = team.name,
+//                                    leaderName = team.leaderName,
+//                                    memberCount = team.memberCount,
+//                                    createdTime = team.createdTime
+//                                )
+//                            }
+//                        )
+//                    }
+//                    _uiState.value = UiState.Success
+//                },
+//                onFailure = { error ->
+//                    _uiState.value = UiState.Error(
+//                        (error as? DomainError)?.toUiError()
+//                            ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
+//                    )
+//                }
+//            )
+//        }
     }
 
     fun joinTeam(
@@ -195,11 +222,14 @@ class JoinTeamViewModel @Inject constructor(
         }
     }
 
-    fun onTeamSelected(teamId: String) {
-        _state.update { currentState ->
-            currentState.copy(
-                selectedTeamId = if (currentState.selectedTeamId == teamId) null else teamId,
-                buttonEnabled = if (currentState.selectedTeamId == teamId) false else true
+    fun onTeamSelected(team: Team) {
+        if (_state.value.selectedTeamId == team.id) {
+            _state.value = JoinTeamState()
+        } else {
+            _state.value = _state.value.copy(
+                selectedTeamId = team.id,
+                name = team.name,
+                buttonEnabled = true
             )
         }
     }

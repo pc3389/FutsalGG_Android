@@ -131,6 +131,9 @@ fun CreateUserScreen(
                     }
                     viewModel.createUser(
                         onSuccess = {
+                            viewModel.createUser {
+                                navController.navigate(RoutePath.SELECT_TEAM)
+                            }
                             // TODO 유저 등록 성공 이후
                         }
                     )

@@ -22,6 +22,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -57,7 +58,13 @@ import com.futsalgg.app.ui.components.spacers.VerticalSpacer8
 import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.ui.theme.FutsalggTypography
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.futsalgg.app.ui.components.DoubleButtons
+import com.futsalgg.app.ui.components.SingleButton
+import com.futsalgg.app.ui.components.spacers.VerticalSpacer12
+import com.futsalgg.app.ui.components.spacers.VerticalSpacer16
+import com.futsalgg.app.ui.components.spacers.VerticalSpacer32
 import kotlin.math.roundToInt
 
 @Composable
@@ -72,6 +79,7 @@ fun JoinTeamScreen(
     val searchResults = state.searchResults
     val selectedTeamId = state.selectedTeamId
     var showJoinDialog by remember { mutableStateOf(false) }
+    var showCompleteDialog by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
 
     val searchSectionHeight = 108.dp
@@ -92,7 +100,7 @@ fun JoinTeamScreen(
 
     BaseScreen(
         navController = navController,
-        title = stringResource(R.string.join_team_title),
+        title = stringResource(R.string.join_team_text),
         uiState = uiState
     ) { innerPadding ->
         Box(
@@ -113,7 +121,7 @@ fun JoinTeamScreen(
                 items(searchResults) { item ->
                     Spacer(Modifier.height(16.dp))
 
-                    val isSelected = item.id.equals(selectedTeamId)
+                    val isSelected = item.id == selectedTeamId
 
                     Box(
                         Modifier
@@ -129,7 +137,7 @@ fun JoinTeamScreen(
                                 shape = RoundedCornerShape(8.dp)
                             )
                             .clickable {
-                                viewModel.onTeamSelected(item.id)
+                                viewModel.onTeamSelected(item)
                             }
                     ) {
                         Column(
@@ -267,58 +275,140 @@ fun JoinTeamScreen(
             )
 
             if (showJoinDialog) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(FutsalggColor.mono900.copy(alpha = 0.5f))
-                        .clickable { showJoinDialog = false }
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(horizontal = 16.dp)
-                            .fillMaxWidth()
-                            .background(
-                                color = FutsalggColor.white,
-                                shape = RoundedCornerShape(16.dp)
-                            )
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(
-                                horizontal = 16.dp
-                            )
+                JoinTeamDialog(
+                    onConfirm = {
+//                        showCompleteDialog = true
+//                        showJoinDialog = false
+                        viewModel.joinTeam(
+                            state.selectedTeamId!!
                         ) {
-                            Text(
-                                modifier = Modifier
-                                    .padding(vertical = 32.dp)
-                                    .fillMaxWidth(),
-                                text = stringResource(R.string.join_team_dialog_title),
-                                style = FutsalggTypography.bold_20_300,
-                                color = FutsalggColor.mono900,
-                                textAlign = TextAlign.Center
-                            )
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(16.dp)
-                            ) {
-                                DoubleButtons(
-                                    leftText = stringResource(R.string.cancel_text),
-                                    rightText = stringResource(R.string.apply_text),
-                                    onLeftClick = { showJoinDialog = false },
-                                    onRightClick = {
-                                        viewModel.joinTeam(
-                                            state.selectedTeamId!!,
-                                            {
-                                                // TODO On success
-                                            }
-                                        )
-                                    }
-                                )
-                            }
-                            Spacer(Modifier.height(16.dp))
+                            showCompleteDialog = true
+                            showJoinDialog = false
                         }
+                    },
+                    onDismiss = { showJoinDialog = false },
+                    state = state
+                )
+            }
+
+            if (showCompleteDialog) {
+                ConfirmDialog(
+                    onDismiss = {
+                        showCompleteDialog = false
+                    },
+                    onConfirm = {
+                        // TODO Click last confirm
+                        showCompleteDialog = false
                     }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun JoinTeamDialog(
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit,
+    state: JoinTeamState
+) {
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(
+            dismissOnBackPress = true,
+            dismissOnClickOutside = true
+        )
+    ) {
+        Box(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .fillMaxWidth()
+                .background(
+                    color = FutsalggColor.white,
+                    shape = RoundedCornerShape(16.dp)
+                )
+        ) {
+            Column(
+                modifier = Modifier.padding(
+                    horizontal = 16.dp
+                )
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(vertical = 32.dp)
+                        .fillMaxWidth(),
+                    text = stringResource(
+                        R.string.join_team_dialog_title,
+                        state.name
+                    ),
+                    style = FutsalggTypography.bold_20_300,
+                    color = FutsalggColor.mono900,
+                    textAlign = TextAlign.Center
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    DoubleButtons(
+                        leftText = stringResource(R.string.cancel_text),
+                        rightText = stringResource(R.string.apply_text),
+                        onLeftClick = { onDismiss() },
+                        onRightClick = {
+                            onConfirm()
+                        }
+                    )
                 }
+                Spacer(Modifier.height(16.dp))
+            }
+        }
+    }
+}
+
+@Composable
+fun ConfirmDialog(
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit
+) {
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(
+            dismissOnBackPress = false,
+            dismissOnClickOutside = false
+        )
+    ) {
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth(),
+            shape = RoundedCornerShape(8.dp)
+        ) {
+            Column(
+                modifier = Modifier.background(
+                    color = FutsalggColor.white
+                ),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                VerticalSpacer32()
+                Text(
+                    text = stringResource(R.string.join_team_confirmation_dialog_title),
+                    style = FutsalggTypography.bold_20_300
+                )
+
+                VerticalSpacer12()
+
+                Text(
+                    text = stringResource(R.string.join_team_confirmation_dialog_sub_title),
+                    style = FutsalggTypography.regular_17_200,
+                    color = FutsalggColor.mono700,
+                    textAlign = TextAlign.Center
+                )
+                VerticalSpacer16()
+                SingleButton(
+                    modifier = Modifier.padding(16.dp),
+                    text = stringResource(R.string.join_team_confirmation_dialog_button_text),
+                    onClick = {
+                        onConfirm()
+                    }
+                )
             }
         }
     }

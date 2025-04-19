@@ -21,11 +21,13 @@
     <string name="enter_nickname_text">닉네임을 입력해주세요.</string>
     <string name="select_all">전체 선택</string>
     <string name="deselect_all">전체 해제</string>
+    <string name="join_team_text">팀 가입하기</string>
 
     <!--  T&C  -->
     <string name="terms_and_condition_title">이용약관 동의</string>
     <string name="terms_and_condition_contents">풋살 앱 서비스의 원활한 이용을 위해\n아래 약관에 동의해주세요.</string>
     <string name="agree_all">전체 동의</string>
+    <string name="agree_text">동의하기</string>
     <string name="agree_terms">이용약관 동의 (필수)</string>
     <string name="agree_privacy">개인정보 수집 및 이용동의 (필수)</string>
 
@@ -55,11 +57,13 @@
     <string name="team_description_hint">팀 소개를 작성해주세요. (20자 이내)</string>
 
     <!-- Join Team -->
-    <string name="join_team_title">팀 가입하기</string>
     <string name="join_team_search_bar_title">가입하고자 하는 팀을 검색해보세요!</string>
     <string name="join_team_search_bar_hint">팀 명을 입력해주세요.</string>
     <string name="join_team_button_text">가입 신청하기</string>
-    <string name="join_team_dialog_title">‘${팀명}’ 팀에\n가입을 신청하시겠습니까?</string>
+    <string name="join_team_dialog_title">%1$s 팀에\n가입을 신청하시겠습니까?</string>
+    <string name="join_team_confirmation_dialog_title">가입 신청이 완료되었습니다</string>
+    <string name="join_team_confirmation_dialog_sub_title">해당 팀에서 가입 신청 수락시\n팀에 가입이 완료됩니다.</string>
+    <string name="join_team_confirmation_dialog_button_text">확인</string>
 
     <!-- CreateMatch -->
     <string name="create_match_title">경기 일정 생성하기</string>

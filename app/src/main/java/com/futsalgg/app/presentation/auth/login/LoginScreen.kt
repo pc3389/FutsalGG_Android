@@ -35,7 +35,6 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
-    navController: NavController,
     viewModel: LoginViewModel = hiltViewModel(),
     credentialManager: CredentialManager,
     onLoginSuccess: () -> Unit,
@@ -46,6 +45,7 @@ fun LoginScreen(
 
     Contents(
         onClick = {
+            viewModel.setLoading()
             // Credential Manager 요청 생성
             coroutineScope.launch {
                 try {
@@ -59,6 +59,7 @@ fun LoginScreen(
                     handleCredential(credential, viewModel, onLoginSuccess)
                 } catch (e: Exception) {
                     Log.e("LoginScreen", "Google Sign-In failed", e)
+                    viewModel.setError()
                 }
             }
         },

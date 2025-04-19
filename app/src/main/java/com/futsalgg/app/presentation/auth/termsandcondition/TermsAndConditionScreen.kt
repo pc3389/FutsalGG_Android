@@ -27,7 +27,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.futsalgg.app.R
+import com.futsalgg.app.navigation.RoutePath
 import com.futsalgg.app.ui.components.Checkbox
 import com.futsalgg.app.ui.components.SingleButton
 import com.futsalgg.app.ui.theme.FutsalggColor
@@ -35,7 +37,9 @@ import com.futsalgg.app.ui.theme.FutsalggDimensions
 import com.futsalgg.app.ui.theme.FutsalggTypography
 
 @Composable
-fun TermsAndConditionScreen() {
+fun TermsAndConditionScreen(
+    navController: NavController
+) {
     var allAgree by remember { mutableStateOf(false) }
     var termsAgree by remember { mutableStateOf(false) }
     var privacyAgree by remember { mutableStateOf(false) }
@@ -63,6 +67,7 @@ fun TermsAndConditionScreen() {
             privacyAgree = it
             if (privacyAgree && termsAgree) allAgree = true else allAgree = false
         },
+        navController = navController
     )
 }
 
@@ -74,7 +79,8 @@ fun Content(
     termsAgree: Boolean,
     termsClick: (Boolean) -> Unit,
     privacyAgree: Boolean,
-    privacyClick: (Boolean) -> Unit
+    privacyClick: (Boolean) -> Unit,
+    navController: NavController
 ) {
     Box(
         modifier = Modifier
@@ -135,7 +141,7 @@ fun Content(
             // 이용약관 동의
             CheckBoxAndTextWithBorder(
                 text = R.string.agree_terms,
-                check = termsAgree,
+                isChecked = termsAgree,
                 checkClick = termsClick,
                 {
                     // TODO 이용약관 클릭
@@ -147,7 +153,7 @@ fun Content(
             // 개인정보 동의
             CheckBoxAndTextWithBorder(
                 text = R.string.agree_privacy,
-                check = privacyAgree,
+                isChecked = privacyAgree,
                 checkClick = privacyClick,
                 {
                     // TODO 개인정보 클릭
@@ -157,8 +163,10 @@ fun Content(
             Spacer(Modifier.height(54.dp))
 
             SingleButton(
-                text = "Text",
-                onClick = {},
+                text = stringResource(R.string.agree_text),
+                onClick = {
+                    navController.navigate(RoutePath.CREATE_USER)
+                },
                 modifier = Modifier.padding(bottom = 16.dp),
                 containerColor = if (isSubmitEnabled) FutsalggColor.mono900 else FutsalggColor.mono100,
                 contentColor = if (isSubmitEnabled) FutsalggColor.white else FutsalggColor.mono500
@@ -170,23 +178,24 @@ fun Content(
 @Composable
 fun CheckBoxAndTextWithBorder(
     @StringRes text: Int,
-    check: Boolean,
+    isChecked: Boolean,
     checkClick: (Boolean) -> Unit,
     textClick: () -> Unit
 ) {
+    val borderColor = if (isChecked) FutsalggColor.mono900 else FutsalggColor.mono200
     Row(
         modifier = Modifier
-            .clickable { checkClick(!check) }
+            .clickable { checkClick(!isChecked) }
             .border(
                 width = 1.dp,
-                color = FutsalggColor.mono900,
+                color = borderColor,
                 shape = RoundedCornerShape(8.dp)
             )
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Checkbox(
-            checked = check,
+            checked = isChecked,
             onCheckedChange = { checkClick(it) },
             modifier = Modifier.padding(16.dp)
         )
@@ -208,18 +217,4 @@ fun CheckBoxAndTextWithBorder(
             )
         }
     }
-}
-
-@Preview
-@Composable
-fun PreviewTermsAndCondition() {
-    Content(
-        isSubmitEnabled = false,
-        allAgree = true,
-        allAgreeClick = {},
-        termsAgree = false,
-        termsClick = { },
-        privacyAgree = true,
-        privacyClick = {}
-    )
 }

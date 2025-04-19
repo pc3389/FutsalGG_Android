@@ -46,11 +46,6 @@ class AuthRepositoryImpl @Inject constructor(
                     cause = null
                 ) as Throwable)
             }
-        } catch (e: IOException) {
-            Result.failure(DataError.NetworkError(
-                message = "네트워크 연결을 확인해주세요.",
-                cause = e
-            ) as Throwable)
         } catch (e: Exception) {
             Result.failure(DataError.UnknownError(
                 message = "알 수 없는 오류가 발생했습니다.",

@@ -27,6 +27,7 @@ import com.futsalgg.app.presentation.setting.SettingScreen
 import com.futsalgg.app.presentation.team.createteam.CreateTeamScreen
 import com.futsalgg.app.presentation.team.createteam.CreateTeamViewModel
 import com.futsalgg.app.presentation.team.jointeam.JoinTeamScreen
+import com.futsalgg.app.presentation.team.selectteam.SelectTeamScreen
 import com.futsalgg.app.presentation.teammember.profilecard.MyProfileScreen
 import com.futsalgg.app.presentation.user.updateprofile.UpdateProfileScreen
 import com.futsalgg.app.presentation.user.updateprofile.UpdateProfileViewModel
@@ -39,7 +40,9 @@ fun AppNavHost(
     NavHost(
         navController = navController,
 //        startDestination = Screen.Login.route
+//        startDestination = Screen.TermsAndCondition.route
 //        startDestination = Screen.CreateUser.route
+        startDestination = Screen.SelectTeam.route
 //        startDestination = Screen.CreateTeam.route
 //        startDestination = Screen.MatchResult.route
 //        startDestination = Screen.CreateMatch.route
@@ -52,22 +55,26 @@ fun AppNavHost(
 //        startDestination = Screen.UpdateMatchParticipantsSubTeamScreen.route
 //        startDestination = Screen.UpdateMatchRoundScreen.route
 //        startDestination = Screen.CheckMatchStatScreen.route
-        startDestination = Screen.UpdateMatchStatScreen.route
+//        startDestination = Screen.UpdateMatchStatScreen.route
     ) {
         composable(Screen.Login.route) {
             LoginScreen(
-                navController = navController,
                 credentialManager = credentialManager,
                 context = LocalContext.current,
                 onLoginSuccess = {
-                    navController.navigate(Screen.CreateUser.route)
+                    navController.navigate(Screen.TermsAndCondition.route)
                 }
             )
         }
         composable(Screen.Main.route) { MainScreen(navController) }
-        composable(Screen.TermsAndCondition.route) { TermsAndConditionScreen() }
+        composable(Screen.TermsAndCondition.route) {
+            TermsAndConditionScreen(navController)
+        }
         composable(Screen.CreateUser.route) {
             CreateUserScreen(navController)
+        }
+        composable(Screen.SelectTeam.route) {
+            SelectTeamScreen(navController)
         }
         composable(Screen.CreateTeam.route) {
             CreateTeamScreen(navController)
@@ -129,6 +136,7 @@ fun AppNavHost(
                         }
                     )
                 }
+
                 RoutePath.CREATE_TEAM -> {
                     val parentEntry = navController.getBackStackEntry(RoutePath.CREATE_TEAM)
                     val viewModel: CreateTeamViewModel = hiltViewModel(parentEntry)
@@ -141,6 +149,7 @@ fun AppNavHost(
                         }
                     )
                 }
+
                 RoutePath.UPDATE_PROFILE -> {
                     val parentEntry = navController.getBackStackEntry(RoutePath.UPDATE_PROFILE)
                     val viewModel: UpdateProfileViewModel = hiltViewModel(parentEntry)

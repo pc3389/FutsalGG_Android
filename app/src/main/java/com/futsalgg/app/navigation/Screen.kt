@@ -5,6 +5,7 @@ sealed class Screen(val route: String) {
     object Main: Screen(RoutePath.MAIN)
     object TermsAndCondition: Screen(RoutePath.TERMS)
     object CreateUser: Screen(RoutePath.CREATE_USER)
+    object SelectTeam: Screen(RoutePath.SELECT_TEAM)
     object CreateTeam: Screen(RoutePath.CREATE_TEAM)
     object MatchResult: Screen(RoutePath.MATCH_RESULT)
     object CreateMatch: Screen(RoutePath.CREATE_MATCH)

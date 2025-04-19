@@ -21,6 +21,16 @@ class LoginViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
+    fun setLoading() {
+        _uiState.value = UiState.Loading
+    }
+
+    fun setError() {
+        _uiState.value = UiState.Error (
+            UiError.UnknownError("예상치 못한 에러")
+        )
+    }
+
     fun signInWithGoogleIdToken(
         idToken: String,
         onSuccess: () -> Unit,
