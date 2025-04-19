@@ -45,6 +45,10 @@ import com.futsalgg.app.domain.match.usecase.UpdateMatchRoundsUseCase
 import com.futsalgg.app.domain.match.usecase.UpdateMatchRoundsUseCaseImpl
 import com.futsalgg.app.domain.match.usecase.GetMatchParticipantsUseCase
 import com.futsalgg.app.domain.match.usecase.GetMatchParticipantsUseCaseImpl
+import com.futsalgg.app.domain.match.usecase.GetMatchStatsUseCase
+import com.futsalgg.app.domain.match.usecase.GetMatchStatsUseCaseImpl
+import com.futsalgg.app.domain.match.usecase.CreateMatchStatUseCase
+import com.futsalgg.app.domain.match.usecase.CreateMatchStatUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -200,10 +204,27 @@ object UseCaseModule {
         return UpdateMatchRoundsUseCaseImpl(matchRepository)
     }
 
+    @Singleton
     @Provides
     fun provideGetMatchParticipantsUseCase(
         matchParticipantRepository: MatchParticipantRepository
     ): GetMatchParticipantsUseCase {
         return GetMatchParticipantsUseCaseImpl(matchParticipantRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideGetMatchStatsUseCase(
+        matchRepository: MatchRepository
+    ): GetMatchStatsUseCase {
+        return GetMatchStatsUseCaseImpl(matchRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideCreateMatchStatUseCase(
+        matchRepository: MatchRepository
+    ): CreateMatchStatUseCase {
+        return CreateMatchStatUseCaseImpl(matchRepository)
     }
 }

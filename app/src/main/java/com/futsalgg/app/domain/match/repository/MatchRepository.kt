@@ -46,4 +46,12 @@ interface MatchRepository {
         accessToken: String,
         matchId: String
     ): Result<List<RoundStats>>
+
+    suspend fun createMatchStat(
+        accessToken: String,
+        matchParticipantId: String,
+        roundNumber: Int,
+        statType: MatchStat.StatType,
+        assistedMatchStatId: String?
+    ): Result<MatchStat>
 } 

@@ -2,11 +2,13 @@ package com.futsalgg.app.data.match.repository
 
 import com.futsalgg.app.data.common.error.DataError
 import com.futsalgg.app.data.match.mapper.toDomain
+import com.futsalgg.app.domain.match.model.MatchStat
 import com.futsalgg.app.domain.match.model.RoundStats
 import com.futsalgg.app.domain.match.repository.MatchRepository
 import com.futsalgg.app.domain.common.model.MatchType as DomainMatchType
 import com.futsalgg.app.remote.api.match.MatchApi
 import com.futsalgg.app.remote.api.match.model.request.CreateMatchRequest
+import com.futsalgg.app.remote.api.match.model.request.CreateMatchStatRequest
 import com.futsalgg.app.remote.api.match.model.request.UpdateMatchRoundsRequest
 import com.futsalgg.app.remote.api.match.model.response.MatchType as RemoteMatchType
 import java.io.IOException
@@ -221,6 +223,51 @@ class MatchRepositoryImpl @Inject constructor(
             }
         } catch (e: Exception) {
             Result.failure(e)
+        }
+    }
+
+    override suspend fun createMatchStat(
+        accessToken: String,
+        matchParticipantId: String,
+        roundNumber: Int,
+        statType: MatchStat.StatType,
+        assistedMatchStatId: String?
+    ): Result<MatchStat> {
+        return try {
+            val response = matchApi.createMatchStat(
+                accessToken = "Bearer $accessToken",
+                request = CreateMatchStatRequest(
+                    matchParticipantId = matchParticipantId,
+                    roundNumber = roundNumber,
+                    statType = statType.name,
+                    assistedMatchStatId = assistedMatchStatId
+                )
+            )
+
+            if (response.isSuccessful) {
+                response.body()?.let { stat ->
+                    Result.success(stat.toDomain())
+                } ?: Result.failure(
+                    DataError.ServerError(
+                        message = "서버 응답이 비어있습니다.",
+                        cause = null
+                    ) as Throwable
+                )
+            } else {
+                Result.failure(
+                    DataError.ServerError(
+                        message = "서버 오류: ${response.code()}",
+                        cause = null
+                    ) as Throwable
+                )
+            }
+        } catch (e: IOException) {
+            Result.failure(
+                DataError.NetworkError(
+                    message = "네트워크 연결을 확인해주세요.",
+                    cause = e
+                ) as Throwable
+            )
         }
     }
 } 
