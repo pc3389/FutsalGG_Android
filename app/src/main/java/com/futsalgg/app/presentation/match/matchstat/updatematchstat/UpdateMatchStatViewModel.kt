@@ -35,6 +35,8 @@ class UpdateMatchStatViewModel @Inject constructor(
     private val _tempMatchStatsState = MutableStateFlow<List<RoundStats>>(emptyList())
     val tempMatchStatsStateFlow: StateFlow<List<RoundStats>> = _tempMatchStatsState.asStateFlow()
 
+    private val tempDeleteList: MutableList<Triple<Int, Int, List<MatchStat>>> = mutableListOf()
+
     init {
         super.initial(
             onSuccess = { _tempMatchStatsState.value = it }
@@ -67,7 +69,6 @@ class UpdateMatchStatViewModel @Inject constructor(
         // 전체 리스트 업데이트
         currentList[roundIndex] = updatedRoundList
         _tempMatchStatsState.value = currentList
-
     }
 
     fun addAssist(roundIndex: Int, teamIndex: Int, goalIndex: Int, matchParticipantId: String) {
@@ -87,6 +88,26 @@ class UpdateMatchStatViewModel @Inject constructor(
 
         // scoreList 업데이트
         scoreList[goalIndex] = goalList
+
+        // roundList 업데이트
+        val updatedRoundList = if (teamIndex == 0) {
+            roundList.copy(teamAStats = scoreList)
+        } else {
+            roundList.copy(teamBStats = scoreList)
+        }
+
+        // 전체 리스트 업데이트
+        currentList[roundIndex] = updatedRoundList
+        _tempMatchStatsState.value = currentList
+    }
+
+    fun deleteGoal(roundIndex: Int, teamIndex: Int, goalIndex: Int) {
+        val currentList = _tempMatchStatsState.value.toMutableList()
+        val roundList = currentList[roundIndex]
+        val scoreList =
+            if (teamIndex == 0) roundList.teamAStats.toMutableList() else roundList.teamBStats.toMutableList()
+        tempDeleteList.add(Triple(roundIndex, teamIndex, scoreList[goalIndex]))
+        scoreList.removeAt(goalIndex)
 
         // roundList 업데이트
         val updatedRoundList = if (teamIndex == 0) {

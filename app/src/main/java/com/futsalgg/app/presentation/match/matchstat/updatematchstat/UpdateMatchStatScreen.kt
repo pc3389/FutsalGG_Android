@@ -60,7 +60,7 @@ fun UpdateMatchStatScreen(
             }
         }
         ModalBottomSheet(
-            onDismissRequest = { showBottomSheet = false },
+            onDismissRequest = { onDismiss() },
             sheetState = rememberModalBottomSheetState(
                 skipPartiallyExpanded = true
             ),
@@ -88,10 +88,10 @@ fun UpdateMatchStatScreen(
                         SelectableMathParticipantBox(
                             participant = participant,
                             onClick = {
-                                if (selectedParticipantId == participant.teamMemberId) {
-                                    selectedParticipantId = ""
+                                selectedParticipantId = if (selectedParticipantId == participant.teamMemberId) {
+                                    ""
                                 } else {
-                                    selectedParticipantId = participant.teamMemberId
+                                    participant.teamMemberId
                                 }
                             },
                             isSelected = participant.teamMemberId == selectedParticipantId,
@@ -137,6 +137,9 @@ fun UpdateMatchStatScreen(
                 selectedGoalIndex = goalIndex
                 isGoal = false
                 showBottomSheet = true
+            },
+            onDeleteClick = { roundIndex, teamIndex, goalIndex ->
+                viewModel.deleteGoal(roundIndex, teamIndex, goalIndex)
             }
         )
     }
@@ -163,8 +166,8 @@ fun UpdateMatchStatScreen(
                 selectedParticipantId = ""
             },
             onDismiss = {
-                showBottomSheet = false
                 selectedParticipantId = ""
+                showBottomSheet = false
             }
         )
     }
