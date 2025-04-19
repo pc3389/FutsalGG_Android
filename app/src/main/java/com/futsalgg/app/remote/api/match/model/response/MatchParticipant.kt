@@ -1,8 +1,8 @@
-package com.futsalgg.app.remote.model.match
+package com.futsalgg.app.remote.api.match.model.response
 
 import com.google.gson.annotations.SerializedName
 
-data class GetMatchParticipantsResponse(
+data class MatchParticipant(
     @SerializedName("id")
     val id: String,
     @SerializedName("matchId")
@@ -19,4 +19,4 @@ data class GetMatchParticipantsResponse(
     val role: String,
     @SerializedName("createdTime")
     val createdTime: String
-) 
+)

@@ -17,6 +17,7 @@ fun RemoteMatchParticipant.toDomain(): MatchParticipant {
             "B" -> SubTeam.B
             else -> SubTeam.NONE
         },
+        profileUrl = profileUrl ?: "",
         createdTime = createdTime
     )
 } 

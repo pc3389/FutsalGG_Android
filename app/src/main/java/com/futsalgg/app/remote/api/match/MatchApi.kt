@@ -8,7 +8,7 @@ import com.futsalgg.app.remote.api.match.model.response.CreateMatchParticipantsR
 import com.futsalgg.app.remote.api.match.model.response.GetMatchResponse
 import com.futsalgg.app.remote.api.match.model.request.UpdateMatchParticipantsSubTeamRequest
 import com.futsalgg.app.remote.api.match.model.request.UpdateMatchRoundsRequest
-import com.futsalgg.app.remote.api.match.model.response.GetMatchParticipantsResponse
+import com.futsalgg.app.remote.api.match.model.response.MatchParticipant
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -68,5 +68,5 @@ interface MatchApi {
     suspend fun getMatchParticipants(
         @Header("Authorization") accessToken: String,
         @Query("match-id") matchId: String
-    ): Response<List<GetMatchParticipantsResponse>>
+    ): Response<List<MatchParticipant>>
 }

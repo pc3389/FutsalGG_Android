@@ -1,5 +1,7 @@
 package com.futsalgg.app.data.match.repository
 
+import com.futsalgg.app.data.common.error.DataError
+import com.futsalgg.app.data.match.mapper.toDomain
 import com.futsalgg.app.domain.match.model.MatchParticipant
 import com.futsalgg.app.domain.match.model.SubTeam
 import com.futsalgg.app.domain.match.repository.MatchParticipantRepository
@@ -42,16 +44,32 @@ class MatchParticipantRepositoryImpl @Inject constructor(
                                     "B" -> SubTeam.B
                                     else -> SubTeam.NONE
                                 },
+                                profileUrl = participant.profileUrl ?: "",
                                 createdTime = participant.createdTime
                             )
                         }
                     )
-                } ?: Result.failure(IOException("응답이 비어있습니다"))
+                } ?: Result.failure(
+                    DataError.ServerError(
+                        message = "서버 응답이 비어있습니다.",
+                        cause = null
+                    ) as Throwable
+                )
             } else {
-                Result.failure(IOException("서버 오류: ${response.code()}"))
+                Result.failure(
+                    DataError.ServerError(
+                        message = "서버 오류: ${response.code()}",
+                        cause = null
+                    ) as Throwable
+                )
             }
-        } catch (e: Exception) {
-            Result.failure(e)
+        } catch (e: IOException) {
+            Result.failure(
+                DataError.NetworkError(
+                    message = "네트워크 연결을 확인해주세요.",
+                    cause = e
+                ) as Throwable
+            )
         }
     }
 
@@ -74,10 +92,20 @@ class MatchParticipantRepositoryImpl @Inject constructor(
             if (response.isSuccessful) {
                 Result.success(Unit)
             } else {
-                Result.failure(IOException("서버 오류: ${response.code()}"))
+                Result.failure(
+                    DataError.ServerError(
+                        message = "서버 오류: ${response.code()}",
+                        cause = null
+                    ) as Throwable
+                )
             }
-        } catch (e: Exception) {
-            Result.failure(e)
+        } catch (e: IOException) {
+            Result.failure(
+                DataError.NetworkError(
+                    message = "네트워크 연결을 확인해주세요.",
+                    cause = e
+                ) as Throwable
+            )
         }
     }
 
@@ -94,12 +122,27 @@ class MatchParticipantRepositoryImpl @Inject constructor(
             if (response.isSuccessful) {
                 response.body()?.let { participants ->
                     Result.success(participants.map { it.toDomain() })
-                } ?: Result.failure(IOException("응답이 비어있습니다."))
+                } ?: Result.failure(
+                    DataError.ServerError(
+                        message = "서버 응답이 비어있습니다.",
+                        cause = null
+                    ) as Throwable
+                )
             } else {
-                Result.failure(IOException("서버 오류: ${response.code()}"))
+                Result.failure(
+                    DataError.ServerError(
+                        message = "서버 오류: ${response.code()}",
+                        cause = null
+                    ) as Throwable
+                )
             }
-        } catch (e: Exception) {
-            Result.failure(e)
+        } catch (e: IOException) {
+            Result.failure(
+                DataError.NetworkError(
+                    message = "네트워크 연결을 확인해주세요.",
+                    cause = e
+                ) as Throwable
+            )
         }
     }
 } 

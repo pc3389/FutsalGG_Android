@@ -10,6 +10,7 @@ data class MatchParticipant(
     val teamMemberId: String,
     val name: String,
     val role: String,
+    val profileUrl: String,
     val subTeam: SubTeam,
     val createdTime: String
 ) 
