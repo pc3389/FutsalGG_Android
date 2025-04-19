@@ -18,6 +18,8 @@ import com.futsalgg.app.presentation.user.createuser.CreateUserViewModel
 import com.futsalgg.app.presentation.auth.termsandcondition.TermsAndConditionScreen
 import com.futsalgg.app.presentation.match.create.CreateMatchScreen
 import com.futsalgg.app.presentation.match.creatematchparticipants.CreateMatchParticipantsScreen
+import com.futsalgg.app.presentation.match.matchstat.checkmatchstat.CheckMatchStatScreen
+import com.futsalgg.app.presentation.match.matchstat.updatematchstat.UpdateMatchStatScreen
 import com.futsalgg.app.presentation.match.result.MatchResultScreen
 import com.futsalgg.app.presentation.match.updateround.UpdateMatchRoundScreen
 import com.futsalgg.app.presentation.match.updatesubteam.UpdateMatchParticipantsSubTeamScreen
@@ -48,7 +50,9 @@ fun AppNavHost(
 //        startDestination = Screen.UpdateProfile.route
 //        startDestination = Screen.CreateMatchMemberScreen.route
 //        startDestination = Screen.UpdateMatchParticipantsSubTeamScreen.route
-        startDestination = Screen.UpdateMatchRoundScreen.route
+//        startDestination = Screen.UpdateMatchRoundScreen.route
+//        startDestination = Screen.CheckMatchStatScreen.route
+        startDestination = Screen.UpdateMatchStatScreen.route
     ) {
         composable(Screen.Login.route) {
             LoginScreen(
@@ -94,6 +98,12 @@ fun AppNavHost(
         }
         composable(Screen.UpdateMatchRoundScreen.route) {
             UpdateMatchRoundScreen(navController)
+        }
+        composable(Screen.CheckMatchStatScreen.route) {
+            CheckMatchStatScreen(navController)
+        }
+        composable(Screen.UpdateMatchStatScreen.route) {
+            UpdateMatchStatScreen(navController)
         }
         composable(
             route = "cropImage?uri={uri}&viewModelType={viewModelType}",

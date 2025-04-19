@@ -11,7 +11,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,9 +22,10 @@ import com.futsalgg.app.ui.theme.FutsalggTypography
 @Composable
 fun FutsalggTopBar(
     title: String,
-    onBackClick: () -> Unit,
+    onLeftIconClick: () -> Unit,
     rightIcon: ImageVector? = null,
-    onRightClick: (() -> Unit)? = null
+    onRightClick: (() -> Unit)? = null,
+    showMenu: Boolean = false
 ) {
     Box(
         modifier = Modifier
@@ -43,11 +43,16 @@ fun FutsalggTopBar(
 
         // 왼쪽 뒤로가기 아이콘
         IconButton(
-            onClick = onBackClick,
+            onClick = onLeftIconClick,
             modifier = Modifier.align(Alignment.CenterStart)
         ) {
+            val iconRes = if (showMenu) {
+                R.drawable.ic_hamburger_24
+            } else {
+                R.drawable.ic_arrow_left_16
+            }
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_left_16),
+                imageVector = ImageVector.vectorResource(iconRes),
                 contentDescription = "뒤로가기"
             )
         }
@@ -77,7 +82,7 @@ fun FutsalggTopBar(
 fun PreviewTopBar() {
     FutsalggTopBar(
         title = "경기 일정 생성하기",
-        onBackClick = {},
+        onLeftIconClick = {},
         rightIcon = ImageVector.vectorResource(R.drawable.ic_arrow_forward_16),
         {}
     )

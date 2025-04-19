@@ -20,9 +20,11 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 fun BaseScreen(
     navController: NavController,
     title: String,
+    showMenu: Boolean = false,
+    onLeftIconClick: () -> Unit = { navController.popBackStack() },
     rightIcon: ImageVector? = null,
     onRightClick: (() -> Unit)? = null,
-    uiState: UiState = UiState.Initial,
+    uiState: UiState,
     content: @Composable (PaddingValues) -> Unit
 ) {
 
@@ -35,16 +37,18 @@ fun BaseScreen(
     }
 
     Scaffold(
-        modifier = Modifier.background(
-            FutsalggColor.white
-        )
+        modifier = Modifier
+            .background(
+                FutsalggColor.white
+            )
             .windowInsetsPadding(WindowInsets.systemBars),
         topBar = {
             FutsalggTopBar(
                 title = title,
-                onBackClick = { navController.popBackStack() },
+                onLeftIconClick = { onLeftIconClick() },
                 rightIcon = rightIcon,
-                onRightClick = onRightClick
+                onRightClick = onRightClick,
+                showMenu = showMenu
             )
         },
         content = content
