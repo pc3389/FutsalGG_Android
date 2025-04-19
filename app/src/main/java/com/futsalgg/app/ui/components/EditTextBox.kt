@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -48,7 +49,9 @@ fun EditTextBox(
     isNumeric: Boolean = false,
     hasDecimal: Boolean = true,
     iconState: IconState? = null,
-    maxLength: Int? = null
+    maxLength: Int? = null,
+    showTailingText: Boolean = false,
+    tailingText: String = ""
 ) {
     //TODO MaxLength!!
     val focusRequester = remember { androidx.compose.ui.focus.FocusRequester() }
@@ -71,7 +74,9 @@ fun EditTextBox(
                 value = value,
                 onValueChange = {
                     if (!isNumeric || it.all { c -> c.isDigit() || (hasDecimal && c == '.') }) {
-                        onValueChange(it)
+                        if (maxLength == null || it.length <= maxLength) {
+                            onValueChange(it)
+                        }
                     }
                 },
                 singleLine = singleLine,
@@ -89,7 +94,6 @@ fun EditTextBox(
                     onDone = { onImeDone() }
                 ),
                 modifier = textModifier
-                    .weight(1f)
                     .focusRequester(focusRequester)
                     .onFocusChanged { focusState ->
                         onFocusChanged(focusState.isFocused)
@@ -105,6 +109,14 @@ fun EditTextBox(
                     innerTextField()
                 }
             )
+            if (showTailingText) {
+                Text(
+                    text = tailingText,
+                    style = FutsalggTypography.regular_17_200,
+                    color = FutsalggColor.mono900
+                )
+            }
+            Spacer(modifier = Modifier.weight(1f))
             if (iconState != null) {
                 IconButton(
                     onClick = iconState.onClick

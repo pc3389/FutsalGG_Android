@@ -1,7 +1,9 @@
 package com.futsalgg.app.presentation.main
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.futsalgg.app.domain.auth.repository.ITokenManager
 import com.futsalgg.app.domain.common.error.DomainError
 import com.futsalgg.app.domain.team.usecase.GetMyTeamUseCase
 import com.futsalgg.app.presentation.common.error.UiError
@@ -23,7 +25,8 @@ data class MainState(
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val getMyTeamUseCase: GetMyTeamUseCase
+    private val getMyTeamUseCase: GetMyTeamUseCase,
+    private val tokenManager: ITokenManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
@@ -32,9 +35,20 @@ class MainViewModel @Inject constructor(
     private val _mainState = MutableStateFlow(MainState())
     val mainState: StateFlow<MainState> = _mainState.asStateFlow()
 
-    fun getMyTeam(accessToken: String) {
+    init {
+        getMyTeam()
+    }
+    fun getMyTeam() {
         viewModelScope.launch {
             _uiState.value = UiState.Loading
+
+            val accessToken = tokenManager.getAccessToken()
+
+            if (accessToken.isNullOrEmpty()) {
+                Log.e("CreateTeamViewModel", "엑세스 토큰이 존재하지 않습니다")
+                _uiState.value = UiState.Error(UiError.AuthError("엑세스 토큰이 존재하지 않습니다"))
+                return@launch
+            }
 
             getMyTeamUseCase(accessToken)
                 .onSuccess { domainMyTeam ->

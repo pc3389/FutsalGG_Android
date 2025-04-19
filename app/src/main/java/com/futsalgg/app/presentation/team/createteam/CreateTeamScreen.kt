@@ -38,7 +38,6 @@ import com.futsalgg.app.presentation.common.screen.BaseScreen
 import com.futsalgg.app.presentation.common.screen.LoadingScreen
 import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.presentation.team.model.Access
-import com.futsalgg.app.presentation.common.model.MatchType
 import com.futsalgg.app.ui.components.BottomButton
 import com.futsalgg.app.ui.components.DropdownBox
 import com.futsalgg.app.ui.components.EditTextBox
@@ -171,7 +170,7 @@ fun CreateTeamScreen(
                 )
                 Spacer(Modifier.height(8.dp))
                 DropdownBox(
-                    text = stringResource(R.string.select_please),
+                    text = createTeamState.access?.toString() ?: stringResource(R.string.select_please),
                     items = Access.entries,
                     onItemSelected = viewModel::onAccessChange,
                 )
@@ -179,17 +178,18 @@ fun CreateTeamScreen(
                 VerticalSpacer56()
 
                 // 게임 유형
-                TextWithStar(
-                    text = stringResource(R.string.team_game_type),
-                )
-                Spacer(Modifier.height(8.dp))
-                DropdownBox(
-                    text = stringResource(R.string.select_please),
-                    items = MatchType.entries,
-                    onItemSelected = viewModel::onMatchTypeChange,
-                )
-
-                VerticalSpacer56()
+                // TODO MVP 2에서 활성화
+//                TextWithStar(
+//                    text = stringResource(R.string.team_game_type),
+//                )
+//                Spacer(Modifier.height(8.dp))
+//                DropdownBox(
+//                    text = stringResource(R.string.select_please),
+//                    items = MatchType.entries,
+//                    onItemSelected = viewModel::onMatchTypeChange,
+//                )
+//
+//                VerticalSpacer56()
 
                 // 회비
                 TextWithInfoIcon(
@@ -197,11 +197,13 @@ fun CreateTeamScreen(
                     info = stringResource(R.string.info_number_keyboard),
                 )
                 Spacer(Modifier.height(8.dp))
+
                 EditTextBox(
                     value = createTeamState.dues,
                     onValueChange = viewModel::onDuesChange,
                     onImeDone = { focusManager.clearFocus() },
                     singleLine = true,
+                    hint = stringResource(R.string.create_team_due_hint),
                     maxLines = 1,
                     isNumeric = true
                 )
@@ -237,7 +239,7 @@ fun CreateTeamScreen(
                         viewModel.uploadTeamImage(file)
                     }
                     viewModel.createTeam {
-                        // TODO 팀 생성 이후
+                        navController.navigate(RoutePath.MAIN)
                     }
                 },
                 enabled = createTeamState.isFormValid

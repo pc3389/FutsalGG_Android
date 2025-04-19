@@ -85,7 +85,9 @@ fun EditTextWithState(
                 value = value,
                 onValueChange = {
                     if (!isNumeric || it.all { c -> c.isDigit() }) {
-                        onValueChange(it)
+                        if (maxLength == null || it.length <= maxLength) {
+                            onValueChange(it)
+                        }
                     }
                 },
                 singleLine = singleLine,

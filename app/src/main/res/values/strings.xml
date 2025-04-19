@@ -55,6 +55,7 @@
     <string name="create_team">팀 생성하기</string>
     <string name="team_name_hint">팀 명을 입력해주세요. (10자 이내)</string>
     <string name="team_description_hint">팀 소개를 작성해주세요. (20자 이내)</string>
+    <string name="create_team_due_hint">0 만원</string>
 
     <!-- Join Team -->
     <string name="join_team_search_bar_title">가입하고자 하는 팀을 검색해보세요!</string>
@@ -64,6 +65,13 @@
     <string name="join_team_confirmation_dialog_title">가입 신청이 완료되었습니다</string>
     <string name="join_team_confirmation_dialog_sub_title">해당 팀에서 가입 신청 수락시\n팀에 가입이 완료됩니다.</string>
     <string name="join_team_confirmation_dialog_button_text">확인</string>
+
+    <!-- Main -->
+    <string name="main_show_my_profile">내 정보 보기</string>
+    <string name="main_show_team_profile">팀 정보 보기</string>
+    <string name="main_check_match_result_text">경기 결과를 확인해보세요.</string>
+    <string name="create_or_update_match_result">경기 결과 등록 / 수정하기</string>
+    <string name="main_manage_team">팀 관리 하기</string>
 
     <!-- CreateMatch -->
     <string name="create_match_title">경기 일정 생성하기</string>

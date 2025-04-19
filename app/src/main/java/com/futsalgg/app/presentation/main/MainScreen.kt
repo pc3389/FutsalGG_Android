@@ -2,6 +2,7 @@ package com.futsalgg.app.presentation.main
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,28 +18,38 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.futsalgg.app.R
+import com.futsalgg.app.navigation.RoutePath
 import com.futsalgg.app.presentation.main.component.MainCardItem
 import com.futsalgg.app.presentation.main.component.MainScreenTopBar
+import com.futsalgg.app.ui.components.spacers.VerticalSpacer16
 import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.ui.theme.FutsalggTypography
 
@@ -49,6 +60,7 @@ fun MainScreen(
 ) {
     val state = viewModel.mainState.collectAsState()
     val scrollState = rememberScrollState()
+    var showAdminMenu by remember { mutableStateOf(false) }
 
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
     val heightPadding = remember(screenHeight) {
@@ -66,7 +78,7 @@ fun MainScreen(
             MainScreenTopBar(
                 title = state.value.myTeam?.name ?: "길고길고길고긴팀이름",
                 onRightIconClick = {
-                    // TODO 설정
+                    navController.navigate(RoutePath.SETTING)
                 }
             )
         }
@@ -78,7 +90,7 @@ fun MainScreen(
                 .background(FutsalggColor.white)
                 .fillMaxSize()
         ) {
-            Box{
+            Box {
                 Column(
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
@@ -115,13 +127,7 @@ fun MainScreen(
                                 modifier = Modifier.weight(1f)
                             ) {
                                 Text(
-                                    text = "yyyy-mm-dd에 진행한",
-                                    style = FutsalggTypography.regular_17_200,
-                                    color = FutsalggColor.white
-                                )
-                                Spacer(Modifier.height(4.dp))
-                                Text(
-                                    text = "경기 결과를 확인해보세요.",
+                                    text = stringResource(R.string.main_check_match_result_text),
                                     style = FutsalggTypography.bold_20_300,
                                     color = FutsalggColor.white
                                 )
@@ -143,7 +149,7 @@ fun MainScreen(
                     Column {
                         Row {
                             MainCardItem(
-                                text = "내 정보 보기",
+                                text = stringResource(R.string.main_show_my_profile),
                                 image = ImageVector.vectorResource(R.drawable.img_main_profile),
                                 color = FutsalggColor.blue50,
                                 onClick = {
@@ -154,7 +160,7 @@ fun MainScreen(
                             Spacer(Modifier.width(16.dp))
 
                             MainCardItem(
-                                text = "팀 정보 보기",
+                                text = stringResource(R.string.main_show_team_profile),
                                 // TODO On Click 팀 정보
                                 image = ImageVector.vectorResource(R.drawable.img_main_team),
                                 color = FutsalggColor.mint50,
@@ -164,36 +170,13 @@ fun MainScreen(
                     }
 
                     Spacer(Modifier.height(16.dp))
-
-                    Column {
-                        Row {
-                            MainCardItem(
-                                text = "Coming Soon",
-                                image = ImageVector.vectorResource(R.drawable.img_main_vote),
-                                color = FutsalggColor.mono100,
-                                color2 = FutsalggColor.mono100,
-                                textColor = FutsalggColor.mono500,
-                                modifier = Modifier.weight(1f)
-                            )
-                            Spacer(Modifier.width(16.dp))
-
-                            MainCardItem(
-                                text = "Coming Soon",
-                                image = ImageVector.vectorResource(R.drawable.img_main_due),
-                                color = FutsalggColor.mono100,
-                                color2 = FutsalggColor.mono100,
-                                textColor = FutsalggColor.mono500,
-                                modifier = Modifier.weight(1f)
-                            )
-                        }
-                    }
-                    Spacer(Modifier.height(16.dp))
                 }
             }
-            if (state.value.myTeam?.isManager == true) {
+//            if (state.value.myTeam?.isManager == true) {
+            if (!showAdminMenu) {
                 FloatingActionButton(
                     onClick = {
-                        // TODO 관리자 메뉴
+                        showAdminMenu = true
                     },
                     modifier = Modifier
                         .padding(end = 16.dp, bottom = 32.dp)
@@ -221,6 +204,128 @@ fun MainScreen(
                     }
                 }
             }
+//            }
+            if (showAdminMenu) {
+                AdminMenuPopup(
+                    onDismiss = { showAdminMenu = false },
+                    onClickCreateMatch = {
+                        navController.navigate(RoutePath.CREATE_MATCH)
+                    },
+                    onClickUpdateMatchResult = {
+                        navController.navigate(RoutePath.MATCH_RESULT)
+                    },
+                    onClickManageTeam = {
+                        // TODO Team Manage page
+//                        navController.navigate(RoutePath.MANAGE_TEAM)
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun AdminMenuPopup(
+    onDismiss: () -> Unit,
+    onClickCreateMatch: () -> Unit,
+    onClickUpdateMatchResult: () -> Unit,
+    onClickManageTeam: () -> Unit
+) {
+    // 배경을 어둡게 만드는 Box
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(FutsalggColor.mono900.copy(alpha = 0.5f))
+            .clickable { onDismiss() }
+    ) {
+        Column(
+            Modifier
+                .background(Color.Transparent)
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 16.dp)
+                .align(Alignment.BottomCenter)
+        ) {
+            Column(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(16.dp))
+                    .border(
+                        width = 1.dp,
+                        color = FutsalggColor.mono100,
+                        shape = RoundedCornerShape(16.dp)
+                    )
+                    .background(FutsalggColor.white)
+                    .padding(
+                        horizontal = 16.dp,
+                        vertical = 4.dp
+                    ),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Box(
+                    modifier = Modifier
+                        .background(FutsalggColor.white)
+                        .padding(vertical = 12.dp)
+                        .clickable {
+                            onClickCreateMatch()
+                        }
+                ) {
+                    Text(
+                        text = stringResource(R.string.create_match_title),
+                        style = FutsalggTypography.bold_17_200,
+                        color = FutsalggColor.mono900,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+                HorizontalDivider(thickness = 1.dp, color = FutsalggColor.mono100)
+                Box(
+                    modifier = Modifier
+                        .background(FutsalggColor.white)
+                        .padding(vertical = 12.dp)
+                        .clickable {
+                            onClickUpdateMatchResult()
+                        }
+                ) {
+                    Text(
+                        text = stringResource(R.string.create_or_update_match_result),
+                        style = FutsalggTypography.bold_17_200,
+                        color = FutsalggColor.mono900,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+                HorizontalDivider(thickness = 1.dp, color = FutsalggColor.mono100)
+                Box(
+                    modifier = Modifier
+                        .background(FutsalggColor.white)
+                        .padding(vertical = 12.dp)
+                        .clickable {
+                            onClickManageTeam()
+                        }
+                ) {
+                    Text(
+                        text = stringResource(R.string.main_manage_team),
+                        style = FutsalggTypography.bold_17_200,
+                        color = FutsalggColor.mono900,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+            }
+            VerticalSpacer16()
+
+            Box(
+                Modifier
+                    .size(56.dp)
+                    .clip(CircleShape)
+                    .background(FutsalggColor.mint50)
+                    .align(Alignment.End)
+            ) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_close_24),
+                    contentDescription = "",
+                    tint = FutsalggColor.mono800,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
+
+            VerticalSpacer16()
         }
     }
 }
