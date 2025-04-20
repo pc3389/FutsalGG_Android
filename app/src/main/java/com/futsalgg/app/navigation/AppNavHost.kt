@@ -24,6 +24,7 @@ import com.futsalgg.app.presentation.match.result.MatchResultScreen
 import com.futsalgg.app.presentation.match.updateround.UpdateMatchRoundScreen
 import com.futsalgg.app.presentation.match.updatesubteam.UpdateMatchParticipantsSubTeamScreen
 import com.futsalgg.app.presentation.setting.SettingScreen
+import com.futsalgg.app.presentation.splash.SplashScreen
 import com.futsalgg.app.presentation.team.createteam.CreateTeamScreen
 import com.futsalgg.app.presentation.team.createteam.CreateTeamViewModel
 import com.futsalgg.app.presentation.team.jointeam.JoinTeamScreen
@@ -39,7 +40,8 @@ fun AppNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Login.route
+        startDestination = Screen.Splash.route
+//        startDestination = Screen.Login.route
 //        startDestination = Screen.TermsAndCondition.route
 //        startDestination = Screen.CreateUser.route
 //        startDestination = Screen.SelectTeam.route
@@ -111,6 +113,9 @@ fun AppNavHost(
         }
         composable(Screen.UpdateMatchStatScreen.route) {
             UpdateMatchStatScreen(navController)
+        }
+        composable(Screen.Splash.route) {
+            SplashScreen(navController)
         }
         composable(
             route = "cropImage?uri={uri}&viewModelType={viewModelType}",

@@ -13,6 +13,7 @@ import com.futsalgg.app.presentation.common.state.EditTextState
 import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.presentation.team.model.Access
 import com.futsalgg.app.presentation.common.model.MatchType
+import com.futsalgg.app.presentation.user.util.slangList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -76,6 +77,20 @@ class CreateTeamViewModel @Inject constructor(
         if (currentTeamName.isEmpty()) {
             _createTeamState.value = _createTeamState.value.copy(
                 teamNameState = EditTextState.Initial
+            )
+            return
+        }
+
+        if (!currentTeamName.matches(Regex("^[a-zA-Z가-힣0-9\\s\\-_]+$"))) {
+            _createTeamState.value = _createTeamState.value.copy(
+                teamNameState = EditTextState.ErrorCannotUseSpecialChar
+            )
+            return
+        }
+
+        if (slangList.any {currentTeamName.contains(it)}) {
+            _createTeamState.value = _createTeamState.value.copy(
+                teamNameState = EditTextState.ErrorCannotUseSlang
             )
             return
         }

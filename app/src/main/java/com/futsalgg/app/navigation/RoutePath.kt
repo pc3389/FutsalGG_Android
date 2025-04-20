@@ -1,6 +1,7 @@
 package com.futsalgg.app.navigation
 
 object RoutePath {
+    const val SPLASH = "Splash"
     const val LOGIN = "Login"
     const val MAIN = "Main"
     const val TERMS = "TermsAndCondition"

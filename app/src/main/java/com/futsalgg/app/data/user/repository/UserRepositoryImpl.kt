@@ -204,6 +204,12 @@ class UserRepositoryImpl @Inject constructor(
                     User(
                         email = body.data.email,
                         name = body.data.name,
+                        birthday = body.data.birthday,
+                        gender = when (body.data.gender) {
+                            Gender.MAN.name -> Gender.MAN
+                            Gender.WOMAN.name -> Gender.WOMAN
+                            else -> Gender.NONE
+                        },
                         squadNumber = body.data.squadNumber,
                         notification = body.data.notification,
                         profileUrl = body.data.profileUrl,
@@ -273,6 +279,12 @@ class UserRepositoryImpl @Inject constructor(
                     User(
                         email = body.data.email,
                         name = body.data.name,
+                        birthday = body.data.birthday,
+                        gender = when (body.data.gender) {
+                            Gender.MAN.name -> Gender.MAN
+                            Gender.WOMAN.name -> Gender.WOMAN
+                            else -> Gender.NONE
+                        },
                         squadNumber = body.data.squadNumber,
                         profileUrl = body.data.profileUrl,
                         notification = body.data.notification,

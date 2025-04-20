@@ -20,7 +20,7 @@ class NicknameChecker(
         onStateUpdate: (EditTextState) -> Unit,
         onUiStateUpdate: (UiState) -> Unit
     ) {
-        if (!nickname.matches(Regex("^[a-zA-Z가-힣0-9\\s\\-_]+$"))) {
+        if (!nickname.matches(Regex("^[a-zA-Z가-힣0-9]+$"))) {
             onStateUpdate(EditTextState.ErrorCannotUseSpecialChar)
             onUiStateUpdate(UiState.Initial)
             return

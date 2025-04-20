@@ -18,4 +18,5 @@ sealed class Screen(val route: String) {
     object UpdateMatchRoundScreen: Screen(RoutePath.UPDATE_MATCH_ROUND)
     object CheckMatchStatScreen: Screen(RoutePath.CHECK_MATCH_STAT)
     object UpdateMatchStatScreen: Screen(RoutePath.UPDATE_MATCH_STAT)
+    object Splash: Screen(RoutePath.SPLASH)
 }

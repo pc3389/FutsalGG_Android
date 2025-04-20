@@ -36,6 +36,7 @@ import com.futsalgg.app.navigation.RoutePath
 import com.futsalgg.app.presentation.common.imagecrop.rememberImagePickerLauncher
 import com.futsalgg.app.presentation.common.screen.BaseScreen
 import com.futsalgg.app.presentation.common.screen.LoadingScreen
+import com.futsalgg.app.presentation.common.state.EditTextState
 import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.presentation.team.model.Access
 import com.futsalgg.app.ui.components.BottomButton
@@ -109,7 +110,15 @@ fun CreateTeamScreen(
                         onValueChange = viewModel::onTeamNameChange,
                         hint = stringResource(R.string.team_name_hint),
                         state = createTeamState.teamNameState,
-                        messageProvider = { "" },
+                        messageProvider = {
+                            when (it) {
+                                EditTextState.Available -> context.getString(R.string.create_team_duplication_available)
+                                EditTextState.ErrorCannotUseSpecialChar -> context.getString(R.string.create_team_cannot_use_special_char)
+                                EditTextState.ErrorAlreadyExisting -> context.getString(R.string.create_team_duplication_available)
+                                EditTextState.ErrorCannotUseSlang -> context.getString(R.string.create_team_cannot_use_slang)
+                                else -> null
+                            }
+                        },
                         imeAction = ImeAction.Done,
                         onImeAction = { focusManager.clearFocus() },
                         singleLine = true,
@@ -121,7 +130,7 @@ fun CreateTeamScreen(
                         text = stringResource(R.string.check_duplication),
                         onClick = { viewModel.checkTeamNameDuplication() },
                         modifier = Modifier.weight(1f),
-                        enabled = createTeamState.teamName.isNotEmpty()
+                        enabled = createTeamState.teamName.length > 2
                     )
                 }
 
@@ -159,7 +168,8 @@ fun CreateTeamScreen(
                     onImeDone = { focusManager.clearFocus() },
                     singleLine = false,
                     maxLines = 2,
-                    minLines = 2
+                    minLines = 2,
+                    maxLength = 30
                 )
 
                 VerticalSpacer56()
@@ -170,7 +180,8 @@ fun CreateTeamScreen(
                 )
                 Spacer(Modifier.height(8.dp))
                 DropdownBox(
-                    text = createTeamState.access?.toString() ?: stringResource(R.string.select_please),
+                    text = createTeamState.access?.toString()
+                        ?: stringResource(R.string.select_please),
                     items = Access.entries,
                     onItemSelected = viewModel::onAccessChange,
                 )

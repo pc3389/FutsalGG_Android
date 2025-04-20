@@ -46,6 +46,10 @@
     <!-- CreateTeam -->
     <string name="team_name">팀 명</string>
     <string name="team_description">팀 소개</string>
+    <string name="create_team_duplication_available">사용 가능한 팀 명임입니다.</string>
+    <string name="create_team_cannot_use_special_char">‘-’,‘_’만 사용가능합니다.</string>
+    <string name="create_team_name_not_unique">동일한 팀 명이 존재합니다.</string>
+    <string name="create_team_cannot_use_slang">부적절한 단어가 입력되었습니다.</string>
     <string name="team_rules">팀 규칙</string>
     <string name="team_rules_hint">팀 규칙을 작성해주세요.\n(일정, 회비, 계좌번호 등)</string>
     <string name="team_admin_scope">관리자 범위</string>
@@ -53,7 +57,7 @@
     <string name="team_fee">회비</string>
     <string name="team_logo">팀 로고</string>
     <string name="create_team">팀 생성하기</string>
-    <string name="team_name_hint">팀 명을 입력해주세요. (10자 이내)</string>
+    <string name="team_name_hint">팀 명 입력 (10자 이내)</string>
     <string name="team_description_hint">팀 소개를 작성해주세요. (20자 이내)</string>
     <string name="create_team_due_hint">0 만원</string>
 

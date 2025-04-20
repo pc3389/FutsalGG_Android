@@ -38,6 +38,7 @@ class MainViewModel @Inject constructor(
     init {
         getMyTeam()
     }
+
     fun getMyTeam() {
         viewModelScope.launch {
             _uiState.value = UiState.Loading

@@ -251,7 +251,7 @@ class TeamRepositoryImpl @Inject constructor(
                         id = body.data.id,
                         teamMemberId = body.data.teamMemberId,
                         name = body.data.name,
-                        logoUrl = body.data.logoUrl,
+                        logoUrl = body.data.logoUrl ?: "",
                         role = when (body.data.role) {
                             RemoteTeamRole.OWNER -> TeamRole.OWNER
                             RemoteTeamRole.TEAM_LEADER -> TeamRole.TEAM_LEADER
@@ -276,12 +276,21 @@ class TeamRepositoryImpl @Inject constructor(
                 ) as Throwable
             )
         } else {
-            Result.failure(
-                DataError.ServerError(
-                    message = "서버 오류: ${response.code()}",
-                    cause = null
-                ) as Throwable
-            )
+            if (response.body()?.code == "NOT_FOUND_TEAM_ID") {
+                Result.failure(
+                    DataError.ServerError(
+                        message = "NOT_FOUND_TEAM_ID",
+                        cause = null
+                    ) as Throwable
+                )
+            } else {
+                Result.failure(
+                    DataError.ServerError(
+                        message = "서버 오류: ${response.code()}",
+                        cause = null
+                    ) as Throwable
+                )
+            }
         }
     } catch (e: IOException) {
         Result.failure(

@@ -7,6 +7,10 @@ data class GetMyProfileResponse(
     val email: String,
     @SerializedName("name")
     val name: String,
+    @SerializedName("birthday")
+    val birthday: String,
+    @SerializedName("gender")
+    val gender: String,
     @SerializedName("squadNumber")
     val squadNumber: Int?,
     @SerializedName("notification")
