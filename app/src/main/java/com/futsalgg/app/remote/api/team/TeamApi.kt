@@ -1,5 +1,6 @@
 package com.futsalgg.app.remote.api.team
 
+import com.futsalgg.app.remote.api.common.ApiResponse
 import com.futsalgg.app.remote.api.team.model.response.SearchTeamResponse
 import com.futsalgg.app.remote.api.team.model.request.CreateTeamRequest
 import com.futsalgg.app.remote.api.team.model.request.UpdateTeamLogoRequest
@@ -19,18 +20,18 @@ interface TeamApi {
     @GET("teams/check-nickname")
     suspend fun checkTeamNickname(
         @Query("nickname") nickname: String
-    ): Response<CheckTeamNicknameResponse>
+    ): Response<ApiResponse<CheckTeamNicknameResponse>>
 
     @GET("teams/{id}/logo-presigned-url")
     suspend fun getTeamLogoPresignedUrl(
         @Header("Authorization") authHeader: String,
-    ): Response<TeamLogoPresignedUrlResponse>
+    ): Response<ApiResponse<TeamLogoPresignedUrlResponse>>
 
     @PATCH("teams/{id}/logo")
     suspend fun updateTeamLogo(
         @Header("Authorization") authHeader: String,
         @Body request: UpdateTeamLogoRequest
-    ): Response<TeamLogoPresignedUrlResponse>
+    ): Response<ApiResponse<TeamLogoPresignedUrlResponse>>
 
     @POST("teams")
     suspend fun createTeam(
@@ -42,10 +43,10 @@ interface TeamApi {
     suspend fun searchTeams(
         @Header("Authorization") accessToken: String,
         @Query("name") name: String
-    ): SearchTeamResponse
+    ): Response<ApiResponse<SearchTeamResponse>>
 
     @GET("teams/me")
     suspend fun getMyTeam(
         @Header("Authorization") accessToken: String
-    ): Response<GetMyTeamResponse>
+    ): Response<ApiResponse<GetMyTeamResponse>>
 } 

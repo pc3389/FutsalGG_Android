@@ -1,5 +1,6 @@
 package com.futsalgg.app.remote.api.user
 
+import com.futsalgg.app.remote.api.common.ApiResponse
 import com.futsalgg.app.remote.api.user.model.request.CreateUserRequest
 import com.futsalgg.app.remote.api.user.model.request.UpdateProfilePhotoRequest
 import com.futsalgg.app.remote.api.user.model.request.UpdateNotificationRequest
@@ -20,32 +21,32 @@ interface UserApi {
     @GET("users/check-nickname")
     suspend fun checkNickname(
         @Query("nickname") nickname: String
-    ): Response<CheckNicknameResponse>
+    ): Response<ApiResponse<CheckNicknameResponse>>
 
     // 유저의 정보를 등록하는 API
     @PATCH("users")
     suspend fun createUser(
         @Header("Authorization") authHeader: String,
         @Body request: CreateUserRequest
-    ): Response<Void>
+    ): Response<ApiResponse<Void>>
 
     // 프로필 사진 업로드를 위해 presigned url을 가져오는 API
     @GET("users/profile-presigned-url")
     suspend fun getProfilePresignedUrl(
         @Header("Authorization") authHeader: String
-    ): Response<ProfilePresignedUrlResponse>
+    ): Response<ApiResponse<ProfilePresignedUrlResponse>>
 
     // [GET] /user/profile-presigned-url로 가져온 다음 업로드가 성공했을 시 profile Photo를 업데이트 하는 API 호출
     @PATCH("users/profile")
     suspend fun updateUserProfilePhoto(
         @Header("Authorization") authHeader: String,
         @Body request: UpdateProfilePhotoRequest
-    ): Response<UpdateProfilePhotoResponse>
+    ): Response<ApiResponse<UpdateProfilePhotoResponse>>
 
     @GET("users/me")
     suspend fun getMyProfile(
         @Header("Authorization") accessToken: String
-    ): Response<GetMyProfileResponse>
+    ): Response<ApiResponse<GetMyProfileResponse>>
 
     @PATCH("users/me/notification")
     suspend fun updateNotification(
@@ -57,5 +58,5 @@ interface UserApi {
     suspend fun updateProfile(
         @Header("Authorization") accessToken: String,
         @Body request: UpdateProfileRequest
-    ): Response<GetMyProfileResponse>
+    ): Response<ApiResponse<GetMyProfileResponse>>
 }

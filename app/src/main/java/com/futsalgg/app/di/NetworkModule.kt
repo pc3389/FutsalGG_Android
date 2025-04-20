@@ -31,7 +31,7 @@ class NetworkModule {
 
     @Provides
     fun provideBaseUrl(): String {
-        return "https://futsalgg.duckdns.org/api/"
+        return "https://futsal-gg.p-e.kr/"
     }
 
     @Provides

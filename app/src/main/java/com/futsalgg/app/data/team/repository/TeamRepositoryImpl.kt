@@ -27,7 +27,7 @@ class TeamRepositoryImpl @Inject constructor(
             val response = teamApi.checkTeamNickname(nickname)
             if (response.isSuccessful) {
                 response.body()?.let { body ->
-                    Result.success(body.unique)
+                    Result.success(body.data.unique)
                 } ?: Result.failure(
                     DataError.ServerError(
                         message = "서버 응답이 비어있습니다.",
@@ -63,8 +63,8 @@ class TeamRepositoryImpl @Inject constructor(
                 response.body()?.let { body ->
                     Result.success(
                         TeamLogoPresignedUrlResponseModel(
-                            url = body.url,
-                            uri = body.uri
+                            url = body.data.url,
+                            uri = body.data.uri
                         )
                     )
                 } ?: Result.failure(
@@ -104,8 +104,8 @@ class TeamRepositoryImpl @Inject constructor(
                 response.body()?.let { body ->
                     Result.success(
                         TeamLogoResponseModel(
-                            url = body.url,
-                            uri = body.uri
+                            url = body.data.url,
+                            uri = body.data.uri
                         )
                     )
                 } ?: Result.failure(
@@ -205,19 +205,35 @@ class TeamRepositoryImpl @Inject constructor(
                 accessToken = "Bearer $accessToken",
                 name = name
             )
-            Result.success(
-                SearchTeamResponseModel(
-                    teams = response.teams.map { remoteTeam ->
-                        SearchTeamResponseModel.Team(
-                            id = remoteTeam.id,
-                            name = remoteTeam.name,
-                            createdTime = remoteTeam.createdTime,
-                            leaderName = remoteTeam.leaderName,
-                            memberCount = remoteTeam.memberCount
+            if (response.isSuccessful) {
+                response.body()?.let { body ->
+                    Result.success(
+                        SearchTeamResponseModel(
+                            teams = body.data.teams.map { remoteTeam ->
+                                SearchTeamResponseModel.Team(
+                                    id = remoteTeam.id,
+                                    name = remoteTeam.name,
+                                    createdTime = remoteTeam.createdTime,
+                                    leaderName = remoteTeam.leaderName,
+                                    memberCount = remoteTeam.memberCount
+                                )
+                            }
                         )
-                    }
+                    )
+                } ?: Result.failure(
+                    DataError.ServerError(
+                        message = "서버 응답이 비어있습니다.",
+                        cause = null
+                    ) as Throwable
                 )
-            )
+            } else {
+                Result.failure(
+                    DataError.ServerError(
+                        message = "서버 오류: ${response.code()}",
+                        cause = null
+                    ) as Throwable
+                )
+            }
         } catch (e: Exception) {
             Result.failure(e)
         }
@@ -232,19 +248,19 @@ class TeamRepositoryImpl @Inject constructor(
             response.body()?.let { body ->
                 Result.success(
                     MyTeam(
-                        id = body.id,
-                        teamMemberId = body.teamMemberId,
-                        name = body.name,
-                        logoUrl = body.logoUrl,
-                        role = when (body.role) {
+                        id = body.data.id,
+                        teamMemberId = body.data.teamMemberId,
+                        name = body.data.name,
+                        logoUrl = body.data.logoUrl,
+                        role = when (body.data.role) {
                             RemoteTeamRole.OWNER -> TeamRole.OWNER
                             RemoteTeamRole.TEAM_LEADER -> TeamRole.TEAM_LEADER
                             RemoteTeamRole.TEAM_DEPUTY_LEADER -> TeamRole.TEAM_DEPUTY_LEADER
                             RemoteTeamRole.TEAM_SECRETARY -> TeamRole.TEAM_SECRETARY
                             RemoteTeamRole.TEAM_MEMBER -> TeamRole.TEAM_MEMBER
                         },
-                        createdTime = body.createdTime,
-                        access = when (body.access) {
+                        createdTime = body.data.createdTime,
+                        access = when (body.data.access) {
                             RemoteTeamRole.OWNER -> TeamRole.OWNER
                             RemoteTeamRole.TEAM_LEADER -> TeamRole.TEAM_LEADER
                             RemoteTeamRole.TEAM_DEPUTY_LEADER -> TeamRole.TEAM_DEPUTY_LEADER

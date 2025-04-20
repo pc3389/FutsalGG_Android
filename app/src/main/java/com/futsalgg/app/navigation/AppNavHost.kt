@@ -39,12 +39,12 @@ fun AppNavHost(
 ) {
     NavHost(
         navController = navController,
-//        startDestination = Screen.Login.route
+        startDestination = Screen.Login.route
 //        startDestination = Screen.TermsAndCondition.route
 //        startDestination = Screen.CreateUser.route
 //        startDestination = Screen.SelectTeam.route
 //        startDestination = Screen.CreateTeam.route
-        startDestination = Screen.Main.route
+//        startDestination = Screen.Main.route
 //        startDestination = Screen.MatchResult.route
 //        startDestination = Screen.CreateMatch.route
 //        startDestination = Screen.JoinTeam.route

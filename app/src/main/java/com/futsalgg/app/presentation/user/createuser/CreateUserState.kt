@@ -10,7 +10,7 @@ data class CreateUserState(
     val nicknameState: EditTextState = EditTextState.Initial,
     val birthday: String = "",
     val birthdayState: DateState = DateState.Initial,
-    val gender: Gender = Gender.MALE,
+    val gender: Gender = Gender.MAN,
     val croppedProfileImage: Bitmap? = null,
     val profileImageUrl: String? = null,
     val notificationChecked: Boolean = false,

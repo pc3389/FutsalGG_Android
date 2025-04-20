@@ -26,7 +26,7 @@ class UserRepositoryImpl @Inject constructor(
             val response = userApi.checkNickname(nickname)
             if (response.isSuccessful) {
                 response.body()?.let { body ->
-                    Result.success(body.unique)
+                    Result.success(body.data.unique)
                 } ?: Result.failure(
                     DataError.ServerError(
                         message = "서버 응답이 비어있습니다.",
@@ -97,8 +97,8 @@ class UserRepositoryImpl @Inject constructor(
                 response.body()?.let { body ->
                     Result.success(
                         ProfilePresignedUrlResponseModel(
-                            url = body.url,
-                            uri = body.uri
+                            url = body.data.url,
+                            uri = body.data.uri
                         )
                     )
                 } ?: Result.failure(
@@ -138,8 +138,8 @@ class UserRepositoryImpl @Inject constructor(
                 response.body()?.let { body ->
                     Result.success(
                         UpdateProfilePhotoResponseModel(
-                            url = body.url,
-                            uri = body.uri
+                            url = body.data.url,
+                            uri = body.data.uri
                         )
 
                     )
@@ -202,12 +202,12 @@ class UserRepositoryImpl @Inject constructor(
             response.body()?.let { body ->
                 Result.success(
                     User(
-                        email = body.email,
-                        name = body.name,
-                        squadNumber = body.squadNumber,
-                        notification = body.notification,
-                        profileUrl = body.profileUrl,
-                        createdTime = body.createdTime
+                        email = body.data.email,
+                        name = body.data.name,
+                        squadNumber = body.data.squadNumber,
+                        notification = body.data.notification,
+                        profileUrl = body.data.profileUrl,
+                        createdTime = body.data.createdTime
                     )
                 )
             } ?: Result.failure(
@@ -271,12 +271,12 @@ class UserRepositoryImpl @Inject constructor(
             response.body()?.let { body ->
                 Result.success(
                     User(
-                        email = body.email,
-                        name = body.name,
-                        squadNumber = body.squadNumber,
-                        profileUrl = body.profileUrl,
-                        notification = body.notification,
-                        createdTime = body.createdTime
+                        email = body.data.email,
+                        name = body.data.name,
+                        squadNumber = body.data.squadNumber,
+                        profileUrl = body.data.profileUrl,
+                        notification = body.data.notification,
+                        createdTime = body.data.createdTime
                     )
                 )
             } ?: Result.failure(

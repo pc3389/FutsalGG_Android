@@ -21,8 +21,8 @@ fun GenderUi(
 
     DoubleRadioButtonsEnum(
         selected = gender,
-        option1 = Gender.MALE,
-        option2 = Gender.FEMALE,
+        option1 = Gender.MAN,
+        option2 = Gender.WOMAN,
         onSelect = onGenderButtonSelect,
         label1 = "남자",
         label2 = "여자"

@@ -118,7 +118,7 @@ class CreateUserViewModelTest {
         fakeSignupUseCase.shouldSucceed = true
         viewModel.onNicknameChange("테스트닉네임")
         viewModel.onBirthdayChange("19900101")
-        viewModel.onGenderChange(Gender.MALE)
+        viewModel.onGenderChange(Gender.MAN)
 
         var successCalled = false
 

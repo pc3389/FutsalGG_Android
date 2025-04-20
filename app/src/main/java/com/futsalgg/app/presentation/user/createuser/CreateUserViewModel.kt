@@ -16,10 +16,12 @@ import com.futsalgg.app.presentation.common.state.DateState
 import com.futsalgg.app.presentation.user.util.NicknameChecker
 import com.futsalgg.app.util.isValidDate
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -158,7 +160,9 @@ class CreateUserViewModel @Inject constructor(
                 return@launch
             }
 
-            val result = createUserUseCase.uploadProfileImage(accessToken, file)
+            val result = withContext(Dispatchers.IO) {
+                createUserUseCase.uploadProfileImage(accessToken, file)
+            }
             result.fold(
                 onSuccess = { response ->
                     _createUserState.value = _createUserState.value.copy(
