@@ -58,7 +58,7 @@ fun MainScreen(
     navController: NavController,
     viewModel: MainViewModel = hiltViewModel()
 ) {
-    val state = viewModel.mainState.collectAsState()
+    val state by viewModel.mainState.collectAsState()
     val scrollState = rememberScrollState()
     var showAdminMenu by remember { mutableStateOf(false) }
 
@@ -74,11 +74,12 @@ fun MainScreen(
             )
             .windowInsetsPadding(WindowInsets.systemBars),
         topBar = {
-            MainScreenTopBar(
-                title = state.value.myTeam?.name ?: "길고길고길고긴팀이름",
+            MainScreenTopBar(state.myTeam.name,
                 onRightIconClick = {
                     navController.navigate(RoutePath.SETTING)
-                }
+                },
+                teamRole = state.myTeam.role,
+                access = state.myTeam.access
             )
         }
     ) { innerPadding ->
@@ -173,7 +174,7 @@ fun MainScreen(
                     Spacer(Modifier.height(16.dp))
                 }
             }
-//            if (state.value.myTeam?.isManager == true) {
+//            if (state.myTeam?.isManager == true) {
             if (!showAdminMenu) {
                 FloatingActionButton(
                     onClick = {

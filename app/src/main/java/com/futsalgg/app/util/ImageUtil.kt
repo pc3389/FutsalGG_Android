@@ -1,22 +1,16 @@
 package com.futsalgg.app.util
 
-import android.Manifest
 import android.content.Context
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Path
-import android.graphics.Rect
 import android.net.Uri
-import android.os.Build
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Dp
-import androidx.core.content.ContextCompat
 import java.io.File
-import java.io.FileOutputStream
 
 fun cropImageFromUri(
     context: Context,
@@ -104,15 +98,13 @@ fun Dp.toPx(context: Context): Float {
  * @param context 파일을 저장할 Context (예: applicationContext)
  * @param fileName 생성할 파일 이름 (예: "profile.jpg")
  */
-fun Bitmap.toFile(context: Context, fileName: String): File {
-    // 캐시 디렉토리 또는 임시 저장소에 파일 생성
-    val file = File(context.cacheDir, fileName)
-    file.createNewFile()
+fun Bitmap.toFile(context: Context, fileName: String = "image_${System.currentTimeMillis()}.jpg"): File {
+    val file = File(context.cacheDir, fileName) // 캐시 디렉토리에 저장
 
-    // FileOutputStream을 통해 Bitmap을 파일에 기록합니다.
-    FileOutputStream(file).use { out ->
-        this.compress(Bitmap.CompressFormat.JPEG, 100, out)
-        out.flush()
+    file.outputStream().use { outputStream ->
+        this.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+        outputStream.flush()
     }
+
     return file
 }

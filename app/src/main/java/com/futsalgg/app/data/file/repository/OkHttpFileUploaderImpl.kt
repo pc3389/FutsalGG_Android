@@ -1,5 +1,7 @@
 package com.futsalgg.app.data.file.repository
 
+import android.graphics.Bitmap
+import android.util.Base64
 import com.futsalgg.app.domain.file.repository.OkHttpFileUploader
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -9,6 +11,11 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import java.io.IOException
 import com.futsalgg.app.domain.common.error.DomainError
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
+import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
 class OkHttpFileUploaderImpl @Inject constructor(
@@ -17,18 +24,11 @@ class OkHttpFileUploaderImpl @Inject constructor(
 
     override suspend fun uploadFileToPresignedUrl(presignedUrl: String, file: File): Result<Unit> {
         return try {
-            val requestBody = MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart(
-                    "file",
-                    file.name,
-                    file.asRequestBody("application/octet-stream".toMediaType())
-                )
-                .build()
+            val requestBody = file.asRequestBody("image/jpeg".toMediaType()) // Content-Type 중요!
 
             val request = Request.Builder()
                 .url(presignedUrl)
-                .put(requestBody)
+                .put(requestBody) // ← 중요: PUT을 사용해야 합니다
                 .build()
 
             val response = client.newCall(request).execute()

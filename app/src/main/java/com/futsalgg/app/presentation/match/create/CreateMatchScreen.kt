@@ -199,9 +199,10 @@ fun CreateMatchScreen(
                 text = stringResource(R.string.create_button_text),
                 onClick = {
                     viewModel.createMatch(
-                        // TODO OnSuccess
-                        {
-
+                        onSuccess = {
+                            navController.navigate(RoutePath.MATCH_RESULT) {
+                                popUpTo(route = RoutePath.MAIN)
+                            }
                         }
                     )
                 },

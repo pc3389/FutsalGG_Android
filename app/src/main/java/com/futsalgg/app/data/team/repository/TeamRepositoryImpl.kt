@@ -13,8 +13,8 @@ import com.futsalgg.app.domain.team.model.TeamLogoResponseModel
 import com.futsalgg.app.domain.team.model.TeamRole
 import com.futsalgg.app.remote.api.common.ApiResponse
 import com.google.gson.Gson
-import com.futsalgg.app.remote.api.team.model.TeamRole as RemoteTeamRole
 import java.io.File
+import com.futsalgg.app.remote.api.team.model.TeamRole as RemoteTeamRole
 import java.io.IOException
 import javax.inject.Inject
 

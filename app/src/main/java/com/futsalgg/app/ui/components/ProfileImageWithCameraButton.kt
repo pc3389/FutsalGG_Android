@@ -18,12 +18,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.futsalgg.app.R
 import com.futsalgg.app.ui.theme.FutsalggColor
 
 @Composable
 fun ProfileImageWithCameraButton(
     image: Painter = painterResource(R.drawable.default_profile),
+    profileUrl: String? = null,
     imageSize: Dp = 120.dp,
     onCameraClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -34,13 +36,15 @@ fun ProfileImageWithCameraButton(
     ) {
         Box {
             // 프로필 이미지 (120x120)
-            Image(
-                painter = image,
-                contentDescription = "Profile Image",
+            AsyncImage(
+                model = profileUrl,
+                contentDescription = "프로필 이미지",
                 modifier = Modifier
                     .size(imageSize)
-                    .clip(CircleShape)
-                    .border(2.dp, FutsalggColor.mono200, CircleShape)
+                    .align(Alignment.Center)
+                    .clip(CircleShape),
+                placeholder = image,
+                error = image
             )
 
             // 카메라 버튼 정밀 위치 조정

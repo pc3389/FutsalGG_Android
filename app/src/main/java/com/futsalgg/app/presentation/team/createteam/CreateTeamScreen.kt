@@ -245,10 +245,8 @@ fun CreateTeamScreen(
             BottomButton(
                 text = stringResource(R.string.create_team),
                 onClick = {
-                    if (createTeamState.croppedTeamImage != null) {
-                        val file =
-                            createTeamState.croppedTeamImage!!.toFile(context, "logo.jpg")
-                        viewModel.uploadTeamImage(file)
+                    createTeamState.croppedTeamImage?.let {
+                        viewModel.uploadTeamImage(it.toFile(context))
                     }
                     viewModel.createTeam {
                         navController.navigate(RoutePath.MAIN)

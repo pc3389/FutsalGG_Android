@@ -126,10 +126,8 @@ fun CreateUserScreen(
             BottomButton(
                 text = stringResource(R.string.signup_button),
                 onClick = {
-                    if (createUserState.croppedProfileImage != null) {
-                        val file =
-                            createUserState.croppedProfileImage!!.toFile(context, "profile.jpg")
-                        viewModel.uploadProfileImage(file)
+                    createUserState.croppedProfileImage?.let {
+                        viewModel.uploadProfileImage(it.toFile(context))
                     }
                     viewModel.createUser(
                         onSuccess = {

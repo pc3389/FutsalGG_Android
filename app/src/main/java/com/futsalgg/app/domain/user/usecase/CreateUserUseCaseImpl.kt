@@ -1,9 +1,7 @@
 package com.futsalgg.app.domain.user.usecase
 
 import com.futsalgg.app.domain.user.model.Gender
-import com.futsalgg.app.domain.user.model.UpdateProfilePhotoResponseModel
 import com.futsalgg.app.domain.user.repository.UserRepository
-import java.io.File
 import javax.inject.Inject
 
 class CreateUserUseCaseImpl @Inject constructor(
@@ -30,13 +28,5 @@ class CreateUserUseCaseImpl @Inject constructor(
             agreement = agreement,
             notification = notification
         )
-
-    }
-
-    override suspend fun uploadProfileImage(
-        accessToken: String,
-        file: File
-    ): Result<UpdateProfilePhotoResponseModel> {
-        return userRepository.uploadProfileImage(accessToken, file)
     }
 } 

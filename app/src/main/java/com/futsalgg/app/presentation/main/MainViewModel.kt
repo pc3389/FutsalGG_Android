@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class MainState(
-    val myTeam: MyTeam? = null
+    val myTeam: MyTeam = MyTeam()
 )
 
 @HiltViewModel

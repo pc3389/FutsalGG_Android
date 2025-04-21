@@ -1,5 +1,6 @@
 package com.futsalgg.app.data.user.repository
 
+import android.graphics.Bitmap
 import com.futsalgg.app.domain.common.error.DomainError
 import com.futsalgg.app.domain.file.repository.OkHttpFileUploader
 import com.futsalgg.app.domain.user.model.Gender

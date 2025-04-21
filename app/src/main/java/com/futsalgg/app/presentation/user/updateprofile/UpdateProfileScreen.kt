@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,15 +40,16 @@ import com.futsalgg.app.ui.components.spacers.VerticalSpacer32
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer8
 import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.ui.theme.FutsalggTypography
+import com.futsalgg.app.util.toFile
 
 @Composable
 fun UpdateProfileScreen(
     navController: NavController,
     viewModel: UpdateProfileViewModel = hiltViewModel()
 ) {
-    val uiState = viewModel.uiState.collectAsState().value
+    val uiState by viewModel.uiState.collectAsState()
     val focusManager = LocalFocusManager.current
-    val state = viewModel.profileState.collectAsState()
+    val state by viewModel.profileState.collectAsState()
     val context = LocalContext.current
 
     val launchGalleryWithPermission = rememberImagePickerLauncher(
@@ -88,7 +90,7 @@ fun UpdateProfileScreen(
                             .align(Alignment.TopEnd)
                     )
 
-                    val croppedImage = state.value.croppedProfileImage
+                    val croppedImage = state.croppedProfileImage
 
                     ProfileImageWithCameraButton(
                         modifier = Modifier.padding(top = 40.dp),
@@ -108,10 +110,10 @@ fun UpdateProfileScreen(
                 VerticalSpacer8()
 
                 NicknameContents(
-                    nickname = state.value.nickname,
+                    nickname = state.nickname,
                     onNicknameChange = viewModel::updateName,
-                    isCheckEnabled = state.value.isNicknameCheckEnabled,
-                    nicknameState = state.value.nicknameState,
+                    isCheckEnabled = state.isNicknameCheckEnabled,
+                    nicknameState = state.nicknameState,
                     nicknameCheck = viewModel::checkNicknameDuplication,
                     context = context
                 )
@@ -125,7 +127,7 @@ fun UpdateProfileScreen(
                 VerticalSpacer8()
 
                 EditTextBox(
-                    value = state.value.squadNumber?.toString() ?: "",
+                    value = state.squadNumber?.toString() ?: "",
                     onValueChange = viewModel::updateSquadNumber,
                     hint = stringResource(R.string.nickname_hint),
                     onImeDone = { focusManager.clearFocus() },
@@ -134,19 +136,33 @@ fun UpdateProfileScreen(
                     hasDecimal = false
                 )
             }
+
+            fun updateProfile() {
+                viewModel.updateProfile(
+                    onSuccess = {
+                        // TODO onSuccess 버튼
+                    }
+                )
+            }
+
             BottomButton(
                 modifier = Modifier.align(
                     Alignment.BottomCenter
                 ),
                 text = stringResource(R.string.squad_number_button_text),
                 onClick = {
-                    viewModel.updateProfile(
-                        onSuccess = {
-                            // TODO onSuccess 버튼
-                        }
-                    )
+                    if (state.croppedProfileImage != null) {
+                        viewModel.uploadProfileImage(
+                            file = state.croppedProfileImage!!.toFile(context),
+                            imageUploadSuccess = {
+                                updateProfile()
+                            }
+                        )
+                    } else {
+                        updateProfile()
+                    }
                 },
-                enabled = state.value.isFormValid,
+                enabled = state.isFormValid,
                 hasDivider = false
             )
         }

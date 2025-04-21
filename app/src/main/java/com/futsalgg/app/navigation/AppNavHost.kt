@@ -2,6 +2,7 @@ package com.futsalgg.app.navigation
 
 import android.net.Uri
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.credentials.CredentialManager
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -32,32 +33,26 @@ import com.futsalgg.app.presentation.team.selectteam.SelectTeamScreen
 import com.futsalgg.app.presentation.teammember.profilecard.ProfileCardScreen
 import com.futsalgg.app.presentation.user.updateprofile.UpdateProfileScreen
 import com.futsalgg.app.presentation.user.updateprofile.UpdateProfileViewModel
+import com.futsalgg.app.ui.theme.FutsalggColor
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun AppNavHost(
     navController: NavHostController,
     credentialManager: CredentialManager
 ) {
+    val systemUiController = rememberSystemUiController()
+
+    LaunchedEffect(Unit) {
+        systemUiController.setSystemBarsColor(
+            color = FutsalggColor.white,
+            darkIcons = true
+        )
+    }
+
     NavHost(
         navController = navController,
         startDestination = Screen.Splash.route
-//        startDestination = Screen.Login.route
-//        startDestination = Screen.TermsAndCondition.route
-//        startDestination = Screen.CreateUser.route
-//        startDestination = Screen.SelectTeam.route
-//        startDestination = Screen.CreateTeam.route
-//        startDestination = Screen.Main.route
-//        startDestination = Screen.MatchResult.route
-//        startDestination = Screen.CreateMatch.route
-//        startDestination = Screen.JoinTeam.route
-//        startDestination = Screen.MyProfile.route
-//        startDestination = Screen.Setting.route
-//        startDestination = Screen.UpdateProfile.route
-//        startDestination = Screen.CreateMatchMemberScreen.route
-//        startDestination = Screen.UpdateMatchParticipantsSubTeamScreen.route
-//        startDestination = Screen.UpdateMatchRoundScreen.route
-//        startDestination = Screen.CheckMatchStatScreen.route
-//        startDestination = Screen.UpdateMatchStatScreen.route
     ) {
         composable(Screen.Login.route) {
             LoginScreen(

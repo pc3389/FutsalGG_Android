@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -83,7 +84,8 @@ fun SelectableMathParticipantBox(
                         model = participant.profileUrl,
                         contentDescription = "프로필 이미지",
                         modifier = Modifier
-                            .size(32.dp),
+                            .size(32.dp)
+                            .clip(CircleShape),
                         placeholder = painterResource(R.drawable.default_profile),
                         error = painterResource(R.drawable.default_profile)
                     )

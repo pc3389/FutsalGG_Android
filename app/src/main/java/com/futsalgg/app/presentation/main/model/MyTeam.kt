@@ -1,16 +1,14 @@
 package com.futsalgg.app.presentation.main.model
 
 data class MyTeam(
-    val id: String,
-    val teamMemberId: String,
-    val name: String,
-    val logoUrl: String,
-    val role: TeamRole,
-    val createdTime: String,
-    val access: TeamRole,
-){
-    val isManager = (role.rank <= access.rank)
-}
+    val id: String = "",
+    val teamMemberId: String = "",
+    val name: String = "",
+    val logoUrl: String = "",
+    val role: TeamRole = TeamRole.TEAM_MEMBER,
+    val createdTime: String = "",
+    val access: TeamRole = TeamRole.TEAM_LEADER,
+)
 
 enum class TeamRole(val rank: Int, val displayName: String) {
     OWNER(0, "팀장"),

@@ -7,22 +7,27 @@ import androidx.lifecycle.viewModelScope
 import com.futsalgg.app.domain.auth.repository.ITokenManager
 import com.futsalgg.app.domain.common.error.DomainError
 import com.futsalgg.app.domain.user.usecase.UpdateProfileUseCase
+import com.futsalgg.app.domain.user.usecase.UploadUserProfilePictureUseCase
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.error.toUiError
 import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.presentation.user.util.NicknameChecker
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class UpdateProfileViewModel @Inject constructor(
     private val updateProfileUseCase: UpdateProfileUseCase,
     private val nicknameChecker: NicknameChecker,
-    private val tokenManager: ITokenManager
+    private val tokenManager: ITokenManager,
+    private val uploadUserProfilePictureUseCase: UploadUserProfilePictureUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
@@ -106,6 +111,37 @@ class UpdateProfileViewModel @Inject constructor(
                 Log.e("CreateUserViewModel", "Exception during Signup", e)
                 _uiState.value = UiState.Error(UiError.UnknownError("알 수 없는 오류가 발생했습니다."))
             }
+        }
+    }
+
+    fun uploadProfileImage(file: File, imageUploadSuccess: () -> Unit) {
+        viewModelScope.launch {
+            _uiState.value = UiState.Loading
+
+            val accessToken = tokenManager.getAccessToken()
+            if (accessToken.isNullOrEmpty()) {
+                _uiState.value = UiState.Error(UiError.AuthError("AccessToken이 존재하지 않습니다"))
+                return@launch
+            }
+
+            val result = withContext(Dispatchers.IO) {
+                uploadUserProfilePictureUseCase.uploadProfileImage(accessToken, file)
+            }
+            result.fold(
+                onSuccess = { response ->
+                    _profileState.value = _profileState.value.copy(
+                        profileUrl = response.url
+                    )
+                    imageUploadSuccess()
+                    _uiState.value = UiState.Success
+                },
+                onFailure = { throwable ->
+                    _uiState.value = UiState.Error(
+                        (throwable as? DomainError)?.toUiError()
+                            ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
+                    )
+                }
+            )
         }
     }
 }

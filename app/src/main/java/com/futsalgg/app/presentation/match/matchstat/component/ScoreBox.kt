@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -102,7 +103,8 @@ fun ScoreBox(
                             contentDescription = "프로필 이미지",
                             modifier = Modifier
                                 .size(48.dp)
-                                .align(Alignment.Center),
+                                .align(Alignment.Center)
+                                .clip(CircleShape),
                             placeholder = painterResource(R.drawable.ic_team_default_56),
                             error = painterResource(R.drawable.ic_team_default_56)
                         )
@@ -178,7 +180,8 @@ fun ScoreBox(
                             contentDescription = "프로필 이미지",
                             modifier = Modifier
                                 .size(48.dp)
-                                .align(Alignment.Center),
+                                .align(Alignment.Center)
+                                .clip(CircleShape),
                             placeholder = painterResource(R.drawable.ic_team_default_56),
                             error = painterResource(R.drawable.ic_team_default_56)
                         )

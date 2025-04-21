@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
@@ -33,12 +34,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.futsalgg.app.R
 import com.futsalgg.app.navigation.RoutePath
 import com.futsalgg.app.presentation.common.screen.BaseScreen
@@ -100,10 +103,14 @@ fun SettingScreen(
                 ) {
                     VerticalSpacer32()
 
-                    Image(
-                        modifier = Modifier.size(80.dp),
-                        imageVector = ImageVector.vectorResource(R.drawable.default_profile),
-                        contentDescription = ""
+                    AsyncImage(
+                        model = settingState.profileUrl,
+                        contentDescription = "프로필 이미지",
+                        modifier = Modifier
+                            .size(80.dp)
+                            .clip(shape = CircleShape),
+                        placeholder = painterResource(R.drawable.default_profile),
+                        error = painterResource(R.drawable.default_profile)
                     )
                     VerticalSpacer16()
 

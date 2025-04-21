@@ -1,8 +1,6 @@
 package com.futsalgg.app.domain.user.usecase
 
 import com.futsalgg.app.domain.user.model.Gender
-import com.futsalgg.app.domain.user.model.UpdateProfilePhotoResponseModel
-import java.io.File
 
 interface CreateUserUseCase {
     suspend fun isNicknameUnique(nickname: String): Result<Boolean>
@@ -15,9 +13,4 @@ interface CreateUserUseCase {
         agreement: Boolean,
         notification: Boolean
     ): Result<Unit>
-    
-    suspend fun uploadProfileImage(
-        accessToken: String,
-        file: File
-    ): Result<UpdateProfilePhotoResponseModel>
 } 

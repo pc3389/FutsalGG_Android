@@ -33,15 +33,6 @@ fun BaseScreen(
     uiState: UiState,
     content: @Composable (PaddingValues) -> Unit
 ) {
-
-    val systemUiController = rememberSystemUiController()
-    LaunchedEffect(Unit) {
-        systemUiController.setSystemBarsColor(
-            color = FutsalggColor.white,
-            darkIcons = true
-        )
-    }
-
     Scaffold(
         modifier = Modifier
             .background(

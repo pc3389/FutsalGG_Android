@@ -10,6 +10,7 @@ import com.futsalgg.app.presentation.common.state.EditTextState
 import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.domain.user.model.Gender
 import com.futsalgg.app.domain.user.usecase.CreateUserUseCase
+import com.futsalgg.app.domain.user.usecase.UploadUserProfilePictureUseCase
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.error.toUiError
 import com.futsalgg.app.presentation.common.state.DateState
@@ -31,7 +32,8 @@ import javax.inject.Inject
 class CreateUserViewModel @Inject constructor(
     private val createUserUseCase: CreateUserUseCase,
     private val tokenManager: ITokenManager,
-    private val nicknameChecker: NicknameChecker
+    private val nicknameChecker: NicknameChecker,
+    private val uploadUserProfilePictureUseCase: UploadUserProfilePictureUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
@@ -161,7 +163,7 @@ class CreateUserViewModel @Inject constructor(
             }
 
             val result = withContext(Dispatchers.IO) {
-                createUserUseCase.uploadProfileImage(accessToken, file)
+                uploadUserProfilePictureUseCase.uploadProfileImage(accessToken, file)
             }
             result.fold(
                 onSuccess = { response ->

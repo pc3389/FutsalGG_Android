@@ -65,7 +65,7 @@ class MatchRepositoryImpl @Inject constructor(
     override suspend fun getMatch(
         accessToken: String,
         id: String
-    ): Result<com.futsalgg.app.domain.match.model.Match> = try {
+    ): Result<Match> = try {
         val response = matchApi.getMatch(
             authHeader = "Bearer $accessToken",
             id = id
@@ -143,7 +143,7 @@ class MatchRepositoryImpl @Inject constructor(
         substituteTeamMemberId: String?,
         description: String?,
         isVote: Boolean
-    ): Result<com.futsalgg.app.domain.match.model.Match> = try {
+    ): Result<Match> = try {
         val response = matchApi.createMatch(
             authHeader = "Bearer $accessToken",
             request = CreateMatchRequest(

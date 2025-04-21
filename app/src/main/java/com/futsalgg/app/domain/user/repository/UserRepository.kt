@@ -3,8 +3,8 @@ package com.futsalgg.app.domain.user.repository
 import com.futsalgg.app.domain.user.model.ProfilePresignedUrlResponseModel
 import com.futsalgg.app.domain.user.model.UpdateProfilePhotoResponseModel
 import com.futsalgg.app.domain.user.model.Gender
-import java.io.File
 import com.futsalgg.app.domain.user.model.User
+import java.io.File
 
 interface UserRepository {
     suspend fun isNicknameUnique(nickname: String): Result<Boolean>
