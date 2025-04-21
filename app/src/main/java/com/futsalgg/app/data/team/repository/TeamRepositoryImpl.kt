@@ -11,6 +11,8 @@ import com.futsalgg.app.domain.team.model.MyTeam
 import com.futsalgg.app.domain.team.model.SearchTeamResponseModel
 import com.futsalgg.app.domain.team.model.TeamLogoResponseModel
 import com.futsalgg.app.domain.team.model.TeamRole
+import com.futsalgg.app.remote.api.common.ApiResponse
+import com.google.gson.Gson
 import com.futsalgg.app.remote.api.team.model.TeamRole as RemoteTeamRole
 import java.io.File
 import java.io.IOException
@@ -30,14 +32,17 @@ class TeamRepositoryImpl @Inject constructor(
                     Result.success(body.data.unique)
                 } ?: Result.failure(
                     DomainError.ServerError(
-                        message = "서버 응답이 비어있습니다.",
+                        message = "[isTeamNicknameUnique] 서버 응답이 비어있습니다.",
                         code = response.code()
                     ) as Throwable
                 )
             } else {
+                val errorBody = response.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
                 Result.failure(
                     DomainError.ServerError(
-                        message = "서버 오류: ${response.code()}",
+                        message = "[updateMatchRounds] 서버 오류: ${errorResponse.message}",
                         code = response.code()
                     ) as Throwable
                 )
@@ -45,7 +50,7 @@ class TeamRepositoryImpl @Inject constructor(
         } catch (e: IOException) {
             Result.failure(
                 DomainError.NetworkError(
-                    message = "네트워크 연결을 확인해주세요.",
+                    message = "[updateMatchRounds] 네트워크 연결을 확인해주세요.",
                     cause = e
                 ) as Throwable
             )
@@ -69,14 +74,17 @@ class TeamRepositoryImpl @Inject constructor(
                     )
                 } ?: Result.failure(
                     DomainError.ServerError(
-                        message = "서버 응답이 비어있습니다.",
+                        message = "[getTeamLogoPresignedUrl] 서버 응답이 비어있습니다.",
                         code = response.code()
                     ) as Throwable
                 )
             } else {
+                val errorBody = response.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
                 Result.failure(
                     DomainError.ServerError(
-                        message = "서버 오류: ${response.code()}",
+                        message = "[getTeamLogoPresignedUrl] 서버 오류: ${errorResponse.message}",
                         code = response.code()
                     ) as Throwable
                 )
@@ -84,7 +92,7 @@ class TeamRepositoryImpl @Inject constructor(
         } catch (e: IOException) {
             Result.failure(
                 DomainError.NetworkError(
-                    message = "네트워크 연결을 확인해주세요.",
+                    message = "[getTeamLogoPresignedUrl] 네트워크 연결을 확인해주세요.",
                     cause = e
                 ) as Throwable
             )
@@ -110,14 +118,17 @@ class TeamRepositoryImpl @Inject constructor(
                     )
                 } ?: Result.failure(
                     DomainError.ServerError(
-                        message = "서버 응답이 비어있습니다.",
+                        message = "[updateTeamLogo] 서버 응답이 비어있습니다.",
                         code = response.code()
                     ) as Throwable
                 )
             } else {
+                val errorBody = response.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
                 Result.failure(
                     DomainError.ServerError(
-                        message = "서버 오류: ${response.code()}",
+                        message = "[updateTeamLogo] 서버 오류: ${errorResponse.message}",
                         code = response.code()
                     ) as Throwable
                 )
@@ -125,7 +136,7 @@ class TeamRepositoryImpl @Inject constructor(
         } catch (e: IOException) {
             Result.failure(
                 DomainError.NetworkError(
-                    message = "네트워크 연결을 확인해주세요.",
+                    message = "[updateTeamLogo] 네트워크 연결을 확인해주세요.",
                     cause = e
                 ) as Throwable
             )
@@ -182,9 +193,12 @@ class TeamRepositoryImpl @Inject constructor(
             if (response.isSuccessful) {
                 Result.success(Unit)
             } else {
+                val errorBody = response.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
                 Result.failure(
                     DomainError.ServerError(
-                        message = "팀 생성 실패: ${response.code()}",
+                        message = "[createTeam] 서버 오류: ${errorResponse.message}",
                         code = response.code()
                     ) as Throwable
                 )
@@ -192,7 +206,7 @@ class TeamRepositoryImpl @Inject constructor(
         } catch (e: IOException) {
             Result.failure(
                 DomainError.NetworkError(
-                    message = "네트워크 연결을 확인해주세요.",
+                    message = "[createTeam] 네트워크 연결을 확인해주세요.",
                     cause = e
                 ) as Throwable
             )
@@ -222,20 +236,28 @@ class TeamRepositoryImpl @Inject constructor(
                     )
                 } ?: Result.failure(
                     DomainError.ServerError(
-                        message = "서버 응답이 비어있습니다.",
+                        message = "[searchTeams] 서버 응답이 비어있습니다.",
                         code = response.code()
                     ) as Throwable
                 )
             } else {
+                val errorBody = response.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
                 Result.failure(
                     DomainError.ServerError(
-                        message = "서버 오류: ${response.code()}",
+                        message = "[searchTeams] 서버 오류: ${errorResponse.message}",
                         code = response.code()
                     ) as Throwable
                 )
             }
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(
+                DomainError.NetworkError(
+                    message = "[searchTeams] 네트워크 연결을 확인해주세요.",
+                    cause = e
+                ) as Throwable
+            )
         }
     }
 
@@ -271,12 +293,15 @@ class TeamRepositoryImpl @Inject constructor(
                 )
             } ?: Result.failure(
                 DomainError.ServerError(
-                    message = "서버 응답이 비어있습니다.",
+                    message = "[getMyTeam] 서버 응답이 비어있습니다.",
                     code = response.code()
                 ) as Throwable
             )
         } else {
-            if (response.body()?.code == "NOT_FOUND_TEAM_ID") {
+            val errorBody = response.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
+            if (response.body()?.message == "NOT_FOUND_TEAM_ID") {
                 Result.failure(
                     DomainError.ServerError(
                         message = "NOT_FOUND_TEAM_ID",
@@ -284,9 +309,10 @@ class TeamRepositoryImpl @Inject constructor(
                     ) as Throwable
                 )
             } else {
+
                 Result.failure(
                     DomainError.ServerError(
-                        message = "서버 오류: ${response.code()}",
+                        message = "[getMyTeam] 서버 오류: ${errorResponse.message}",
                         code = response.code()
                     ) as Throwable
                 )
@@ -295,7 +321,7 @@ class TeamRepositoryImpl @Inject constructor(
     } catch (e: IOException) {
         Result.failure(
             DomainError.NetworkError(
-                message = "네트워크 연결을 확인해주세요.",
+                message = "[getMyTeam] 네트워크 연결을 확인해주세요.",
                 cause = e
             ) as Throwable
         )

@@ -1,8 +1,8 @@
 package com.futsalgg.app.remote.api.match
 
+import com.futsalgg.app.remote.api.common.ApiListResponse
 import com.futsalgg.app.remote.api.common.ApiResponse
 import com.futsalgg.app.remote.api.match.model.request.CreateMatchRequest
-import com.futsalgg.app.remote.api.match.model.response.GetMatchesResponse
 import com.futsalgg.app.remote.api.match.model.response.MatchResponse
 import com.futsalgg.app.remote.api.match.model.request.CreateMatchParticipantsRequest
 import com.futsalgg.app.remote.api.match.model.response.CreateMatchParticipantsResponse
@@ -28,8 +28,9 @@ interface MatchApi {
     suspend fun getMatches(
         @Header("Authorization") authHeader: String,
         @Query("page") page: Int = 1,
-        @Query("size") size: Int = 20
-    ): Response<ApiResponse<GetMatchesResponse>>
+        @Query("size") size: Int = 20,
+        @Query("teamId") teamId: String
+    ): Response<ApiListResponse<MatchResponse>>
 
     @GET("matches/{id}")
     suspend fun getMatch(

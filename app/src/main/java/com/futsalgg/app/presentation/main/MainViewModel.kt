@@ -39,7 +39,6 @@ class MainViewModel @Inject constructor(
 
     init {
         getMyTeam()
-
     }
 
     fun getMyTeam() {

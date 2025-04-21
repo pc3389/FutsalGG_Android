@@ -10,10 +10,12 @@ class GetMatchesUseCaseImpl @Inject constructor(
     override suspend operator fun invoke(
         accessToken: String,
         page: Int,
-        size: Int
+        size: Int,
+        teamId: String
     ): Result<List<Match>> = matchRepository.getMatches(
         accessToken = accessToken,
         page = page,
-        size = size
+        size = size,
+        teamId = teamId
     )
 }

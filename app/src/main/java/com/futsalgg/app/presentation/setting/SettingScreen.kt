@@ -132,7 +132,7 @@ fun SettingScreen(
                         }
                         IconButton(
                             onClick = {
-                                // TODO OnCLick
+                                navController.navigate(RoutePath.UPDATE_PROFILE)
                             },
                             modifier = Modifier
                                 .align(Alignment.Center)

@@ -82,7 +82,6 @@ class ProfileCardViewModel @Inject constructor(
                                 ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
                         )
                         _uiState.value = error
-                        Log.e("ProfileCardViewModel", error.error.toString())
                     }
             } catch (e: Exception) {
                 _uiState.value = UiState.Error(

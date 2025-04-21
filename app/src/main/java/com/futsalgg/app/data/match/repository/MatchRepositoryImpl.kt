@@ -2,14 +2,17 @@ package com.futsalgg.app.data.match.repository
 
 import com.futsalgg.app.data.match.mapper.toDomain
 import com.futsalgg.app.domain.common.error.DomainError
+import com.futsalgg.app.domain.match.model.Match
 import com.futsalgg.app.domain.match.model.MatchStat
 import com.futsalgg.app.domain.match.model.RoundStats
 import com.futsalgg.app.domain.match.repository.MatchRepository
+import com.futsalgg.app.remote.api.common.ApiResponse
 import com.futsalgg.app.domain.common.model.MatchType as DomainMatchType
 import com.futsalgg.app.remote.api.match.MatchApi
 import com.futsalgg.app.remote.api.match.model.request.CreateMatchRequest
 import com.futsalgg.app.remote.api.match.model.request.CreateMatchStatRequest
 import com.futsalgg.app.remote.api.match.model.request.UpdateMatchRoundsRequest
+import com.google.gson.Gson
 import com.futsalgg.app.remote.api.match.model.response.MatchType as RemoteMatchType
 import java.io.IOException
 import javax.inject.Inject
@@ -20,27 +23,32 @@ class MatchRepositoryImpl @Inject constructor(
     override suspend fun getMatches(
         accessToken: String,
         page: Int,
-        size: Int
-    ): Result<List<com.futsalgg.app.domain.match.model.Match>> = try {
+        size: Int,
+        teamId: String
+    ): Result<List<Match>> = try {
         val response = matchApi.getMatches(
             authHeader = "Bearer $accessToken",
             page = page,
-            size = size
+            size = size,
+            teamId = teamId
         )
-        
+
         if (response.isSuccessful) {
             response.body()?.let { body ->
-                Result.success(body.data.matches.map { it.toDomain() })
+                Result.success(body.data.map { it.toDomain() })
             } ?: Result.failure(
                 DomainError.ServerError(
-                    message = "getMatches 서버 응답이 비어있습니다.",
+                    message = "[getMatches] 서버 응답이 비어있습니다.",
                     code = response.code()
                 ) as Throwable
             )
         } else {
+            val errorBody = response.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
             Result.failure(
                 DomainError.ServerError(
-                    message = "서버 오류: ${response.code()}",
+                    message = "[getMatches] 서버 오류: ${errorResponse.message}",
                     code = response.code()
                 ) as Throwable
             )
@@ -48,7 +56,7 @@ class MatchRepositoryImpl @Inject constructor(
     } catch (e: IOException) {
         Result.failure(
             DomainError.NetworkError(
-                message = "네트워크 연결을 확인해주세요.",
+                message = "[getMatches] 네트워크 연결을 확인해주세요.",
                 cause = e
             ) as Throwable
         )
@@ -62,20 +70,23 @@ class MatchRepositoryImpl @Inject constructor(
             authHeader = "Bearer $accessToken",
             id = id
         )
-        
+
         if (response.isSuccessful) {
             response.body()?.let { body ->
                 Result.success(body.data.toDomain())
             } ?: Result.failure(
                 DomainError.ServerError(
-                    message = "서버 응답이 비어있습니다.",
+                    message = "[getMatch] 서버 응답이 비어있습니다.",
                     code = response.code()
                 ) as Throwable
             )
         } else {
+            val errorBody = response.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
             Result.failure(
                 DomainError.ServerError(
-                    message = "서버 오류: ${response.code()}",
+                    message = "[getMatch] 서버 오류: ${errorResponse.message}",
                     code = response.code()
                 ) as Throwable
             )
@@ -83,7 +94,7 @@ class MatchRepositoryImpl @Inject constructor(
     } catch (e: IOException) {
         Result.failure(
             DomainError.NetworkError(
-                message = "네트워크 연결을 확인해주세요.",
+                message = "[getMatch] 네트워크 연결을 확인해주세요.",
                 cause = e
             ) as Throwable
         )
@@ -97,13 +108,16 @@ class MatchRepositoryImpl @Inject constructor(
             authHeader = "Bearer $accessToken",
             id = id
         )
-        
+
         if (response.isSuccessful) {
             Result.success(Unit)
         } else {
+            val errorBody = response.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
             Result.failure(
                 DomainError.ServerError(
-                    message = "서버 오류: ${response.code()}",
+                    message = "[deleteMatch] 서버 오류: ${errorResponse.message}",
                     code = response.code()
                 ) as Throwable
             )
@@ -111,7 +125,7 @@ class MatchRepositoryImpl @Inject constructor(
     } catch (e: IOException) {
         Result.failure(
             DomainError.NetworkError(
-                message = "네트워크 연결을 확인해주세요.",
+                message = "[deleteMatch] 네트워크 연결을 확인해주세요.",
                 cause = e
             ) as Throwable
         )
@@ -145,20 +159,23 @@ class MatchRepositoryImpl @Inject constructor(
                 isVote = isVote
             )
         )
-        
+
         if (response.isSuccessful) {
             response.body()?.let { body ->
                 Result.success(body.data.toDomain())
             } ?: Result.failure(
                 DomainError.ServerError(
-                    message = "서버 응답이 비어있습니다.",
+                    message = "[createMatch] 서버 응답이 비어있습니다.",
                     code = response.code()
                 ) as Throwable
             )
         } else {
+            val errorBody = response.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
             Result.failure(
                 DomainError.ServerError(
-                    message = "서버 오류: ${response.code()}",
+                    message = "[createMatch] 서버 오류: ${errorResponse.message}",
                     code = response.code()
                 ) as Throwable
             )
@@ -166,7 +183,7 @@ class MatchRepositoryImpl @Inject constructor(
     } catch (e: IOException) {
         Result.failure(
             DomainError.NetworkError(
-                message = "네트워크 연결을 확인해주세요.",
+                message = "[createMatch] 네트워크 연결을 확인해주세요.",
                 cause = e
             ) as Throwable
         )
@@ -187,9 +204,12 @@ class MatchRepositoryImpl @Inject constructor(
             if (response.isSuccessful) {
                 Result.success(Unit)
             } else {
+                val errorBody = response.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
                 Result.failure(
                     DomainError.ServerError(
-                        message = "서버 오류: ${response.code()}",
+                        message = "[updateMatchRounds] 서버 오류: ${errorResponse.message}",
                         code = response.code()
                     ) as Throwable
                 )
@@ -197,7 +217,7 @@ class MatchRepositoryImpl @Inject constructor(
         } catch (e: IOException) {
             Result.failure(
                 DomainError.NetworkError(
-                    message = "네트워크 연결을 확인해주세요.",
+                    message = "[updateMatchRounds] 네트워크 연결을 확인해주세요.",
                     cause = e
                 ) as Throwable
             )
@@ -217,12 +237,30 @@ class MatchRepositoryImpl @Inject constructor(
             if (response.isSuccessful) {
                 response.body()?.let { stats ->
                     Result.success(stats.data.stats.toDomain())
-                } ?: Result.failure(IOException("응답이 비어있습니다."))
+                } ?: Result.failure(
+                    DomainError.ServerError(
+                        message = "[getMatchStats] 서버 응답이 비어있습니다.",
+                        code = response.code()
+                    ) as Throwable
+                )
             } else {
-                Result.failure(IOException("서버 오류: ${response.code()}"))
+                val errorBody = response.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
+                Result.failure(
+                    DomainError.ServerError(
+                        message = "[getMatchStats] 서버 오류: ${errorResponse.message}",
+                        code = response.code()
+                    ) as Throwable
+                )
             }
-        } catch (e: Exception) {
-            Result.failure(e)
+        } catch (e: IOException) {
+            Result.failure(
+                DomainError.NetworkError(
+                    message = "[getMatchStats] 네트워크 연결을 확인해주세요.",
+                    cause = e
+                ) as Throwable
+            )
         }
     }
 
@@ -249,14 +287,17 @@ class MatchRepositoryImpl @Inject constructor(
                     Result.success(stat.data.toDomain())
                 } ?: Result.failure(
                     DomainError.ServerError(
-                        message = "서버 응답이 비어있습니다.",
+                        message = "[createMatchStat] 서버 응답이 비어있습니다.",
                         code = response.code()
                     ) as Throwable
                 )
             } else {
+                val errorBody = response.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
                 Result.failure(
                     DomainError.ServerError(
-                        message = "서버 오류: ${response.code()}",
+                        message = "[createMatchStat] 서버 오류: ${errorResponse.message}",
                         code = response.code()
                     ) as Throwable
                 )
@@ -264,7 +305,7 @@ class MatchRepositoryImpl @Inject constructor(
         } catch (e: IOException) {
             Result.failure(
                 DomainError.NetworkError(
-                    message = "네트워크 연결을 확인해주세요.",
+                    message = "[createMatchStat] 네트워크 연결을 확인해주세요.",
                     cause = e
                 ) as Throwable
             )

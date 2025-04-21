@@ -84,9 +84,11 @@ class SplashViewModel @Inject constructor(
                         )
                     }
                     .onFailure { error ->
-                        _splashState.value = _splashState.value.copy(
-                            toSelectTeam = true
-                        )
+                        if (error.message == "NOT_FOUND_TEAM_ID") {
+                            _splashState.value = _splashState.value.copy(
+                                toSelectTeam = true
+                            )
+                        }
                         Log.e("SplashScreen", "getProfile 에러 ${error.message}")
                         UiState.Error(
                             (error as? DomainError)?.toUiError()
