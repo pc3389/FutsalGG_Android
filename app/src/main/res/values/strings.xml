@@ -22,6 +22,16 @@
     <string name="select_all">전체 선택</string>
     <string name="deselect_all">전체 해제</string>
     <string name="join_team_text">팀 가입하기</string>
+    <string name="announcement_text">공지사항</string>
+    <string name="terms_and_condition_text">이용 약관</string>
+    <string name="personal_information_text">개인정보 처리방침</string>
+    <string name="logout_text">로그아웃</string>
+    <string name="delete_user_text">회원 탈퇴</string>
+
+    <!-- DateFormat -->
+    <string name="date_format_dot_md">MM.dd</string>
+    <string name="date_format_dot_ymd">yyyy.MM.dd</string>
+    <string name="date_format_full">yyyy년 MM월 dd일 (E)</string>
 
     <!--  T&C  -->
     <string name="terms_and_condition_title">이용약관 동의</string>

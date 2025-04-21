@@ -35,6 +35,7 @@ import com.futsalgg.app.presentation.user.createuser.components.ProfilePictureUi
 import com.futsalgg.app.ui.components.BottomButton
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer56
 import com.futsalgg.app.ui.theme.FutsalggColor
+import com.futsalgg.app.util.dateToRequestFormat
 import com.futsalgg.app.util.toFile
 
 @Composable
@@ -59,6 +60,7 @@ fun CreateUserScreen(
 
     BaseScreen(
         navController = navController,
+        screenName = RoutePath.CREATE_USER,
         title = stringResource(R.string.signup_toolbar_title),
         uiState = uiState
     ) { innerPadding ->
@@ -92,7 +94,7 @@ fun CreateUserScreen(
 
                 BirthdayUi(
                     context = context,
-                    birthday = createUserState.birthday,
+                    birthday = createUserState.birthday.dateToRequestFormat(),
                     onBirthdayChange = viewModel::onBirthdayChange,
                     birthdayState = createUserState.birthdayState,
                 )
@@ -134,7 +136,6 @@ fun CreateUserScreen(
                             viewModel.createUser {
                                 navController.navigate(RoutePath.SELECT_TEAM)
                             }
-                            // TODO 유저 등록 성공 이후
                         }
                     )
                 },

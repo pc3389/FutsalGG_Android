@@ -24,7 +24,6 @@ import androidx.credentials.Credential
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.futsalgg.app.R
 import com.futsalgg.app.core.util.GoogleSignInUtil
 import com.futsalgg.app.presentation.common.screen.LoadingScreen

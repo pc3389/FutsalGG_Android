@@ -1,7 +1,9 @@
 package com.futsalgg.app.presentation.teammember.profilecard
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.futsalgg.app.domain.auth.repository.ITokenManager
 import com.futsalgg.app.domain.common.error.DomainError
 import com.futsalgg.app.domain.team.usecase.GetTeamMemberForProfileUseCase
 import com.futsalgg.app.presentation.common.error.UiError
@@ -10,6 +12,7 @@ import com.futsalgg.app.presentation.common.mapper.RoleMapper
 import com.futsalgg.app.presentation.common.model.MatchResult
 import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.presentation.main.model.TeamRole
+import com.futsalgg.app.util.dateToRequestFormat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,7 +25,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileCardViewModel @Inject constructor(
-    private val getTeamMemberForProfileUseCase: GetTeamMemberForProfileUseCase
+    private val getTeamMemberForProfileUseCase: GetTeamMemberForProfileUseCase,
+    private val tokenManager: ITokenManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
@@ -32,65 +36,59 @@ class ProfileCardViewModel @Inject constructor(
     val profileState: StateFlow<ProfileCardState> = _profileState.asStateFlow()
 
     init {
-        stubProfile()
+        getProfile()
     }
 
-    private fun stubProfile() {
-        _profileState.value = ProfileCardState(
-            name = "닉네임",
-            birthday = "1992.02.21",
-            squadNumber = 32,
-            profileUrl = "",
-            role = TeamRole.TEAM_LEADER,
-            createdTime = "2025.04.16",
-            teamName = "팀이름",
-            teamLogoUrl = null,
-            totalGameNum = 20,
-            history = listOf(
-                MatchHistory("11", MatchResult.WIN),
-                MatchHistory("11", MatchResult.DRAW),
-                MatchHistory("11", MatchResult.LOSE),
-                MatchHistory("11", MatchResult.DRAW),
-                MatchHistory("11", MatchResult.WIN),
-                MatchHistory("11", MatchResult.WIN),
-                MatchHistory("11", MatchResult.LOSE)
-            )
-        )
-    }
-    fun getProfile(accessToken: String, id: String? = null) {
+    private fun getProfile(id: String? = null) {
         _uiState.value = UiState.Loading
         viewModelScope.launch {
-            getTeamMemberForProfileUseCase(accessToken, id)
-                .onSuccess { teamMember ->
-                    // TODO SquadNumber, profileUrl and TeamLogoUrl update
-                    _profileState.value = ProfileCardState(
-                        name = teamMember.name,
-                        birthday = teamMember.birthDate,
-                        squadNumber = null,
-                        profileUrl = "",
-                        role = RoleMapper.roleMapper(teamMember.team.role),
-                        createdTime = teamMember.createdTime,
-                        teamName = teamMember.team.name,
-                        teamLogoUrl = null,
-                        totalGameNum = teamMember.match.total,
-                        history = teamMember.match.history.map {
-                            when (it.result.name) {
-                                MatchResult.WIN.name -> MatchHistory(it.id, MatchResult.WIN)
-                                MatchResult.DRAW.name -> MatchHistory(it.id, MatchResult.DRAW)
-                                MatchResult.LOSE.name -> MatchHistory(it.id, MatchResult.LOSE)
-                                else -> MatchHistory(it.id, MatchResult.DRAW)
-                            }
+            try {
+                val accessToken = tokenManager.getAccessToken()
 
-                        }
-                    )
-                    _uiState.value = UiState.Success
+                if (accessToken.isNullOrEmpty()) {
+                    Log.e("CreateTeamViewModel", "엑세스 토큰이 존재하지 않습니다")
+                    _uiState.value = UiState.Error(UiError.AuthError("엑세스 토큰이 존재하지 않습니다"))
+                    return@launch
                 }
-                .onFailure { throwable ->
-                    _uiState.value = UiState.Error(
-                        (throwable as? DomainError)?.toUiError()
-                            ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
-                    )
-                }
+
+                getTeamMemberForProfileUseCase(accessToken, id)
+                    .onSuccess { teamMember ->
+                        _profileState.value = ProfileCardState(
+                            id = teamMember.id,
+                            name = teamMember.name,
+                            birthday = teamMember.birthDate.dateToRequestFormat(),
+                            squadNumber = teamMember.squadNumber,
+                            profileUrl = teamMember.profileUrl,
+                            generation = teamMember.generation,
+                            role = RoleMapper.roleMapper(teamMember.team.role),
+                            createdTime = teamMember.createdTime,
+                            teamName = teamMember.team.name,
+                            teamLogoUrl = null,
+                            totalGameNum = teamMember.match.total,
+                            history = teamMember.match.history?.map {
+                                when (it.result.name) {
+                                    MatchResult.WIN.name -> MatchHistory(it.id, MatchResult.WIN)
+                                    MatchResult.DRAW.name -> MatchHistory(it.id, MatchResult.DRAW)
+                                    MatchResult.LOSE.name -> MatchHistory(it.id, MatchResult.LOSE)
+                                    else -> MatchHistory(it.id, MatchResult.DRAW)
+                                }
+                            } ?: listOf()
+                        )
+                        _uiState.value = UiState.Success
+                    }
+                    .onFailure { throwable ->
+                        val error = UiState.Error(
+                            (throwable as? DomainError)?.toUiError()
+                                ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
+                        )
+                        _uiState.value = error
+                        Log.e("ProfileCardViewModel", error.error.toString())
+                    }
+            } catch (e: Exception) {
+                _uiState.value = UiState.Error(
+                    UiError.UnknownError("예기치 않은 오류가 발생했습니다: ${e.message}")
+                )
+            }
         }
     }
 
@@ -131,7 +129,7 @@ class ProfileCardViewModel @Inject constructor(
         var draw = 0
         var lose = 0
 
-        history.forEach{
+        history.forEach {
             if (it.result == MatchResult.WIN) win++
             else if (it.result == MatchResult.DRAW) draw++
             else lose++

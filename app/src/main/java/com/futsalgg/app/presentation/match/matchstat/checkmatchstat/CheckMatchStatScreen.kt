@@ -10,9 +10,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.futsalgg.app.R
+import com.futsalgg.app.navigation.RoutePath
 import com.futsalgg.app.presentation.match.MatchSharedViewModel
 import com.futsalgg.app.presentation.match.matchstat.base.BaseMatchStatScreen
 import com.futsalgg.app.presentation.match.matchstat.component.ScoreTemplate
@@ -22,7 +25,7 @@ import com.futsalgg.app.ui.components.spacers.VerticalSpacer20
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer8
 import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.ui.theme.FutsalggTypography
-import com.futsalgg.app.util.toFullDateFormat
+import com.futsalgg.app.util.toDateFormat
 
 @Composable
 fun CheckMatchStatScreen(
@@ -37,6 +40,7 @@ fun CheckMatchStatScreen(
 
     BaseMatchStatScreen(
         navController = navController,
+        screenName = RoutePath.CHECK_MATCH_STAT,
         sharedViewModel = sharedViewModel,
         menuClick = {
             // TODO Menu Click
@@ -53,7 +57,7 @@ fun CheckMatchStatScreen(
                 VerticalSpacer20()
 
                 Text(
-                    text = matchState.matchDate.toFullDateFormat(),
+                    text = matchState.matchDate.toDateFormat(stringResource(R.string.date_format_full)),
                     style = FutsalggTypography.bold_20_300,
                     color = FutsalggColor.mono900
                 )

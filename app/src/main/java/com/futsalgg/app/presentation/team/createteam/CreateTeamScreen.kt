@@ -71,6 +71,7 @@ fun CreateTeamScreen(
 
     BaseScreen(
         navController = navController,
+        screenName = RoutePath.CREATE_TEAM,
         title = stringResource(R.string.create_team),
         uiState = uiState
     ) { innerPadding ->

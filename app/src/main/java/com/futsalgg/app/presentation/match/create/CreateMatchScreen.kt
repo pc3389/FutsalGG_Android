@@ -1,5 +1,6 @@
 package com.futsalgg.app.presentation.match.create
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.futsalgg.app.R
+import com.futsalgg.app.navigation.RoutePath
 import com.futsalgg.app.presentation.common.model.MatchType
 import com.futsalgg.app.ui.components.DateInputField
 import com.futsalgg.app.presentation.common.screen.BaseScreen
@@ -57,10 +59,12 @@ fun CreateMatchScreen(
     BaseScreen(
         navController = navController,
         title = stringResource(R.string.create_match_title),
+        screenName = RoutePath.CREATE_MATCH,
         uiState = uiState
     ) { innerPadding ->
-        Column (
-            modifier = Modifier.fillMaxSize()
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
                 .background(FutsalggColor.white)
@@ -79,30 +83,31 @@ fun CreateMatchScreen(
                     messageProvider = remember {
                         { state: DateState ->
                             when (state) {
-                                DateState.ErrorNotInRange -> context.getString(R.string.date_error_future_date_not_available)
                                 DateState.ErrorStyle -> context.getString(R.string.date_error_wrong_date_format)
                                 else -> null
                             }
                         }
-                    }
+                    },
+                    canSelectFutureDate = true
                 )
 
                 Spacer(Modifier.height(26.dp))
 
-                // 경기 유형
-                TextWithStar(text = stringResource(R.string.create_match_type))
-                VerticalSpacer8()
-
-                DoubleRadioButtonsEnum(
-                    selected = createMatchState.type,
-                    option1 = MatchType.INTRA_SQUAD,
-                    option2 = MatchType.INTER_TEAM,
-                    onSelect = viewModel::onTypeChange,
-                    label1 = MatchType.INTRA_SQUAD.toString(),
-                    label2 = MatchType.INTER_TEAM.toString()
-                )
-
-                VerticalSpacer56()
+                // TODO MVP 2 매치전
+//                // 경기 유형
+//                TextWithStar(text = stringResource(R.string.create_match_type))
+//                VerticalSpacer8()
+//
+//                DoubleRadioButtonsEnum(
+//                    selected = createMatchState.type,
+//                    option1 = MatchType.INTRA_SQUAD,
+//                    option2 = MatchType.INTER_TEAM,
+//                    onSelect = viewModel::onTypeChange,
+//                    label1 = MatchType.INTRA_SQUAD.toString(),
+//                    label2 = MatchType.INTER_TEAM.toString()
+//                )
+//
+//                VerticalSpacer56()
 
                 // 장소
                 TextWithStar(text = stringResource(R.string.create_match_location))
@@ -193,7 +198,12 @@ fun CreateMatchScreen(
             BottomButton(
                 text = stringResource(R.string.create_button_text),
                 onClick = {
-                    // TODO Onclick
+                    viewModel.createMatch(
+                        // TODO OnSuccess
+                        {
+
+                        }
+                    )
                 },
                 enabled = createMatchState.isFormValid
             )

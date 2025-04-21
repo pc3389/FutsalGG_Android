@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.futsalgg.app.navigation.RoutePath
 import com.futsalgg.app.presentation.common.screen.BaseScreen
 import com.futsalgg.app.presentation.match.MatchSharedViewModel
 import com.futsalgg.app.presentation.match.result.component.MatchResultPerDay
@@ -30,6 +31,7 @@ fun MatchResultScreen(
 
     BaseScreen(
         navController = navController,
+        screenName = RoutePath.MATCH_RESULT,
         title = "경기 결과",
         uiState = uiState
     ) { innerPadding ->

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.futsalgg.app.domain.auth.repository.ITokenManager
 import com.futsalgg.app.domain.common.error.DomainError
 import com.futsalgg.app.domain.team.usecase.GetMyTeamUseCase
+import com.futsalgg.app.presentation.common.SharedViewModel
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.error.toUiError
 import com.futsalgg.app.presentation.common.state.UiState
@@ -26,7 +27,8 @@ data class MainState(
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val getMyTeamUseCase: GetMyTeamUseCase,
-    private val tokenManager: ITokenManager
+    private val tokenManager: ITokenManager,
+    private val sharedViewModel: SharedViewModel
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
@@ -37,6 +39,7 @@ class MainViewModel @Inject constructor(
 
     init {
         getMyTeam()
+
     }
 
     fun getMyTeam() {
@@ -55,6 +58,8 @@ class MainViewModel @Inject constructor(
                 .onSuccess { domainMyTeam ->
                     _uiState.value = UiState.Success
                     _mainState.update { it.copy(myTeam = MyTeamMapper.toPresentation(domainMyTeam)) }
+                    sharedViewModel.setTeamId(domainMyTeam.id)
+                    sharedViewModel.setTeamMemberId(domainMyTeam.teamMemberId)
                 }
                 .onFailure { error ->
                     _uiState.value = UiState.Error(

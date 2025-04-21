@@ -1,13 +1,16 @@
 package com.futsalgg.app.presentation.match.create
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.futsalgg.app.domain.auth.repository.ITokenManager
 import com.futsalgg.app.domain.match.usecase.CreateMatchUseCase
+import com.futsalgg.app.presentation.common.SharedViewModel
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.model.MatchType
 import com.futsalgg.app.presentation.common.state.DateState
 import com.futsalgg.app.presentation.common.state.UiState
+import com.futsalgg.app.util.dateToRequestFormat
 import com.futsalgg.app.util.isValidDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class CreateMatchViewModel @Inject constructor(
     private val createMatchUseCase: CreateMatchUseCase,
-    private val tokenManager: ITokenManager
+    private val tokenManager: ITokenManager,
+    sharedViewModel: SharedViewModel
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
@@ -28,9 +32,14 @@ class CreateMatchViewModel @Inject constructor(
     private val _createMatchState = MutableStateFlow(CreateMatchState())
     val createMatchState: StateFlow<CreateMatchState> = _createMatchState.asStateFlow()
 
-    internal fun onTypeChange(type: MatchType) {
+//    internal fun onTypeChange(type: MatchType) {
+//        _createMatchState.value = _createMatchState.value.copy(
+//            type = type,
+//        )
+//    }
+    init {
         _createMatchState.value = _createMatchState.value.copy(
-            type = type,
+            teamId = sharedViewModel.teamId.value ?: ""
         )
     }
 
@@ -97,6 +106,7 @@ class CreateMatchViewModel @Inject constructor(
                 val accessToken = tokenManager.getAccessToken()
 
                 if (accessToken.isNullOrEmpty()) {
+                    Log.e("CreateMatchViewModel", "엑세스 토큰이 존재하지 않습니다")
                     _uiState.value = UiState.Error(UiError.AuthError("엑세스 토큰이 존재하지 않습니다"))
                     return@launch
                 }
@@ -104,7 +114,7 @@ class CreateMatchViewModel @Inject constructor(
                 val result = createMatchUseCase(
                     accessToken = accessToken,
                     teamId = _createMatchState.value.teamId,
-                    matchDate = _createMatchState.value.matchDate,
+                    matchDate = _createMatchState.value.matchDate.dateToRequestFormat(),
                     type = MatchType.toDomain(_createMatchState.value.type),
                     location = _createMatchState.value.location,
                     startTime = _createMatchState.value.startTime.takeIf { it.isNotEmpty() },
@@ -119,6 +129,7 @@ class CreateMatchViewModel @Inject constructor(
                     _uiState.value = UiState.Success
                     onSuccess()
                 } else {
+                    Log.e("CreateMatchViewModel", "알 수 없는 오류가 발생했습니다")
                     _uiState.value = UiState.Error(
                         UiError.UnknownError(
                             result.exceptionOrNull()?.message ?: "알 수 없는 오류가 발생했습니다"
@@ -126,6 +137,7 @@ class CreateMatchViewModel @Inject constructor(
                     )
                 }
             } catch (e: Exception) {
+                Log.e("CreateMatchViewModel", "알 수 없는 오류가 발생했습니다", e)
                 _uiState.value =
                     UiState.Error(UiError.UnknownError(e.message ?: "알 수 없는 오류가 발생했습니다"))
             }
@@ -137,7 +149,8 @@ class CreateMatchViewModel @Inject constructor(
             matchDate = value,
             matchDateState = if (value.isEmpty()) {
                 DateState.Initial
-            } else isValidDate(value)
+            } else isValidDate(value,
+                canNotFuture = false)
         )
     }
 } 

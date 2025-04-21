@@ -1,7 +1,7 @@
 package com.futsalgg.app.data.match.repository
 
-import com.futsalgg.app.data.common.error.DataError
 import com.futsalgg.app.data.match.mapper.toDomain
+import com.futsalgg.app.domain.common.error.DomainError
 import com.futsalgg.app.domain.match.model.MatchStat
 import com.futsalgg.app.domain.match.model.RoundStats
 import com.futsalgg.app.domain.match.repository.MatchRepository
@@ -30,24 +30,24 @@ class MatchRepositoryImpl @Inject constructor(
         
         if (response.isSuccessful) {
             response.body()?.let { body ->
-                Result.success(body.matches.map { it.toDomain() })
+                Result.success(body.data.matches.map { it.toDomain() })
             } ?: Result.failure(
-                DataError.ServerError(
-                    message = "서버 응답이 비어있습니다.",
-                    cause = null
+                DomainError.ServerError(
+                    message = "getMatches 서버 응답이 비어있습니다.",
+                    code = response.code()
                 ) as Throwable
             )
         } else {
             Result.failure(
-                DataError.ServerError(
+                DomainError.ServerError(
                     message = "서버 오류: ${response.code()}",
-                    cause = null
+                    code = response.code()
                 ) as Throwable
             )
         }
     } catch (e: IOException) {
         Result.failure(
-            DataError.NetworkError(
+            DomainError.NetworkError(
                 message = "네트워크 연결을 확인해주세요.",
                 cause = e
             ) as Throwable
@@ -65,24 +65,24 @@ class MatchRepositoryImpl @Inject constructor(
         
         if (response.isSuccessful) {
             response.body()?.let { body ->
-                Result.success(body.toDomain())
+                Result.success(body.data.toDomain())
             } ?: Result.failure(
-                DataError.ServerError(
+                DomainError.ServerError(
                     message = "서버 응답이 비어있습니다.",
-                    cause = null
+                    code = response.code()
                 ) as Throwable
             )
         } else {
             Result.failure(
-                DataError.ServerError(
+                DomainError.ServerError(
                     message = "서버 오류: ${response.code()}",
-                    cause = null
+                    code = response.code()
                 ) as Throwable
             )
         }
     } catch (e: IOException) {
         Result.failure(
-            DataError.NetworkError(
+            DomainError.NetworkError(
                 message = "네트워크 연결을 확인해주세요.",
                 cause = e
             ) as Throwable
@@ -102,15 +102,15 @@ class MatchRepositoryImpl @Inject constructor(
             Result.success(Unit)
         } else {
             Result.failure(
-                DataError.ServerError(
+                DomainError.ServerError(
                     message = "서버 오류: ${response.code()}",
-                    cause = null
+                    code = response.code()
                 ) as Throwable
             )
         }
     } catch (e: IOException) {
         Result.failure(
-            DataError.NetworkError(
+            DomainError.NetworkError(
                 message = "네트워크 연결을 확인해주세요.",
                 cause = e
             ) as Throwable
@@ -148,24 +148,24 @@ class MatchRepositoryImpl @Inject constructor(
         
         if (response.isSuccessful) {
             response.body()?.let { body ->
-                Result.success(body.toDomain())
+                Result.success(body.data.toDomain())
             } ?: Result.failure(
-                DataError.ServerError(
+                DomainError.ServerError(
                     message = "서버 응답이 비어있습니다.",
-                    cause = null
+                    code = response.code()
                 ) as Throwable
             )
         } else {
             Result.failure(
-                DataError.ServerError(
+                DomainError.ServerError(
                     message = "서버 오류: ${response.code()}",
-                    cause = null
+                    code = response.code()
                 ) as Throwable
             )
         }
     } catch (e: IOException) {
         Result.failure(
-            DataError.NetworkError(
+            DomainError.NetworkError(
                 message = "네트워크 연결을 확인해주세요.",
                 cause = e
             ) as Throwable
@@ -188,15 +188,15 @@ class MatchRepositoryImpl @Inject constructor(
                 Result.success(Unit)
             } else {
                 Result.failure(
-                    DataError.ServerError(
+                    DomainError.ServerError(
                         message = "서버 오류: ${response.code()}",
-                        cause = null
+                        code = response.code()
                     ) as Throwable
                 )
             }
         } catch (e: IOException) {
             Result.failure(
-                DataError.NetworkError(
+                DomainError.NetworkError(
                     message = "네트워크 연결을 확인해주세요.",
                     cause = e
                 ) as Throwable
@@ -216,7 +216,7 @@ class MatchRepositoryImpl @Inject constructor(
 
             if (response.isSuccessful) {
                 response.body()?.let { stats ->
-                    Result.success(stats.stats.toDomain())
+                    Result.success(stats.data.stats.toDomain())
                 } ?: Result.failure(IOException("응답이 비어있습니다."))
             } else {
                 Result.failure(IOException("서버 오류: ${response.code()}"))
@@ -246,28 +246,28 @@ class MatchRepositoryImpl @Inject constructor(
 
             if (response.isSuccessful) {
                 response.body()?.let { stat ->
-                    Result.success(stat.toDomain())
+                    Result.success(stat.data.toDomain())
                 } ?: Result.failure(
-                    DataError.ServerError(
+                    DomainError.ServerError(
                         message = "서버 응답이 비어있습니다.",
-                        cause = null
+                        code = response.code()
                     ) as Throwable
                 )
             } else {
                 Result.failure(
-                    DataError.ServerError(
+                    DomainError.ServerError(
                         message = "서버 오류: ${response.code()}",
-                        cause = null
+                        code = response.code()
                     ) as Throwable
                 )
             }
         } catch (e: IOException) {
             Result.failure(
-                DataError.NetworkError(
+                DomainError.NetworkError(
                     message = "네트워크 연결을 확인해주세요.",
                     cause = e
                 ) as Throwable
             )
         }
     }
-} 
+}

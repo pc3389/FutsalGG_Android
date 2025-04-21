@@ -15,15 +15,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.futsalgg.app.R
 import com.futsalgg.app.presentation.match.model.Match
 import com.futsalgg.app.presentation.match.model.MatchStatus
 import com.futsalgg.app.presentation.common.model.MatchType
 import com.futsalgg.app.presentation.match.model.VoteStatus
 import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.ui.theme.FutsalggTypography
-import com.futsalgg.app.util.toMMddFormat
+import com.futsalgg.app.util.toDateFormat
 
 @Composable
 fun MatchResultPerDay(
@@ -55,7 +57,7 @@ fun MatchResultPerDay(
                     )
                     Spacer(Modifier.width(12.dp))
                     Text(
-                        text = date.toMMddFormat(),
+                        text = date.toDateFormat(stringResource(R.string.date_format_dot_md)),
                         style = FutsalggTypography.bold_20_300
                     )
                 }

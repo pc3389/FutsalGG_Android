@@ -1,18 +1,20 @@
 package com.futsalgg.app.data.auth.repository
 
-import android.util.Log
-import com.futsalgg.app.data.common.error.DataError
 import com.futsalgg.app.domain.auth.model.LoginResponseModel
 import com.futsalgg.app.domain.auth.model.Platform
 import com.futsalgg.app.domain.auth.repository.AuthRepository
+import com.futsalgg.app.domain.common.error.DomainError
 import com.futsalgg.app.remote.api.auth.AuthApi
 import com.futsalgg.app.remote.api.auth.model.request.LoginRequest
+import com.futsalgg.app.remote.api.common.ApiResponse
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.gson.Gson
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.tasks.await
+import java.io.IOException
 import javax.inject.Inject
 import kotlin.coroutines.resume
 
@@ -29,7 +31,7 @@ class AuthRepositoryImpl @Inject constructor(
             // 1. Firebase 토큰 가져오기
             val firebaseToken = auth.currentUser?.getIdToken(true)?.await()?.token
                 ?: return Result.failure(
-                    DataError.ServerError(
+                    DomainError.AuthError(
                         message = "서버 로그인 실패: Firebase 토큰을 가져올 수 없음",
                         cause = null
                     )
@@ -40,21 +42,8 @@ class AuthRepositoryImpl @Inject constructor(
             val response = authApi.login(request)
 
             // 3. 응답 처리
-            when {
-                !response.isSuccessful -> Result.failure(
-                    DataError.ServerError(
-                        message = "서버 로그인 실패: ${response.code()}",
-                        cause = null
-                    )
-                )
-                response.body() == null -> Result.failure(
-                    DataError.ServerError(
-                        message = "서버 로그인 실패: 응답 데이터가 없음",
-                        cause = null
-                    )
-                )
-                else -> {
-                    val body = response.body()!!
+            if (response.isSuccessful) {
+                response.body()?.let { body ->
                     Result.success(
                         LoginResponseModel(
                             accessToken = body.data.accessToken,
@@ -62,14 +51,29 @@ class AuthRepositoryImpl @Inject constructor(
                             isNew = body.data.isNew
                         )
                     )
-                }
-            }
-        } catch (e: Exception) {
-            Result.failure(
-                DataError.UnknownError(
-                    message = "데이터 레이어 서버 로그인 중 오류 발생",
-                    cause = e
+                } ?: Result.failure(
+                    DomainError.ServerError(
+                        message = "서버 응답이 비어있습니다.",
+                        code = response.code()
+                    ) as Throwable
                 )
+            } else {
+                val errorBody = response.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
+                Result.failure(
+                    DomainError.ServerError(
+                        message = "서버 오류: ${errorResponse.message}",
+                        code = response.code()
+                    ) as Throwable
+                )
+            }
+        } catch (e: IOException) {
+            Result.failure(
+                DomainError.NetworkError(
+                    message = "네트워크 연결을 확인해주세요.",
+                    cause = e
+                ) as Throwable
             )
         }
     }
@@ -85,7 +89,7 @@ class AuthRepositoryImpl @Inject constructor(
                     } else {
                         continuation.resume(
                             Result.failure(
-                                DataError.AuthError(
+                                DomainError.AuthError(
                                     message = task.exception?.message ?: "Google 로그인 실패",
                                     cause = task.exception
                                 ) as Throwable
@@ -104,23 +108,22 @@ class AuthRepositoryImpl @Inject constructor(
                 if (!token.token.isNullOrEmpty()) {
                     Result.success(token.token!!)
                 } else Result.failure(
-                    DataError.ServerError(
-                        message = "서버 로그인 실패: 토큰 없존재하지 않음}",
-                        cause = null
+                    DomainError.UnknownError(
+                        message = "getFirebaseToken: 토큰 존재하지 않음",
+                        cause = task.exception
                     ) as Throwable
                 )
             } else {
                 Result.failure(
-                    DataError.ServerError(
-                        message = "서버 로그인 실패: getIdToken 실패}",
-                        cause = null
+                    DomainError.UnknownError(
+                        message = "getFirebaseToken: getIdToken task null",
                     ) as Throwable
                 )
             }
         } catch (e: Exception) {
             Result.failure(
-                DataError.UnknownError(
-                    message = "서버 로그인 알 수 없는 오류가 발생했습니다.",
+                DomainError.UnknownError(
+                    message = "getFirebaseToken 알 수 없는 오류가 발생했습니다.",
                     cause = e
                 ) as Throwable
             )

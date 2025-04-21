@@ -29,7 +29,7 @@ import com.futsalgg.app.presentation.team.createteam.CreateTeamScreen
 import com.futsalgg.app.presentation.team.createteam.CreateTeamViewModel
 import com.futsalgg.app.presentation.team.jointeam.JoinTeamScreen
 import com.futsalgg.app.presentation.team.selectteam.SelectTeamScreen
-import com.futsalgg.app.presentation.teammember.profilecard.MyProfileScreen
+import com.futsalgg.app.presentation.teammember.profilecard.ProfileCardScreen
 import com.futsalgg.app.presentation.user.updateprofile.UpdateProfileScreen
 import com.futsalgg.app.presentation.user.updateprofile.UpdateProfileViewModel
 
@@ -90,8 +90,8 @@ fun AppNavHost(
         composable(Screen.JoinTeam.route) {
             JoinTeamScreen(navController)
         }
-        composable(Screen.MyProfile.route) {
-            MyProfileScreen(navController)
+        composable(Screen.ProfileCard.route) {
+            ProfileCardScreen(navController)
         }
         composable(Screen.Setting.route) {
             SettingScreen(navController)

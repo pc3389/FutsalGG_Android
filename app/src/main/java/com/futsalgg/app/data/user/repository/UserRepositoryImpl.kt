@@ -1,17 +1,19 @@
 package com.futsalgg.app.data.user.repository
 
-import com.futsalgg.app.data.common.error.DataError
+import com.futsalgg.app.domain.common.error.DomainError
 import com.futsalgg.app.domain.file.repository.OkHttpFileUploader
 import com.futsalgg.app.domain.user.model.Gender
 import com.futsalgg.app.domain.user.model.ProfilePresignedUrlResponseModel
 import com.futsalgg.app.domain.user.model.UpdateProfilePhotoResponseModel
 import com.futsalgg.app.domain.user.model.User
 import com.futsalgg.app.domain.user.repository.UserRepository
+import com.futsalgg.app.remote.api.common.ApiResponse
 import com.futsalgg.app.remote.api.user.UserApi
 import com.futsalgg.app.remote.api.user.model.request.CreateUserRequest
 import com.futsalgg.app.remote.api.user.model.request.UpdateNotificationRequest
 import com.futsalgg.app.remote.api.user.model.request.UpdateProfilePhotoRequest
 import com.futsalgg.app.remote.api.user.model.request.UpdateProfileRequest
+import com.google.gson.Gson
 import java.io.File
 import java.io.IOException
 import javax.inject.Inject
@@ -28,23 +30,26 @@ class UserRepositoryImpl @Inject constructor(
                 response.body()?.let { body ->
                     Result.success(body.data.unique)
                 } ?: Result.failure(
-                    DataError.ServerError(
-                        message = "서버 응답이 비어있습니다.",
-                        cause = null
+                    DomainError.ServerError(
+                        message = "[isNicknameUnique] 서버 응답이 비어있습니다.",
+                        code = response.code()
                     ) as Throwable
                 )
             } else {
+                val errorBody = response.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
                 Result.failure(
-                    DataError.ServerError(
-                        message = "서버 오류: ${response.code()}",
-                        cause = null
+                    DomainError.ServerError(
+                        message = "[isNicknameUnique] 서버 오류: ${errorResponse.message}",
+                        code = response.code()
                     ) as Throwable
                 )
             }
         } catch (e: IOException) {
             Result.failure(
-                DataError.NetworkError(
-                    message = "네트워크 연결을 확인해주세요.",
+                DomainError.NetworkError(
+                    message = "[isNicknameUnique] 네트워크 연결을 확인해주세요.",
                     cause = e
                 ) as Throwable
             )
@@ -73,17 +78,20 @@ class UserRepositoryImpl @Inject constructor(
             if (response.isSuccessful) {
                 Result.success(Unit)
             } else {
+                val errorBody = response.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
                 Result.failure(
-                    DataError.ServerError(
-                        message = "회원가입 실패: ${response.code()}",
-                        cause = null
+                    DomainError.ServerError(
+                        message = "[createUser] 서버 오류: ${errorResponse.message}",
+                        code = response.code()
                     ) as Throwable
                 )
             }
         } catch (e: IOException) {
             Result.failure(
-                DataError.NetworkError(
-                    message = "네트워크 연결을 확인해주세요.",
+                DomainError.NetworkError(
+                    message = "[createUser] 네트워크 연결을 확인해주세요.",
                     cause = e
                 ) as Throwable
             )
@@ -102,23 +110,26 @@ class UserRepositoryImpl @Inject constructor(
                         )
                     )
                 } ?: Result.failure(
-                    DataError.ServerError(
-                        message = "서버 응답이 비어있습니다.",
-                        cause = null
+                    DomainError.ServerError(
+                        message = "[getProfilePresignedUrl] 서버 응답이 비어있습니다.",
+                        code = response.code()
                     ) as Throwable
                 )
             } else {
+                val errorBody = response.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
                 Result.failure(
-                    DataError.ServerError(
-                        message = "서버 오류: ${response.code()}",
-                        cause = null
+                    DomainError.ServerError(
+                        message = "[getProfilePresignedUrl] 서버 오류: ${errorResponse.message}",
+                        code = response.code()
                     ) as Throwable
                 )
             }
         } catch (e: IOException) {
             Result.failure(
-                DataError.NetworkError(
-                    message = "네트워크 연결을 확인해주세요.",
+                DomainError.NetworkError(
+                    message = "[getProfilePresignedUrl] 네트워크 연결을 확인해주세요.",
                     cause = e
                 ) as Throwable
             )
@@ -144,23 +155,26 @@ class UserRepositoryImpl @Inject constructor(
 
                     )
                 } ?: Result.failure(
-                    DataError.ServerError(
-                        message = "서버 응답이 비어있습니다.",
-                        cause = null
+                    DomainError.ServerError(
+                        message = "[updateProfilePhoto] 서버 응답이 비어있습니다.",
+                        code = response.code()
                     ) as Throwable
                 )
             } else {
+                val errorBody = response.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
                 Result.failure(
-                    DataError.ServerError(
-                        message = "서버 오류: ${response.code()}",
-                        cause = null
+                    DomainError.ServerError(
+                        message = "[updateProfilePhoto] 서버 오류: ${errorResponse.message}",
+                        code = response.code()
                     ) as Throwable
                 )
             }
         } catch (e: IOException) {
             Result.failure(
-                DataError.NetworkError(
-                    message = "네트워크 연결을 확인해주세요.",
+                DomainError.NetworkError(
+                    message = "[updateProfilePhoto] 네트워크 연결을 확인해주세요.",
                     cause = e
                 ) as Throwable
             )
@@ -185,8 +199,8 @@ class UserRepositoryImpl @Inject constructor(
             updateProfilePhoto(accessToken, presignedResponse.uri)
         } catch (e: Exception) {
             Result.failure(
-                DataError.UnknownError(
-                    message = "프로필 이미지 업로드 실패: ${e.message}",
+                DomainError.UnknownError(
+                    message = "[uploadProfileImage] 프로필 이미지 업로드 실패: ${e.message}",
                     cause = e
                 ) as Throwable
             )
@@ -217,23 +231,26 @@ class UserRepositoryImpl @Inject constructor(
                     )
                 )
             } ?: Result.failure(
-                DataError.ServerError(
-                    message = "서버 응답이 비어있습니다.",
-                    cause = null
+                DomainError.ServerError(
+                    message = "[getMyProfile] 서버 응답이 비어있습니다.",
+                    code = response.code()
                 ) as Throwable
             )
         } else {
+            val errorBody = response.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
             Result.failure(
-                DataError.ServerError(
-                    message = "서버 오류: ${response.code()}",
-                    cause = null
+                DomainError.ServerError(
+                    message = "[getMyProfile] 서버 오류: ${errorResponse.message}",
+                    code = response.code()
                 ) as Throwable
             )
         }
     } catch (e: IOException) {
         Result.failure(
-            DataError.NetworkError(
-                message = "네트워크 연결을 확인해주세요.",
+            DomainError.NetworkError(
+                message = "[getMyProfile] 네트워크 연결을 확인해주세요.",
                 cause = e
             ) as Throwable
         )
@@ -248,17 +265,20 @@ class UserRepositoryImpl @Inject constructor(
         if (response.isSuccessful) {
             Result.success(Unit)
         } else {
+            val errorBody = response.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
             Result.failure(
-                DataError.ServerError(
-                    message = "서버 오류: ${response.code()}",
-                    cause = null
+                DomainError.ServerError(
+                    message = "[updateNotification] 서버 오류: ${errorResponse.message}",
+                    code = response.code()
                 ) as Throwable
             )
         }
     } catch (e: IOException) {
         Result.failure(
-            DataError.NetworkError(
-                message = "네트워크 연결을 확인해주세요.",
+            DomainError.NetworkError(
+                message = "[updateNotification] 네트워크 연결을 확인해주세요.",
                 cause = e
             ) as Throwable
         )
@@ -292,23 +312,26 @@ class UserRepositoryImpl @Inject constructor(
                     )
                 )
             } ?: Result.failure(
-                DataError.ServerError(
-                    message = "서버 응답이 비어있습니다.",
-                    cause = null
+                DomainError.ServerError(
+                    message = "[updateProfile] 서버 응답이 비어있습니다.",
+                    code = response.code()
                 ) as Throwable
             )
         } else {
+            val errorBody = response.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
             Result.failure(
-                DataError.ServerError(
-                    message = "서버 오류: ${response.code()}",
-                    cause = null
+                DomainError.ServerError(
+                    message = "[updateProfile] 서버 오류: ${errorResponse.message}",
+                    code = response.code()
                 ) as Throwable
             )
         }
     } catch (e: IOException) {
         Result.failure(
-            DataError.NetworkError(
-                message = "네트워크 연결을 확인해주세요.",
+            DomainError.NetworkError(
+                message = "[updateProfile] 네트워크 연결을 확인해주세요.",
                 cause = e
             ) as Throwable
         )

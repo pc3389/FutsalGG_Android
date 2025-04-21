@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.futsalgg.app.R
+import com.futsalgg.app.navigation.RoutePath
 import com.futsalgg.app.presentation.common.screen.BaseScreen
 import com.futsalgg.app.presentation.match.MatchSharedViewModel
 import com.futsalgg.app.ui.components.BottomButton
@@ -47,6 +48,7 @@ fun UpdateMatchRoundScreen(
 
     BaseScreen(
         title = matchState.type.toString(),
+        screenName = RoutePath.UPDATE_MATCH_ROUND,
         navController = navController,
         uiState = uiState
     ) { innerPadding ->

@@ -1,5 +1,6 @@
 package com.futsalgg.app.remote.api.team
 
+import com.futsalgg.app.remote.api.common.ApiResponse
 import com.futsalgg.app.remote.api.team.model.request.JoinTeamRequest
 import com.futsalgg.app.remote.api.team.model.response.GetTeamMemberResponse
 import com.futsalgg.app.remote.api.team.model.response.GetTeamMembersResponse
@@ -17,7 +18,7 @@ interface TeamMemberApi {
         @Header("Authorization") authHeader: String,
         @Query("name") name: String,
         @Query("role") role: String = "TEAM-MEMBER"
-    ): Response<GetTeamMembersResponse>
+    ): Response<ApiResponse<GetTeamMembersResponse>>
 
     @POST("team-members")
     suspend fun joinTeam(
@@ -28,11 +29,11 @@ interface TeamMemberApi {
     @GET("team-members/me")
     suspend fun getMyTeamMember(
         @Header("Authorization") accessToken: String
-    ): Response<GetTeamMemberResponse>
+    ): Response<ApiResponse<GetTeamMemberResponse>>
 
     @GET("team-members/{id}")
     suspend fun getTeamMemberWithId(
         @Header("Authorization") accessToken: String,
         @Path("id") id: String
-    ): Response<GetTeamMemberResponse>
+    ): Response<ApiResponse<GetTeamMemberResponse>>
 }

@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.futsalgg.app.R
+import com.futsalgg.app.navigation.RoutePath
 import com.futsalgg.app.presentation.common.screen.BaseScreen
 import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer16
@@ -60,12 +61,14 @@ fun SettingScreen(
     val density = LocalDensity.current
     val scrollState = rememberScrollState()
 
-    val uiState = viewModel.uiState.collectAsState(UiState.Initial)
+    val uiState by viewModel.uiState.collectAsState(UiState.Initial)
+    val settingState by viewModel.settingState.collectAsState()
 
     BaseScreen(
         navController = navController,
+        screenName = RoutePath.SETTING,
         title = stringResource(R.string.setting_text),
-        uiState = uiState.value
+        uiState = uiState
     ) { innerPadding ->
         Box(
             modifier = Modifier
@@ -116,14 +119,13 @@ fun SettingScreen(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
-                                // TODO 닉네임 from viewmodel
-                                text = "닉네임을입력해주세요",
+                                text = settingState.name,
                                 style = FutsalggTypography.bold_20_300,
                                 color = FutsalggColor.mono900
                             )
                             Spacer(Modifier.height(4.dp))
                             Text(
-                                text = "futsal@gmail.com",
+                                text = settingState.email,
                                 style = FutsalggTypography.regular_17_200,
                                 color = FutsalggColor.mono700
                             )
@@ -161,19 +163,20 @@ fun SettingScreen(
                             shape = RoundedCornerShape(8.dp)
                         )
                 ) {
+                    // TODO Notification 구현되면 키기
+//                    TextWithImage(
+//                        text = "알림",
+//                        image = ImageVector.vectorResource(R.drawable.ic_toggle_true),
+//                        onClick = {
+//                            // TODO 알림
+//                        }
+//                    )
+//                    HorizontalDivider(
+//                        thickness = 1.dp,
+//                        color = FutsalggColor.mono100
+//                    )
                     TextWithImage(
-                        text = "알림",
-                        image = ImageVector.vectorResource(R.drawable.ic_toggle_true),
-                        onClick = {
-                            // TODO 알림
-                        }
-                    )
-                    HorizontalDivider(
-                        thickness = 1.dp,
-                        color = FutsalggColor.mono100
-                    )
-                    TextWithImage(
-                        text = "공지사항",
+                        text = stringResource(R.string.announcement_text),
                         image = ImageVector.vectorResource(R.drawable.ic_arrow_forward_14),
                         onClick = {
                             // TODO 공지사항
@@ -184,7 +187,7 @@ fun SettingScreen(
                         color = FutsalggColor.mono100
                     )
                     TextWithImage(
-                        text = "이용 약관",
+                        text = stringResource(R.string.terms_and_condition_text),
                         image = ImageVector.vectorResource(R.drawable.ic_arrow_forward_14),
                         onClick = {
                             // TODO 이용 약관
@@ -195,7 +198,7 @@ fun SettingScreen(
                         color = FutsalggColor.mono100
                     )
                     TextWithImage(
-                        text = "개인정보 처리방침",
+                        text = stringResource(R.string.personal_information_text),
                         image = ImageVector.vectorResource(R.drawable.ic_arrow_forward_14),
                         onClick = {
                             // TODO 개인정보 처리방침
@@ -206,7 +209,7 @@ fun SettingScreen(
                         color = FutsalggColor.mono100
                     )
                     TextWithImage(
-                        text = "로그아웃",
+                        text = stringResource(R.string.logout_text),
                         image = ImageVector.vectorResource(R.drawable.ic_arrow_forward_14),
                         onClick = {
                             // TODO 로그아웃
@@ -217,7 +220,7 @@ fun SettingScreen(
                         color = FutsalggColor.mono100
                     )
                     TextWithImage(
-                        text = "회원 탈퇴",
+                        text = stringResource(R.string.delete_user_text),
                         image = ImageVector.vectorResource(R.drawable.ic_arrow_forward_14),
                         onClick = {
                             // TODO 회원 탈퇴

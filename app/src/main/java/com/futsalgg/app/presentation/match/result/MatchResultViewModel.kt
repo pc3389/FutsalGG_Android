@@ -34,69 +34,7 @@ class MatchResultViewModel @Inject constructor(
     val matchesByDate: StateFlow<Map<String, List<Match>>> = _matchesByDate.asStateFlow()
 
     init {
-        loadStubData()
-    }
-
-    private fun loadStubData() {
-        viewModelScope.launch {
-            _uiState.value = UiState.Loading
-            val stubMatches = listOf(
-                Match(
-                    id = "1123123123",
-                    opponentTeamName = "상대팀",
-                    description = "팀",
-                    type = MatchType.INTER_TEAM,
-                    matchDate = "2025-04-19",
-                    startTime = "05:12",
-                    endTime = "05:12",
-                    location = "Location",
-                    voteStatus = VoteStatus.NONE,
-                    status = MatchStatus.DRAFT,
-                    createdTime = "TODO()"
-                ),
-                Match(
-                    id = "1123123123",
-                    opponentTeamName = null,
-                    description = "Description",
-                    type = MatchType.INTRA_SQUAD,
-                    matchDate = "2025-04-19",
-                    startTime = "05:12",
-                    endTime = "05:12",
-                    location = "Location",
-                    voteStatus = VoteStatus.NONE,
-                    status = MatchStatus.ONGOING,
-                    createdTime = "TODO()"
-                ),
-                Match(
-                    id = "1123123123",
-                    opponentTeamName = "상대팀",
-                    description = "팀",
-                    type = MatchType.INTER_TEAM,
-                    matchDate = "2025-04-15",
-                    startTime = "05:12",
-                    endTime = "05:12",
-                    location = "Location",
-                    voteStatus = VoteStatus.NONE,
-                    status = MatchStatus.COMPLETED,
-                    createdTime = "TODO()"
-                ),
-                Match(
-                    id = "1123123123",
-                    opponentTeamName = null,
-                    description = "Description",
-                    type = MatchType.INTRA_SQUAD,
-                    matchDate = "2012-12-31",
-                    startTime = "05:12",
-                    endTime = "05:12",
-                    location = "Location",
-                    voteStatus = VoteStatus.NONE,
-                    status = MatchStatus.COMPLETED,
-                    createdTime = "TODO()"
-                )
-            )
-            _matchesByDate.value = stubMatches.groupBy { it.matchDate }
-            _uiState.value = UiState.Success
-        }
+        loadMatches()
     }
 
     private fun loadMatches() {

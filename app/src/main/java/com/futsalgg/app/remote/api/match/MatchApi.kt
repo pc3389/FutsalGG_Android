@@ -1,5 +1,6 @@
 package com.futsalgg.app.remote.api.match
 
+import com.futsalgg.app.remote.api.common.ApiResponse
 import com.futsalgg.app.remote.api.match.model.request.CreateMatchRequest
 import com.futsalgg.app.remote.api.match.model.response.GetMatchesResponse
 import com.futsalgg.app.remote.api.match.model.response.MatchResponse
@@ -28,13 +29,13 @@ interface MatchApi {
         @Header("Authorization") authHeader: String,
         @Query("page") page: Int = 1,
         @Query("size") size: Int = 20
-    ): Response<GetMatchesResponse>
+    ): Response<ApiResponse<GetMatchesResponse>>
 
     @GET("matches/{id}")
     suspend fun getMatch(
         @Header("Authorization") authHeader: String,
         @Path("id") id: String
-    ): Response<GetMatchResponse>
+    ): Response<ApiResponse<GetMatchResponse>>
 
     @DELETE("matches/{id}")
     suspend fun deleteMatch(
@@ -46,13 +47,13 @@ interface MatchApi {
     suspend fun createMatch(
         @Header("Authorization") authHeader: String,
         @Body request: CreateMatchRequest
-    ): Response<MatchResponse>
+    ): Response<ApiResponse<MatchResponse>>
 
     @POST("match-participants")
     suspend fun createMatchParticipants(
         @Header("Authorization") accessToken: String,
         @Body request: CreateMatchParticipantsRequest
-    ): Response<CreateMatchParticipantsResponse>
+    ): Response<ApiResponse<CreateMatchParticipantsResponse>>
 
     @PATCH("match-participants/bulk/sub-team")
     suspend fun updateMatchParticipantsSubTeam(
@@ -71,17 +72,17 @@ interface MatchApi {
     suspend fun getMatchParticipants(
         @Header("Authorization") accessToken: String,
         @Query("match-id") matchId: String
-    ): Response<List<MatchParticipant>>
+    ): Response<ApiResponse<List<MatchParticipant>>>
 
     @GET("match-stats")
     suspend fun getMatchStats(
         @Header("Authorization") accessToken: String,
         @Query("match-id") matchId: String
-    ): Response<GetMatchStatsResponse>
+    ): Response<ApiResponse<GetMatchStatsResponse>>
 
     @POST("match-stats")
     suspend fun createMatchStat(
         @Header("Authorization") accessToken: String,
         @Body request: CreateMatchStatRequest
-    ): Response<MatchStat>
+    ): Response<ApiResponse<MatchStat>>
 }

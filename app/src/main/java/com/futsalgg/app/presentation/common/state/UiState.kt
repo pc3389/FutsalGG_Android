@@ -7,4 +7,4 @@ sealed class UiState {
     object Loading : UiState()
     object Success : UiState()
     data class Error(val error: UiError) : UiState()
-} 
+}

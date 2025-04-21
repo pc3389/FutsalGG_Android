@@ -4,12 +4,14 @@ import com.futsalgg.app.presentation.common.model.MatchResult
 import com.futsalgg.app.presentation.main.model.TeamRole
 
 data class ProfileCardState(
+    val id: String,
     val name: String,
     val birthday: String,
-    val squadNumber: Int?,
+    val squadNumber: String?,
     val profileUrl: String?,
+    val generation: String,
     val role: TeamRole,
-    val createdTime: String,
+    val createdTime: String?,
     val teamName: String,
     val teamLogoUrl: String?,
     val totalGameNum: Int,
@@ -17,10 +19,12 @@ data class ProfileCardState(
 ) {
     companion object {
         val Initial = ProfileCardState(
+            id = "",
             name = "",
             birthday = "",
-            squadNumber = 0,
+            squadNumber = null,
             profileUrl = null,
+            generation = "",
             role = TeamRole.TEAM_MEMBER,
             createdTime = "",
             teamName = "",

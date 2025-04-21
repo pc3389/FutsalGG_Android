@@ -7,10 +7,9 @@ import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 import java.util.Locale
 
-
-fun String.toMMddFormat(): String {
-    val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-    val outputFormat = SimpleDateFormat("MM.dd", Locale.getDefault())
+fun String.dateToRequestFormat(): String {
+    val inputFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+    val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     return try {
         val date = inputFormat.parse(this) ?: "00.00"
         outputFormat.format(date)
@@ -19,16 +18,17 @@ fun String.toMMddFormat(): String {
     }
 }
 
-fun String.toFullDateFormat(): String {
+fun String.toDateFormat(format: String): String {
     val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-    val outputFormat = SimpleDateFormat("yyyy년 MM월 dd일 (E)", Locale.getDefault())
+    val outputFormat = SimpleDateFormat(format, Locale.getDefault())
     return try {
-        val date = inputFormat.parse(this) ?: "0000년 00월 00일 (월)"
+        val date = inputFormat.parse(this) ?: ""
         outputFormat.format(date)
     } catch (e: Exception) {
         this
     }
 }
+
 
 /**
  * 주어진 날짜 문자열이 지정된 날짜 포맷에 맞고,
@@ -51,7 +51,7 @@ fun isValidDate(
         } else if (canNotPast) {
             parsedDate.isBefore(today)
         } else {
-            true
+            false
         }
         if (isInRangeError) DateState.ErrorNotInRange
         else DateState.Available

@@ -15,7 +15,6 @@ import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.presentation.main.model.TeamRole
 import com.futsalgg.app.presentation.match.matchstat.model.MatchParticipantState
 import com.futsalgg.app.presentation.match.model.Match
-import com.futsalgg.app.util.toFullDateFormat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -50,7 +49,7 @@ class CreateMatchParticipantsViewModel @Inject constructor(
     init {
         // TODO Remove Stub..!
         _matchState.value = Match(
-            matchDate = ("2025-04-18").toFullDateFormat(),
+            matchDate = "2025-04-18",
             startTime = "12:34",
             endTime = "06:12",
             location = "장소장소장소",
@@ -294,7 +293,7 @@ class CreateMatchParticipantsViewModel @Inject constructor(
                             id = match.id,
                             opponentTeamName = match.opponentTeamName,
                             type = MatchType.fromDomain(match.type),
-                            matchDate = match.matchDate.toFullDateFormat(),
+                            matchDate = match.matchDate,
                             startTime = match.startTime ?: "00:00",
                             endTime = match.endTime ?: "00:00",
                             location = match.location,

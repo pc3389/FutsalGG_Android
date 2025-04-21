@@ -60,6 +60,7 @@ import com.futsalgg.app.ui.theme.FutsalggTypography
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.futsalgg.app.navigation.RoutePath
 import com.futsalgg.app.ui.components.DoubleButtons
 import com.futsalgg.app.ui.components.SingleButton
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer12
@@ -100,6 +101,7 @@ fun JoinTeamScreen(
 
     BaseScreen(
         navController = navController,
+        screenName = RoutePath.JOIN_TEAM,
         title = stringResource(R.string.join_team_text),
         uiState = uiState
     ) { innerPadding ->

@@ -4,10 +4,18 @@ import com.futsalgg.app.remote.api.team.model.TeamRole
 import com.google.gson.annotations.SerializedName
 
 data class GetTeamMemberResponse(
+    @SerializedName("id")
+    val id: String,
     @SerializedName("name")
     val name: String,
     @SerializedName("birthDate")
     val birthDate: String,
+    @SerializedName("generation")
+    val generation: String,
+    @SerializedName("squadNumber")
+    val squadNumber: String?,
+    @SerializedName("profileUrl")
+    val profileUrl: String?,
     @SerializedName("createdTime")
     val createdTime: String,
     @SerializedName("team")
@@ -28,7 +36,7 @@ data class GetTeamMemberResponse(
         @SerializedName("total")
         val total: Int,
         @SerializedName("history")
-        val history: List<MatchHistory>
+        val history: List<MatchHistory>?
     ) {
         data class MatchHistory(
             @SerializedName("id")

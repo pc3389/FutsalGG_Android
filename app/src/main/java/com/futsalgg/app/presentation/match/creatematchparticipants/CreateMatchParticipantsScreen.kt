@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.futsalgg.app.R
+import com.futsalgg.app.navigation.RoutePath
 import com.futsalgg.app.presentation.common.screen.BaseScreen
 import com.futsalgg.app.presentation.match.MatchSharedViewModel
 import com.futsalgg.app.presentation.match.component.SelectableMathParticipantBox
@@ -48,6 +49,7 @@ import com.futsalgg.app.ui.components.spacers.VerticalSpacer8
 import com.futsalgg.app.ui.components.state.IconState
 import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.ui.theme.FutsalggTypography
+import com.futsalgg.app.util.toDateFormat
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -65,6 +67,7 @@ fun CreateMatchParticipantsScreen(
 
     BaseScreen(
         navController = navController,
+        screenName = RoutePath.CREATE_MATCH_PARTICIPANTS,
         title = stringResource(R.string.create_match_participants_title),
         rightIcon = ImageVector.vectorResource(R.drawable.ic_search_18),
         onRightClick = {
@@ -88,7 +91,7 @@ fun CreateMatchParticipantsScreen(
 
                 // 날짜
                 Text(
-                    text = matchState.matchDate,
+                    text = matchState.matchDate.toDateFormat(stringResource(R.string.date_format_full)),
                     style = FutsalggTypography.bold_20_300,
                     color = FutsalggColor.mono900
                 )

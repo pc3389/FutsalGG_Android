@@ -1,14 +1,16 @@
 package com.futsalgg.app.data.team.repository
 
-import com.futsalgg.app.data.common.error.DataError
 import com.futsalgg.app.data.team.mapper.toDomain
+import com.futsalgg.app.domain.common.error.DomainError
 import com.futsalgg.app.domain.team.model.TeamMember
 import com.futsalgg.app.domain.team.model.TeamMemberProfile
 import com.futsalgg.app.domain.team.model.TeamRole
 import com.futsalgg.app.domain.team.repository.TeamMemberRepository
+import com.futsalgg.app.remote.api.common.ApiResponse
 import com.futsalgg.app.remote.api.team.model.TeamRole as RemoteTeamRole
 import com.futsalgg.app.remote.api.team.model.request.JoinTeamRequest
 import com.futsalgg.app.remote.api.team.TeamMemberApi
+import com.google.gson.Gson
 import java.io.IOException
 import javax.inject.Inject
 
@@ -29,25 +31,28 @@ class TeamMemberRepositoryImpl @Inject constructor(
 
         if (response.isSuccessful) {
             response.body()?.let { body ->
-                Result.success(body.members.map { it.toDomain() })
+                Result.success(body.data.members.map { it.toDomain() })
             } ?: Result.failure(
-                DataError.ServerError(
-                    message = "서버 응답이 비어있습니다.",
-                    cause = null
+                DomainError.ServerError(
+                    message = "[getTeamMembers] 서버 응답이 비어있습니다.",
+                    code = response.code(),
                 ) as Throwable
             )
         } else {
+            val errorBody = response.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
             Result.failure(
-                DataError.ServerError(
-                    message = "서버 오류: ${response.code()}",
-                    cause = null
+                DomainError.ServerError(
+                    message = "[getTeamMembers] 서버 오류: ${errorResponse.message}",
+                    code = response.code()
                 ) as Throwable
             )
         }
     } catch (e: IOException) {
         Result.failure(
-            DataError.NetworkError(
-                message = "네트워크 연결을 확인해주세요.",
+            DomainError.NetworkError(
+                message = "[getTeamMembers] 네트워크 연결을 확인해주세요.",
                 cause = e
             ) as Throwable
         )
@@ -65,17 +70,20 @@ class TeamMemberRepositoryImpl @Inject constructor(
         if (response.isSuccessful) {
             Result.success(Unit)
         } else {
+            val errorBody = response.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
             Result.failure(
-                DataError.ServerError(
-                    message = "서버 오류: ${response.code()}",
-                    cause = null
+                DomainError.ServerError(
+                    message = "[joinTeam] 서버 오류: ${errorResponse.message}",
+                    code = response.code()
                 ) as Throwable
             )
         }
     } catch (e: IOException) {
         Result.failure(
-            DataError.NetworkError(
-                message = "네트워크 연결을 확인해주세요.",
+            DomainError.NetworkError(
+                message = "[joinTeam] 네트워크 연결을 확인해주세요.",
                 cause = e
             ) as Throwable
         )
@@ -85,18 +93,22 @@ class TeamMemberRepositoryImpl @Inject constructor(
         accessToken: String
     ): Result<TeamMemberProfile> {
         return try {
-            val response = teamMemberApi.getMyTeamMember(accessToken)
+            val response = teamMemberApi.getMyTeamMember("Bearer $accessToken")
             if (response.isSuccessful) {
-                response.body()?.let { body ->
+                response.body()?.data?.let { data ->
                     Result.success(
                         TeamMemberProfile(
-                            name = body.name,
-                            birthDate = body.birthDate,
-                            createdTime = body.createdTime,
+                            id = data.id,
+                            name = data.name,
+                            birthDate = data.birthDate,
+                            generation = data.generation,
+                            squadNumber = data.squadNumber,
+                            profileUrl = data.profileUrl,
+                            createdTime = data.createdTime,
                             team = TeamMemberProfile.TeamInfo(
-                                id = body.team.id,
-                                name = body.team.name,
-                                role = when (body.team.role) {
+                                id = data.team.id,
+                                name = data.team.name,
+                                role = when (data.team.role) {
                                     RemoteTeamRole.OWNER -> TeamRole.OWNER
                                     RemoteTeamRole.TEAM_LEADER -> TeamRole.TEAM_LEADER
                                     RemoteTeamRole.TEAM_DEPUTY_LEADER -> TeamRole.TEAM_DEPUTY_LEADER
@@ -105,8 +117,8 @@ class TeamMemberRepositoryImpl @Inject constructor(
                                 }
                             ),
                             match = TeamMemberProfile.MatchInfo(
-                                total = body.match.total,
-                                history = body.match.history.map { history ->
+                                total = data.match.total,
+                                history = data.match.history?.map { history ->
                                     TeamMemberProfile.MatchInfo.MatchHistory(
                                         id = history.id,
                                         result = history.result.toDomain()
@@ -116,23 +128,26 @@ class TeamMemberRepositoryImpl @Inject constructor(
                         )
                     )
                 } ?: Result.failure(
-                    DataError.ServerError(
-                        message = "서버 응답이 비어있습니다.",
-                        cause = null
+                    DomainError.ServerError(
+                        message = "[getMyTeamMember] 서버 응답이 비어있습니다.",
+                        code = response.code()
                     ) as Throwable
                 )
             } else {
+                val errorBody = response.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
                 Result.failure(
-                    DataError.ServerError(
-                        message = "서버 오류: ${response.code()}",
-                        cause = null
+                    DomainError.ServerError(
+                        message = "[getMyTeamMember] 서버 오류: ${errorResponse.message}",
+                        code = response.code()
                     ) as Throwable
                 )
             }
         } catch (e: IOException) {
             Result.failure(
-                DataError.NetworkError(
-                    message = "네트워크 연결을 확인해주세요.",
+                DomainError.NetworkError(
+                    message = "[getMyTeamMember] 네트워크 연결을 확인해주세요.",
                     cause = e
                 ) as Throwable
             )
@@ -146,13 +161,17 @@ class TeamMemberRepositoryImpl @Inject constructor(
                 response.body()?.let { body ->
                     Result.success(
                         TeamMemberProfile(
-                            name = body.name,
-                            birthDate = body.birthDate,
-                            createdTime = body.createdTime,
+                            id = body.data.id,
+                            generation = body.data.generation,
+                            squadNumber = body.data.squadNumber,
+                            profileUrl = body.data.profileUrl,
+                            name = body.data.name,
+                            birthDate = body.data.birthDate,
+                            createdTime = body.data.createdTime,
                             team = TeamMemberProfile.TeamInfo(
-                                id = body.team.id,
-                                name = body.team.name,
-                                role = when (body.team.role) {
+                                id = body.data.team.id,
+                                name = body.data.team.name,
+                                role = when (body.data.team.role) {
                                     RemoteTeamRole.OWNER -> TeamRole.OWNER
                                     RemoteTeamRole.TEAM_LEADER -> TeamRole.TEAM_LEADER
                                     RemoteTeamRole.TEAM_DEPUTY_LEADER -> TeamRole.TEAM_DEPUTY_LEADER
@@ -161,34 +180,37 @@ class TeamMemberRepositoryImpl @Inject constructor(
                                 }
                             ),
                             match = TeamMemberProfile.MatchInfo(
-                                total = body.match.total,
-                                history = body.match.history.map { history ->
+                                total = body.data.match.total,
+                                history = body.data.match.history?.map { history ->
                                     TeamMemberProfile.MatchInfo.MatchHistory(
                                         id = history.id,
                                         result = history.result.toDomain()
                                     )
                                 }
-                            )
+                            ),
                         )
                     )
                 } ?: Result.failure(
-                    DataError.ServerError(
-                        message = "서버 응답이 비어있습니다.",
-                        cause = null
+                    DomainError.ServerError(
+                        message = "[getTeamMemberWithId] 서버 응답이 비어있습니다.",
+                        code = response.code()
                     ) as Throwable
                 )
             } else {
+                val errorBody = response.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
                 Result.failure(
-                    DataError.ServerError(
-                        message = "서버 오류: ${response.code()}",
-                        cause = null
+                    DomainError.ServerError(
+                        message = "[getTeamMemberWithId] 서버 오류: ${errorResponse.message}",
+                        code = response.code()
                     ) as Throwable
                 )
             }
         } catch (e: IOException) {
             Result.failure(
-                DataError.NetworkError(
-                    message = "네트워크 연결을 확인해주세요.",
+                DomainError.NetworkError(
+                    message = "[getTeamMemberWithId] 네트워크 연결을 확인해주세요.",
                     cause = e
                 ) as Throwable
             )

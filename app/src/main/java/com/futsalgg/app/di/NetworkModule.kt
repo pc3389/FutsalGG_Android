@@ -1,9 +1,7 @@
 package com.futsalgg.app.di
 
-import android.util.Log
 import com.futsalgg.app.remote.api.auth.AuthApi
 import com.futsalgg.app.remote.api.match.MatchApi
-import com.futsalgg.app.remote.api.match.StubMatchApi
 import com.futsalgg.app.remote.api.team.TeamApi
 import com.futsalgg.app.remote.api.team.TeamMemberApi
 import com.futsalgg.app.remote.api.user.UserApi
@@ -80,9 +78,6 @@ class NetworkModule {
     @Provides
     @Singleton
     fun provideMatchApi(retrofit: Retrofit): MatchApi {
-        // 개발 환경에서는 StubMatchApi를 사용
-        return StubMatchApi()
-        // 실제 환경에서는 아래 코드 사용
-        // return retrofit.create(MatchApi::class.java)
+        return retrofit.create(MatchApi::class.java)
     }
 }

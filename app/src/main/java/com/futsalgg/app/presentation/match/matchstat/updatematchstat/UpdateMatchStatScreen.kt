@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.futsalgg.app.R
+import com.futsalgg.app.navigation.RoutePath
 import com.futsalgg.app.presentation.match.MatchSharedViewModel
 import com.futsalgg.app.presentation.match.component.SelectableMathParticipantBox
 import com.futsalgg.app.presentation.match.matchstat.base.BaseMatchStatScreen
@@ -115,6 +116,7 @@ fun UpdateMatchStatScreen(
 
     BaseMatchStatScreen(
         navController = navController,
+        screenName = RoutePath.UPDATE_MATCH_STAT,
         sharedViewModel = sharedViewModel,
         menuClick = {
             // TODO Menu Click

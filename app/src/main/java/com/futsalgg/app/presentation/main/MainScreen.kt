@@ -67,7 +67,6 @@ fun MainScreen(
         if (screenHeight >= 700.dp) 90.dp else 0.dp
     }
 
-
     Scaffold(
         modifier = Modifier
             .background(
@@ -113,7 +112,7 @@ fun MainScreen(
                                 )
                             )
                             .clickable {
-                                // TODO On Click 경기 결과
+                                navController.navigate(RoutePath.MATCH_RESULT)
                             }
                     ) {
                         Row(
@@ -153,7 +152,7 @@ fun MainScreen(
                                 image = ImageVector.vectorResource(R.drawable.img_main_profile),
                                 color = FutsalggColor.blue50,
                                 onClick = {
-                                    // TODO On Click 내정보
+                                    navController.navigate(RoutePath.PROFILE_CARD)
                                 },
                                 modifier = Modifier.weight(1f)
                             )
@@ -161,9 +160,11 @@ fun MainScreen(
 
                             MainCardItem(
                                 text = stringResource(R.string.main_show_team_profile),
-                                // TODO On Click 팀 정보
                                 image = ImageVector.vectorResource(R.drawable.img_main_team),
                                 color = FutsalggColor.mint50,
+                                onClick = {
+                                    // TODO OnClick 팀정보
+                                },
                                 modifier = Modifier.weight(1f)
                             )
                         }
@@ -263,7 +264,7 @@ fun AdminMenuPopup(
                 Box(
                     modifier = Modifier
                         .background(FutsalggColor.white)
-                        .padding(vertical = 12.dp)
+                        .fillMaxWidth()
                         .clickable {
                             onClickCreateMatch()
                         }
@@ -273,13 +274,14 @@ fun AdminMenuPopup(
                         style = FutsalggTypography.bold_17_200,
                         color = FutsalggColor.mono900,
                         modifier = Modifier.align(Alignment.Center)
+                            .padding(vertical = 12.dp)
                     )
                 }
                 HorizontalDivider(thickness = 1.dp, color = FutsalggColor.mono100)
                 Box(
                     modifier = Modifier
                         .background(FutsalggColor.white)
-                        .padding(vertical = 12.dp)
+                        .fillMaxWidth()
                         .clickable {
                             onClickUpdateMatchResult()
                         }
@@ -289,13 +291,14 @@ fun AdminMenuPopup(
                         style = FutsalggTypography.bold_17_200,
                         color = FutsalggColor.mono900,
                         modifier = Modifier.align(Alignment.Center)
+                            .padding(vertical = 12.dp)
                     )
                 }
                 HorizontalDivider(thickness = 1.dp, color = FutsalggColor.mono100)
                 Box(
                     modifier = Modifier
                         .background(FutsalggColor.white)
-                        .padding(vertical = 12.dp)
+                        .fillMaxWidth()
                         .clickable {
                             onClickManageTeam()
                         }
@@ -305,6 +308,7 @@ fun AdminMenuPopup(
                         style = FutsalggTypography.bold_17_200,
                         color = FutsalggColor.mono900,
                         modifier = Modifier.align(Alignment.Center)
+                            .padding(vertical = 12.dp)
                     )
                 }
             }

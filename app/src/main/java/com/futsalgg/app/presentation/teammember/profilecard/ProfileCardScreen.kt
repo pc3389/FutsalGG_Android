@@ -29,12 +29,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.futsalgg.app.R
+import com.futsalgg.app.navigation.RoutePath
 import com.futsalgg.app.presentation.common.screen.BaseScreen
 import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.ui.theme.FutsalggTypography
+import com.futsalgg.app.util.toDateFormat
 
 @Composable
-fun MyProfileScreen(
+fun ProfileCardScreen(
     navController: NavController,
     viewModel: ProfileCardViewModel = hiltViewModel()
 ) {
@@ -45,6 +47,7 @@ fun MyProfileScreen(
 
     BaseScreen(
         navController = navController,
+        screenName = RoutePath.PROFILE_CARD,
         title = stringResource(R.string.my_profile_title),
         uiState = uiState
     ) { innerPadding ->
@@ -77,7 +80,7 @@ fun MyProfileScreen(
                         modifier = Modifier
                             .padding(top = 12.dp, end = 16.dp)
                             .align(Alignment.TopEnd),
-                        text = state.value.createdTime,
+                        text = state.value.createdTime?.toDateFormat(stringResource(R.string.date_format_dot_ymd)) ?: "",
                         style = FutsalggTypography.regular_15_100,
                         color = FutsalggColor.white
                     )
@@ -112,7 +115,7 @@ fun MyProfileScreen(
                                     )
                                     Spacer(Modifier.height(10.dp))
                                     Text(
-                                        text = state.value.squadNumber?.toString() ?: "00",
+                                        text = state.value.squadNumber ?: "00",
                                         style = FutsalggTypography.bold_40_500,
                                         color = FutsalggColor.white
                                     )
@@ -178,7 +181,7 @@ fun MyProfileScreen(
                                 )
                                 Spacer(Modifier.height(4.dp))
                                 Text(
-                                    text = viewModel.getAgeGroup(state.value.birthday),
+                                    text = state.value.generation,
                                     style = FutsalggTypography.bold_17_200,
                                     color = FutsalggColor.white
                                 )
@@ -195,7 +198,7 @@ fun MyProfileScreen(
                                 )
                                 Spacer(Modifier.height(4.dp))
                                 Text(
-                                    text = state.value.role.toString(),
+                                    text = state.value.role.displayName,
                                     style = FutsalggTypography.bold_17_200,
                                     color = FutsalggColor.white
                                 )

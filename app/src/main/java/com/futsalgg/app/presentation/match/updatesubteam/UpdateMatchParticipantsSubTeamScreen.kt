@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.futsalgg.app.R
+import com.futsalgg.app.navigation.RoutePath
 import com.futsalgg.app.presentation.common.screen.BaseScreen
 import com.futsalgg.app.presentation.match.MatchSharedViewModel
 import com.futsalgg.app.presentation.match.component.SelectableMathParticipantBox
@@ -43,6 +44,7 @@ fun UpdateMatchParticipantsSubTeamScreen(
     // TODO SharedViewModel에서 자체전(내전) 가져오기
     BaseScreen(
         navController = navController,
+        screenName = RoutePath.UPDATE_MATCH_PARTICIPANTS_SUB_TEAM,
         title = matchState.type.toString(),
         uiState = uiState
     ) { innerPadding ->

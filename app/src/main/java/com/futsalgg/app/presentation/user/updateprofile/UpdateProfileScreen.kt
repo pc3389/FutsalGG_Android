@@ -58,6 +58,7 @@ fun UpdateProfileScreen(
 
     BaseScreen(
         navController = navController,
+        screenName = RoutePath.UPDATE_PROFILE,
         title = stringResource(R.string.update_profile_title),
         uiState = uiState
     ) { innerPadding ->
