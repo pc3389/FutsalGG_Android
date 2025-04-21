@@ -1,11 +1,11 @@
 package com.futsalgg.app.data.team.repository
 
+import com.futsalgg.app.domain.common.error.DomainError
 import com.futsalgg.app.remote.api.team.model.request.CreateTeamRequest
 import com.futsalgg.app.remote.api.team.model.request.UpdateTeamLogoRequest
 import com.futsalgg.app.domain.team.model.TeamLogoPresignedUrlResponseModel
 import com.futsalgg.app.domain.team.repository.TeamRepository
 import com.futsalgg.app.remote.api.team.TeamApi
-import com.futsalgg.app.data.common.error.DataError
 import com.futsalgg.app.domain.file.repository.OkHttpFileUploader
 import com.futsalgg.app.domain.team.model.MyTeam
 import com.futsalgg.app.domain.team.model.SearchTeamResponseModel
@@ -29,22 +29,22 @@ class TeamRepositoryImpl @Inject constructor(
                 response.body()?.let { body ->
                     Result.success(body.data.unique)
                 } ?: Result.failure(
-                    DataError.ServerError(
+                    DomainError.ServerError(
                         message = "서버 응답이 비어있습니다.",
-                        cause = null
+                        code = response.code()
                     ) as Throwable
                 )
             } else {
                 Result.failure(
-                    DataError.ServerError(
+                    DomainError.ServerError(
                         message = "서버 오류: ${response.code()}",
-                        cause = null
+                        code = response.code()
                     ) as Throwable
                 )
             }
         } catch (e: IOException) {
             Result.failure(
-                DataError.NetworkError(
+                DomainError.NetworkError(
                     message = "네트워크 연결을 확인해주세요.",
                     cause = e
                 ) as Throwable
@@ -68,22 +68,22 @@ class TeamRepositoryImpl @Inject constructor(
                         )
                     )
                 } ?: Result.failure(
-                    DataError.ServerError(
+                    DomainError.ServerError(
                         message = "서버 응답이 비어있습니다.",
-                        cause = null
+                        code = response.code()
                     ) as Throwable
                 )
             } else {
                 Result.failure(
-                    DataError.ServerError(
+                    DomainError.ServerError(
                         message = "서버 오류: ${response.code()}",
-                        cause = null
+                        code = response.code()
                     ) as Throwable
                 )
             }
         } catch (e: IOException) {
             Result.failure(
-                DataError.NetworkError(
+                DomainError.NetworkError(
                     message = "네트워크 연결을 확인해주세요.",
                     cause = e
                 ) as Throwable
@@ -109,22 +109,22 @@ class TeamRepositoryImpl @Inject constructor(
                         )
                     )
                 } ?: Result.failure(
-                    DataError.ServerError(
+                    DomainError.ServerError(
                         message = "서버 응답이 비어있습니다.",
-                        cause = null
+                        code = response.code()
                     ) as Throwable
                 )
             } else {
                 Result.failure(
-                    DataError.ServerError(
+                    DomainError.ServerError(
                         message = "서버 오류: ${response.code()}",
-                        cause = null
+                        code = response.code()
                     ) as Throwable
                 )
             }
         } catch (e: IOException) {
             Result.failure(
-                DataError.NetworkError(
+                DomainError.NetworkError(
                     message = "네트워크 연결을 확인해주세요.",
                     cause = e
                 ) as Throwable
@@ -150,7 +150,7 @@ class TeamRepositoryImpl @Inject constructor(
             updateTeamLogo(accessToken, presignedResponse.uri)
         } catch (e: Exception) {
             Result.failure(
-                DataError.UnknownError(
+                DomainError.UnknownError(
                     message = "프로필 이미지 업로드 실패: ${e.message}",
                     cause = e
                 ) as Throwable
@@ -183,15 +183,15 @@ class TeamRepositoryImpl @Inject constructor(
                 Result.success(Unit)
             } else {
                 Result.failure(
-                    DataError.ServerError(
+                    DomainError.ServerError(
                         message = "팀 생성 실패: ${response.code()}",
-                        cause = null
+                        code = response.code()
                     ) as Throwable
                 )
             }
         } catch (e: IOException) {
             Result.failure(
-                DataError.NetworkError(
+                DomainError.NetworkError(
                     message = "네트워크 연결을 확인해주세요.",
                     cause = e
                 ) as Throwable
@@ -221,16 +221,16 @@ class TeamRepositoryImpl @Inject constructor(
                         )
                     )
                 } ?: Result.failure(
-                    DataError.ServerError(
+                    DomainError.ServerError(
                         message = "서버 응답이 비어있습니다.",
-                        cause = null
+                        code = response.code()
                     ) as Throwable
                 )
             } else {
                 Result.failure(
-                    DataError.ServerError(
+                    DomainError.ServerError(
                         message = "서버 오류: ${response.code()}",
-                        cause = null
+                        code = response.code()
                     ) as Throwable
                 )
             }
@@ -270,31 +270,31 @@ class TeamRepositoryImpl @Inject constructor(
                     )
                 )
             } ?: Result.failure(
-                DataError.ServerError(
+                DomainError.ServerError(
                     message = "서버 응답이 비어있습니다.",
-                    cause = null
+                    code = response.code()
                 ) as Throwable
             )
         } else {
             if (response.body()?.code == "NOT_FOUND_TEAM_ID") {
                 Result.failure(
-                    DataError.ServerError(
+                    DomainError.ServerError(
                         message = "NOT_FOUND_TEAM_ID",
-                        cause = null
+                        code = response.code()
                     ) as Throwable
                 )
             } else {
                 Result.failure(
-                    DataError.ServerError(
+                    DomainError.ServerError(
                         message = "서버 오류: ${response.code()}",
-                        cause = null
+                        code = response.code()
                     ) as Throwable
                 )
             }
         }
     } catch (e: IOException) {
         Result.failure(
-            DataError.NetworkError(
+            DomainError.NetworkError(
                 message = "네트워크 연결을 확인해주세요.",
                 cause = e
             ) as Throwable

@@ -1,7 +1,9 @@
 package com.futsalgg.app.presentation.setting
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.futsalgg.app.domain.auth.repository.ITokenManager
 import com.futsalgg.app.domain.common.error.DomainError
 import com.futsalgg.app.domain.user.usecase.GetMyProfileForSettingUseCase
 import com.futsalgg.app.presentation.common.error.UiError
@@ -16,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
-    private val getMyProfileForSettingUseCase: GetMyProfileForSettingUseCase
+    private val getMyProfileForSettingUseCase: GetMyProfileForSettingUseCase,
+    private val tokenManager: ITokenManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
@@ -25,8 +28,19 @@ class SettingViewModel @Inject constructor(
     private val _settingState = MutableStateFlow(SettingState())
     val settingState: StateFlow<SettingState> = _settingState.asStateFlow()
 
-    fun getProfile(accessToken: String) {
+    init {
+        getProfile()
+    }
+    fun getProfile() {
         viewModelScope.launch {
+
+            val accessToken = tokenManager.getAccessToken()
+            if (accessToken.isNullOrEmpty()) {
+                Log.e("CreateTeamViewModel", "엑세스 토큰이 존재하지 않습니다")
+                _uiState.value = UiState.Error(UiError.AuthError("엑세스 토큰이 존재하지 않습니다"))
+                return@launch
+            }
+
             _uiState.value = UiState.Loading
             getMyProfileForSettingUseCase(accessToken)
                 .onSuccess { user ->
@@ -36,6 +50,7 @@ class SettingViewModel @Inject constructor(
                         notification = user.notification,
                         profileUrl = user.profileUrl
                     )
+                    _uiState.value = UiState.Success
                 }
                 .onFailure { error ->
                     _uiState.value = UiState.Error(
