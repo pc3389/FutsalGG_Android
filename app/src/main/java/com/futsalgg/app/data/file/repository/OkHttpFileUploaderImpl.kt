@@ -1,21 +1,13 @@
 package com.futsalgg.app.data.file.repository
 
-import android.graphics.Bitmap
-import android.util.Base64
 import com.futsalgg.app.domain.file.repository.OkHttpFileUploader
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import java.io.IOException
 import com.futsalgg.app.domain.common.error.DomainError
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
-import org.json.JSONObject
-import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
 class OkHttpFileUploaderImpl @Inject constructor(
