@@ -35,6 +35,22 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.FocusState
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
+import com.futsalgg.app.presentation.common.state.DateState
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun TimeSelectorItem(
@@ -42,8 +58,79 @@ fun TimeSelectorItem(
     knowTime: Boolean = false,
     time: String,
     onSelected: (Boolean) -> Unit,
-    onTimeChange: (String) -> Unit
+    onTimeChange: (String) -> Unit,
+    timeReady: (Boolean) -> Unit
 ) {
+    val hrFocusRequester = remember { FocusRequester() }
+    val minFocusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
+    var isHourFocused by remember { mutableStateOf(false) }
+    var isMinFocused by remember { mutableStateOf(false) }
+
+    if (isMinFocused || isHourFocused) {
+        timeReady(false)
+    }
+
+
+    var hour by remember {
+        mutableStateOf(
+            TextFieldValue(
+                time.take(2),
+                TextRange(time.take(2).length)
+            )
+        )
+    }
+    var min by remember {
+        mutableStateOf(
+            TextFieldValue(
+                time.drop(4).take(2),
+                TextRange(time.drop(4).take(2).length)
+            )
+        )
+    }
+
+    if (time.isNotEmpty() && hour.text.toInt() > 24 && min.text.toInt() > 60 && !(isMinFocused || isHourFocused)) {
+        timeReady(true)
+    }
+
+    LaunchedEffect(time) {
+        if (time.isNotEmpty()) {
+            try {
+                val date = LocalDate.parse(time, DateTimeFormatter.ofPattern("hhmm"))
+                val yearText = date.year.toString().padStart(4, '0')
+                val monthText = date.monthValue.toString().padStart(2, '0')
+                hour = TextFieldValue(
+                    yearText,
+                    TextRange(yearText.length)
+                )
+                min = TextFieldValue(
+                    monthText,
+                    TextRange(monthText.length)
+                )
+            } catch (e: Exception) {
+                // 파싱 실패 시 현재 값 유지
+            }
+        }
+    }
+
+    // focus가 모두 해제되었을 때 onValueChange 호출
+    LaunchedEffect(isHourFocused, isMinFocused) {
+        if ((!isHourFocused && !isMinFocused) && (hour.text.isNotEmpty() || min.text.isNotEmpty())) {
+            hour = TextFieldValue(
+                hour.text.padStart(2, '0'),
+                TextRange(hour.text.padStart(2, '0').length)
+            )
+            min = TextFieldValue(
+                min.text.padStart(2, '0'),
+                TextRange(min.text.padStart(2, '0').length)
+            )
+            val newDate = "${hour.text}${min.text}"
+            if (newDate != time) {
+                onTimeChange(newDate)
+            }
+        }
+    }
+
     Column(modifier = modifier) {
         // 시간 선택 박스
         Box(
@@ -91,41 +178,81 @@ fun TimeSelectorItem(
                         animationSpec = tween(300)
                     )
                 ) {
+                    // 시간 선택 박스
                     Box(
                         modifier = Modifier
                             .padding(horizontal = 16.dp)
                             .padding(bottom = 16.dp)
                             .border(
                                 width = 1.dp,
-                                color = FutsalggColor.mono900,
+                                color = FutsalggColor.mono500,
                                 shape = RoundedCornerShape(8.dp)
                             )
+                            .clickable {
+                                if (hour.text.isEmpty()) {
+                                    hrFocusRequester.requestFocus()
+                                } else {
+                                    minFocusRequester.requestFocus()
+                                }
+                            }
                             .animateContentSize(
                                 animationSpec = tween(300)
                             )
                     ) {
-                        BasicTextField(
-                            value = time,
-                            onValueChange = onTimeChange,
-                            textStyle = FutsalggTypography.regular_17_200,
-                            keyboardOptions = KeyboardOptions(
-                                keyboardType = KeyboardType.Number,
-                                imeAction = ImeAction.Done
-                            ),
+                        Row(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 16.dp, vertical = 12.dp),
-                            decorationBox = { innerTextField ->
-                                if (time.isEmpty()) {
-                                    Text(
-                                        text = "00:00",
-                                        color = FutsalggColor.mono400,
-                                        style = FutsalggTypography.regular_17_200
-                                    )
-                                }
-                                innerTextField()
-                            }
-                        )
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            TimeTextField(
+                                value = hour,
+                                onValueChange = { newHour ->
+                                    if (newHour.text.length <= 2) {
+                                        hour = newHour
+                                        if (newHour.text.length == 2) {
+                                            minFocusRequester.requestFocus()
+                                        }
+                                    }
+                                },
+                                width = 24,
+                                focusRequester = hrFocusRequester,
+                                placeholder = "00",
+                                onFocusChanged = { isHourFocused = it.isFocused }
+                            )
+
+                            Text(
+                                text = ":",
+                                style = FutsalggTypography.regular_17_200,
+                                modifier = Modifier.padding(horizontal = 8.dp)
+                            )
+
+                            TimeTextField(
+                                value = min,
+                                onValueChange = { newMin ->
+                                    if (newMin.text.length <= 2) {
+                                        min = newMin
+                                        if (newMin.text.isEmpty()) {
+                                            hrFocusRequester.requestFocus()
+                                            min = TextFieldValue(
+                                                min.text,
+                                                TextRange(min.text.length)
+                                            )
+                                        }
+                                    }
+                                },
+                                width = 24,
+                                focusRequester = minFocusRequester,
+                                placeholder = "00",
+                                imeAction = ImeAction.Done,
+                                keyboardActions = KeyboardActions(
+                                    onDone = {
+                                        focusManager.clearFocus()
+                                    }
+                                ),
+                                onFocusChanged = { isMinFocused = it.isFocused }
+                            )
+                        }
                     }
                 }
             }
@@ -133,6 +260,7 @@ fun TimeSelectorItem(
 
         Spacer(Modifier.height(16.dp))
 
+        // 미정
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -165,4 +293,43 @@ fun TimeSelectorItem(
             }
         }
     }
+}
+
+@Composable
+private fun TimeTextField(
+    modifier: Modifier = Modifier,
+    value: TextFieldValue,
+    onValueChange: (TextFieldValue) -> Unit,
+    width: Int,
+    focusRequester: FocusRequester,
+    placeholder: String,
+    imeAction: ImeAction = ImeAction.Next,
+    keyboardActions: KeyboardActions? = null,
+    onFocusChanged: (FocusState) -> Unit = {}
+) {
+    BasicTextField(
+        value = value,
+        onValueChange = onValueChange,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Number,
+            imeAction = imeAction
+        ),
+        keyboardActions = keyboardActions ?: KeyboardActions.Default,
+        modifier = modifier
+            .width(width.dp)
+            .focusRequester(focusRequester)
+            .onFocusChanged(onFocusChanged),
+        textStyle = FutsalggTypography.regular_17_200,
+        maxLines = 1,
+        decorationBox = { innerTextField ->
+            if (value.text.isEmpty()) {
+                Text(
+                    text = placeholder,
+                    color = FutsalggColor.mono400,
+                    style = FutsalggTypography.regular_17_200
+                )
+            }
+            innerTextField()
+        }
+    )
 }

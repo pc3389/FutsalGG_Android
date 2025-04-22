@@ -7,8 +7,9 @@ data class MatchState(
     val match: Match = Match(),
     val matchDateState: DateState = DateState.Initial,
     val knowsStartTime: Boolean = false,
+    val startTimeReady: Boolean = false,
     val knowsEndTime: Boolean = false,
-    val errorMessage: String? = null
+    val endTimeReady: Boolean = false
 ) {
     val isFormValid: Boolean
         get() = matchDateState == DateState.Available &&

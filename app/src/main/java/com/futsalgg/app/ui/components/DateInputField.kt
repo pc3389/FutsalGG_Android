@@ -124,6 +124,28 @@ fun DateInputField(
         }
     }
 
+    // focus가 모두 해제되었을 때 onValueChange 호출
+    LaunchedEffect(isYearFocused, isMonthFocused, isDayFocused) {
+        if ((!isYearFocused && !isMonthFocused && !isDayFocused) && (year.text.isNotEmpty() || month.text.isNotEmpty() || day.text.isNotEmpty())) {
+            year = TextFieldValue(
+                year.text.padStart(4, '0'),
+                TextRange(year.text.padStart(4, '0').length)
+            )
+            month = TextFieldValue(
+                month.text.padStart(2, '0'),
+                TextRange(month.text.padStart(2, '0').length)
+            )
+            day = TextFieldValue(
+                day.text.padStart(2, '0'),
+                TextRange(day.text.padStart(2, '0').length)
+            )
+            val newDate = "${year.text}${month.text}${day.text}"
+            if (newDate != value) {
+                onValueChange(newDate)
+            }
+        }
+    }
+
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -306,28 +328,6 @@ fun DateInputField(
                 style = FutsalggTypography.regular_17_200,
                 modifier = Modifier.padding(start = 16.dp)
             )
-        }
-    }
-
-    // focus가 모두 해제되었을 때 onValueChange 호출
-    LaunchedEffect(isYearFocused, isMonthFocused, isDayFocused) {
-        if ((!isYearFocused && !isMonthFocused && !isDayFocused) && (year.text.isNotEmpty() || month.text.isNotEmpty() || day.text.isNotEmpty())) {
-            year = TextFieldValue(
-                year.text.padStart(4, '0'),
-                TextRange(year.text.padStart(4, '0').length)
-            )
-            month = TextFieldValue(
-                month.text.padStart(2, '0'),
-                TextRange(month.text.padStart(2, '0').length)
-            )
-            day = TextFieldValue(
-                day.text.padStart(2, '0'),
-                TextRange(day.text.padStart(2, '0').length)
-            )
-            val newDate = "${year.text}${month.text}${day.text}"
-            if (newDate != value) {
-                onValueChange(newDate)
-            }
         }
     }
 }

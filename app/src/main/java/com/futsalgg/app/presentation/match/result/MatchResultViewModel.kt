@@ -82,6 +82,10 @@ class MatchResultViewModel @Inject constructor(
         }
     }
 
+    private fun deleteMatch(match: Match) {
+
+    }
+
     private fun DomainMatch.toPresentation(): Match {
         return Match(
             id = id,

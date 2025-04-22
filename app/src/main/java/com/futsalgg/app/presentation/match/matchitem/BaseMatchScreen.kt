@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,7 +23,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -43,6 +46,7 @@ import com.futsalgg.app.ui.components.spacers.VerticalSpacer56
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer8
 import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.ui.theme.FutsalggTypography
+import com.futsalgg.app.util.toTimeStringFormat
 
 @Composable
 fun BaseMatchScreen(
@@ -55,6 +59,7 @@ fun BaseMatchScreen(
     val context = LocalContext.current
     val uiState by viewModel.uiStateFlow.collectAsState()
     val matchState by viewModel.matchStateFlow.collectAsState()
+    val focusManager = LocalFocusManager.current
 
     BaseScreen(
         navController = navController,
@@ -68,6 +73,11 @@ fun BaseMatchScreen(
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
                 .background(FutsalggColor.white)
+                .pointerInput(Unit) {
+                detectTapGestures(onTap = {
+                    focusManager.clearFocus()
+                })
+            },
         ) {
             Column(
                 modifier = Modifier.padding(horizontal = 16.dp)
@@ -76,6 +86,9 @@ fun BaseMatchScreen(
                 FormRequiredAndHeader(
                     headerText = stringResource(R.string.create_match_date),
                 )
+
+                VerticalSpacer8()
+
                 DateInputField(
                     value = matchState.match.matchDate,
                     onValueChange = viewModel::onValidateMatchDate,
@@ -126,9 +139,10 @@ fun BaseMatchScreen(
                 VerticalSpacer8()
                 TimeSelectorItem(
                     knowTime = matchState.knowsStartTime,
-                    time = matchState.match.startTime ?: "",
+                    time = matchState.match.startTime?.toTimeStringFormat() ?: "",
                     onSelected = viewModel::onKnowsStartTimeChange,
-                    onTimeChange = viewModel::onStartTimeChange
+                    onTimeChange = viewModel::onStartTimeChange,
+                    timeReady = viewModel::updateStartTimeReady
                 )
 
                 VerticalSpacer56()
@@ -138,9 +152,10 @@ fun BaseMatchScreen(
                 VerticalSpacer8()
                 TimeSelectorItem(
                     knowTime = matchState.knowsEndTime,
-                    time = matchState.match.endTime ?: "",
+                    time = matchState.match.endTime?.toTimeStringFormat() ?: "",
                     onSelected = viewModel::onKnowsEndTimeChange,
-                    onTimeChange = viewModel::onEndTimeChange
+                    onTimeChange = viewModel::onEndTimeChange,
+                    timeReady = viewModel::updateEndTimeReady
                 )
                 VerticalSpacer56()
 

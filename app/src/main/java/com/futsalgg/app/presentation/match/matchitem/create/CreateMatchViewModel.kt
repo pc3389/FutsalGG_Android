@@ -12,6 +12,7 @@ import com.futsalgg.app.presentation.match.MatchSharedViewModel
 import com.futsalgg.app.presentation.match.matchitem.BaseMatchViewModel
 import com.futsalgg.app.presentation.match.model.VoteStatus
 import com.futsalgg.app.util.dateToRequestFormat
+import com.futsalgg.app.util.toTimeRequestFormat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -41,8 +42,8 @@ class CreateMatchViewModel @Inject constructor(
                     matchDate = matchState.value.match.matchDate.dateToRequestFormat(),
                     type = MatchType.toDomain(matchState.value.match.type),
                     location = matchState.value.match.location,
-                    startTime = matchState.value.match.startTime?.takeIf { it.isNotEmpty() },
-                    endTime = matchState.value.match.endTime?.takeIf { it.isNotEmpty() },
+                    startTime = matchState.value.match.startTime?.takeIf { it.isNotEmpty() }?.toTimeRequestFormat(),
+                    endTime = matchState.value.match.endTime?.takeIf { it.isNotEmpty() }?.toTimeRequestFormat(),
                     opponentTeamName = matchState.value.match.opponentTeamName?.takeIf { it.isNotEmpty() },
                     description = matchState.value.match.description?.takeIf { it.isNotEmpty() },
                     isVote = matchState.value.match.voteStatus != VoteStatus.NONE,
@@ -53,7 +54,6 @@ class CreateMatchViewModel @Inject constructor(
                     updateUiState(UiState.Success)
                     onSuccess()
                 } else {
-                    Log.e("CreateMatchViewModel", "알 수 없는 오류가 발생했습니다")
                     updateUiState(
                         UiState.Error(
                             UiError.UnknownError(
@@ -63,7 +63,6 @@ class CreateMatchViewModel @Inject constructor(
                     )
                 }
             } catch (e: Exception) {
-                Log.e("CreateMatchViewModel", "알 수 없는 오류가 발생했습니다", e)
                 updateUiState(
                     UiState.Error(UiError.UnknownError(e.message ?: "알 수 없는 오류가 발생했습니다"))
                 )

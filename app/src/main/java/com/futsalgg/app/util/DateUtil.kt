@@ -19,8 +19,30 @@ fun String.dateToRequestFormat(): String {
 }
 
 fun String.toDateFormat(format: String): String {
-    val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    val inputFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
     val outputFormat = SimpleDateFormat(format, Locale.getDefault())
+    return try {
+        val date = inputFormat.parse(this) ?: "00.00"
+        outputFormat.format(date)
+    } catch (e: Exception) {
+        this
+    }
+}
+
+fun String.toTimeRequestFormat(): String {
+    val inputFormat = SimpleDateFormat("HHmm", Locale.getDefault())
+    val outputFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+    return try {
+        val date = inputFormat.parse(this) ?: ""
+        outputFormat.format(date)
+    } catch (e: Exception) {
+        this
+    }
+}
+
+fun String.toTimeStringFormat(): String {
+    val inputFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+    val outputFormat = SimpleDateFormat("HHmm", Locale.getDefault())
     return try {
         val date = inputFormat.parse(this) ?: ""
         outputFormat.format(date)

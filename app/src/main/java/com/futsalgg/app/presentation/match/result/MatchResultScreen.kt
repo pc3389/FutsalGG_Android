@@ -67,7 +67,7 @@ fun MatchResultScreen(
                             viewModel.updateMatch(match)
                         },
                         onDeleteClick = { match ->
-
+                            viewModel.deleteMatch(match)
                         }
                     )
                 }

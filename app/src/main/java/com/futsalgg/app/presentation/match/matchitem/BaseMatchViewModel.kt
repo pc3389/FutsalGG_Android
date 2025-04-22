@@ -38,11 +38,25 @@ open class BaseMatchViewModel: ViewModel() {
         )
     }
 
+    internal fun updateStartTimeReady(newValue: Boolean) {
+        val state = matchState.value
+        matchState.value = state.copy(
+            startTimeReady = newValue
+        )
+    }
+
     internal fun onEndTimeChange(newValue: String) {
         matchState.value = matchState.value.copy(
             match = matchState.value.match.copy(
                 endTime = newValue
             )
+        )
+    }
+
+    internal fun updateEndTimeReady(newValue: Boolean) {
+        val state = matchState.value
+        matchState.value = state.copy(
+            endTimeReady = newValue
         )
     }
 
