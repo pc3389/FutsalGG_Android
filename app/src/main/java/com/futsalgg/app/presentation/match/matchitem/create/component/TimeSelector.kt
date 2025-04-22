@@ -89,7 +89,12 @@ fun TimeSelectorItem(
         )
     }
 
-    if (time.isNotEmpty() && hour.text.toInt() > 24 && min.text.toInt() > 60 && !(isMinFocused || isHourFocused)) {
+    if (
+        time.isNotEmpty() &&
+        hour.text.isNotEmpty() && hour.text.toInt() > 24 &&
+        min.text.isNotEmpty() && min.text.toInt() > 60 &&
+        !(isMinFocused || isHourFocused)
+    ) {
         timeReady(true)
     }
 

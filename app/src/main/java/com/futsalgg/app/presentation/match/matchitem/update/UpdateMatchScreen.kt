@@ -12,13 +12,9 @@ import com.futsalgg.app.presentation.match.matchitem.BaseMatchScreen
 @Composable
 fun UpdateMatchScreen(
     navController: NavController,
-    viewModel: UpdateMatchViewModel = hiltViewModel(
-        navController.getBackStackEntry(RoutePath.MAIN)
-    )
+    viewModel: UpdateMatchViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(Unit) {
-        viewModel.updateFromSharedvm()
-    }
+
 
     BaseMatchScreen(
         navController = navController,

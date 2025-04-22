@@ -24,9 +24,7 @@ import com.futsalgg.app.ui.theme.FutsalggColor
 @Composable
 fun MatchResultScreen(
     navController: NavController,
-    viewModel: MatchResultViewModel = hiltViewModel(
-        navController.getBackStackEntry(RoutePath.MAIN)
-    )
+    viewModel: MatchResultViewModel = hiltViewModel()
 ) {
     val matchesByDate by viewModel.matchesByDate.collectAsState()
     val uiState by viewModel.uiState.collectAsState()

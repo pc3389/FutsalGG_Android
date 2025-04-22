@@ -23,10 +23,6 @@ class UpdateMatchViewModel @Inject constructor(
 ): BaseMatchViewModel() {
 
     init {
-
-    }
-
-    fun updateFromSharedvm() {
         matchState.value = MatchState(
             match = Match(
                 id = sharedViewModel.matchState.value.id,
