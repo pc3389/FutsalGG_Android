@@ -15,10 +15,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.navigation.NavController
 import com.futsalgg.app.R
-import com.futsalgg.app.navigation.RoutePath
 import com.futsalgg.app.presentation.common.screen.BaseScreen
 import com.futsalgg.app.presentation.common.state.UiState
-import com.futsalgg.app.presentation.match.MatchSharedViewModel
 import com.futsalgg.app.ui.theme.FutsalggColor
 
 @Composable
@@ -26,11 +24,11 @@ fun BaseMatchStatScreen(
     navController: NavController,
     screenName: String,
     menuClick: () -> Unit,
-    sharedViewModel: MatchSharedViewModel,
     uiState: UiState,
+    viewModel: MatchStatBaseViewModel,
     contents: @Composable () -> Unit
 ) {
-    val matchState by sharedViewModel.matchState.collectAsState()
+    val matchState by viewModel.matchState.collectAsState()
     BaseScreen(
         navController = navController,
         screenName = screenName,

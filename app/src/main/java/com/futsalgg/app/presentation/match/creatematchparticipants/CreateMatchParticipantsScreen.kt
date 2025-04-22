@@ -39,7 +39,6 @@ import androidx.navigation.NavController
 import com.futsalgg.app.R
 import com.futsalgg.app.navigation.RoutePath
 import com.futsalgg.app.presentation.common.screen.BaseScreen
-import com.futsalgg.app.presentation.match.MatchSharedViewModel
 import com.futsalgg.app.presentation.match.component.SelectableMathParticipantBox
 import com.futsalgg.app.ui.components.BottomButton
 import com.futsalgg.app.ui.components.EditTextBox
@@ -56,7 +55,6 @@ import com.futsalgg.app.util.toDateFormat
 fun CreateMatchParticipantsScreen(
     navController: NavController,
     viewModel: CreateMatchParticipantsViewModel = hiltViewModel(),
-    sharedViewModel: MatchSharedViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val matchParticipantsState by viewModel.matchParticipantsState.collectAsState()
@@ -184,7 +182,7 @@ fun CreateMatchParticipantsScreen(
                 text = stringResource(R.string.create_match_participants_button_text),
                 onClick = {
                     viewModel.createMatchParticipants()
-                    sharedViewModel.updateMatchParticipantsState(matchParticipantsState.filter { it.isSelected })
+                    viewModel.updateMatchParticipantsState(matchParticipantsState.filter { it.isSelected })
                 }
             )
         }

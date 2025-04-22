@@ -31,7 +31,10 @@ import com.futsalgg.app.util.toDateFormat
 fun MatchResultPerDay(
     date: String, //yyyy-MM-dd
     matches: List<Match>,
-    onResultClick: (Match) -> Unit
+    onResultClick: (Match) -> Unit,
+    onScheduleEditClick: (Match) -> Unit,
+    onResultEditClick: (Match) -> Unit,
+    onDeleteClick: (Match) -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -86,46 +89,19 @@ fun MatchResultPerDay(
                         matchStartTime = match.startTime,
                         matchEndTime = match.endTime,
                         buttonEnabled = match.status == MatchStatus.COMPLETED,
-                        onResultClick = { onResultClick(match) }
+                        onResultClick = { onResultClick(match) },
+                        onScheduleEditClick = {
+                            onScheduleEditClick(match)
+                        },
+                        onResultEditClick ={
+                            onResultEditClick(match)
+                        },
+                        onDeleteClick ={
+                            onDeleteClick(match)
+                        }
                     )
                 }
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun PreviewMatchDay() {
-    MatchResultPerDay(
-        date = "05.26",
-        matches = listOf(
-            Match(
-                id = "1123123123",
-                opponentTeamName = "OpponeneTeam",
-                description = "Description",
-                type = MatchType.INTER_TEAM,
-                matchDate = "05.26",
-                startTime = "05:12",
-                endTime = "05:12",
-                location = "Location",
-                voteStatus = VoteStatus.NONE,
-                status = MatchStatus.COMPLETED,
-                createdTime = "TODO()"
-            ), Match(
-                id = "1123123123",
-                opponentTeamName = null,
-                description = "Description",
-                type = MatchType.INTRA_SQUAD,
-                matchDate = "05.26",
-                startTime = "05:12",
-                endTime = "05:12",
-                location = "Location",
-                voteStatus = VoteStatus.NONE,
-                status = MatchStatus.COMPLETED,
-                createdTime = "TODO()"
-            )
-        ),
-        onResultClick = {}
-    )
 }

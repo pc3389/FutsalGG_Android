@@ -9,6 +9,7 @@ import com.futsalgg.app.domain.match.usecase.UpdateMatchRoundsUseCase
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.error.toUiError
 import com.futsalgg.app.presentation.common.state.UiState
+import com.futsalgg.app.presentation.match.MatchSharedViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,11 +20,14 @@ import javax.inject.Inject
 @HiltViewModel
 class UpdateMatchRoundViewModel @Inject constructor(
     private val updateMatchRoundsUseCase: UpdateMatchRoundsUseCase,
+    private val matchSharedViewModel: MatchSharedViewModel,
     private val tokenManager: ITokenManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
+
+    val matchState = matchSharedViewModel.matchState
 
     fun updateRounds(matchId: String, rounds: Int, onSuccess: () -> Unit) {
         viewModelScope.launch {

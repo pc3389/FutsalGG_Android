@@ -7,6 +7,7 @@ import com.futsalgg.app.domain.match.usecase.CreateMatchStatUseCase
 import com.futsalgg.app.domain.match.usecase.GetMatchParticipantsUseCase
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.state.UiState
+import com.futsalgg.app.presentation.match.MatchSharedViewModel
 import com.futsalgg.app.presentation.match.matchstat.base.MatchStatBaseViewModel
 import com.futsalgg.app.presentation.match.matchstat.model.MatchStat
 import com.futsalgg.app.presentation.match.matchstat.model.RoundStats
@@ -22,10 +23,11 @@ class UpdateMatchStatViewModel @Inject constructor(
     getMatchStatsUseCase: GetMatchStatsUseCase,
     getMatchParticipantsUseCase: GetMatchParticipantsUseCase,
     tokenManager: ITokenManager,
-    private val createMatchStatUseCase: CreateMatchStatUseCase
+    private val matchSharedViewModel: MatchSharedViewModel
 ) : MatchStatBaseViewModel(
     getMatchStatsUseCase,
     getMatchParticipantsUseCase,
+    matchSharedViewModel,
     tokenManager
 ) {
 

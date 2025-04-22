@@ -18,7 +18,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.futsalgg.app.R
 import com.futsalgg.app.navigation.RoutePath
-import com.futsalgg.app.presentation.match.MatchSharedViewModel
 import com.futsalgg.app.presentation.match.component.SelectableMathParticipantBox
 import com.futsalgg.app.presentation.match.matchstat.base.BaseMatchStatScreen
 import com.futsalgg.app.presentation.match.matchstat.component.ScoreTemplate
@@ -32,7 +31,6 @@ import com.futsalgg.app.ui.theme.FutsalggTypography
 fun UpdateMatchStatScreen(
     navController: NavController,
     viewModel: UpdateMatchStatViewModel = hiltViewModel(),
-    sharedViewModel: MatchSharedViewModel = hiltViewModel()
 ) {
     var showBottomSheet by remember { mutableStateOf(false) }
     var selectedRoundIndex by remember { mutableIntStateOf(0) }
@@ -44,7 +42,7 @@ fun UpdateMatchStatScreen(
     val uiState by viewModel.uiStateFlow.collectAsState()
     val roundScoreState by viewModel.tempMatchStatsStateFlow.collectAsState()
     val participants by viewModel.participantsStateFlow.collectAsState()
-    val matchState by sharedViewModel.matchState.collectAsState()
+    val matchState by viewModel.matchState.collectAsState()
 
     @Composable
     fun SelectGoalScorerBottomSheet(
@@ -117,7 +115,7 @@ fun UpdateMatchStatScreen(
     BaseMatchStatScreen(
         navController = navController,
         screenName = RoutePath.UPDATE_MATCH_STAT,
-        sharedViewModel = sharedViewModel,
+        viewModel = viewModel,
         menuClick = {
             // TODO Menu Click
         },

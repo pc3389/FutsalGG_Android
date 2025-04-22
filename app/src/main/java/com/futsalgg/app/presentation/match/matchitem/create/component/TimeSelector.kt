@@ -1,4 +1,4 @@
-package com.futsalgg.app.presentation.match.create.component
+package com.futsalgg.app.presentation.match.matchitem.create.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border

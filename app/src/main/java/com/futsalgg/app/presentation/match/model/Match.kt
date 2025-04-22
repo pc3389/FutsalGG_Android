@@ -13,5 +13,6 @@ data class Match (
     val location: String = "",
     val voteStatus: VoteStatus = VoteStatus.NONE,
     val status: MatchStatus = MatchStatus.DRAFT,
+    val substituteTeamMemberId: String? = "",
     val createdTime: String = ""
 )

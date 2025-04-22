@@ -16,7 +16,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.futsalgg.app.R
 import com.futsalgg.app.navigation.RoutePath
-import com.futsalgg.app.presentation.match.MatchSharedViewModel
 import com.futsalgg.app.presentation.match.matchstat.base.BaseMatchStatScreen
 import com.futsalgg.app.presentation.match.matchstat.component.ScoreTemplate
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer12
@@ -30,18 +29,17 @@ import com.futsalgg.app.util.toDateFormat
 @Composable
 fun CheckMatchStatScreen(
     navController: NavController,
-    viewModel: CheckMatchStatViewModel = hiltViewModel(),
-    sharedViewModel: MatchSharedViewModel = hiltViewModel()
+    viewModel: CheckMatchStatViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiStateFlow.collectAsState()
     val roundScoreState by viewModel.roundScoreStateFlow.collectAsState()
     val participants by viewModel.participantsStateFlow.collectAsState()
-    val matchState by sharedViewModel.matchState.collectAsState()
+    val matchState by viewModel.sharedViewModel.matchState.collectAsState()
 
     BaseMatchStatScreen(
         navController = navController,
         screenName = RoutePath.CHECK_MATCH_STAT,
-        sharedViewModel = sharedViewModel,
+        viewModel = viewModel,
         menuClick = {
             // TODO Menu Click
         },

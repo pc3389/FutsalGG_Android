@@ -14,6 +14,7 @@ import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.presentation.match.model.Match
 import com.futsalgg.app.presentation.match.model.MatchStatus
 import com.futsalgg.app.presentation.common.model.MatchType
+import com.futsalgg.app.presentation.match.MatchSharedViewModel
 import com.futsalgg.app.presentation.match.model.VoteStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,6 +27,7 @@ import javax.inject.Inject
 class MatchResultViewModel @Inject constructor(
     private val getMatchesUseCase: GetMatchesUseCase,
     sharedViewModel: SharedViewModel,
+    private val matchSharedViewModel: MatchSharedViewModel,
     tokenManager: ITokenManager
 ) : ViewModel() {
 
@@ -41,6 +43,10 @@ class MatchResultViewModel @Inject constructor(
 
     init {
         loadMatches()
+    }
+
+    fun updateMatch(match: Match) {
+        matchSharedViewModel.updateMatch(match)
     }
 
     private fun loadMatches() {

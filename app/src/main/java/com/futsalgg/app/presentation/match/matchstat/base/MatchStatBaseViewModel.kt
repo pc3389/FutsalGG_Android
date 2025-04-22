@@ -10,6 +10,7 @@ import com.futsalgg.app.domain.match.usecase.GetMatchParticipantsUseCase
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.error.toUiError
 import com.futsalgg.app.presentation.common.state.UiState
+import com.futsalgg.app.presentation.match.MatchSharedViewModel
 import com.futsalgg.app.presentation.match.matchstat.model.MatchParticipantState
 import com.futsalgg.app.presentation.match.matchstat.model.RoundStats
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,6 +21,7 @@ import kotlinx.coroutines.launch
 abstract class MatchStatBaseViewModel(
     private val getMatchStatsUseCase: GetMatchStatsUseCase,
     private val getMatchParticipantsUseCase: GetMatchParticipantsUseCase,
+    private val matchSharedViewModel: MatchSharedViewModel,
     private val tokenManager: ITokenManager
 ) : ViewModel() {
 
@@ -31,6 +33,8 @@ abstract class MatchStatBaseViewModel(
 
     private val participantsState = MutableStateFlow<List<MatchParticipantState>>(listOf())
     val participantsStateFlow: StateFlow<List<MatchParticipantState>> = participantsState.asStateFlow()
+
+    val matchState = matchSharedViewModel.matchState
 
     // TODO MatchId
     fun initial(onSuccess: (List<RoundStats>) -> Unit) {

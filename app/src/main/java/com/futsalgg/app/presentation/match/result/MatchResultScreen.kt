@@ -11,20 +11,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.futsalgg.app.R
 import com.futsalgg.app.navigation.RoutePath
 import com.futsalgg.app.presentation.common.screen.BaseScreen
-import com.futsalgg.app.presentation.match.MatchSharedViewModel
 import com.futsalgg.app.presentation.match.result.component.MatchResultPerDay
 import com.futsalgg.app.ui.theme.FutsalggColor
 
 @Composable
 fun MatchResultScreen(
     navController: NavController,
-    viewModel: MatchResultViewModel = hiltViewModel(),
-    sharedViewModel: MatchSharedViewModel = hiltViewModel()
+    viewModel: MatchResultViewModel = hiltViewModel(
+        navController.getBackStackEntry(RoutePath.MAIN)
+    )
 ) {
     val matchesByDate by viewModel.matchesByDate.collectAsState()
     val uiState by viewModel.uiState.collectAsState()
@@ -32,7 +34,7 @@ fun MatchResultScreen(
     BaseScreen(
         navController = navController,
         screenName = RoutePath.MATCH_RESULT,
-        title = "경기 결과",
+        title = stringResource(R.string.match_result_title_text),
         uiState = uiState
     ) { innerPadding ->
         Box(
@@ -54,9 +56,18 @@ fun MatchResultScreen(
                         date = date,
                         matches = matches,
                         onResultClick = { match ->
-                            // TODO
-                            sharedViewModel.updateSelectedMatchId(match.id)
-                            sharedViewModel.updateMatch(match)
+                            // TODO 경기결과확인 클릭
+                            viewModel.updateMatch(match)
+                        },
+                        onScheduleEditClick = { match ->
+                            viewModel.updateMatch(match)
+                            navController.navigate(RoutePath.UPDATE_MATCH)
+                        },
+                        onResultEditClick = { match ->
+                            viewModel.updateMatch(match)
+                        },
+                        onDeleteClick = { match ->
+
                         }
                     )
                 }

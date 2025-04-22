@@ -1,6 +1,5 @@
-package com.futsalgg.app.presentation.match.create
+package com.futsalgg.app.presentation.match.matchitem
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -27,17 +26,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.futsalgg.app.R
 import com.futsalgg.app.navigation.RoutePath
 import com.futsalgg.app.presentation.common.model.MatchType
-import com.futsalgg.app.ui.components.DateInputField
 import com.futsalgg.app.presentation.common.screen.BaseScreen
 import com.futsalgg.app.presentation.common.state.DateState
-import com.futsalgg.app.presentation.match.create.component.TimeSelectorItem
+import com.futsalgg.app.presentation.match.matchitem.create.component.TimeSelectorItem
 import com.futsalgg.app.ui.components.BottomButton
-import com.futsalgg.app.ui.components.DoubleRadioButtonsEnum
+import com.futsalgg.app.ui.components.DateInputField
 import com.futsalgg.app.ui.components.EditTextBox
 import com.futsalgg.app.ui.components.FormRequiredAndHeader
 import com.futsalgg.app.ui.components.SimpleTitleText
@@ -48,17 +45,20 @@ import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.ui.theme.FutsalggTypography
 
 @Composable
-fun CreateMatchScreen(
+fun BaseMatchScreen(
     navController: NavController,
-    viewModel: CreateMatchViewModel = hiltViewModel()
-) {
+    viewModel: BaseMatchViewModel,
+    onBottomButtonClick: () -> Unit,
+    titleText: String = stringResource(R.string.create_match_title),
+    buttonText: String = stringResource(R.string.create_button_text)
+    ) {
     val context = LocalContext.current
-    val uiState by viewModel.uiState.collectAsState()
-    val createMatchState by viewModel.createMatchState.collectAsState()
+    val uiState by viewModel.uiStateFlow.collectAsState()
+    val matchState by viewModel.matchStateFlow.collectAsState()
 
     BaseScreen(
         navController = navController,
-        title = stringResource(R.string.create_match_title),
+        title = titleText,
         screenName = RoutePath.CREATE_MATCH,
         uiState = uiState
     ) { innerPadding ->
@@ -77,9 +77,9 @@ fun CreateMatchScreen(
                     headerText = stringResource(R.string.create_match_date),
                 )
                 DateInputField(
-                    value = createMatchState.matchDate,
+                    value = matchState.match.matchDate,
                     onValueChange = viewModel::onValidateMatchDate,
-                    state = createMatchState.matchDateState,
+                    state = matchState.matchDateState,
                     messageProvider = remember {
                         { state: DateState ->
                             when (state) {
@@ -113,7 +113,7 @@ fun CreateMatchScreen(
                 TextWithStar(text = stringResource(R.string.create_match_location))
                 VerticalSpacer8()
                 EditTextBox(
-                    value = createMatchState.location,
+                    value = matchState.match.location,
                     onValueChange = viewModel::onLocationChange,
                     hint = stringResource(R.string.edit_text_hint_within_15),
                     maxLength = 15
@@ -125,8 +125,8 @@ fun CreateMatchScreen(
                 TextWithStar(text = stringResource(R.string.create_match_start_time_title))
                 VerticalSpacer8()
                 TimeSelectorItem(
-                    knowTime = createMatchState.knowsStartTime,
-                    time = createMatchState.startTime,
+                    knowTime = matchState.knowsStartTime,
+                    time = matchState.match.startTime ?: "",
                     onSelected = viewModel::onKnowsStartTimeChange,
                     onTimeChange = viewModel::onStartTimeChange
                 )
@@ -137,19 +137,19 @@ fun CreateMatchScreen(
                 TextWithStar(text = stringResource(R.string.create_match_end_time_title))
                 VerticalSpacer8()
                 TimeSelectorItem(
-                    knowTime = createMatchState.knowsEndTime,
-                    time = createMatchState.endTime,
+                    knowTime = matchState.knowsEndTime,
+                    time = matchState.match.endTime ?: "",
                     onSelected = viewModel::onKnowsEndTimeChange,
                     onTimeChange = viewModel::onEndTimeChange
                 )
                 VerticalSpacer56()
 
                 // 매치전일 경우에 상대팀 이름
-                if (createMatchState.type == MatchType.INTER_TEAM) {
+                if (matchState.match.type == MatchType.INTER_TEAM) {
                     TextWithStar(text = stringResource(R.string.create_match_opponent_title))
                     VerticalSpacer8()
                     EditTextBox(
-                        value = createMatchState.opponentTeamName,
+                        value = matchState.match.opponentTeamName ?: "",
                         onValueChange = viewModel::onOpponentTeamNameChange,
                         hint = stringResource(R.string.edit_text_hint_within_15),
                         maxLength = 15
@@ -196,17 +196,11 @@ fun CreateMatchScreen(
             }
 
             BottomButton(
-                text = stringResource(R.string.create_button_text),
+                text = buttonText,
                 onClick = {
-                    viewModel.createMatch(
-                        onSuccess = {
-                            navController.navigate(RoutePath.MATCH_RESULT) {
-                                popUpTo(route = RoutePath.MAIN)
-                            }
-                        }
-                    )
+                   onBottomButtonClick()
                 },
-                enabled = createMatchState.isFormValid
+                enabled = matchState.isFormValid
             )
         }
     }

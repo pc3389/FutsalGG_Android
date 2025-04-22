@@ -17,8 +17,9 @@ import com.futsalgg.app.presentation.main.MainScreen
 import com.futsalgg.app.presentation.user.createuser.CreateUserScreen
 import com.futsalgg.app.presentation.user.createuser.CreateUserViewModel
 import com.futsalgg.app.presentation.auth.termsandcondition.TermsAndConditionScreen
-import com.futsalgg.app.presentation.match.create.CreateMatchScreen
+import com.futsalgg.app.presentation.match.matchitem.create.CreateMatchScreen
 import com.futsalgg.app.presentation.match.creatematchparticipants.CreateMatchParticipantsScreen
+import com.futsalgg.app.presentation.match.matchitem.update.UpdateMatchScreen
 import com.futsalgg.app.presentation.match.matchstat.checkmatchstat.CheckMatchStatScreen
 import com.futsalgg.app.presentation.match.matchstat.updatematchstat.UpdateMatchStatScreen
 import com.futsalgg.app.presentation.match.result.MatchResultScreen
@@ -81,6 +82,9 @@ fun AppNavHost(
         }
         composable(Screen.CreateMatch.route) {
             CreateMatchScreen(navController)
+        }
+        composable(Screen.UpdateMatch.route) {
+            UpdateMatchScreen(navController)
         }
         composable(Screen.JoinTeam.route) {
             JoinTeamScreen(navController)

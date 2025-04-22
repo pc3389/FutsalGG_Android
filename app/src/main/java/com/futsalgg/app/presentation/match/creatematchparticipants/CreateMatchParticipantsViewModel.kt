@@ -13,6 +13,7 @@ import com.futsalgg.app.presentation.common.error.toUiError
 import com.futsalgg.app.presentation.common.model.MatchType
 import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.presentation.main.model.TeamRole
+import com.futsalgg.app.presentation.match.MatchSharedViewModel
 import com.futsalgg.app.presentation.match.matchstat.model.MatchParticipantState
 import com.futsalgg.app.presentation.match.model.Match
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,6 +26,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CreateMatchParticipantsViewModel @Inject constructor(
     private val createMatchParticipantsUseCase: CreateMatchParticipantsUseCase,
+    private val matchSharedViewModel: MatchSharedViewModel,
     private val getTeamMembersUseCase: GetTeamMembersUseCase,
     private val getMatchUseCase: GetMatchUseCase,
     private val tokenManager: ITokenManager
@@ -312,5 +314,9 @@ class CreateMatchParticipantsViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    fun updateMatchParticipantsState(newList: List<MatchParticipantState>) {
+        matchSharedViewModel.updateMatchParticipantsState(newList)
     }
 }

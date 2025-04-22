@@ -1,8 +1,6 @@
 package com.futsalgg.app.presentation.match
 
 import androidx.lifecycle.ViewModel
-import com.futsalgg.app.presentation.common.model.MatchType
-import com.futsalgg.app.presentation.main.model.TeamRole
 import com.futsalgg.app.presentation.match.matchstat.model.MatchParticipantState
 import com.futsalgg.app.presentation.match.model.Match
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -10,8 +8,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@HiltViewModel
+@Singleton
 class MatchSharedViewModel @Inject constructor() : ViewModel() {
     private val _selectedMatchId = MutableStateFlow("")
     val selectedMatchId: StateFlow<String> = _selectedMatchId
@@ -45,139 +44,7 @@ class MatchSharedViewModel @Inject constructor() : ViewModel() {
     }
 
     fun updateMatch(match: Match) {
+        _selectedMatchId.value = match.id
         _matchState.value = match
-    }
-
-    init {
-        // TODO Remove Stub..!
-        _matchState.value = Match(
-            matchDate = "2025-04-18",
-            startTime = "12:34",
-            endTime = "06:12",
-            location = "장소장소장소",
-            type = MatchType.INTRA_SQUAD
-        )
-        _matchParticipantsState.value = listOf(
-            MatchParticipantState(
-                id = "Match Participant ID",
-                matchId = "matchId",
-                teamMemberId = "teamMemberId1",
-                name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_LEADER,
-                profileUrl = "",
-                subTeam = MatchParticipantState.SubTeam.NONE,
-                createdTime = "2015.12.03"
-            ),
-            MatchParticipantState(
-                id = "Match Participant ID",
-                matchId = "matchId",
-                teamMemberId = "teamMemberId1",
-                name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_SECRETARY,
-                profileUrl = "",
-                subTeam = MatchParticipantState.SubTeam.NONE,
-                createdTime = "2015.12.03"
-            ),
-            MatchParticipantState(
-                id = "Match Participant ID",
-                matchId = "matchId",
-                teamMemberId = "teamMemberId1",
-                name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_DEPUTY_LEADER,
-                profileUrl = "",
-                subTeam = MatchParticipantState.SubTeam.NONE,
-                createdTime = "2015.12.03"
-            ),
-            MatchParticipantState(
-                id = "Match Participant ID",
-                matchId = "matchId",
-                teamMemberId = "teamMemberId1",
-                name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_MEMBER,
-                profileUrl = "",
-                subTeam = MatchParticipantState.SubTeam.NONE,
-                createdTime = "2015.12.03"
-            ),
-            MatchParticipantState(
-                id = "Match Participant ID",
-                matchId = "matchId",
-                teamMemberId = "teamMemberId1",
-                name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_LEADER,
-                profileUrl = "",
-                subTeam = MatchParticipantState.SubTeam.NONE,
-                createdTime = "2015.12.03"
-            ),
-            MatchParticipantState(
-                id = "Match Participant ID",
-                matchId = "matchId",
-                teamMemberId = "teamMemberId1",
-                name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_SECRETARY,
-                profileUrl = "",
-                subTeam = MatchParticipantState.SubTeam.NONE,
-                createdTime = "2015.12.03"
-            ),
-            MatchParticipantState(
-                id = "Match Participant ID",
-                matchId = "matchId",
-                teamMemberId = "teamMemberId1",
-                name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_DEPUTY_LEADER,
-                profileUrl = "",
-                subTeam = MatchParticipantState.SubTeam.NONE,
-                createdTime = "2015.12.03"
-            ),
-            MatchParticipantState(
-                id = "Match Participant ID",
-                matchId = "matchId",
-                teamMemberId = "teamMemberId1",
-                name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_MEMBER,
-                profileUrl = "",
-                subTeam = MatchParticipantState.SubTeam.NONE,
-                createdTime = "2015.12.03"
-            ),
-            MatchParticipantState(
-                id = "Match Participant ID",
-                matchId = "matchId",
-                teamMemberId = "teamMemberId1",
-                name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_LEADER,
-                profileUrl = "",
-                subTeam = MatchParticipantState.SubTeam.NONE,
-                createdTime = "2015.12.03"
-            ),
-            MatchParticipantState(
-                id = "Match Participant ID",
-                matchId = "matchId",
-                teamMemberId = "teamMemberId1",
-                name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_SECRETARY,
-                profileUrl = "",
-                subTeam = MatchParticipantState.SubTeam.NONE,
-                createdTime = "2015.12.03"
-            ),
-            MatchParticipantState(
-                id = "Match Participant ID",
-                matchId = "matchId",
-                teamMemberId = "teamMemberId1",
-                name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_DEPUTY_LEADER,
-                profileUrl = "",
-                subTeam = MatchParticipantState.SubTeam.NONE,
-                createdTime = "2015.12.03"
-            ),
-            MatchParticipantState(
-                id = "Match Participant ID",
-                matchId = "matchId",
-                teamMemberId = "teamMemberId1",
-                name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_MEMBER,
-                profileUrl = "",
-                subTeam = MatchParticipantState.SubTeam.NONE,
-                createdTime = "2015.12.03"
-            )
-        )
     }
 }

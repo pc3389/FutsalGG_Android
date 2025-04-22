@@ -27,7 +27,6 @@ import androidx.navigation.NavController
 import com.futsalgg.app.R
 import com.futsalgg.app.navigation.RoutePath
 import com.futsalgg.app.presentation.common.screen.BaseScreen
-import com.futsalgg.app.presentation.match.MatchSharedViewModel
 import com.futsalgg.app.ui.components.BottomButton
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer12
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer16
@@ -40,10 +39,9 @@ import com.futsalgg.app.ui.theme.FutsalggTypography
 fun UpdateMatchRoundScreen(
     navController: NavController,
     viewModel: UpdateMatchRoundViewModel = hiltViewModel(),
-    sharedViewModel: MatchSharedViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val matchState by sharedViewModel.matchState.collectAsState()
+    val matchState by viewModel.matchState.collectAsState()
     val selectedIndex = remember { mutableStateOf<Int?>(null) }
 
     BaseScreen(
