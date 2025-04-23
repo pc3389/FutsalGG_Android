@@ -13,6 +13,8 @@ data class MatchState(
 ) {
     val isFormValid: Boolean
         get() = matchDateState == DateState.Available &&
-                match.location.isNotEmpty()
+                match.location.isNotEmpty() &&
+                (!knowsStartTime || startTimeReady) &&
+                (!knowsEndTime || endTimeReady)
 
 } 

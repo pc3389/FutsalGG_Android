@@ -43,8 +43,7 @@ class CreateMatchParticipantsViewModel @Inject constructor(
 
     private val _createMatchParticipantsState = MutableStateFlow(CreateMatchParticipantsState())
 
-    private val _matchState = MutableStateFlow(Match())
-    val matchState: StateFlow<Match> = _matchState.asStateFlow()
+    val matchState = matchSharedViewModel.matchState
 
     private val _isAllSelected = MutableStateFlow(false)
 

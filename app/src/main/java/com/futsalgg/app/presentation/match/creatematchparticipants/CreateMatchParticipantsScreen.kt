@@ -187,6 +187,7 @@ fun CreateMatchParticipantsScreen(
             )
         }
 
+        // 바텀싯
         if (showBottomSheet.value) {
             ModalBottomSheet(
                 onDismissRequest = { showBottomSheet.value = false },
