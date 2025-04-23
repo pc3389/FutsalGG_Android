@@ -51,6 +51,8 @@ import com.futsalgg.app.domain.match.usecase.CreateMatchStatUseCase
 import com.futsalgg.app.domain.match.usecase.CreateMatchStatUseCaseImpl
 import com.futsalgg.app.domain.user.usecase.UploadUserProfilePictureUseCase
 import com.futsalgg.app.domain.user.usecase.UploadUserProfilePictureUseCaseImpl
+import com.futsalgg.app.domain.team.usecase.GetTeamMembersByTeamIdUseCase
+import com.futsalgg.app.domain.team.usecase.GetTeamMembersByTeamIdUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -236,5 +238,13 @@ object UseCaseModule {
         userRepository: UserRepository
     ): UploadUserProfilePictureUseCase {
         return UploadUserProfilePictureUseCaseImpl(userRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetTeamMembersByTeamIdUseCase(
+        teamMemberRepository: TeamMemberRepository
+    ): GetTeamMembersByTeamIdUseCase {
+        return GetTeamMembersByTeamIdUseCaseImpl(teamMemberRepository)
     }
 }

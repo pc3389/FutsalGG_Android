@@ -10,6 +10,11 @@ interface TeamMemberRepository {
         role: String = "TEAM-MEMBER"
     ): Result<List<TeamMember>>
 
+    suspend fun getTeamMembersByTeamId(
+        accessToken: String,
+        teamId: String
+    ): Result<List<TeamMember>>
+
     suspend fun joinTeam(
         accessToken: String,
         teamId: String

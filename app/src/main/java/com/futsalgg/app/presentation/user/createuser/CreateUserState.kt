@@ -1,9 +1,9 @@
 package com.futsalgg.app.presentation.user.createuser
 
 import android.graphics.Bitmap
-import com.futsalgg.app.domain.user.model.Gender
 import com.futsalgg.app.presentation.common.state.DateState
 import com.futsalgg.app.presentation.common.state.EditTextState
+import com.futsalgg.app.presentation.common.model.Gender
 
 data class CreateUserState(
     val nickname: String = "",

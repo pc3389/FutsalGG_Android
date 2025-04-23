@@ -4,7 +4,7 @@ import com.futsalgg.app.presentation.main.model.TeamRole
 import com.futsalgg.app.domain.team.model.TeamRole as DomainTeamRole
 
 object RoleMapper {
-    fun roleMapper(role: DomainTeamRole): TeamRole {
+    fun toPresentation(role: DomainTeamRole): TeamRole {
         return when (role) {
             DomainTeamRole.OWNER -> TeamRole.OWNER
             DomainTeamRole.TEAM_LEADER -> TeamRole.TEAM_LEADER

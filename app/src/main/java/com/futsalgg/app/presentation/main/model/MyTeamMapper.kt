@@ -10,9 +10,9 @@ object MyTeamMapper {
             teamMemberId = domain.teamMemberId,
             name = domain.name,
             logoUrl = domain.logoUrl,
-            role = RoleMapper.roleMapper(domain.role),
+            role = RoleMapper.toPresentation(domain.role),
             createdTime = domain.createdTime,
-            access = RoleMapper.roleMapper(domain.access)
+            access = RoleMapper.toPresentation(domain.access)
         )
     }
 } 

@@ -31,7 +31,7 @@ class TeamMemberRepositoryImpl @Inject constructor(
 
         if (response.isSuccessful) {
             response.body()?.let { body ->
-                Result.success(body.data.members.map { it.toDomain() })
+                Result.success(body.data.members?.map { it.toDomain(body.data.teamId) } ?: listOf())
             } ?: Result.failure(
                 DomainError.ServerError(
                     message = "[getTeamMembers] 서버 응답이 비어있습니다.",
@@ -154,7 +154,10 @@ class TeamMemberRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getTeamMemberWithId(accessToken: String, id: String): Result<TeamMemberProfile> {
+    override suspend fun getTeamMemberWithId(
+        accessToken: String,
+        id: String
+    ): Result<TeamMemberProfile> {
         return try {
             val response = teamMemberApi.getTeamMemberWithId(accessToken, id)
             if (response.isSuccessful) {
@@ -215,5 +218,39 @@ class TeamMemberRepositoryImpl @Inject constructor(
                 ) as Throwable
             )
         }
+    }
+
+    override suspend fun getTeamMembersByTeamId(
+        accessToken: String,
+        teamId: String
+    ): Result<List<TeamMember>> = try {
+        val response = teamMemberApi.getTeamMembersByTeamId("Bearer $accessToken", teamId)
+        if (response.isSuccessful) {
+            response.body()?.data?.let { data ->
+                Result.success(data.members?.map { it.toDomain(data.teamId) } ?: listOf())
+            } ?: Result.failure(
+                DomainError.ServerError(
+                    message = "[getTeamMembersByTeamId] 서버 응답이 비어있습니다.",
+                    code = response.code()
+                ) as Throwable
+            )
+        } else {
+            val errorBody = response.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
+            Result.failure(
+                DomainError.ServerError(
+                    message = "[getTeamMembersByTeamId] 서버 오류: ${errorResponse.message}",
+                    code = response.code()
+                ) as Throwable
+            )
+        }
+    } catch (e: Exception) {
+        Result.failure(
+            DomainError.UnknownError(
+                message = "[getTeamMembersByTeamId] 알 수 없는 오류가 발생했습니다.",
+                cause = e
+            ) as Throwable
+        )
     }
 } 

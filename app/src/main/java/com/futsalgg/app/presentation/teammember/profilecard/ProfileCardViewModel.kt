@@ -11,7 +11,6 @@ import com.futsalgg.app.presentation.common.error.toUiError
 import com.futsalgg.app.presentation.common.mapper.RoleMapper
 import com.futsalgg.app.presentation.common.model.MatchResult
 import com.futsalgg.app.presentation.common.state.UiState
-import com.futsalgg.app.presentation.main.model.TeamRole
 import com.futsalgg.app.util.dateToRequestFormat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -60,7 +59,7 @@ class ProfileCardViewModel @Inject constructor(
                             squadNumber = teamMember.squadNumber,
                             profileUrl = teamMember.profileUrl,
                             generation = teamMember.generation,
-                            role = RoleMapper.roleMapper(teamMember.team.role),
+                            role = RoleMapper.toPresentation(teamMember.team.role),
                             createdTime = teamMember.createdTime,
                             teamName = teamMember.team.name,
                             teamLogoUrl = null,

@@ -1,5 +1,6 @@
 package com.futsalgg.app.remote.api.user.model.response
 
+import com.futsalgg.app.remote.api.team.model.response.Gender
 import com.google.gson.annotations.SerializedName
 
 data class GetMyProfileResponse(
@@ -10,7 +11,7 @@ data class GetMyProfileResponse(
     @SerializedName("birthday")
     val birthday: String,
     @SerializedName("gender")
-    val gender: String,
+    val gender: Gender,
     @SerializedName("squadNumber")
     val squadNumber: Int?,
     @SerializedName("notification")

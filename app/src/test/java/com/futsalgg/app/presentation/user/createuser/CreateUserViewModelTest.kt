@@ -2,7 +2,7 @@ package com.futsalgg.app.presentation.user.createuser
 
 import com.futsalgg.app.core.token.FakeTokenManager
 import com.futsalgg.app.presentation.common.state.EditTextState
-import com.futsalgg.app.domain.user.model.Gender
+import com.futsalgg.app.domain.common.model.Gender
 import com.futsalgg.app.domain.user.model.UpdateProfilePhotoResponseModel
 import com.futsalgg.app.domain.user.usecase.CreateUserUseCase
 import com.futsalgg.app.presentation.common.state.DateState

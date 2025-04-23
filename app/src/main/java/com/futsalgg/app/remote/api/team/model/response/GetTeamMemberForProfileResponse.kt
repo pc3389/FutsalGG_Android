@@ -3,7 +3,7 @@ package com.futsalgg.app.remote.api.team.model.response
 import com.futsalgg.app.remote.api.team.model.TeamRole
 import com.google.gson.annotations.SerializedName
 
-data class GetTeamMemberResponse(
+data class GetTeamMemberForProfileResponse(
     @SerializedName("id")
     val id: String,
     @SerializedName("name")

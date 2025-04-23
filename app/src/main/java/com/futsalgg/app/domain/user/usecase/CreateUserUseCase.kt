@@ -1,6 +1,6 @@
 package com.futsalgg.app.domain.user.usecase
 
-import com.futsalgg.app.domain.user.model.Gender
+import com.futsalgg.app.domain.common.model.Gender
 
 interface CreateUserUseCase {
     suspend fun isNicknameUnique(nickname: String): Result<Boolean>

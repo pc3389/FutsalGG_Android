@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.futsalgg.app.domain.auth.repository.ITokenManager
 import com.futsalgg.app.domain.common.error.DomainError
 import com.futsalgg.app.domain.team.usecase.GetMyTeamUseCase
-import com.futsalgg.app.domain.user.model.Gender
+import com.futsalgg.app.domain.common.model.Gender
 import com.futsalgg.app.domain.user.usecase.GetMyProfileForSettingUseCase
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.error.toUiError

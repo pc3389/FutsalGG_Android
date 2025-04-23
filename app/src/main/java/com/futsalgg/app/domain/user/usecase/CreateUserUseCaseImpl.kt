@@ -1,6 +1,6 @@
 package com.futsalgg.app.domain.user.usecase
 
-import com.futsalgg.app.domain.user.model.Gender
+import com.futsalgg.app.domain.common.model.Gender
 import com.futsalgg.app.domain.user.repository.UserRepository
 import javax.inject.Inject
 

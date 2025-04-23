@@ -7,10 +7,11 @@ import com.futsalgg.app.domain.auth.repository.ITokenManager
 import com.futsalgg.app.domain.common.error.DomainError
 import com.futsalgg.app.domain.match.usecase.CreateMatchParticipantsUseCase
 import com.futsalgg.app.domain.match.usecase.GetMatchUseCase
-import com.futsalgg.app.domain.team.usecase.GetTeamMembersUseCase
+import com.futsalgg.app.domain.team.model.TeamMemberStatus
+import com.futsalgg.app.domain.team.usecase.GetTeamMembersByTeamIdUseCase
+import com.futsalgg.app.presentation.common.SharedViewModel
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.error.toUiError
-import com.futsalgg.app.presentation.common.model.MatchType
 import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.presentation.main.model.TeamRole
 import com.futsalgg.app.presentation.match.MatchSharedViewModel
@@ -27,7 +28,8 @@ import javax.inject.Inject
 class CreateMatchParticipantsViewModel @Inject constructor(
     private val createMatchParticipantsUseCase: CreateMatchParticipantsUseCase,
     private val matchSharedViewModel: MatchSharedViewModel,
-    private val getTeamMembersUseCase: GetTeamMembersUseCase,
+    private val getTeamMembersByTeamIdUseCase: GetTeamMembersByTeamIdUseCase,
+    private val sharedViewModel: SharedViewModel,
     private val getMatchUseCase: GetMatchUseCase,
     private val tokenManager: ITokenManager
 ) : ViewModel() {
@@ -46,138 +48,52 @@ class CreateMatchParticipantsViewModel @Inject constructor(
 
     private val _isAllSelected = MutableStateFlow(false)
 
-    // TODO Match Participants api
+    private val accessToken = tokenManager.getAccessToken()
 
     init {
-        // TODO Remove Stub..!
-        _matchState.value = Match(
-            matchDate = "2025-04-18",
-            startTime = "12:34",
-            endTime = "06:12",
-            location = "장소장소장소",
-        )
-        _matchParticipantsState.value = listOf(
-            MatchParticipantState(
-                id = "Match Participant ID",
-                matchId = "matchId",
-                teamMemberId = "teamMemberId1",
-                name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_LEADER,
-                profileUrl = "",
-                subTeam = MatchParticipantState.SubTeam.NONE,
-                createdTime = "2015.12.03"
-            ),
-            MatchParticipantState(
-                id = "Match Participant ID",
-                matchId = "matchId",
-                teamMemberId = "teamMemberId1",
-                name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_SECRETARY,
-                profileUrl = "",
-                subTeam = MatchParticipantState.SubTeam.NONE,
-                createdTime = "2015.12.03"
-            ),
-            MatchParticipantState(
-                id = "Match Participant ID",
-                matchId = "matchId",
-                teamMemberId = "teamMemberId1",
-                name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_DEPUTY_LEADER,
-                profileUrl = "",
-                subTeam = MatchParticipantState.SubTeam.NONE,
-                createdTime = "2015.12.03"
-            ),
-            MatchParticipantState(
-                id = "Match Participant ID",
-                matchId = "matchId",
-                teamMemberId = "teamMemberId1",
-                name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_MEMBER,
-                profileUrl = "",
-                subTeam = MatchParticipantState.SubTeam.NONE,
-                createdTime = "2015.12.03"
-            ),
-            MatchParticipantState(
-                id = "Match Participant ID",
-                matchId = "matchId",
-                teamMemberId = "teamMemberId1",
-                name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_LEADER,
-                profileUrl = "",
-                subTeam = MatchParticipantState.SubTeam.NONE,
-                createdTime = "2015.12.03"
-            ),
-            MatchParticipantState(
-                id = "Match Participant ID",
-                matchId = "matchId",
-                teamMemberId = "teamMemberId1",
-                name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_SECRETARY,
-                profileUrl = "",
-                subTeam = MatchParticipantState.SubTeam.NONE,
-                createdTime = "2015.12.03"
-            ),
-            MatchParticipantState(
-                id = "Match Participant ID",
-                matchId = "matchId",
-                teamMemberId = "teamMemberId1",
-                name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_DEPUTY_LEADER,
-                profileUrl = "",
-                subTeam = MatchParticipantState.SubTeam.NONE,
-                createdTime = "2015.12.03"
-            ),
-            MatchParticipantState(
-                id = "Match Participant ID",
-                matchId = "matchId",
-                teamMemberId = "teamMemberId1",
-                name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_MEMBER,
-                profileUrl = "",
-                subTeam = MatchParticipantState.SubTeam.NONE,
-                createdTime = "2015.12.03"
-            ),
-            MatchParticipantState(
-                id = "Match Participant ID",
-                matchId = "matchId",
-                teamMemberId = "teamMemberId1",
-                name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_LEADER,
-                profileUrl = "",
-                subTeam = MatchParticipantState.SubTeam.NONE,
-                createdTime = "2015.12.03"
-            ),
-            MatchParticipantState(
-                id = "Match Participant ID",
-                matchId = "matchId",
-                teamMemberId = "teamMemberId1",
-                name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_SECRETARY,
-                profileUrl = "",
-                subTeam = MatchParticipantState.SubTeam.NONE,
-                createdTime = "2015.12.03"
-            ),
-            MatchParticipantState(
-                id = "Match Participant ID",
-                matchId = "matchId",
-                teamMemberId = "teamMemberId1",
-                name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_DEPUTY_LEADER,
-                profileUrl = "",
-                subTeam = MatchParticipantState.SubTeam.NONE,
-                createdTime = "2015.12.03"
-            ),
-            MatchParticipantState(
-                id = "Match Participant ID",
-                matchId = "matchId",
-                teamMemberId = "teamMemberId1",
-                name = "닉네임닉네임닉네임쓰",
-                role = TeamRole.TEAM_MEMBER,
-                profileUrl = "",
-                subTeam = MatchParticipantState.SubTeam.NONE,
-                createdTime = "2015.12.03"
-            )
-        )
+        loadTeamMembers()
+    }
+
+    private fun loadTeamMembers() {
+        viewModelScope.launch {
+            _uiState.value = UiState.Loading
+            try {
+                if (accessToken.isNullOrEmpty()) {
+                    Log.e("CreateMatchParticipantsViewModel", "엑세스 토큰이 존재하지 않습니다")
+                    _uiState.value = UiState.Error(UiError.AuthError("엑세스 토큰이 존재하지 않습니다"))
+                    return@launch
+                }
+
+                getTeamMembersByTeamIdUseCase(accessToken, sharedViewModel.teamId.value ?: "")
+                    .onSuccess { teamMembers ->
+                        val activeMembers = teamMembers.filter { it.status == TeamMemberStatus.ACTIVE }
+                        _matchParticipantsState.value = activeMembers.map { member ->
+                            MatchParticipantState(
+                                id = "",
+                                matchId = matchSharedViewModel.matchState.value.id,
+                                teamMemberId = member.id,
+                                name = member.name,
+                                role = TeamRole.fromDomain(member.role),
+                                profileUrl = member.profileUrl ?: "",
+                                subTeam = MatchParticipantState.SubTeam.NONE,
+                                isSelected = false,
+                                createdTime = member.createdTime
+                            )
+                        }
+                        _uiState.value = UiState.Success
+                    }
+                    .onFailure { throwable ->
+                        _uiState.value = UiState.Error(
+                            (throwable as? DomainError)?.toUiError()
+                                ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
+                        )
+                    }
+            } catch (e: Exception) {
+                _uiState.value = UiState.Error(
+                    UiError.UnknownError("예기치 않은 오류가 발생했습니다: ${e.message}")
+                )
+            }
+        }
     }
 
     fun addTeamMember(teamMemberId: String) {
@@ -229,8 +145,6 @@ class CreateMatchParticipantsViewModel @Inject constructor(
         _uiState.value = UiState.Loading
         viewModelScope.launch {
             try {
-                val accessToken = tokenManager.getAccessToken()
-
                 if (accessToken.isNullOrEmpty()) {
                     Log.e("CreateTeamViewModel", "엑세스 토큰이 존재하지 않습니다")
                     _uiState.value = UiState.Error(UiError.AuthError("엑세스 토큰이 존재하지 않습니다"))
@@ -258,48 +172,6 @@ class CreateMatchParticipantsViewModel @Inject constructor(
                                 createdTime = participant.createdTime
                             )
                         }
-                        _uiState.value = UiState.Success
-                    }
-                    .onFailure { throwable ->
-                        _uiState.value = UiState.Error(
-                            (throwable as? DomainError)?.toUiError()
-                                ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
-                        )
-                    }
-            } catch (e: Exception) {
-                _uiState.value = UiState.Error(
-                    UiError.UnknownError("예기치 않은 오류가 발생했습니다: ${e.message}")
-                )
-            }
-        }
-    }
-
-    fun loadMatch(matchId: String) {
-        viewModelScope.launch {
-            _uiState.value = UiState.Loading
-            try {
-                val accessToken = tokenManager.getAccessToken()
-
-                if (accessToken.isNullOrEmpty()) {
-                    Log.e("CreateMatchParticipantsViewModel", "엑세스 토큰이 존재하지 않습니다")
-                    _uiState.value = UiState.Error(UiError.AuthError("엑세스 토큰이 존재하지 않습니다"))
-                    return@launch
-                }
-
-                getMatchUseCase(
-                    accessToken = accessToken,
-                    id = matchId
-                )
-                    .onSuccess { match ->
-                        _matchState.value = _matchState.value.copy(
-                            id = match.id,
-                            opponentTeamName = match.opponentTeamName,
-                            type = MatchType.fromDomain(match.type),
-                            matchDate = match.matchDate,
-                            startTime = match.startTime ?: "00:00",
-                            endTime = match.endTime ?: "00:00",
-                            location = match.location,
-                        )
                         _uiState.value = UiState.Success
                     }
                     .onFailure { throwable ->

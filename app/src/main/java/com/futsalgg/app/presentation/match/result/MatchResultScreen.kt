@@ -63,6 +63,7 @@ fun MatchResultScreen(
                         },
                         onResultEditClick = { match ->
                             viewModel.updateMatch(match)
+                            navController.navigate(RoutePath.CREATE_MATCH_PARTICIPANTS)
                         },
                         onDeleteClick = { match ->
                             viewModel.deleteMatch(match)

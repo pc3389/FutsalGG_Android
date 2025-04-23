@@ -1,9 +1,9 @@
 package com.futsalgg.app.data.user.repository
 
-import android.graphics.Bitmap
+import com.futsalgg.app.data.common.mapper.GenderMapper.toDomain
 import com.futsalgg.app.domain.common.error.DomainError
 import com.futsalgg.app.domain.file.repository.OkHttpFileUploader
-import com.futsalgg.app.domain.user.model.Gender
+import com.futsalgg.app.domain.common.model.Gender
 import com.futsalgg.app.domain.user.model.ProfilePresignedUrlResponseModel
 import com.futsalgg.app.domain.user.model.UpdateProfilePhotoResponseModel
 import com.futsalgg.app.domain.user.model.User
@@ -220,11 +220,7 @@ class UserRepositoryImpl @Inject constructor(
                         email = body.data.email,
                         name = body.data.name,
                         birthday = body.data.birthday,
-                        gender = when (body.data.gender) {
-                            Gender.MAN.name -> Gender.MAN
-                            Gender.WOMAN.name -> Gender.WOMAN
-                            else -> Gender.NONE
-                        },
+                        gender = body.data.gender.toDomain(),
                         squadNumber = body.data.squadNumber,
                         notification = body.data.notification,
                         profileUrl = body.data.profileUrl,
@@ -301,11 +297,7 @@ class UserRepositoryImpl @Inject constructor(
                         email = body.data.email,
                         name = body.data.name,
                         birthday = body.data.birthday,
-                        gender = when (body.data.gender) {
-                            Gender.MAN.name -> Gender.MAN
-                            Gender.WOMAN.name -> Gender.WOMAN
-                            else -> Gender.NONE
-                        },
+                        gender = body.data.gender.toDomain(),
                         squadNumber = body.data.squadNumber,
                         profileUrl = body.data.profileUrl,
                         notification = body.data.notification,
