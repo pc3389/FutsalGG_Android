@@ -164,7 +164,7 @@ fun MainScreen(
                                 image = ImageVector.vectorResource(R.drawable.img_main_team),
                                 color = FutsalggColor.mint50,
                                 onClick = {
-                                    // TODO OnClick 팀정보
+                                    navController.navigate(RoutePath.TEAM_INFO)
                                 },
                                 modifier = Modifier.weight(1f)
                             )

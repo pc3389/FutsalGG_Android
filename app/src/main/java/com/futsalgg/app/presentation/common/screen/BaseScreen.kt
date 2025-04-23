@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
 import com.futsalgg.app.presentation.common.error.UiError
+import com.futsalgg.app.presentation.common.error.getCause
 import com.futsalgg.app.presentation.common.error.getCode
 import com.futsalgg.app.presentation.common.error.getMessage
 import com.futsalgg.app.presentation.common.error.getType
@@ -29,6 +30,7 @@ fun BaseScreen(
     showMenu: Boolean = false,
     onLeftIconClick: () -> Unit = { navController.popBackStack() },
     rightIcon: ImageVector? = null,
+    rightText: String? = null,
     onRightClick: (() -> Unit)? = null,
     uiState: UiState,
     content: @Composable (PaddingValues) -> Unit
@@ -45,7 +47,8 @@ fun BaseScreen(
                 onLeftIconClick = { onLeftIconClick() },
                 rightIcon = rightIcon,
                 onRightClick = onRightClick,
-                showMenu = showMenu
+                showMenu = showMenu,
+                rightText = rightText
             )
         },
         content = content
@@ -56,6 +59,6 @@ fun BaseScreen(
     }
 
     if (uiState is UiState.Error) {
-        Log.e(screenName, "${uiState.error.getType()} - [${uiState.error.getCode()}] ${uiState.error.getMessage()}")
+        Log.e(screenName, "${uiState.error.getType()} - [${uiState.error.getCode()}] ${uiState.error.getMessage()} ${uiState.error.getCause()}")
     }
 }

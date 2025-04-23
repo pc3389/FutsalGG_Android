@@ -1,5 +1,6 @@
 package com.futsalgg.app.presentation.splash
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -27,6 +28,11 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.futsalgg.app.R
 import com.futsalgg.app.navigation.RoutePath
+import com.futsalgg.app.presentation.common.error.getCause
+import com.futsalgg.app.presentation.common.error.getCode
+import com.futsalgg.app.presentation.common.error.getMessage
+import com.futsalgg.app.presentation.common.error.getType
+import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.ui.theme.FutsalggColor
 
 @Composable
@@ -38,6 +44,8 @@ fun SplashScreen(
         LottieCompositionSpec.Asset("lottie/splash_loading_bar.json")
     )
     var isPlaying by remember { mutableStateOf(true) }
+
+    val uiState by viewModel.uiState.collectAsState()
 
     val navState by viewModel.splashState.collectAsState()
 
@@ -94,5 +102,9 @@ fun SplashScreen(
                 .align(Alignment.BottomCenter),
             isPlaying = isPlaying
         )
+    }
+
+    if (uiState is UiState.Error) {
+        Log.e(RoutePath.SPLASH, "${(uiState as UiState.Error).error.getType()} - [${(uiState as UiState.Error).error.getCode()}] ${(uiState as UiState.Error).error.getMessage()} ${(uiState as UiState.Error).error.getCause()}")
     }
 }

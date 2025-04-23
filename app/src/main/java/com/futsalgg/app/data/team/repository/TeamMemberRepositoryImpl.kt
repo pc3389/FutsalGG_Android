@@ -2,6 +2,7 @@ package com.futsalgg.app.data.team.repository
 
 import com.futsalgg.app.data.team.mapper.toDomain
 import com.futsalgg.app.domain.common.error.DomainError
+import com.futsalgg.app.domain.mapper.RoleMapper
 import com.futsalgg.app.domain.team.model.TeamMember
 import com.futsalgg.app.domain.team.model.TeamMemberProfile
 import com.futsalgg.app.domain.team.model.TeamRole
@@ -108,13 +109,7 @@ class TeamMemberRepositoryImpl @Inject constructor(
                             team = TeamMemberProfile.TeamInfo(
                                 id = data.team.id,
                                 name = data.team.name,
-                                role = when (data.team.role) {
-                                    RemoteTeamRole.OWNER -> TeamRole.OWNER
-                                    RemoteTeamRole.TEAM_LEADER -> TeamRole.TEAM_LEADER
-                                    RemoteTeamRole.TEAM_DEPUTY_LEADER -> TeamRole.TEAM_DEPUTY_LEADER
-                                    RemoteTeamRole.TEAM_SECRETARY -> TeamRole.TEAM_SECRETARY
-                                    RemoteTeamRole.TEAM_MEMBER -> TeamRole.TEAM_MEMBER
-                                }
+                                role = RoleMapper.toDomain(data.team.role)
                             ),
                             match = TeamMemberProfile.MatchInfo(
                                 total = data.match.total,

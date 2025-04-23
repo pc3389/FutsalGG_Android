@@ -31,6 +31,7 @@ import com.futsalgg.app.presentation.team.createteam.CreateTeamScreen
 import com.futsalgg.app.presentation.team.createteam.CreateTeamViewModel
 import com.futsalgg.app.presentation.team.jointeam.JoinTeamScreen
 import com.futsalgg.app.presentation.team.selectteam.SelectTeamScreen
+import com.futsalgg.app.presentation.team.teaminfo.TeamInfoScreen
 import com.futsalgg.app.presentation.teammember.profilecard.ProfileCardScreen
 import com.futsalgg.app.presentation.user.updateprofile.UpdateProfileScreen
 import com.futsalgg.app.presentation.user.updateprofile.UpdateProfileViewModel
@@ -115,6 +116,9 @@ fun AppNavHost(
         }
         composable(Screen.Splash.route) {
             SplashScreen(navController)
+        }
+        composable(Screen.TeamInfo.route) {
+            TeamInfoScreen(navController)
         }
         composable(
             route = "cropImage?uri={uri}&viewModelType={viewModelType}",

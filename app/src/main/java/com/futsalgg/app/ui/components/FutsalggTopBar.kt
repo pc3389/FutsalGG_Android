@@ -1,9 +1,11 @@
 package com.futsalgg.app.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -25,7 +27,8 @@ fun FutsalggTopBar(
     onLeftIconClick: () -> Unit,
     rightIcon: ImageVector? = null,
     onRightClick: (() -> Unit)? = null,
-    showMenu: Boolean = false
+    showMenu: Boolean = false,
+    rightText: String? = null
 ) {
     Box(
         modifier = Modifier
@@ -66,6 +69,24 @@ fun FutsalggTopBar(
                 Icon(
                     imageVector = rightIcon,
                     contentDescription = "오른쪽 아이콘"
+                )
+            }
+        }
+        rightText?.let {
+            Box(
+                modifier = Modifier.align(Alignment.CenterEnd)
+                    .clickable {
+                        onRightClick?.invoke()
+                    }
+            ) {
+                Text(
+                    text = it,
+                    style = FutsalggTypography.bold_17_200,
+                    color = FutsalggColor.mint500,
+                    modifier = Modifier.padding(
+                        horizontal = 16.dp,
+                        vertical = 12.dp
+                    )
                 )
             }
         }

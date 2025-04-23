@@ -29,6 +29,9 @@ class SplashViewModel @Inject constructor(
     private val _splashState = MutableStateFlow(SplashState())
     val splashState: StateFlow<SplashState> = _splashState.asStateFlow()
 
+    private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
+    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
+
     init {
         getProfile()
     }
@@ -61,15 +64,13 @@ class SplashViewModel @Inject constructor(
                         }
                     }
                     .onFailure { error ->
-                        Log.e("SplashScreen", "getProfile 에러 ${error.message}")
-                        UiState.Error(
+                        _uiState.value = UiState.Error(
                             (error as? DomainError)?.toUiError()
                                 ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
                         )
                     }
             } catch (e: Exception) {
-                Log.e("SplashScreen", "getProfile 에러 ${e.message}")
-                UiState.Error(UiError.UnknownError("알 수 없는 오류가 발생했습니다."))
+                _uiState.value = UiState.Error(UiError.UnknownError("알 수 없는 오류가 발생했습니다."))
             }
         }
     }
@@ -89,14 +90,13 @@ class SplashViewModel @Inject constructor(
                                 toSelectTeam = true
                             )
                         }
-                        Log.e("SplashScreen", "getProfile 에러 ${error.message}")
-                        UiState.Error(
+                        _uiState.value = UiState.Error(
                             (error as? DomainError)?.toUiError()
                                 ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
                         )
                     }
             } catch (e: Exception) {
-                UiState.Error(UiError.UnknownError("알 수 없는 오류가 발생했습니다."))
+                _uiState.value = UiState.Error(UiError.UnknownError("알 수 없는 오류가 발생했습니다."))
             }
         }
     }

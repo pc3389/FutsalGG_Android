@@ -10,8 +10,8 @@ data class GetTeamMembersResponse(
     val name: String,
     @SerializedName("logoUrl")
     val logoUrl: String?,
-    @SerializedName("members")
-    val members: List<TeamMemberDetailResponse>? = listOf()
+    @SerializedName("teamMembers")
+    val members: List<TeamMemberDetailResponse>?
 )
 
 data class TeamMemberDetailResponse(
@@ -21,12 +21,12 @@ data class TeamMemberDetailResponse(
     val name: String,
     @SerializedName("role")
     val role: TeamRole,
-    @SerializedName("profileUrl")
-    val profileUrl: String?,
     @SerializedName("birthDate")
     val birthDate: String,
     @SerializedName("generation")
     val generation: String,
+    @SerializedName("profileUrl")
+    val profileUrl: String?,
     @SerializedName("gender")
     val gender: Gender,
     @SerializedName("status")

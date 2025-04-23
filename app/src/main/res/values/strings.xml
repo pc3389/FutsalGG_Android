@@ -89,6 +89,10 @@
     <string name="create_or_update_match_result">경기 결과 등록 / 수정하기</string>
     <string name="main_manage_team">팀 관리 하기</string>
 
+    <!-- Team Info -->
+    <string name="team_info_title">팀 확인하기</string>
+    <string name="team_leave_text">탈퇴</string>
+
     <!-- CreateMatch -->
     <string name="create_match_title">경기 일정 생성하기</string>
     <string name="create_match_date">날짜</string>

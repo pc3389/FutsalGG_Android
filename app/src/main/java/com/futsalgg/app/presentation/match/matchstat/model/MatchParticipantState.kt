@@ -1,6 +1,7 @@
 package com.futsalgg.app.presentation.match.matchstat.model
 
 import com.futsalgg.app.presentation.common.model.TeamRole
+import com.futsalgg.app.presentation.common.model.TeamRole.Companion.toDomain
 
 data class MatchParticipantState(
     val id: String,
@@ -57,7 +58,7 @@ data class MatchParticipantState(
                 matchId = presentation.matchId,
                 teamMemberId = presentation.teamMemberId,
                 name = presentation.name,
-                role = TeamRole.toDomain(presentation.role),
+                role = presentation.role.toDomain(),
                 subTeam = SubTeam.toDomain(presentation.subTeam),
                 createdTime = presentation.createdTime,
                 profileUrl = presentation.profileUrl
