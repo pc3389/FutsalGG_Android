@@ -140,7 +140,7 @@ class CreateMatchParticipantsViewModel @Inject constructor(
         }
     }
 
-    fun createMatchParticipants() {
+    fun createMatchParticipants(onSuccess: () -> Unit) {
         _uiState.value = UiState.Loading
         viewModelScope.launch {
             try {
@@ -152,7 +152,7 @@ class CreateMatchParticipantsViewModel @Inject constructor(
 
                 createMatchParticipantsUseCase(
                     accessToken = accessToken,
-                    matchId = _createMatchParticipantsState.value.matchId,
+                    matchId = matchState.value.id,
                     teamMemberIds = _createMatchParticipantsState.value.teamMemberIds
                 )
                     .onSuccess { participants ->
@@ -172,6 +172,8 @@ class CreateMatchParticipantsViewModel @Inject constructor(
                             )
                         }
                         _uiState.value = UiState.Success
+                        updateMatchParticipantsState(_matchParticipantsState.value)
+                        onSuccess()
                     }
                     .onFailure { throwable ->
                         _uiState.value = UiState.Error(

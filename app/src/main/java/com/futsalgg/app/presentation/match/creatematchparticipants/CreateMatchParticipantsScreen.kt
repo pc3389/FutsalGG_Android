@@ -181,8 +181,11 @@ fun CreateMatchParticipantsScreen(
             BottomButton(
                 text = stringResource(R.string.create_match_participants_button_text),
                 onClick = {
-                    viewModel.createMatchParticipants()
-                    viewModel.updateMatchParticipantsState(matchParticipantsState.filter { it.isSelected })
+                    viewModel.createMatchParticipants(
+                        onSuccess = {
+                            navController.navigate(RoutePath.UPDATE_MATCH_ROUND)
+                        }
+                    )
                 }
             )
         }

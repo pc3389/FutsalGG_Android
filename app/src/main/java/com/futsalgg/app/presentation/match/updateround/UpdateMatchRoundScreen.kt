@@ -146,7 +146,7 @@ fun UpdateMatchRoundScreen(
                         matchId = matchState.id,
                         rounds = selectedIndex.value!!.plus(1),
                         onSuccess = {
-                            // TODO 마지막 버튼 클릭
+                            navController.navigate(RoutePath.UPDATE_MATCH_STAT)
                         }
                     )
                 }
