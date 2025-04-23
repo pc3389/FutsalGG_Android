@@ -13,7 +13,7 @@ import com.futsalgg.app.presentation.common.SharedViewModel
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.error.toUiError
 import com.futsalgg.app.presentation.common.state.UiState
-import com.futsalgg.app.presentation.main.model.TeamRole
+import com.futsalgg.app.presentation.common.model.TeamRole
 import com.futsalgg.app.presentation.match.MatchSharedViewModel
 import com.futsalgg.app.presentation.match.matchstat.model.MatchParticipantState
 import com.futsalgg.app.presentation.match.model.Match

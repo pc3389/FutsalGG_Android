@@ -8,9 +8,9 @@ import com.futsalgg.app.domain.common.error.DomainError
 import com.futsalgg.app.domain.team.usecase.GetTeamMemberForProfileUseCase
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.error.toUiError
-import com.futsalgg.app.presentation.common.mapper.RoleMapper
 import com.futsalgg.app.presentation.common.model.MatchResult
 import com.futsalgg.app.presentation.common.state.UiState
+import com.futsalgg.app.presentation.common.model.TeamRole
 import com.futsalgg.app.util.dateToRequestFormat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -59,7 +59,7 @@ class ProfileCardViewModel @Inject constructor(
                             squadNumber = teamMember.squadNumber,
                             profileUrl = teamMember.profileUrl,
                             generation = teamMember.generation,
-                            role = RoleMapper.toPresentation(teamMember.team.role),
+                            role = TeamRole.fromDomain(teamMember.team.role),
                             createdTime = teamMember.createdTime,
                             teamName = teamMember.team.name,
                             teamLogoUrl = null,

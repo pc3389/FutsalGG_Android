@@ -1,6 +1,6 @@
 package com.futsalgg.app.presentation.match.matchstat.model
 
-import com.futsalgg.app.presentation.main.model.TeamRole
+import com.futsalgg.app.presentation.common.model.TeamRole
 
 data class MatchParticipantState(
     val id: String,

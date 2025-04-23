@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.futsalgg.app.R
-import com.futsalgg.app.presentation.main.model.TeamRole
+import com.futsalgg.app.presentation.common.model.TeamRole
 import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.ui.theme.FutsalggTypography
 

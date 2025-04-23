@@ -1,6 +1,6 @@
 package com.futsalgg.app.presentation.main.model
 
-import com.futsalgg.app.presentation.common.mapper.RoleMapper
+import com.futsalgg.app.presentation.common.model.TeamRole
 import com.futsalgg.app.domain.team.model.MyTeam as DomainMyTeam
 
 object MyTeamMapper {
@@ -10,9 +10,9 @@ object MyTeamMapper {
             teamMemberId = domain.teamMemberId,
             name = domain.name,
             logoUrl = domain.logoUrl,
-            role = RoleMapper.toPresentation(domain.role),
+            role = TeamRole.fromDomain(domain.role),
             createdTime = domain.createdTime,
-            access = RoleMapper.toPresentation(domain.access)
+            access = TeamRole.fromDomain(domain.access)
         )
     }
 } 

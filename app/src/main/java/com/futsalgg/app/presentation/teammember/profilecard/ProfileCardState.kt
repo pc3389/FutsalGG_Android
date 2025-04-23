@@ -1,7 +1,7 @@
 package com.futsalgg.app.presentation.teammember.profilecard
 
 import com.futsalgg.app.presentation.common.model.MatchResult
-import com.futsalgg.app.presentation.main.model.TeamRole
+import com.futsalgg.app.presentation.common.model.TeamRole
 
 data class ProfileCardState(
     val id: String,
