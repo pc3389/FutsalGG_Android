@@ -12,9 +12,9 @@ import com.futsalgg.app.domain.user.usecase.CreateUserUseCase
 import com.futsalgg.app.domain.user.usecase.UploadUserProfilePictureUseCase
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.error.toUiError
-import com.futsalgg.app.presentation.common.mapper.GenderMapper.toDomain
 import com.futsalgg.app.presentation.common.state.DateState
 import com.futsalgg.app.presentation.common.model.Gender
+import com.futsalgg.app.presentation.common.model.toDomain
 import com.futsalgg.app.presentation.user.util.NicknameChecker
 import com.futsalgg.app.util.isValidDate
 import dagger.hilt.android.lifecycle.HiltViewModel

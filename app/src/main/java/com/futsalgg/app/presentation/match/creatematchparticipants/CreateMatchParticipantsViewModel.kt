@@ -16,7 +16,6 @@ import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.presentation.common.model.TeamRole
 import com.futsalgg.app.presentation.match.MatchSharedViewModel
 import com.futsalgg.app.presentation.match.matchstat.model.MatchParticipantState
-import com.futsalgg.app.presentation.match.model.Match
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
