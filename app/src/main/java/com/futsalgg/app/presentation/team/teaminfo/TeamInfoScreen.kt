@@ -24,6 +24,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
@@ -190,26 +192,81 @@ fun TeamInfoScreen(
                         .padding(horizontal = 16.dp)
                         .fillMaxWidth()
                 ) {
-                    // TODO Member list
                     val list = listOf("1", "1", "1", "1", "1")
                     val lastIndex = list.size - 1
-                    itemsIndexed(list) { index, item ->
-                        val roundedCorner = if (index == 0) {
-                            RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)
-                        } else if (index == lastIndex) {
-                            RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)
-                        } else null
-                        Row(
-                            modifier = Modifier
+                    itemsIndexed(listOf("1", "1", "1", "1", "1")) { index, item ->
+                        val modifier = if (list.size == 1) {
+                            val roundedCornerShape = RoundedCornerShape(8.dp)
+                            Modifier
                                 .background(
                                     FutsalggColor.white,
-                                    shape = RoundedCornerShape(8.dp)
+                                    shape = roundedCornerShape
                                 )
                                 .border(
-                                    width = 0.5.dp,
-                                    color = FutsalggColor.mono200,
-                                    shape = roundedCorner ?: RoundedCornerShape(0.dp)
+                                width = 1.dp,
+                                color = FutsalggColor.mono200,
+                                shape = roundedCornerShape,
+                            )
+                        } else if (index == 0) {
+                            val roundedCornerShape = RoundedCornerShape(
+                                topStart = 8.dp,
+                                topEnd = 8.dp,
+                                bottomStart = 0.dp,
+                                bottomEnd = 0.dp
+                            )
+                            Modifier
+                                .background(
+                                    FutsalggColor.white,
+                                    shape = roundedCornerShape
                                 )
+                                .border(
+                                width = 1.dp,
+                                color = FutsalggColor.mono200,
+                                shape = roundedCornerShape,
+                            )
+                        } else if (index == lastIndex) {
+                            val roundedCornerShape = RoundedCornerShape(
+                                topStart = 0.dp,
+                                topEnd = 0.dp,
+                                bottomStart = 8.dp,
+                                bottomEnd = 8.dp
+                            )
+                            Modifier
+                                .background(
+                                    FutsalggColor.white,
+                                    shape = roundedCornerShape
+                                )
+                                .border(
+                                width = 1.dp,
+                                color = FutsalggColor.mono200,
+                                shape = roundedCornerShape,
+                            )
+                        } else if (index == lastIndex - 1) {
+                            val roundedCornerShape = RoundedCornerShape(0.dp)
+                            Modifier
+                                .background(
+                                    FutsalggColor.white,
+                                    shape = roundedCornerShape
+                                )
+                                .sideBorder(
+                                    color = FutsalggColor.mono200
+                                )
+                        } else {
+                            val roundedCornerShape = RoundedCornerShape(0.dp)
+                            Modifier
+                                .background(
+                                    FutsalggColor.white,
+                                    shape = roundedCornerShape
+                                )
+                                .sideBorder(
+                                    color = FutsalggColor.mono200
+                                )
+                                .bottomBorder(
+                                    color = FutsalggColor.mono200
+                                )
+                        }
+                        Row(
+                            modifier = modifier
                                 .fillMaxWidth()
                                 .padding(
                                     16.dp
@@ -254,7 +311,7 @@ fun TeamInfoScreen(
                                             contentDescription = null
                                         )
                                     }
-                                    // TODO api
+                                    // TODO
                                     UserDetailText("직책")
                                     Ellipse()
                                     UserDetailText("남자")
@@ -265,13 +322,39 @@ fun TeamInfoScreen(
                                 }
                             }
                         }
-//                        HorizontalDivider(
-//                            thickness = 1.dp,
-//                            color = FutsalggColor.mono100
-//                        )
                     }
                 }
             }
         }
     }
+}
+
+fun Modifier.sideBorder(
+    color: Color
+) = this.drawWithContent {
+    drawContent()
+    drawLine(
+        color = color,
+        start = Offset(size.width - 0.5.dp.toPx(), 0.5.dp.toPx()),
+        end = Offset(size.width - 0.5.dp.toPx(), size.height - 0.5.dp.toPx()),
+        strokeWidth = 1.dp.toPx()
+    )
+    drawLine(
+        color = color,
+        start = Offset(0.5.dp.toPx(), 0.5.dp.toPx()),
+        end = Offset(0.5.dp.toPx(), size.height - 0.5.dp.toPx()),
+        strokeWidth = 1.dp.toPx()
+    )
+}
+
+fun Modifier.bottomBorder(
+    color: Color
+) = this.drawWithContent {
+    drawContent()
+    drawLine(
+        color = color,
+        start = Offset(0.5.dp.toPx(), size.height - 0.5.dp.toPx()),
+        end = Offset(size.width - 0.5.dp.toPx(), size.height - 0.5.dp.toPx()),
+        strokeWidth = 1.dp.toPx()
+    )
 }
