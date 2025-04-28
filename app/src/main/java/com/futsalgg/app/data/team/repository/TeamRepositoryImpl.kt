@@ -273,6 +273,8 @@ class TeamRepositoryImpl @Inject constructor(
                         id = body.data.id,
                         teamMemberId = body.data.teamMemberId,
                         name = body.data.name,
+                        introduction = body.data.introduction,
+                        rule = body.data.rule,
                         logoUrl = body.data.logoUrl ?: "",
                         role = when (body.data.role) {
                             RemoteTeamRole.OWNER -> TeamRole.OWNER

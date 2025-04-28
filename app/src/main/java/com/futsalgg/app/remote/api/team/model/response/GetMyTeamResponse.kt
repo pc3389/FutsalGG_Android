@@ -10,13 +10,17 @@ data class GetMyTeamResponse(
     val teamMemberId: String,
     @SerializedName("name")
     val name: String,
+    @SerializedName("introduction")
+    val introduction: String,
+    @SerializedName("rule")
+    val rule: String,
     @SerializedName("logoUrl")
     val logoUrl: String?,
     @SerializedName("role")
     val role: TeamRole,
-    @SerializedName("createdTime")
-    val createdTime: String,
     @SerializedName("access")
-    val access: TeamRole
+    val access: TeamRole,
+    @SerializedName("createdTime")
+    val createdTime: String
 )
 

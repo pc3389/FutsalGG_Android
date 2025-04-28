@@ -9,6 +9,8 @@ object MyTeamMapper {
             id = domain.id,
             teamMemberId = domain.teamMemberId,
             name = domain.name,
+            introduction = domain.introduction,
+            rule = domain.rule,
             logoUrl = domain.logoUrl,
             role = TeamRole.fromDomain(domain.role),
             createdTime = domain.createdTime,

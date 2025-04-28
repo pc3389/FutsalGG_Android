@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -53,6 +54,8 @@ fun TeamInfoScreen(
     viewModel: TeamInfoViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val teamMembersState by viewModel.teamMembersState.collectAsState()
+    val teamState by viewModel.teamState.collectAsState()
 
     BaseScreen(
         navController = navController,
@@ -70,8 +73,6 @@ fun TeamInfoScreen(
         ) {
             Column(
                 modifier = Modifier
-                    .shadow1()
-                    .shadow2()
                     .background(FutsalggColor.white)
                     .padding(horizontal = 16.dp)
             ) {
@@ -81,8 +82,7 @@ fun TeamInfoScreen(
                 ) {
                     // 아이콘
                     AsyncImage(
-                        // TODO Team URL
-                        model = "Team Profile URL",
+                        model = teamState.logoUrl,
                         contentDescription = "프로필 이미지",
                         modifier = Modifier
                             .size(80.dp)
@@ -95,8 +95,7 @@ fun TeamInfoScreen(
                     Column {
                         // 팀명
                         Text(
-                            // TODO 팀명
-                            text = "팀명",
+                            text = teamState.name,
                             style = FutsalggTypography.bold_20_300,
                             color = FutsalggColor.mono900
                         )
@@ -129,7 +128,7 @@ fun TeamInfoScreen(
                                 )
                             }
                         }
-                        Row {
+                        Row{
                             colorTextBox(
                                 // TODO 내용입력
                                 text = "내용입력"
@@ -155,7 +154,12 @@ fun TeamInfoScreen(
                 // 팀 소개
                 Column(
                     modifier = Modifier
-                        .background(FutsalggColor.mono50)
+                        .background(
+                            FutsalggColor.mono50,
+                            shape = RoundedCornerShape(
+                                topEnd = 8.dp, topStart = 8.dp
+                            )
+                        )
                         .padding(
                             horizontal = 16.dp
                         )
@@ -163,38 +167,60 @@ fun TeamInfoScreen(
                 ) {
                     VerticalSpacer16()
                     Text(
-                        // TODO 팀 소개
-                        text = "팀 소개 내용을 입력해주세요.",
+                        text = teamState.introduction,
                         style = FutsalggTypography.regular_17_200,
                         color = FutsalggColor.mono900
                     )
                     VerticalSpacer8()
-                    Text(
-                        // TODO 메모 내용 (규칙?)
-                        text = "메모 내용을 입력해주세요.",
-                        style = FutsalggTypography.light_17_200,
-                        color = FutsalggColor.mono700
-                    )
-                    VerticalSpacer16()
                 }
-                VerticalSpacer16()
             }
-            Box(
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(FutsalggColor.mono50)
             ) {
-                LazyColumn(
-                    modifier = Modifier
-                        .padding(
-                            top = 16.dp
-                        )
-                        .padding(horizontal = 16.dp)
-                        .fillMaxWidth()
-                ) {
-                    val list = listOf("1", "1", "1", "1", "1")
-                    val lastIndex = list.size - 1
-                    itemsIndexed(listOf("1", "1", "1", "1", "1")) { index, item ->
+                item {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .shadow1()
+                            .shadow2()
+                            .background(FutsalggColor.white)
+                            .padding(horizontal = 16.dp)
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .background(
+                                    color = FutsalggColor.mono50,
+                                    shape = RoundedCornerShape(
+                                        bottomEnd = 8.dp, bottomStart = 8.dp
+                                    )
+                                )
+                                .padding(
+                                    horizontal = 16.dp
+                                )
+                                .fillMaxWidth()
+                        ) {
+                            Text(
+                                text = teamState.rule,
+                                style = FutsalggTypography.light_17_200,
+                                color = FutsalggColor.mono700
+                            )
+                            VerticalSpacer16()
+                        }
+                        VerticalSpacer16()
+                    }
+                    VerticalSpacer16()
+                }
+
+                val list = teamMembersState
+                val lastIndex = list.size - 1
+                itemsIndexed(list) { index, item ->
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                    ) {
                         val modifier = if (list.size == 1) {
                             val roundedCornerShape = RoundedCornerShape(8.dp)
                             Modifier
@@ -203,10 +229,10 @@ fun TeamInfoScreen(
                                     shape = roundedCornerShape
                                 )
                                 .border(
-                                width = 1.dp,
-                                color = FutsalggColor.mono200,
-                                shape = roundedCornerShape,
-                            )
+                                    width = 1.dp,
+                                    color = FutsalggColor.mono200,
+                                    shape = roundedCornerShape,
+                                )
                         } else if (index == 0) {
                             val roundedCornerShape = RoundedCornerShape(
                                 topStart = 8.dp,
@@ -220,10 +246,10 @@ fun TeamInfoScreen(
                                     shape = roundedCornerShape
                                 )
                                 .border(
-                                width = 1.dp,
-                                color = FutsalggColor.mono200,
-                                shape = roundedCornerShape,
-                            )
+                                    width = 1.dp,
+                                    color = FutsalggColor.mono200,
+                                    shape = roundedCornerShape,
+                                )
                         } else if (index == lastIndex) {
                             val roundedCornerShape = RoundedCornerShape(
                                 topStart = 0.dp,
@@ -237,10 +263,10 @@ fun TeamInfoScreen(
                                     shape = roundedCornerShape
                                 )
                                 .border(
-                                width = 1.dp,
-                                color = FutsalggColor.mono200,
-                                shape = roundedCornerShape,
-                            )
+                                    width = 1.dp,
+                                    color = FutsalggColor.mono200,
+                                    shape = roundedCornerShape,
+                                )
                         } else if (index == lastIndex - 1) {
                             val roundedCornerShape = RoundedCornerShape(0.dp)
                             Modifier
@@ -270,11 +296,11 @@ fun TeamInfoScreen(
                                 .fillMaxWidth()
                                 .padding(
                                     16.dp
-                                )
+                                ),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
                             AsyncImage(
-                                // TODO ProfileUrl
-                                model = "item.profileUrl",
+                                model = item.profileUrl,
                                 contentDescription = "프로필 이미지",
                                 modifier = Modifier
                                     .size(56.dp)
@@ -283,17 +309,18 @@ fun TeamInfoScreen(
                                 error = painterResource(R.drawable.default_profile)
                             )
                             Spacer(Modifier.width(16.dp))
-                            Column {
-                                // TODO 닉네임
+                            Column(
+                                modifier = Modifier.weight(1f)
+                            ) {
                                 Text(
-                                    text = "닉네임",
+                                    text = item.name,
                                     style = FutsalggTypography.bold_17_200,
                                     color = FutsalggColor.mono900
                                 )
                                 VerticalSpacer4()
                                 Row(
                                     horizontalArrangement = Arrangement.spacedBy(4.dp),
-                                    verticalAlignment = Alignment.CenterVertically
+                                    verticalAlignment = Alignment.CenterVertically,
                                 ) {
                                     @Composable
                                     fun UserDetailText(text: String) {
@@ -311,15 +338,25 @@ fun TeamInfoScreen(
                                             contentDescription = null
                                         )
                                     }
-                                    // TODO
-                                    UserDetailText("직책")
+                                    UserDetailText(item.role.displayName)
                                     Ellipse()
-                                    UserDetailText("남자")
+                                    UserDetailText(item.gender.displayName)
                                     Ellipse()
-                                    UserDetailText("20대")
+                                    UserDetailText(item.generation)
                                     Ellipse()
-                                    UserDetailText("팀원")
+                                    // TODO SquadNumber
+                                    UserDetailText(item.role.displayName)
                                 }
+                            }
+                            IconButton(
+                                onClick = {
+                                    // TODO On Click forward
+                                },
+                            ) {
+                                Image(
+                                    imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_forward_16),
+                                    contentDescription = null
+                                )
                             }
                         }
                     }
