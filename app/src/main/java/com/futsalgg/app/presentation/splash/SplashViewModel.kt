@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.futsalgg.app.domain.auth.repository.ITokenManager
+import com.futsalgg.app.domain.auth.usecase.RefreshTokenUseCase
 import com.futsalgg.app.domain.common.error.DomainError
 import com.futsalgg.app.domain.team.usecase.GetMyTeamUseCase
 import com.futsalgg.app.domain.common.model.Gender
@@ -23,6 +24,7 @@ import javax.inject.Inject
 class SplashViewModel @Inject constructor(
     private val tokenManager: ITokenManager,
     private val getMyProfileForSettingUseCase: GetMyProfileForSettingUseCase,
+    private val refreshTokenUseCase: RefreshTokenUseCase,
     private val getMyTeamUseCase: GetMyTeamUseCase
 ) : ViewModel() {
 
@@ -64,9 +66,42 @@ class SplashViewModel @Inject constructor(
                         }
                     }
                     .onFailure { error ->
+                        if (error.message.equals("UNAUTHORIZED_TOKEN_AUTHENTICATION_FAILED")) {
+                            refreshTokenUseCase()
+                        }
                         _uiState.value = UiState.Error(
                             (error as? DomainError)?.toUiError()
                                 ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
+                        )
+                    }
+            } catch (e: Exception) {
+                _uiState.value = UiState.Error(UiError.UnknownError("알 수 없는 오류가 발생했습니다."))
+            }
+        }
+    }
+
+    private fun refreshTokenUseCase() {
+        viewModelScope.launch {
+            val refreshToken = tokenManager.getRefreshToken()
+
+            if (refreshToken.isNullOrEmpty()) {
+                _splashState.value = _splashState.value.copy(
+                    toLogin = true
+                )
+                return@launch
+            }
+
+            try {
+                refreshTokenUseCase(refreshToken)
+                    .onSuccess {
+                        tokenManager.saveTokens(
+                            it.accessToken, it.refreshToken
+                        )
+                        getProfile()
+                    }
+                    .onFailure { error ->
+                        _splashState.value = _splashState.value.copy(
+                            toLogin = true
                         )
                     }
             } catch (e: Exception) {

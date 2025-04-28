@@ -7,6 +7,8 @@ import com.futsalgg.app.domain.auth.usecase.AuthUseCase
 import com.futsalgg.app.domain.user.usecase.CreateUserUseCase
 import com.futsalgg.app.domain.team.usecase.CreateTeamUseCaseImpl
 import com.futsalgg.app.domain.auth.usecase.AuthUseCaseImpl
+import com.futsalgg.app.domain.auth.usecase.RefreshTokenUseCase
+import com.futsalgg.app.domain.auth.usecase.RefreshTokenUseCaseImpl
 import com.futsalgg.app.domain.match.repository.MatchParticipantRepository
 import com.futsalgg.app.domain.match.repository.MatchRepository
 import com.futsalgg.app.domain.team.repository.TeamRepository
@@ -246,5 +248,13 @@ object UseCaseModule {
         teamMemberRepository: TeamMemberRepository
     ): GetTeamMembersByTeamIdUseCase {
         return GetTeamMembersByTeamIdUseCaseImpl(teamMemberRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRefreshTokenUseCase(
+        authRepository: AuthRepository
+    ): RefreshTokenUseCase {
+        return RefreshTokenUseCaseImpl(authRepository)
     }
 }

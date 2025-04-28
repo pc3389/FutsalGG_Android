@@ -42,16 +42,16 @@ class TeamInfoViewModel @Inject constructor(
     val accessToken = tokenManager.getAccessToken()
 
     init {
-//        loadTeamMembers()
-//        getMyTeam()
-        _teamMembersState.value = listOf(
-            TeamMemberState(),
-            TeamMemberState(),
-            TeamMemberState(),
-            TeamMemberState(),
-            TeamMemberState(),
-            TeamMemberState()
-        )
+        loadTeamMembers()
+        getMyTeam()
+//        _teamMembersState.value = listOf(
+//            TeamMemberState(),
+//            TeamMemberState(),
+//            TeamMemberState(),
+//            TeamMemberState(),
+//            TeamMemberState(),
+//            TeamMemberState()
+//        )
     }
 
     private fun loadTeamMembers() {

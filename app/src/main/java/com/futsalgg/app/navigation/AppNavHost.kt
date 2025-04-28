@@ -54,7 +54,7 @@ fun AppNavHost(
 
     NavHost(
         navController = navController,
-        startDestination = Screen.TeamInfo.route
+        startDestination = Screen.Splash.route
     ) {
         composable(Screen.Login.route) {
             LoginScreen(

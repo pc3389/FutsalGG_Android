@@ -11,4 +11,6 @@ interface AuthRepository {
     suspend fun signInWithGoogleIdToken(idToken: String): Result<Unit>
 
     suspend fun getFirebaseToken(): Result<String>
+
+    suspend fun refreshToken(refreshToken: String): Result<LoginResponseModel>
 } 

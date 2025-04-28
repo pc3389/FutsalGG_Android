@@ -237,12 +237,21 @@ class UserRepositoryImpl @Inject constructor(
             val errorBody = response.errorBody()?.string()
             val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
 
-            Result.failure(
-                DomainError.ServerError(
-                    message = "[getMyProfile] 서버 오류: ${errorResponse.message}",
-                    code = response.code()
-                ) as Throwable
-            )
+            if (errorResponse.message == "UNAUTHORIZED_TOKEN_AUTHENTICATION_FAILED") {
+                Result.failure(
+                    DomainError.ServerError(
+                        message = "UNAUTHORIZED_TOKEN_AUTHENTICATION_FAILED",
+                        code = response.code()
+                    )
+                )
+            } else {
+                Result.failure(
+                    DomainError.ServerError(
+                        message = "[getMyProfile] 서버 오류: ${errorResponse.message}",
+                        code = response.code()
+                    ) as Throwable
+                )
+            }
         }
     } catch (e: IOException) {
         Result.failure(
@@ -253,7 +262,10 @@ class UserRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun updateNotification(accessToken: String, notification: Boolean): Result<Unit> = try {
+    override suspend fun updateNotification(
+        accessToken: String,
+        notification: Boolean
+    ): Result<Unit> = try {
         val response = userApi.updateNotification(
             accessToken = "Bearer $accessToken",
             request = UpdateNotificationRequest(notification)
@@ -281,7 +293,11 @@ class UserRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun updateProfile(accessToken: String, name: String, squadNumber: Int?): Result<User> = try {
+    override suspend fun updateProfile(
+        accessToken: String,
+        name: String,
+        squadNumber: Int?
+    ): Result<User> = try {
         val response = userApi.updateProfile(
             accessToken = "Bearer $accessToken",
             request = UpdateProfileRequest(

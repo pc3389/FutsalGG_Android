@@ -130,4 +130,46 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun refreshToken(refreshToken: String): Result<LoginResponseModel> {
+        return try {
+            val response = authApi.refreshToken(
+                refreshToken = "Bearer $refreshToken"
+            )
+            
+            if (response.isSuccessful) {
+                response.body()?.let { body ->
+                    Result.success(
+                        LoginResponseModel(
+                            accessToken = body.data.accessToken,
+                            refreshToken = body.data.refreshToken,
+                            isNew = body.data.isNew
+                        )
+                    )
+                } ?: Result.failure(
+                    DomainError.ServerError(
+                        message = "서버 응답이 비어있습니다.",
+                        code = response.code()
+                    ) as Throwable
+                )
+            } else {
+                val errorBody = response.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java as Class<ApiResponse<*>>)
+
+                Result.failure(
+                    DomainError.ServerError(
+                        message = "서버 오류: ${errorResponse.message}",
+                        code = response.code()
+                    ) as Throwable
+                )
+            }
+        } catch (e: IOException) {
+            Result.failure(
+                DomainError.NetworkError(
+                    message = "네트워크 연결을 확인해주세요.",
+                    cause = e
+                ) as Throwable
+            )
+        }
+    }
+
 }
