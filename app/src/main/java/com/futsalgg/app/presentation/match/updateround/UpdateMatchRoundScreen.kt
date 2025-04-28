@@ -45,7 +45,7 @@ fun UpdateMatchRoundScreen(
     val selectedIndex = remember { mutableStateOf<Int?>(null) }
 
     BaseScreen(
-        title = matchState.type.toString(),
+        title = matchState.type.displayName,
         screenName = RoutePath.UPDATE_MATCH_ROUND,
         navController = navController,
         uiState = uiState

@@ -2,18 +2,10 @@ package com.futsalgg.app.presentation.common.model
 
 import com.futsalgg.app.domain.common.model.MatchType as DomainMatchType
 
-enum class MatchType {
-    INTRA_SQUAD,
-    INTER_TEAM,
-    ALL;
-
-    override fun toString(): String {
-        return when (this) {
-            INTRA_SQUAD -> "자체전 (내전)"
-            INTER_TEAM -> "매치전 (VS)"
-            ALL -> "모두"
-        }
-    }
+enum class MatchType(val displayName: String, val directName: String) {
+    INTRA_SQUAD("자체전 (내전)", "자체전"),
+    INTER_TEAM("매치전 (VS)", "매치전"),
+    ALL("모두", "모두");
 
     companion object {
         fun fromDomain(domainType: DomainMatchType): MatchType {

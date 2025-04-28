@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 # FutsalGG_Android
 FutsalGG Android Application
+=======
+# FutsalGG Android
+>>>>>>> 3ba486f (Recent match date 구현 MainScreen)
 
 풋살 매치 관리 및 팀 관리 애플리케이션
 
@@ -29,6 +33,10 @@ FutsalGG Android Application
 
 4. 사용자 관리 (User)
    - 프로필 관리
+<<<<<<< HEAD
+=======
+   - 알림 설정
+>>>>>>> 3ba486f (Recent match date 구현 MainScreen)
 
 ### 기술 스택
 - Kotlin
@@ -50,7 +58,11 @@ app/
 │   ├── match/       # 매치 관련 화면
 │   ├── team/        # 팀 관련 화면
 │   ├── user/        # 사용자 관련 화면
+<<<<<<< HEAD
 │   └── common/      # 공통 컴포넌트
+=======
+│   └── common/      # 공통 UI 컴포넌트
+>>>>>>> 3ba486f (Recent match date 구현 MainScreen)
 │
 ├── domain/          # 비즈니스 로직
 │   ├── auth/        # 인증 도메인

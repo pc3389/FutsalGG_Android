@@ -103,7 +103,7 @@ fun MatchResultItem(
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
                         .weight(1f),
-                    text = matchType.toString(),
+                    text = matchType.displayName,
                     style = FutsalggTypography.bold_20_300
                 )
                 IconButton(

@@ -45,7 +45,7 @@ fun UpdateMatchParticipantsSubTeamScreen(
     BaseScreen(
         navController = navController,
         screenName = RoutePath.UPDATE_MATCH_PARTICIPANTS_SUB_TEAM,
-        title = matchState.type.toString(),
+        title = matchState.type.displayName,
         uiState = uiState
     ) { innerPadding ->
         Column(

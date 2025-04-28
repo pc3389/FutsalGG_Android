@@ -127,6 +127,12 @@ fun MainScreen(
                                 modifier = Modifier.weight(1f)
                             ) {
                                 Text(
+                                    text = stringResource(R.string.main_recent_match, state.recentMatchDate),
+                                    style = FutsalggTypography.regular_17_200,
+                                    color = FutsalggColor.white
+                                )
+                                Spacer(Modifier.height(4.dp))
+                                Text(
                                     text = stringResource(R.string.main_check_match_result_text),
                                     style = FutsalggTypography.bold_20_300,
                                     color = FutsalggColor.white

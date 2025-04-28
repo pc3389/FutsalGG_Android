@@ -38,6 +38,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.futsalgg.app.R
 import com.futsalgg.app.navigation.RoutePath
+import com.futsalgg.app.presentation.common.model.MatchType
 import com.futsalgg.app.presentation.common.screen.BaseScreen
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer12
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer16
@@ -130,17 +131,16 @@ fun TeamInfoScreen(
                         }
                         Row{
                             colorTextBox(
-                                // TODO 내용입력
-                                text = "내용입력"
+                                text = MatchType.INTRA_SQUAD.directName
                             )
-                            Spacer(Modifier.width(8.dp))
-                            colorTextBox(
-                                // TODO 내용입력
-                                text = "내용입력",
-                                backgroundColor = FutsalggColor.blue50,
-                                borderColor = FutsalggColor.blue200,
-                                textColor = FutsalggColor.blue500
-                            )
+                            // TODO MVP 2
+//                            Spacer(Modifier.width(8.dp))
+//                            colorTextBox(
+//                                text = MatchType.INTER_TEAM.directName,
+//                                backgroundColor = FutsalggColor.blue50,
+//                                borderColor = FutsalggColor.blue200,
+//                                textColor = FutsalggColor.blue500
+//                            )
                         }
                     }
                 }

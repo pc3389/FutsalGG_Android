@@ -88,6 +88,7 @@
     <string name="main_check_match_result_text">경기 결과를 확인해보세요.</string>
     <string name="create_or_update_match_result">경기 결과 등록 / 수정하기</string>
     <string name="main_manage_team">팀 관리 하기</string>
+    <string name="main_recent_match">%1$s에 진행한</string>
 
     <!-- Team Info -->
     <string name="team_info_title">팀 확인하기</string>

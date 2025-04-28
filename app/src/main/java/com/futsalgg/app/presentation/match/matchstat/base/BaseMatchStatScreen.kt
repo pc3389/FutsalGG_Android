@@ -32,7 +32,7 @@ fun BaseMatchStatScreen(
     BaseScreen(
         navController = navController,
         screenName = screenName,
-        title = matchState.type.toString(),
+        title = matchState.type.displayName,
         showMenu = true,
         onLeftIconClick = menuClick,
         rightIcon = ImageVector.vectorResource(R.drawable.ic_close_24),

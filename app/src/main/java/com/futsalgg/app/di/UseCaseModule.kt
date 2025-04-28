@@ -55,6 +55,8 @@ import com.futsalgg.app.domain.user.usecase.UploadUserProfilePictureUseCase
 import com.futsalgg.app.domain.user.usecase.UploadUserProfilePictureUseCaseImpl
 import com.futsalgg.app.domain.team.usecase.GetTeamMembersByTeamIdUseCase
 import com.futsalgg.app.domain.team.usecase.GetTeamMembersByTeamIdUseCaseImpl
+import com.futsalgg.app.domain.match.usecase.GetRecentMatchDateUseCase
+import com.futsalgg.app.domain.match.usecase.GetRecentMatchDateUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -256,5 +258,13 @@ object UseCaseModule {
         authRepository: AuthRepository
     ): RefreshTokenUseCase {
         return RefreshTokenUseCaseImpl(authRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetRecentMatchDateUseCase(
+        matchRepository: MatchRepository
+    ): GetRecentMatchDateUseCase {
+        return GetRecentMatchDateUseCaseImpl(matchRepository)
     }
 }

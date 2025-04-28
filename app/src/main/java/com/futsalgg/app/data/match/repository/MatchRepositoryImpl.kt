@@ -16,9 +16,12 @@ import com.google.gson.Gson
 import com.futsalgg.app.remote.api.match.model.response.MatchType as RemoteMatchType
 import java.io.IOException
 import javax.inject.Inject
+import com.futsalgg.app.domain.auth.repository.ITokenManager
+import com.futsalgg.app.remote.api.match.model.response.RecentMatchDateResponse
 
 class MatchRepositoryImpl @Inject constructor(
-    private val matchApi: MatchApi
+    private val matchApi: MatchApi,
+    private val tokenManager: ITokenManager
 ) : MatchRepository {
     override suspend fun getMatches(
         accessToken: String,
@@ -306,6 +309,46 @@ class MatchRepositoryImpl @Inject constructor(
             Result.failure(
                 DomainError.NetworkError(
                     message = "[createMatchStat] 네트워크 연결을 확인해주세요.",
+                    cause = e
+                ) as Throwable
+            )
+        }
+    }
+
+    override suspend fun getRecentMatchDate(
+        accessToken: String,
+        teamId: String
+    ): Result<String> {
+        return try {
+            val response = matchApi.getRecentMatchDate(
+                accessToken = "Bearer $accessToken",
+                teamId = teamId
+            )
+            
+            if (response.isSuccessful) {
+                response.body()?.let { body ->
+                    Result.success(body.data.matchDate)
+                } ?: Result.failure(
+                    DomainError.ServerError(
+                        code = response.code(),
+                        message = "[getRecentMatchDate] 서버 응답이 비어있습니다."
+                    ) as Throwable
+                )
+            } else {
+                val errorBody = response.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java as Class<ApiResponse<*>>)
+
+                Result.failure(
+                    DomainError.ServerError(
+                        code = response.code(),
+                        message = "[getRecentMatchDate] 서버 오류: ${errorResponse.message}"
+                    ) as Throwable
+                )
+            }
+        } catch (e: IOException) {
+            Result.failure(
+                DomainError.NetworkError(
+                    message = "[getRecentMatchDate] 네트워크 연결을 확인해주세요.",
                     cause = e
                 ) as Throwable
             )

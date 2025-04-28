@@ -55,4 +55,9 @@ interface MatchRepository {
         statType: MatchStat.StatType,
         assistedMatchStatId: String?
     ): Result<MatchStat>
+
+    suspend fun getRecentMatchDate(
+        accessToken: String,
+        teamId: String
+    ): Result<String>
 } 
