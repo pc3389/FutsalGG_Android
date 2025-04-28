@@ -27,6 +27,8 @@ data class TeamMemberDetailResponse(
     val generation: String,
     @SerializedName("profileUrl")
     val profileUrl: String?,
+    @SerializedName("squadNumber")
+    val squadNumber: Int,
     @SerializedName("gender")
     val gender: Gender,
     @SerializedName("status")

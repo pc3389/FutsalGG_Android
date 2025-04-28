@@ -31,6 +31,8 @@ import com.futsalgg.app.R
 import com.futsalgg.app.domain.common.model.MatchType
 import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.ui.theme.FutsalggTypography
+import com.futsalgg.app.util.shadow1
+import com.futsalgg.app.util.shadow2
 import com.futsalgg.app.util.toPx
 
 @Composable
@@ -88,10 +90,8 @@ fun <T : Enum<T>> DropdownBox(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .shadow(
-                                elevation = 2.dp,
-                                shape = RoundedCornerShape(8.dp)
-                            )
+                            .shadow1()
+                            .shadow2()
                             .clip(RoundedCornerShape(8.dp))
                             .background(FutsalggColor.white)
                             .border(

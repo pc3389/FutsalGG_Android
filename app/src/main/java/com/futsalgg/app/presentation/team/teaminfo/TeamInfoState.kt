@@ -17,6 +17,7 @@ data class TeamMemberState(
     val profileUrl: String = "",
     val birthDate: String = "",
     val generation: String = "20대",
+    val squadNumber: Int? = null,
     val gender: Gender = Gender.NONE,
     val status: TeamMemberStatus = TeamMemberStatus.ACTIVE,
     val createdTime: String = "",
@@ -54,6 +55,7 @@ data class TeamMemberState(
                 profileUrl = domain.profileUrl ?: "",
                 birthDate = domain.birthDate,
                 generation = domain.generation,
+                squadNumber = domain.squadNumber,
                 gender = domain.gender.fromDomain(),
                 status = domain.status.fromDomain(),
                 createdTime = domain.createdTime,
@@ -71,6 +73,7 @@ data class TeamMemberState(
                 generation = presentation.generation,
                 gender = presentation.gender.toDomain(),
                 status = presentation.status.toDomain(),
+                squadNumber = presentation.squadNumber,
                 createdTime = presentation.createdTime,
                 teamId = presentation.teamId
             )

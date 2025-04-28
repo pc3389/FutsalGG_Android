@@ -12,6 +12,7 @@ data class TeamMember(
     val generation: String,
     val gender: Gender,
     val status: TeamMemberStatus = ACTIVE,
+    val squadNumber: Int?,
     val createdTime: String,
     val teamId: String
 )

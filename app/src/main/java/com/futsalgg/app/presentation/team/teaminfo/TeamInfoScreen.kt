@@ -344,8 +344,7 @@ fun TeamInfoScreen(
                                     Ellipse()
                                     UserDetailText(item.generation)
                                     Ellipse()
-                                    // TODO SquadNumber
-                                    UserDetailText(item.role.displayName)
+                                    UserDetailText(item.squadNumber.toString())
                                 }
                             }
                             IconButton(

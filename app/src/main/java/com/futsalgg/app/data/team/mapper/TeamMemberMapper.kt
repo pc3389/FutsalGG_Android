@@ -19,6 +19,7 @@ fun TeamMemberDetailResponse.toDomain(teamId: String): TeamMember = TeamMember(
         TeamMemberStatus.PENDING.name -> TeamMemberStatus.PENDING
         else -> TeamMemberStatus.INACTIVE
     },
+    squadNumber = squadNumber,
     createdTime = createdTime,
     teamId = teamId
 ) 
