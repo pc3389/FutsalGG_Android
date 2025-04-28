@@ -19,11 +19,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import coil.request.CachePolicy
+import coil.request.ImageRequest
 import com.futsalgg.app.R
 import com.futsalgg.app.presentation.match.matchstat.model.MatchParticipantState
 import com.futsalgg.app.ui.theme.FutsalggColor
@@ -36,7 +39,6 @@ fun SelectableMathParticipantBox(
     isSelected: Boolean = participant.isSelected,
     @DrawableRes iconTrue : Int = R.drawable.ic_checkbox_true_24,
     @DrawableRes iconFalse : Int = R.drawable.ic_checkbox_false_24
-
 ) {
     val imageResource =
         if (isSelected) iconTrue else iconFalse
@@ -81,7 +83,10 @@ fun SelectableMathParticipantBox(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     AsyncImage(
-                        model = participant.profileUrl,
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(participant.profileUrl)
+                            .memoryCachePolicy(CachePolicy.ENABLED)  // 메모리 캐시 활성화
+                            .build(),
                         contentDescription = "프로필 이미지",
                         modifier = Modifier
                             .size(32.dp)

@@ -162,7 +162,7 @@ class CreateMatchParticipantsViewModel @Inject constructor(
                                 teamMemberId = participant.teamMemberId,
                                 name = participant.name,
                                 role = TeamRole.fromDomain(participant.role),
-                                profileUrl = "",
+                                profileUrl = participant.profileUrl,
                                 subTeam = when (participant.subTeam.name) {
                                     "A" -> MatchParticipantState.SubTeam.A
                                     else -> MatchParticipantState.SubTeam.B
@@ -170,9 +170,9 @@ class CreateMatchParticipantsViewModel @Inject constructor(
                                 createdTime = participant.createdTime
                             )
                         }
-                        _uiState.value = UiState.Success
                         updateMatchParticipantsState(_matchParticipantsState.value)
                         onSuccess()
+                        _uiState.value = UiState.Success
                     }
                     .onFailure { throwable ->
                         _uiState.value = UiState.Error(
