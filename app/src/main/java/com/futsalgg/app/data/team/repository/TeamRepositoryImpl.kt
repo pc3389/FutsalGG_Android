@@ -359,4 +359,35 @@ class TeamRepositoryImpl @Inject constructor(
             ) as Throwable
         )
     }
+
+    override suspend fun rejectTeamMember(
+        accessToken: String,
+        teamMemberId: String
+    ): Result<Unit> = try {
+        val response = teamApi.rejectTeamMember(
+            accessToken = "Bearer $accessToken",
+            teamMemberId = teamMemberId
+        )
+        
+        if (response.isSuccessful) {
+            Result.success(Unit)
+        } else {
+            val errorBody = response.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
+            Result.failure(
+                DomainError.ServerError(
+                    message = "[rejectTeamMember] 서버 오류: ${errorResponse.message}",
+                    code = response.code()
+                ) as Throwable
+            )
+        }
+    } catch (e: IOException) {
+        Result.failure(
+            DomainError.NetworkError(
+                message = "[rejectTeamMember] 네트워크 연결을 확인해주세요.",
+                cause = e
+            ) as Throwable
+        )
+    }
 } 

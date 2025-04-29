@@ -16,6 +16,7 @@ import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Query
 import retrofit2.http.Path
+import retrofit2.http.DELETE
 
 interface TeamApi {
     @GET("teams/check-nickname")
@@ -53,7 +54,13 @@ interface TeamApi {
 
     @PATCH("team-members/{id}/status/accepted")
     suspend fun acceptTeamMember(
-        @Header("Authorization") accessToken: String,
-        @Path("id") teamMemberId: String
-    ): Response<ApiResponse<Unit>>
+        @Path("id") teamMemberId: String,
+        @Header("Authorization") accessToken: String
+    ): Response<Unit>
+
+    @DELETE("team-members/{id}")
+    suspend fun rejectTeamMember(
+        @Path("id") teamMemberId: String,
+        @Header("Authorization") accessToken: String
+    ): Response<Unit>
 } 

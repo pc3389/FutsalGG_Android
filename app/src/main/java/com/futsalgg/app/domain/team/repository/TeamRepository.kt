@@ -33,4 +33,9 @@ interface TeamRepository {
         accessToken: String,
         teamMemberId: String
     ): Result<Unit>
+
+    suspend fun rejectTeamMember(
+        accessToken: String,
+        teamMemberId: String
+    ): Result<Unit>
 } 
