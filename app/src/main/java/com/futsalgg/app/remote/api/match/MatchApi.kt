@@ -63,7 +63,7 @@ interface MatchApi {
         @Body request: UpdateMatchParticipantsSubTeamRequest
     ): Response<Unit>
 
-    @PATCH("match/{id}/rounds")
+    @PATCH("matches/{id}/rounds")
     suspend fun updateMatchRounds(
         @Header("Authorization") accessToken: String,
         @Path("id") matchId: String,
@@ -79,7 +79,7 @@ interface MatchApi {
     @GET("match-stats")
     suspend fun getMatchStats(
         @Header("Authorization") accessToken: String,
-        @Query("match-id") matchId: String
+        @Query("matchId") matchId: String
     ): Response<ApiResponse<GetMatchStatsResponse>>
 
     @POST("match-stats")

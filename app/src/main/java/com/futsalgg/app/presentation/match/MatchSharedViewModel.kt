@@ -12,8 +12,6 @@ import javax.inject.Singleton
 
 @Singleton
 class MatchSharedViewModel @Inject constructor() : ViewModel() {
-    private val _selectedMatchId = MutableStateFlow("")
-    val selectedMatchId: StateFlow<String> = _selectedMatchId
 
     private val _matchParticipantsState = MutableStateFlow<List<MatchParticipantState>>(emptyList())
     val matchParticipantsState: StateFlow<List<MatchParticipantState>> =
@@ -24,10 +22,6 @@ class MatchSharedViewModel @Inject constructor() : ViewModel() {
 
     fun updateMatchParticipantsState(newList: List<MatchParticipantState>) {
         _matchParticipantsState.value = newList
-    }
-
-    fun updateSelectedMatchId(id: String) {
-        _selectedMatchId.value = id
     }
 
     fun updateParticipantSubteam(index: Int) {
@@ -44,7 +38,6 @@ class MatchSharedViewModel @Inject constructor() : ViewModel() {
     }
 
     fun updateMatch(match: Match) {
-        _selectedMatchId.value = match.id
         _matchState.value = match
     }
 }

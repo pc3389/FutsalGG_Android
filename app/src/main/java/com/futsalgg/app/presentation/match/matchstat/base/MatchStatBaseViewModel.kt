@@ -36,30 +36,28 @@ abstract class MatchStatBaseViewModel(
 
     val matchState = matchSharedViewModel.matchState
 
-    // TODO MatchId
     fun initial(onSuccess: (List<RoundStats>) -> Unit) {
         loadMatchStats(
-            matchId = "",
+            matchId = matchSharedViewModel.matchState.value.id,
             onSuccess = onSuccess
         )
         loadParticipants(
-            matchId = ""
+            matchId = matchSharedViewModel.matchState.value.id
         )
     }
 
-    // TODO Uncomment when removing stub
     protected val accessToken by lazy {
-//        val token = tokenManager.getAccessToken()
-//
-//        if (token.isNullOrEmpty()) {
-//            Log.e("CreateTeamViewModel", "엑세스 토큰이 존재하지 않습니다")
-//            uiState.value = UiState.Error(UiError.AuthError("엑세스 토큰이 존재하지 않습니다"))
-//        }
-//
-//        token
-        ""
+        val token = tokenManager.getAccessToken()
+
+        if (token.isNullOrEmpty()) {
+            Log.e("CreateTeamViewModel", "엑세스 토큰이 존재하지 않습니다")
+            uiState.value = UiState.Error(UiError.AuthError("엑세스 토큰이 존재하지 않습니다"))
+        }
+
+        token
     }
 
+    // TODO API 업데이트후 재방문
     private fun loadMatchStats(
         matchId: String,
         onSuccess: (List<RoundStats>) -> Unit
