@@ -149,30 +149,6 @@ fun TeamInfoScreen(
                     thickness = 1.dp,
                     color = FutsalggColor.mono100
                 )
-                VerticalSpacer16()
-
-                // 팀 소개
-                Column(
-                    modifier = Modifier
-                        .background(
-                            FutsalggColor.mono50,
-                            shape = RoundedCornerShape(
-                                topEnd = 8.dp, topStart = 8.dp
-                            )
-                        )
-                        .padding(
-                            horizontal = 16.dp
-                        )
-                        .fillMaxWidth()
-                ) {
-                    VerticalSpacer16()
-                    Text(
-                        text = teamState.introduction,
-                        style = FutsalggTypography.regular_17_200,
-                        color = FutsalggColor.mono900
-                    )
-                    VerticalSpacer8()
-                }
             }
             LazyColumn(
                 modifier = Modifier
@@ -188,19 +164,25 @@ fun TeamInfoScreen(
                             .background(FutsalggColor.white)
                             .padding(horizontal = 16.dp)
                     ) {
+                        VerticalSpacer16()
                         Column(
                             modifier = Modifier
                                 .background(
                                     color = FutsalggColor.mono50,
-                                    shape = RoundedCornerShape(
-                                        bottomEnd = 8.dp, bottomStart = 8.dp
-                                    )
+                                    shape = RoundedCornerShape(8.dp)
                                 )
                                 .padding(
                                     horizontal = 16.dp
                                 )
                                 .fillMaxWidth()
                         ) {
+                            VerticalSpacer16()
+                            Text(
+                                text = teamState.introduction,
+                                style = FutsalggTypography.regular_17_200,
+                                color = FutsalggColor.mono900
+                            )
+                            VerticalSpacer8()
                             Text(
                                 text = teamState.rule,
                                 style = FutsalggTypography.light_17_200,
