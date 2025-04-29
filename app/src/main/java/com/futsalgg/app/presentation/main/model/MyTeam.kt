@@ -12,5 +12,7 @@ data class MyTeam(
     val role: TeamRole = TeamRole.TEAM_MEMBER,
     val createdTime: String = "",
     val access: TeamRole = TeamRole.TEAM_LEADER,
-)
+) {
+    val isManager = role.rank <= access.rank
+}
 

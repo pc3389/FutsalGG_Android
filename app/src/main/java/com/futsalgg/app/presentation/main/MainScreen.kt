@@ -74,7 +74,8 @@ fun MainScreen(
             )
             .windowInsetsPadding(WindowInsets.systemBars),
         topBar = {
-            MainScreenTopBar(state.myTeam.name,
+            MainScreenTopBar(
+                state.myTeam.name,
                 onRightIconClick = {
                     navController.navigate(RoutePath.SETTING)
                 },
@@ -127,7 +128,10 @@ fun MainScreen(
                                 modifier = Modifier.weight(1f)
                             ) {
                                 Text(
-                                    text = stringResource(R.string.main_recent_match, state.recentMatchDate),
+                                    text = stringResource(
+                                        R.string.main_recent_match,
+                                        state.recentMatchDate
+                                    ),
                                     style = FutsalggTypography.regular_17_200,
                                     color = FutsalggColor.white
                                 )
@@ -180,39 +184,39 @@ fun MainScreen(
                     Spacer(Modifier.height(16.dp))
                 }
             }
-//            if (state.myTeam?.isManager == true) {
-            if (!showAdminMenu) {
-                FloatingActionButton(
-                    onClick = {
-                        showAdminMenu = true
-                    },
-                    modifier = Modifier
-                        .padding(end = 16.dp, bottom = 32.dp)
-                        .align(Alignment.BottomEnd)
-                        .height(56.dp),
-                    containerColor = FutsalggColor.mono800,
-                    shape = RoundedCornerShape(28.dp)
-                ) {
-                    Row(
+            if (state.myTeam.isManager) {
+                if (!showAdminMenu) {
+                    FloatingActionButton(
+                        onClick = {
+                            showAdminMenu = true
+                        },
                         modifier = Modifier
-                            .padding(horizontal = 16.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                            .padding(end = 16.dp, bottom = 32.dp)
+                            .align(Alignment.BottomEnd)
+                            .height(56.dp),
+                        containerColor = FutsalggColor.mono800,
+                        shape = RoundedCornerShape(28.dp)
                     ) {
-                        Image(
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_add_white_16),
-                            contentDescription = ""
-                        )
-                        Spacer(Modifier.width(8.dp))
+                        Row(
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Image(
+                                imageVector = ImageVector.vectorResource(R.drawable.ic_add_white_16),
+                                contentDescription = ""
+                            )
+                            Spacer(Modifier.width(8.dp))
 
-                        Text(
-                            text = "관리자 메뉴",
-                            style = FutsalggTypography.bold_20_300,
-                            color = FutsalggColor.white
-                        )
+                            Text(
+                                text = "관리자 메뉴",
+                                style = FutsalggTypography.bold_20_300,
+                                color = FutsalggColor.white
+                            )
+                        }
                     }
                 }
             }
-//            }
             if (showAdminMenu) {
                 AdminMenuPopup(
                     onDismiss = { showAdminMenu = false },
@@ -223,8 +227,7 @@ fun MainScreen(
                         navController.navigate(RoutePath.MATCH_RESULT)
                     },
                     onClickManageTeam = {
-                        // TODO Team Manage page
-//                        navController.navigate(RoutePath.MANAGE_TEAM)
+                        navController.navigate(RoutePath.MANAGE_TEAM)
                     }
                 )
             }
@@ -280,7 +283,8 @@ fun AdminMenuPopup(
                         text = stringResource(R.string.create_match_title),
                         style = FutsalggTypography.bold_17_200,
                         color = FutsalggColor.mono900,
-                        modifier = Modifier.align(Alignment.Center)
+                        modifier = Modifier
+                            .align(Alignment.Center)
                             .padding(vertical = 12.dp)
                     )
                 }
@@ -297,7 +301,8 @@ fun AdminMenuPopup(
                         text = stringResource(R.string.create_or_update_match_result),
                         style = FutsalggTypography.bold_17_200,
                         color = FutsalggColor.mono900,
-                        modifier = Modifier.align(Alignment.Center)
+                        modifier = Modifier
+                            .align(Alignment.Center)
                             .padding(vertical = 12.dp)
                     )
                 }
@@ -314,7 +319,8 @@ fun AdminMenuPopup(
                         text = stringResource(R.string.main_manage_team),
                         style = FutsalggTypography.bold_17_200,
                         color = FutsalggColor.mono900,
-                        modifier = Modifier.align(Alignment.Center)
+                        modifier = Modifier
+                            .align(Alignment.Center)
                             .padding(vertical = 12.dp)
                     )
                 }

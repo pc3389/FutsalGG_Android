@@ -30,6 +30,7 @@
     <string name="delete_text">삭제</string>
     <string name="update_text">수정하기</string>
     <string name="inactive_text">휴면</string>
+    <string name="time_unknown_text">미정</string>
 
     <!-- DateFormat -->
     <string name="date_format_dot_md">MM.dd</string>
@@ -104,7 +105,6 @@
     <string name="create_match_end_time_title">경기 종료 시간</string>
     <string name="create_match_opponent_title">상대 팀</string>
     <string name="create_match_time_known">예정</string>
-    <string name="create_match_time_unknown">미정</string>
     <string name="create_match_sub_editor">대리 기록자 선택</string>
 
     <!-- UpdateMatch -->

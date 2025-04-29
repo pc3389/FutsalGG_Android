@@ -47,13 +47,13 @@ import com.futsalgg.app.util.shadow2
 @Composable
 fun UpdateTeamScreen(
     navController: NavController,
-    viewModel: UpdateTeamViewModel = hiltViewModel()
+    viewModel: ManageTeamViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     BaseScreen(
         navController = navController,
-        screenName = RoutePath.UPDATE_TEAM,
+        screenName = RoutePath.MANAGE_TEAM,
         title = stringResource(R.string.update_team_title_text),
         uiState = uiState,
         rightIcon = ImageVector.vectorResource(R.drawable.ic_meatball_menu),

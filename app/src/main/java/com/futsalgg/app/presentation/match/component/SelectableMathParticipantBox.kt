@@ -102,7 +102,7 @@ fun SelectableMathParticipantBox(
                 color = FutsalggColor.mono900,
                 textAlign = TextAlign.Center
             )
-            Spacer(Modifier.width(8.dp))
+            Spacer(Modifier.width(16.dp))
         }
     }
 

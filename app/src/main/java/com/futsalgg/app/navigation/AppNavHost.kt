@@ -55,7 +55,7 @@ fun AppNavHost(
 
     NavHost(
         navController = navController,
-        startDestination = Screen.UpdateTeam.route
+        startDestination = Screen.Splash.route
     ) {
         composable(Screen.Login.route) {
             LoginScreen(
@@ -121,7 +121,7 @@ fun AppNavHost(
         composable(Screen.TeamInfo.route) {
             TeamInfoScreen(navController)
         }
-        composable(Screen.UpdateTeam.route) {
+        composable(Screen.ManageTeam.route) {
             UpdateTeamScreen(navController)
         }
         composable(

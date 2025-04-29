@@ -95,9 +95,10 @@ fun CreateMatchParticipantsScreen(
                 )
                 VerticalSpacer4()
 
+                val unknownTime = stringResource(R.string.time_unknown_text)
                 // 시간
                 Text(
-                    text = "${matchState.startTime} ~ ${matchState.endTime}",
+                    text = "${matchState.startTime ?: unknownTime} ~ ${matchState.endTime ?: unknownTime}",
                     style = FutsalggTypography.bold_20_300,
                     color = FutsalggColor.mono900
                 )

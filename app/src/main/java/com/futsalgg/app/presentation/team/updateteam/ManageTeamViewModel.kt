@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class UpdateTeamViewModel @Inject constructor(): ViewModel() {
+class ManageTeamViewModel @Inject constructor(): ViewModel() {
     private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 }
