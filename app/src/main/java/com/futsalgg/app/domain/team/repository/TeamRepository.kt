@@ -28,4 +28,9 @@ interface TeamRepository {
     suspend fun searchTeams(name: String): Result<SearchTeamResponseModel>
 
     suspend fun getMyTeam(accessToken: String): Result<MyTeam>
+
+    suspend fun acceptTeamMember(
+        accessToken: String,
+        teamMemberId: String
+    ): Result<Unit>
 } 

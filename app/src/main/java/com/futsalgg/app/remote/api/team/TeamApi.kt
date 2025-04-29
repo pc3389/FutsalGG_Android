@@ -15,6 +15,7 @@ import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Query
+import retrofit2.http.Path
 
 interface TeamApi {
     @GET("teams/check-nickname")
@@ -49,4 +50,10 @@ interface TeamApi {
     suspend fun getMyTeam(
         @Header("Authorization") accessToken: String
     ): Response<ApiResponse<GetMyTeamResponse>>
+
+    @PATCH("team-members/{id}/status/accepted")
+    suspend fun acceptTeamMember(
+        @Header("Authorization") accessToken: String,
+        @Path("id") teamMemberId: String
+    ): Response<ApiResponse<Unit>>
 } 
