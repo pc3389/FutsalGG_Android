@@ -37,8 +37,8 @@ fun SelectableMathParticipantBox(
     onClick: () -> Unit,
     participant: MatchParticipantState,
     isSelected: Boolean = participant.isSelected,
-    @DrawableRes iconTrue : Int = R.drawable.ic_checkbox_true_24,
-    @DrawableRes iconFalse : Int = R.drawable.ic_checkbox_false_24
+    @DrawableRes iconTrue: Int = R.drawable.ic_checkbox_true_24,
+    @DrawableRes iconFalse: Int = R.drawable.ic_checkbox_false_24
 ) {
     val imageResource =
         if (isSelected) iconTrue else iconFalse
@@ -73,43 +73,37 @@ fun SelectableMathParticipantBox(
                 imageVector = ImageVector.vectorResource(imageResource),
                 contentDescription = ""
             )
-            Box(
+            Spacer(Modifier.width(16.dp))
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(participant.profileUrl)
+                    .memoryCachePolicy(CachePolicy.ENABLED)  // 메모리 캐시 활성화
+                    .build(),
+                contentDescription = "프로필 이미지",
                 modifier = Modifier
-                    .padding(end = 16.dp)
-                    .weight(1f)
-            ) {
-                Row(
-                    modifier = Modifier.align(Alignment.Center),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    AsyncImage(
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data(participant.profileUrl)
-                            .memoryCachePolicy(CachePolicy.ENABLED)  // 메모리 캐시 활성화
-                            .build(),
-                        contentDescription = "프로필 이미지",
-                        modifier = Modifier
-                            .size(32.dp)
-                            .clip(CircleShape),
-                        placeholder = painterResource(R.drawable.default_profile),
-                        error = painterResource(R.drawable.default_profile)
-                    )
-                    Spacer(Modifier.width(16.dp))
-                    Text(
-                        text = participant.name,
-                        style = FutsalggTypography.bold_17_200,
-                        color = FutsalggColor.mono900
-                    )
-                    Spacer(Modifier.width(8.dp))
-                    Text(
-                        modifier = Modifier.width(44.dp),
-                        text = participant.role.displayName,
-                        style = FutsalggTypography.regular_17_200,
-                        color = FutsalggColor.mono900,
-                        textAlign = TextAlign.Center
-                    )
-                }
-            }
+                    .size(32.dp)
+                    .clip(CircleShape),
+                placeholder = painterResource(R.drawable.default_profile),
+                error = painterResource(R.drawable.default_profile)
+            )
+            Spacer(Modifier.width(16.dp))
+            Text(
+                modifier = Modifier.weight(1f),
+                text = participant.name,
+                style = FutsalggTypography.bold_17_200,
+                color = FutsalggColor.mono900,
+                textAlign = TextAlign.Center
+            )
+            Spacer(Modifier.width(8.dp))
+            Text(
+                modifier = Modifier.width(44.dp),
+                text = participant.role.displayName,
+                style = FutsalggTypography.regular_17_200,
+                color = FutsalggColor.mono900,
+                textAlign = TextAlign.Center
+            )
+            Spacer(Modifier.width(8.dp))
         }
     }
+
 }

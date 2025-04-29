@@ -21,4 +21,5 @@ object RoutePath {
     const val CHECK_MATCH_STAT = "CheckMatchStat"
     const val UPDATE_MATCH_STAT = "UpdateMatchStat"
     const val TEAM_INFO = "TeamInfo"
+    const val UPDATE_TEAM = "UpdateTeam"
 }

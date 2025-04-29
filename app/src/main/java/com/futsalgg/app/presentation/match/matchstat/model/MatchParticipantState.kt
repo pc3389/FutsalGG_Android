@@ -4,15 +4,15 @@ import com.futsalgg.app.presentation.common.model.TeamRole
 import com.futsalgg.app.presentation.common.model.TeamRole.Companion.toDomain
 
 data class MatchParticipantState(
-    val id: String,
-    val matchId: String,
-    val teamMemberId: String,
-    val name: String,
-    val role: TeamRole,
-    val profileUrl: String,
-    val subTeam: SubTeam,
+    val id: String = "",
+    val matchId: String = "",
+    val teamMemberId: String = "",
+    val name: String = "",
+    val role: TeamRole = TeamRole.TEAM_MEMBER,
+    val profileUrl: String = "",
+    val subTeam: SubTeam = SubTeam.A,
     val isSelected: Boolean = false,
-    val createdTime: String
+    val createdTime: String = ""
 ) {
     enum class SubTeam {
         NONE,
