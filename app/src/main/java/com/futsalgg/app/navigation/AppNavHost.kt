@@ -32,7 +32,7 @@ import com.futsalgg.app.presentation.team.createteam.CreateTeamViewModel
 import com.futsalgg.app.presentation.team.jointeam.JoinTeamScreen
 import com.futsalgg.app.presentation.team.selectteam.SelectTeamScreen
 import com.futsalgg.app.presentation.team.teaminfo.TeamInfoScreen
-import com.futsalgg.app.presentation.team.updateteam.UpdateTeamScreen
+import com.futsalgg.app.presentation.team.manageteam.UpdateTeamScreen
 import com.futsalgg.app.presentation.teammember.profilecard.ProfileCardScreen
 import com.futsalgg.app.presentation.user.updateprofile.UpdateProfileScreen
 import com.futsalgg.app.presentation.user.updateprofile.UpdateProfileViewModel

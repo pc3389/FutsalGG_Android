@@ -1,4 +1,4 @@
-package com.futsalgg.app.presentation.team.updateteam
+package com.futsalgg.app.presentation.team.manageteam
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

@@ -1,4 +1,4 @@
-package com.futsalgg.app.presentation.team.updateteam
+package com.futsalgg.app.presentation.team.manageteam
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
