@@ -22,7 +22,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -41,9 +40,14 @@ fun UserInfoRow(
     name: String,
     role: TeamRole,
     status: TeamMemberState.TeamMemberStatus,
-    endIcon: ImageVector? = ImageVector.vectorResource(R.drawable.ic_arrow_forward_16),
+    endIcon: ImageVector? = null,
     onClick: () -> Unit
 ) {
+    val newModifier = if (status == TeamMemberState.TeamMemberStatus.PENDING) {
+        modifier.clickable {
+            onClick()
+        }
+    } else modifier
     Box(
         modifier = Modifier
             .padding(
@@ -53,17 +57,14 @@ fun UserInfoRow(
             .fillMaxWidth()
     ) {
         Row(
-            modifier = modifier
+            modifier = newModifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(8.dp))
                 .border(
                     width = 1.dp,
                     color = FutsalggColor.mono200,
                     shape = RoundedCornerShape(8.dp)
-                )
-                .clickable {
-                    onClick()
-                },
+                ),
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
@@ -92,56 +93,60 @@ fun UserInfoRow(
             Box (
                 modifier = Modifier.padding()
             )
-            if (status == TeamMemberState.TeamMemberStatus.ACTIVE) {
-                // Active User
-                Text(
-                    modifier = Modifier.width(44.dp),
-                    text = role.displayName,
-                    style = FutsalggTypography.regular_17_200,
-                    color = FutsalggColor.mono900,
-                    textAlign = TextAlign.Center
-                )
-            } else if (status == TeamMemberState.TeamMemberStatus.INACTIVE) {
-                // Inactive User
-                Box(
-                    modifier = Modifier.width(44.dp)
-                        .border(
-                            width = 1.dp,
-                            color = FutsalggColor.mono200,
-                            shape = RoundedCornerShape(4.dp)
-                        )
-                ) {
+            when (status) {
+                TeamMemberState.TeamMemberStatus.ACTIVE -> {
+                    // Active User
                     Text(
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(vertical = 6.dp),
-                        text = stringResource(R.string.inactive_text),
-                        style = FutsalggTypography.regular_15_100,
-                        color = FutsalggColor.mono500
+                        modifier = Modifier.width(44.dp),
+                        text = role.displayName,
+                        style = FutsalggTypography.regular_17_200,
+                        color = FutsalggColor.mono900,
+                        textAlign = TextAlign.Center
                     )
                 }
-            } else {
-                // Pending User
-                Box(
-                    modifier = Modifier.width(44.dp)
-                        .background(
-                            color = FutsalggColor.mint50,
-                            shape = RoundedCornerShape(4.dp)
+                TeamMemberState.TeamMemberStatus.INACTIVE -> {
+                    // Inactive User
+                    Box(
+                        modifier = Modifier.width(44.dp)
+                            .border(
+                                width = 1.dp,
+                                color = FutsalggColor.mono200,
+                                shape = RoundedCornerShape(4.dp)
+                            )
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .align(Alignment.Center)
+                                .padding(vertical = 6.dp),
+                            text = stringResource(R.string.inactive_text),
+                            style = FutsalggTypography.regular_15_100,
+                            color = FutsalggColor.mono500
                         )
-                        .border(
-                            width = 1.dp,
-                            color = FutsalggColor.mint300,
-                            shape = RoundedCornerShape(4.dp)
+                    }
+                }
+                else -> {
+                    // Pending User
+                    Box(
+                        modifier = Modifier.width(44.dp)
+                            .background(
+                                color = FutsalggColor.mint50,
+                                shape = RoundedCornerShape(4.dp)
+                            )
+                            .border(
+                                width = 1.dp,
+                                color = FutsalggColor.mint300,
+                                shape = RoundedCornerShape(4.dp)
+                            )
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .align(Alignment.Center)
+                                .padding(vertical = 6.dp),
+                            text = stringResource(R.string.apply_text),
+                            style = FutsalggTypography.regular_15_100,
+                            color = FutsalggColor.mint300
                         )
-                ) {
-                    Text(
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(vertical = 6.dp),
-                        text = stringResource(R.string.inactive_text),
-                        style = FutsalggTypography.regular_15_100,
-                        color = FutsalggColor.mint300
-                    )
+                    }
                 }
             }
             Spacer(Modifier.width(40.dp))

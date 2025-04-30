@@ -103,7 +103,7 @@ class TeamInfoViewModel @Inject constructor(
                         _uiState.value = UiState.Success
                         _teamState.update { MyTeamMapper.toPresentation(domainMyTeam) }
                         sharedViewModel.setTeamId(domainMyTeam.id)
-                        sharedViewModel.setTeamMemberId(domainMyTeam.teamMemberId)
+                        sharedViewModel.setMyTeamMemberId(domainMyTeam.teamMemberId)
                     }
                     .onFailure { error ->
                         _uiState.value = UiState.Error(

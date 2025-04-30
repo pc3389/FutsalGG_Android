@@ -20,6 +20,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,7 +36,6 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.futsalgg.app.R
 import com.futsalgg.app.navigation.RoutePath
-import com.futsalgg.app.presentation.common.model.TeamRole
 import com.futsalgg.app.presentation.common.screen.BaseScreen
 import com.futsalgg.app.presentation.team.teaminfo.TeamMemberState
 import com.futsalgg.app.ui.components.UserInfoRow
@@ -50,6 +52,10 @@ fun UpdateTeamScreen(
     viewModel: ManageTeamViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val teamState by viewModel.teamState.collectAsState()
+    val teamMemberState by viewModel.teamMemberState.collectAsState()
+
+    var showPending by remember { mutableStateOf(false) }
 
     BaseScreen(
         navController = navController,
@@ -75,9 +81,10 @@ fun UpdateTeamScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 VerticalSpacer16()
-                // TODO Team logo
+
+                // Team logo
                 AsyncImage(
-                    model = "teamState.logoUrl",
+                    model = teamState.logoUrl,
                     contentDescription = "프로필 이미지",
                     modifier = Modifier
                         .size(80.dp)
@@ -86,9 +93,10 @@ fun UpdateTeamScreen(
                     error = painterResource(R.drawable.ic_team_default_56)
                 )
                 VerticalSpacer16()
-                // TODO Team Name
+
+                // Team Name
                 Text(
-                    text = "팀명",
+                    text = teamState.name,
                     style = FutsalggTypography.bold_17_200,
                     color = FutsalggColor.mono900
                 )
@@ -104,13 +112,18 @@ fun UpdateTeamScreen(
                     modifier = Modifier
                         .padding(start = 16.dp)
                         .padding(vertical = 16.dp)
+                        .border(
+                            width = 1.dp,
+                            color = if (!showPending) FutsalggColor.white else FutsalggColor.mono200,
+                            shape = shape
+                        )
                         .background(
-                            color = FutsalggColor.mono900,
+                            color = if (!showPending) FutsalggColor.mono900 else FutsalggColor.white,
                             shape = shape
                         )
                         .clip(shape)
                         .clickable {
-                            // TODO 전체 클릭
+                            showPending = false
                         }
                 ) {
                     Text(
@@ -120,7 +133,7 @@ fun UpdateTeamScreen(
                         ),
                         text = stringResource(R.string.update_team_all_text),
                         style = FutsalggTypography.bold_17_200,
-                        color = FutsalggColor.white
+                        color = if (!showPending) FutsalggColor.white else FutsalggColor.mono900
                     )
                 }
                 Spacer(Modifier.width(8.dp))
@@ -128,17 +141,17 @@ fun UpdateTeamScreen(
                     modifier = Modifier
                         .padding(vertical = 16.dp)
                         .background(
-                            color = FutsalggColor.white,
+                            color = if (!showPending) FutsalggColor.white else FutsalggColor.mono900,
                             shape = shape
                         )
                         .border(
                             width = 1.dp,
-                            color = FutsalggColor.mono200,
+                            color = if (!showPending) FutsalggColor.mono200 else FutsalggColor.white,
                             shape = shape
                         )
                         .clip(shape)
                         .clickable {
-                            // TODO 신청 클릭
+                            showPending = true
                         }
                 ) {
                     Text(
@@ -148,7 +161,7 @@ fun UpdateTeamScreen(
                         ),
                         text = stringResource(R.string.apply_text),
                         style = FutsalggTypography.bold_17_200,
-                        color = FutsalggColor.mono900
+                        color = if (!showPending) FutsalggColor.mono900 else FutsalggColor.white
                     )
                 }
             }
@@ -161,19 +174,26 @@ fun UpdateTeamScreen(
                     VerticalSpacer12()
                 }
                 items(
-                    listOf(
-                        "닉네임닉네임", "닉네임닉네임닉네임닉","메메메메", "닉네임닉닉네임닉네","닉네임", "닉네임닉네","닉네임닉네임닉닉", "닉네임닉네임","닉네임닉네임", "닉네임닉네임","닉네임닉네임", "닉네임닉네임","닉네임닉네임", "닉네임닉네임",
-                    )
+                    teamMemberState.filter {
+                        if (showPending) {
+                            it.status == TeamMemberState.TeamMemberStatus.PENDING
+                        } else {
+                            it.status != TeamMemberState.TeamMemberStatus.PENDING
+                        }
+                    }
                 ) {
-                    // TODO API
                     UserInfoRow(
                         modifier = Modifier
                             .background(FutsalggColor.white),
-                        profileUrl = "",
-                        name = it,
-                        role = TeamRole.TEAM_MEMBER,
-                        status = TeamMemberState.TeamMemberStatus.PENDING,
-//                        endIcon = null,
+                        profileUrl = it.profileUrl,
+                        name = it.name,
+                        role = it.role,
+                        status = it.status,
+                        endIcon = if (it.status == TeamMemberState.TeamMemberStatus.PENDING) {
+                            ImageVector.vectorResource(R.drawable.ic_arrow_forward_16)
+                        } else {
+                            null
+                        },
                         onClick = {
                             // TODO 온클릭
                         },

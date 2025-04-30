@@ -3,6 +3,7 @@ package com.futsalgg.app.presentation.team.teaminfo
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -129,7 +130,7 @@ fun TeamInfoScreen(
                                 )
                             }
                         }
-                        Row{
+                        Row {
                             colorTextBox(
                                 text = MatchType.INTRA_SQUAD.directName
                             )
@@ -202,6 +203,9 @@ fun TeamInfoScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp)
+                            .clickable {
+                                // TODO On Click forward
+                            },
                     ) {
                         val modifier = if (list.size == 1) {
                             val roundedCornerShape = RoundedCornerShape(8.dp)
@@ -329,16 +333,10 @@ fun TeamInfoScreen(
                                     UserDetailText(item.squadNumber.toString())
                                 }
                             }
-                            IconButton(
-                                onClick = {
-                                    // TODO On Click forward
-                                },
-                            ) {
-                                Image(
-                                    imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_forward_16),
-                                    contentDescription = null
-                                )
-                            }
+                            Image(
+                                imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_forward_16),
+                                contentDescription = null
+                            )
                         }
                     }
                 }

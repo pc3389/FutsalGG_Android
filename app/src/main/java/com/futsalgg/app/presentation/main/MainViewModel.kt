@@ -44,7 +44,7 @@ class MainViewModel @Inject constructor(
         getMyTeam()
     }
 
-    fun getMyTeam() {
+    private fun getMyTeam() {
         viewModelScope.launch {
             try {
                 _uiState.value = UiState.Loading
@@ -60,15 +60,17 @@ class MainViewModel @Inject constructor(
                 getMyTeamUseCase(accessToken)
                     .onSuccess { domainMyTeam ->
                         _uiState.value = UiState.Success
+                        val myTeam = MyTeamMapper.toPresentation(
+                            domainMyTeam
+                        )
                         _mainState.update {
                             it.copy(
-                                myTeam = MyTeamMapper.toPresentation(
-                                    domainMyTeam
-                                )
+                                myTeam = myTeam
                             )
                         }
+                        sharedViewModel.updateTeamState(myTeam)
                         sharedViewModel.setTeamId(domainMyTeam.id)
-                        sharedViewModel.setTeamMemberId(domainMyTeam.teamMemberId)
+                        sharedViewModel.setMyTeamMemberId(domainMyTeam.teamMemberId)
                         
                         // 팀 정보를 가져온 후 최근 경기 날짜 조회
                         getRecentMatchDate(accessToken, domainMyTeam.id)
