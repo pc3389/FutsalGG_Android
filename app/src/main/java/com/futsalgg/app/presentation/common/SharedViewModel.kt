@@ -48,6 +48,10 @@ class SharedViewModel @Inject constructor() : ViewModel() {
         _teamState.value = team
     }
 
+    fun clearSelectedTeamMemberId() {
+        _selectedTeamMemberId.value = null
+    }
+
     fun setSelectedTeamMemberId(id: String) {
         _selectedTeamMemberId.value = id
     }

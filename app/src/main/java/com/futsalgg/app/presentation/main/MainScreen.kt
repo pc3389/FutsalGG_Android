@@ -163,6 +163,7 @@ fun MainScreen(
                                 image = ImageVector.vectorResource(R.drawable.img_main_profile),
                                 color = FutsalggColor.blue50,
                                 onClick = {
+                                    viewModel.clearSelectedId()
                                     navController.navigate(RoutePath.PROFILE_CARD)
                                 },
                                 modifier = Modifier.weight(1f)

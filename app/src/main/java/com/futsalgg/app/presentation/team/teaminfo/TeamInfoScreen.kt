@@ -204,7 +204,10 @@ fun TeamInfoScreen(
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp)
                             .clickable {
-                                // TODO On Click forward
+                                viewModel.setSelectedTeamMemberId(
+                                    item.id
+                                )
+                                navController.navigate(RoutePath.PROFILE_CARD)
                             },
                     ) {
                         val modifier = if (list.size == 1) {

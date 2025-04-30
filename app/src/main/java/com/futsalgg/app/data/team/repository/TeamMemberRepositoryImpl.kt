@@ -154,7 +154,7 @@ class TeamMemberRepositoryImpl @Inject constructor(
         id: String
     ): Result<TeamMemberProfile> {
         return try {
-            val response = teamMemberApi.getTeamMemberWithId(accessToken, id)
+            val response = teamMemberApi.getTeamMemberWithId("Bearer $accessToken", id)
             if (response.isSuccessful) {
                 response.body()?.let { body ->
                     Result.success(

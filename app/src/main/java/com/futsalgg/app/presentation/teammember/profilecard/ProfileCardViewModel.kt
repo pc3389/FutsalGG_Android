@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.futsalgg.app.domain.auth.repository.ITokenManager
 import com.futsalgg.app.domain.common.error.DomainError
 import com.futsalgg.app.domain.team.usecase.GetTeamMemberForProfileUseCase
+import com.futsalgg.app.presentation.common.SharedViewModel
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.error.toUiError
 import com.futsalgg.app.presentation.common.model.MatchResult
@@ -25,7 +26,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileCardViewModel @Inject constructor(
     private val getTeamMemberForProfileUseCase: GetTeamMemberForProfileUseCase,
-    private val tokenManager: ITokenManager
+    private val tokenManager: ITokenManager,
+    private val sharedViewModel: SharedViewModel
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
@@ -34,8 +36,10 @@ class ProfileCardViewModel @Inject constructor(
     private val _profileState = MutableStateFlow(ProfileCardState.Initial)
     val profileState: StateFlow<ProfileCardState> = _profileState.asStateFlow()
 
+    private val selectedTeamMemberId = sharedViewModel.selectedTeamMemberId.value
+
     init {
-        getProfile()
+        getProfile(selectedTeamMemberId)
     }
 
     private fun getProfile(id: String? = null) {

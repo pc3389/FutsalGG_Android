@@ -119,4 +119,8 @@ class TeamInfoViewModel @Inject constructor(
             }
         }
     }
+
+    fun setSelectedTeamMemberId(id: String) {
+        sharedViewModel.setSelectedTeamMemberId(id)
+    }
 }
