@@ -138,7 +138,10 @@
     <string name="match_result_menu_schedule_update_text">경기 일정 수정</string>
     <string name="match_result_menu_result_update_text">경기 결과 등록 / 수정</string>
 
-    <!-- UpdateTeam -->
-    <string name="update_team_title_text">팀 관리</string>
-    <string name="update_team_all_text">전체</string>
+    <!-- ManageTeam -->
+    <string name="manage_team_title_text">팀 관리</string>
+    <string name="manage_team_all_text">전체</string>
+    <string name="manage_team_update_team_text">팀 정보 수정하기</string>
+    <string name="manage_team_update_role">직책 변경하기</string>
+    <string name="manage_team_no_pending_text">신청자가 없습니다.</string>
 </resources>

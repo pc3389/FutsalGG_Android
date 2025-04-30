@@ -2,6 +2,7 @@ package com.futsalgg.app.util
 
 import com.futsalgg.app.presentation.common.state.DateState
 import java.text.SimpleDateFormat
+import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
@@ -27,6 +28,21 @@ fun String.toDateFormat(format: String): String {
     } catch (e: Exception) {
         this
     }
+}
+
+fun formatDateWithDayOfWeek(dateString: String): String {
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    val date = LocalDate.parse(dateString, formatter)
+    val dayOfWeek = when (date.dayOfWeek) {
+        DayOfWeek.SUNDAY -> "일요일"
+        DayOfWeek.MONDAY -> "월요일"
+        DayOfWeek.TUESDAY -> "화요일"
+        DayOfWeek.WEDNESDAY -> "수요일"
+        DayOfWeek.THURSDAY -> "목요일"
+        DayOfWeek.FRIDAY -> "금요일"
+        DayOfWeek.SATURDAY -> "토요일"
+    }
+    return dayOfWeek
 }
 
 fun String.toTimeRequestFormat(): String {

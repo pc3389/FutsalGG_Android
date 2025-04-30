@@ -25,6 +25,7 @@ import com.futsalgg.app.presentation.common.model.MatchType
 import com.futsalgg.app.presentation.match.model.VoteStatus
 import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.ui.theme.FutsalggTypography
+import com.futsalgg.app.util.formatDateWithDayOfWeek
 import com.futsalgg.app.util.toDateFormat
 
 @Composable
@@ -69,7 +70,7 @@ fun MatchResultPerDay(
 
                 Text(
                     modifier = Modifier.padding(start = 20.dp),
-                    text = "월요일",
+                    text = formatDateWithDayOfWeek(date),
                     style = FutsalggTypography.regular_17_200
                 )
 

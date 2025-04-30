@@ -161,8 +161,8 @@ fun MatchResultItem(
                                 color = FutsalggColor.mono200
                             )
                         ) {
-                        Column(
-                            modifier = Modifier,
+                            Column(
+                                modifier = Modifier,
 //                                .clip(RoundedCornerShape(8.dp))
 //                                .border(
 //                                    1.dp,
@@ -174,40 +174,40 @@ fun MatchResultItem(
 //                                    shape = RoundedCornerShape(8.dp)
 //                                )
 //                                .width(174.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            DropdownMenuBox(
-                                text = stringResource(R.string.match_result_menu_schedule_update_text),
-                                onClick = {
-                                    onScheduleEditClick()
-                                    showMenu = false
-                                }
-                            )
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                DropdownMenuBox(
+                                    text = stringResource(R.string.match_result_menu_schedule_update_text),
+                                    onClick = {
+                                        onScheduleEditClick()
+                                        showMenu = false
+                                    }
+                                )
 
-                            HorizontalDivider(
-                                thickness = 1.dp,
-                                color = FutsalggColor.mono200
-                            )
-                            DropdownMenuBox(
-                                text = stringResource(R.string.match_result_menu_result_update_text),
-                                onClick = {
-                                    onResultEditClick()
-                                    showMenu = false
-                                }
-                            )
-                            HorizontalDivider(
-                                thickness = 1.dp,
-                                color = FutsalggColor.mono200
-                            )
-                            DropdownMenuBox(
-                                text = stringResource(R.string.delete_text),
-                                onClick = {
-                                    onDeleteClick()
-                                    showMenu = false
-                                }
-                            )
+                                HorizontalDivider(
+                                    thickness = 1.dp,
+                                    color = FutsalggColor.mono200
+                                )
+                                DropdownMenuBox(
+                                    text = stringResource(R.string.match_result_menu_result_update_text),
+                                    onClick = {
+                                        onResultEditClick()
+                                        showMenu = false
+                                    }
+                                )
+                                HorizontalDivider(
+                                    thickness = 1.dp,
+                                    color = FutsalggColor.mono200
+                                )
+                                DropdownMenuBox(
+                                    text = stringResource(R.string.delete_text),
+                                    onClick = {
+                                        onDeleteClick()
+                                        showMenu = false
+                                    }
+                                )
+                            }
                         }
-                    }
                     }
                 }
             }
@@ -237,7 +237,11 @@ fun MatchResultItem(
                 SimpleIconAndText(
                     modifier = Modifier.padding(vertical = 8.dp),
                     imageVector = ImageVector.vectorResource(R.drawable.ic_clock_20),
-                    text = "${matchStartTime ?: "00:00"} ~ ${matchEndTime ?: "00:00"}"
+                    text = "${
+                        matchStartTime ?: stringResource(R.string.time_unknown_text)
+                    } ~ ${
+                        matchEndTime ?: stringResource(R.string.time_unknown_text)
+                    }"
                 )
 
                 VerticalSpacer8()
