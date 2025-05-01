@@ -43,7 +43,7 @@ fun UserInfoRow(
     endIcon: ImageVector? = null,
     onClick: () -> Unit
 ) {
-    val newModifier = if (status == TeamMemberState.TeamMemberStatus.PENDING) {
+    val newModifier = if (endIcon != null) {
         modifier.clickable {
             onClick()
         }

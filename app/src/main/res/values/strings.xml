@@ -143,5 +143,13 @@
     <string name="manage_team_all_text">전체</string>
     <string name="manage_team_update_team_text">팀 정보 수정하기</string>
     <string name="manage_team_update_role">직책 변경하기</string>
+    <string name="manage_team_update_status">상태 변경하기</string>
     <string name="manage_team_no_pending_text">신청자가 없습니다.</string>
+    <string name="manage_team_state_bottom_sheet_title">팀원의 상태를 선택해주세요.</string>
+    <string name="manage_team_state_bottom_sheet_add">등록</string>
+    <string name="manage_team_state_bottom_sheet_rest">휴면</string>
+    <string name="manage_team_state_bottom_sheet_remove">방출</string>
+    <string name="manage_team_pending_bottom_sheet_add">수락</string>
+    <string name="manage_team_pending_bottom_sheet_remove">거절</string>
+    <string name="manage_team_role_bottom_sheet_title">팀원의 상태를 선택해주세요.</string>
 </resources>

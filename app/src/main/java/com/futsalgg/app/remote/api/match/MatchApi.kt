@@ -73,7 +73,7 @@ interface MatchApi {
     @GET("match-participants")
     suspend fun getMatchParticipants(
         @Header("Authorization") accessToken: String,
-        @Query("match-id") matchId: String
+        @Query("matchId") matchId: String
     ): Response<ApiResponse<List<MatchParticipant>>>
 
     @GET("match-stats")

@@ -38,64 +38,6 @@ class ManageTeamViewModel @Inject constructor(
     init {
         loadTeamMembers()
         // TODO Remove stub when not needed
-//        _teamMemberState.value = listOf(
-//            TeamMemberState(
-//                name = "닉네임",
-//                status = TeamMemberState.TeamMemberStatus.ACTIVE
-//            ),
-//            TeamMemberState(
-//                name = "바바닉네임",
-//                status = TeamMemberState.TeamMemberStatus.ACTIVE
-//            ),TeamMemberState(
-//                name = "닉네임닉닉",
-//                status = TeamMemberState.TeamMemberStatus.INACTIVE
-//            ),TeamMemberState(
-//                name = "아아닉네임",
-//                status = TeamMemberState.TeamMemberStatus.INACTIVE
-//            ),TeamMemberState(
-//                name = "어어어닉네임",
-//                status = TeamMemberState.TeamMemberStatus.PENDING
-//            ),TeamMemberState(
-//                name = "바바바닉네임",
-//                status = TeamMemberState.TeamMemberStatus.PENDING
-//            ),TeamMemberState(
-//                name = "아아아아아아닉네임",
-//                status = TeamMemberState.TeamMemberStatus.PENDING
-//            ),TeamMemberState(
-//                name = "닉네임",
-//                status = TeamMemberState.TeamMemberStatus.ACTIVE
-//            ),TeamMemberState(
-//                name = "닉네임",
-//                status = TeamMemberState.TeamMemberStatus.INACTIVE
-//            ),TeamMemberState(
-//                name = "닉네임",
-//                status = TeamMemberState.TeamMemberStatus.ACTIVE
-//            ),TeamMemberState(
-//                name = "바바닉네임",
-//                status = TeamMemberState.TeamMemberStatus.ACTIVE
-//            ),TeamMemberState(
-//                name = "닉네임닉닉",
-//                status = TeamMemberState.TeamMemberStatus.INACTIVE
-//            ),TeamMemberState(
-//                name = "아아닉네임",
-//                status = TeamMemberState.TeamMemberStatus.INACTIVE
-//            ),TeamMemberState(
-//                name = "어어어닉네임",
-//                status = TeamMemberState.TeamMemberStatus.PENDING
-//            ),TeamMemberState(
-//                name = "바바바닉네임",
-//                status = TeamMemberState.TeamMemberStatus.PENDING
-//            ),TeamMemberState(
-//                name = "아아아아아아닉네임",
-//                status = TeamMemberState.TeamMemberStatus.PENDING
-//            ),TeamMemberState(
-//                name = "닉네임",
-//                status = TeamMemberState.TeamMemberStatus.ACTIVE
-//            ),TeamMemberState(
-//                name = "닉네임",
-//                status = TeamMemberState.TeamMemberStatus.INACTIVE
-//            ),
-//        )
     }
 
     private fun loadTeamMembers() {
