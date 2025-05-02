@@ -5,6 +5,7 @@ import com.futsalgg.app.domain.common.error.DomainError
 import com.futsalgg.app.domain.match.model.Match
 import com.futsalgg.app.domain.match.model.MatchStat
 import com.futsalgg.app.domain.match.model.RoundStats
+import com.futsalgg.app.domain.match.model.UpdateMatch
 import com.futsalgg.app.domain.match.repository.MatchRepository
 import com.futsalgg.app.remote.api.common.ApiResponse
 import com.futsalgg.app.domain.common.model.MatchType as DomainMatchType
@@ -12,12 +13,12 @@ import com.futsalgg.app.remote.api.match.MatchApi
 import com.futsalgg.app.remote.api.match.model.request.CreateMatchRequest
 import com.futsalgg.app.remote.api.match.model.request.CreateMatchStatRequest
 import com.futsalgg.app.remote.api.match.model.request.UpdateMatchRoundsRequest
-import com.google.gson.Gson
+import com.futsalgg.app.remote.api.match.model.request.UpdateMatchRequest
 import com.futsalgg.app.remote.api.match.model.response.MatchType as RemoteMatchType
+import com.google.gson.Gson
 import java.io.IOException
 import javax.inject.Inject
 import com.futsalgg.app.domain.auth.repository.ITokenManager
-import com.futsalgg.app.remote.api.match.model.response.RecentMatchDateResponse
 
 class MatchRepositoryImpl @Inject constructor(
     private val matchApi: MatchApi,
@@ -324,7 +325,7 @@ class MatchRepositoryImpl @Inject constructor(
                 accessToken = "Bearer $accessToken",
                 teamId = teamId
             )
-            
+
             if (response.isSuccessful) {
                 response.body()?.let { body ->
                     Result.success(body.data.matchDate)
@@ -336,7 +337,8 @@ class MatchRepositoryImpl @Inject constructor(
                 )
             } else {
                 val errorBody = response.errorBody()?.string()
-                val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java as Class<ApiResponse<*>>)
+                val errorResponse =
+                    Gson().fromJson(errorBody, ApiResponse::class.java as Class<ApiResponse<*>>)
 
                 Result.failure(
                     DomainError.ServerError(
@@ -353,5 +355,58 @@ class MatchRepositoryImpl @Inject constructor(
                 ) as Throwable
             )
         }
+    }
+
+    override suspend fun updateMatch(
+        accessToken: String,
+        matchId: String,
+        matchDate: String,
+        location: String,
+        startTime: String?,
+        endTime: String?,
+        substituteTeamMemberId: String?
+    ): Result<UpdateMatch> = try {
+        val request = UpdateMatchRequest(
+            id = matchId,
+            matchDate = matchDate,
+            location = location,
+            startTime = startTime,
+            endTime = endTime,
+            substituteTeamMemberId = substituteTeamMemberId
+        )
+
+        val response = matchApi.updateMatch(
+            accessToken = "Bearer $accessToken",
+            matchId = matchId,
+            request = request
+        )
+
+        if (response.isSuccessful) {
+            response.body()?.let { body ->
+                Result.success(body.data.toDomain())
+            } ?: Result.failure(
+                DomainError.ServerError(
+                    message = "[updateMatch] 서버 응답이 비어있습니다.",
+                    code = response.code()
+                ) as Throwable
+            )
+        } else {
+            val errorBody = response.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
+            Result.failure(
+                DomainError.ServerError(
+                    message = "[updateMatch] 서버 오류: ${errorResponse.message}",
+                    code = response.code()
+                ) as Throwable
+            )
+        }
+    } catch (e: IOException) {
+        Result.failure(
+            DomainError.NetworkError(
+                message = "[updateMatch] 네트워크 연결을 확인해주세요.",
+                cause = e
+            ) as Throwable
+        )
     }
 }

@@ -61,6 +61,8 @@ import com.futsalgg.app.domain.team.usecase.AcceptTeamMemberUseCase
 import com.futsalgg.app.domain.team.usecase.AcceptTeamMemberUseCaseImpl
 import com.futsalgg.app.domain.team.usecase.RejectTeamMemberUseCase
 import com.futsalgg.app.domain.team.usecase.RejectTeamMemberUseCaseImpl
+import com.futsalgg.app.domain.match.usecase.UpdateMatchUseCase
+import com.futsalgg.app.domain.match.usecase.UpdateMatchUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -286,5 +288,13 @@ object UseCaseModule {
         teamRepository: TeamRepository
     ): RejectTeamMemberUseCase {
         return RejectTeamMemberUseCaseImpl(teamRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUpdateMatchUseCase(
+        matchRepository: MatchRepository
+    ): UpdateMatchUseCase {
+        return UpdateMatchUseCaseImpl(matchRepository)
     }
 }

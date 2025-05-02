@@ -3,6 +3,7 @@ package com.futsalgg.app.presentation.match.matchitem.update
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.futsalgg.app.domain.auth.repository.ITokenManager
+import com.futsalgg.app.domain.match.usecase.UpdateMatchUseCase
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.state.DateState
 import com.futsalgg.app.presentation.common.state.UiState
@@ -20,6 +21,7 @@ import javax.inject.Inject
 class UpdateMatchViewModel @Inject constructor(
     private val tokenManager: ITokenManager,
     private val sharedViewModel: MatchSharedViewModel,
+    private val updateMatchUseCase: UpdateMatchUseCase
 ): BaseMatchViewModel() {
 
     init {
@@ -57,34 +59,30 @@ class UpdateMatchViewModel @Inject constructor(
                     updateUiState(UiState.Error(UiError.AuthError("엑세스 토큰이 존재하지 않습니다")))
                     return@launch
                 }
-//
-//                val result = createMatchUseCase(
-//                    accessToken = accessToken,
-//                    teamId = matchState.value.teamId,
-//                    matchDate = matchState.value.matchDate.dateToRequestFormat(),
-//                    type = MatchType.toDomain(matchState.value.type),
-//                    location = matchState.value.location,
-//                    startTime = matchState.value.startTime.takeIf { it.isNotEmpty() },
-//                    endTime = matchState.value.endTime.takeIf { it.isNotEmpty() },
-//                    opponentTeamName = matchState.value.opponentTeamName.takeIf { it.isNotEmpty() },
-//                    description = matchState.value.description.takeIf { it.isNotEmpty() },
-//                    isVote = matchState.value.isVote,
-//                    substituteTeamMemberId = matchState.value.substituteTeamMemberId.takeIf { it.isNotEmpty() }
-//                )
-//
-//                if (result.isSuccess) {
-//                    updateUiState(UiState.Success)
-//                    onSuccess()
-//                } else {
-//                    Log.e("CreateMatchViewModel", "알 수 없는 오류가 발생했습니다")
-//                    updateUiState(
-//                        UiState.Error(
-//                            UiError.UnknownError(
-//                                result.exceptionOrNull()?.message ?: "알 수 없는 오류가 발생했습니다"
-//                            )
-//                        )
-//                    )
-//                }
+
+                val result = updateMatchUseCase(
+                    accessToken = accessToken,
+                    matchId = sharedViewModel.matchState.value.id,
+                    matchDate = matchState.value.match.matchDate.dateToRequestFormat(),
+                    location = matchState.value.match.location,
+                    startTime = matchState.value.match.startTime.takeIf { !it.isNullOrEmpty()},
+                    endTime = matchState.value.match.endTime.takeIf { !it.isNullOrEmpty() },
+                    substituteTeamMemberId = matchState.value.match.substituteTeamMemberId.takeIf { !it.isNullOrEmpty() }
+                )
+
+                if (result.isSuccess) {
+                    updateUiState(UiState.Success)
+                    onSuccess()
+                } else {
+                    Log.e("CreateMatchViewModel", "알 수 없는 오류가 발생했습니다")
+                    updateUiState(
+                        UiState.Error(
+                            UiError.UnknownError(
+                                result.exceptionOrNull()?.message ?: "알 수 없는 오류가 발생했습니다"
+                            )
+                        )
+                    )
+                }
             } catch (e: Exception) {
                 Log.e("CreateMatchViewModel", "알 수 없는 오류가 발생했습니다", e)
                 updateUiState(

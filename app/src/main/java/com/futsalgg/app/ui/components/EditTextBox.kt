@@ -53,7 +53,6 @@ fun EditTextBox(
     showTailingText: Boolean = false,
     tailingText: String = ""
 ) {
-    //TODO MaxLength!!
     val focusRequester = remember { androidx.compose.ui.focus.FocusRequester() }
     Box(
         modifier = boxModifier

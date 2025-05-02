@@ -56,7 +56,6 @@ fun EditTextWithState(
     maxLines: Int = 1,
     maxLength: Int? = null
 ) {
-    //TODO MaxLength!!
     val borderColor = when (state) {
         EditTextState.Initial -> FutsalggColor.mono500
         EditTextState.Default -> FutsalggColor.mono500

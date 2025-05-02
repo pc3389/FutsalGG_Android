@@ -14,8 +14,6 @@ fun UpdateMatchScreen(
     navController: NavController,
     viewModel: UpdateMatchViewModel = hiltViewModel()
 ) {
-
-
     BaseMatchScreen(
         navController = navController,
         viewModel = viewModel,
