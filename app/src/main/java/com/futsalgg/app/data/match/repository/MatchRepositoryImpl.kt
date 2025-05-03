@@ -1,5 +1,6 @@
 package com.futsalgg.app.data.match.repository
 
+import com.futsalgg.app.data.match.mapper.MatchStatMapper
 import com.futsalgg.app.data.match.mapper.toDomain
 import com.futsalgg.app.domain.common.error.DomainError
 import com.futsalgg.app.domain.match.model.Match
@@ -14,11 +15,13 @@ import com.futsalgg.app.remote.api.match.model.request.CreateMatchRequest
 import com.futsalgg.app.remote.api.match.model.request.CreateMatchStatRequest
 import com.futsalgg.app.remote.api.match.model.request.UpdateMatchRoundsRequest
 import com.futsalgg.app.remote.api.match.model.request.UpdateMatchRequest
+import com.futsalgg.app.remote.api.match.model.request.CreateMatchStatsBulkRequest
 import com.futsalgg.app.remote.api.match.model.response.MatchType as RemoteMatchType
 import com.google.gson.Gson
 import java.io.IOException
 import javax.inject.Inject
 import com.futsalgg.app.domain.auth.repository.ITokenManager
+import com.futsalgg.app.domain.match.model.CreateBulkMatchStat
 
 class MatchRepositoryImpl @Inject constructor(
     private val matchApi: MatchApi,
@@ -405,6 +408,41 @@ class MatchRepositoryImpl @Inject constructor(
         Result.failure(
             DomainError.NetworkError(
                 message = "[updateMatch] 네트워크 연결을 확인해주세요.",
+                cause = e
+            ) as Throwable
+        )
+    }
+
+    override suspend fun createMatchStatsBulk(
+        accessToken: String,
+        matchId: String,
+        stats: List<CreateBulkMatchStat>
+    ): Result<Unit> = try {
+        val response = matchApi.createMatchStatsBulk(
+            accessToken = "Bearer $accessToken",
+            request = CreateMatchStatsBulkRequest(
+                matchId = matchId,
+                stats = stats.map { MatchStatMapper.toRequest(it) }
+            )
+        )
+
+        if (response.isSuccessful) {
+            Result.success(Unit)
+        } else {
+            val errorBody = response.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
+            Result.failure(
+                DomainError.ServerError(
+                    message = "[createMatchStatsBulk] 서버 오류: ${errorResponse.message}",
+                    code = response.code()
+                ) as Throwable
+            )
+        }
+    } catch (e: IOException) {
+        Result.failure(
+            DomainError.NetworkError(
+                message = "[createMatchStatsBulk] 네트워크 연결을 확인해주세요.",
                 cause = e
             ) as Throwable
         )

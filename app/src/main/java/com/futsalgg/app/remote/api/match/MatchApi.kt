@@ -17,6 +17,7 @@ import com.futsalgg.app.remote.api.match.model.response.RecentMatchDateResponse
 import com.futsalgg.app.remote.api.match.model.request.UpdateMatchRequest
 import com.futsalgg.app.remote.api.match.model.response.UpdateMatchResponse
 import com.futsalgg.app.remote.api.match.model.response.MatchParticipantsResponse
+import com.futsalgg.app.remote.api.match.model.request.CreateMatchStatsBulkRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -103,4 +104,10 @@ interface MatchApi {
         @Body request: UpdateMatchRequest,
         @Header("Authorization") accessToken: String
     ): Response<ApiResponse<UpdateMatchResponse>>
+
+    @POST("match-stats/bulk")
+    suspend fun createMatchStatsBulk(
+        @Header("Authorization") accessToken: String,
+        @Body request: CreateMatchStatsBulkRequest
+    ): Response<Unit>
 }

@@ -5,7 +5,7 @@ import com.futsalgg.app.domain.common.model.MatchType
 import com.futsalgg.app.domain.match.model.MatchStat
 import com.futsalgg.app.domain.match.model.RoundStats
 import com.futsalgg.app.domain.match.model.UpdateMatch
-import com.futsalgg.app.domain.match.model.MatchParticipant
+import com.futsalgg.app.domain.match.model.CreateBulkMatchStat
 
 interface MatchRepository {
     suspend fun getMatches(
@@ -72,4 +72,10 @@ interface MatchRepository {
         endTime: String? = null,
         substituteTeamMemberId: String? = null
     ): Result<UpdateMatch>
+
+    suspend fun createMatchStatsBulk(
+        accessToken: String,
+        matchId: String,
+        stats: List<CreateBulkMatchStat>
+    ): Result<Unit>
 } 

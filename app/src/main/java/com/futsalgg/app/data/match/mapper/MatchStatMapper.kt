@@ -3,6 +3,8 @@ package com.futsalgg.app.data.match.mapper
 import com.futsalgg.app.domain.match.model.MatchStat
 import com.futsalgg.app.domain.match.model.RoundStats
 import com.futsalgg.app.remote.api.match.model.response.MatchStat as RemoteMatchStat
+import com.futsalgg.app.remote.api.match.model.request.MatchStatRequest
+import com.futsalgg.app.domain.match.model.CreateBulkMatchStat
 
 fun RemoteMatchStat.toDomain(): MatchStat {
     return MatchStat(
@@ -28,4 +30,24 @@ fun Map<String, Map<String, List<List<RemoteMatchStat>>>>.toDomain(): List<Round
             teamBStats = teamStats["B"]?.map { stats -> stats.map { it.toDomain() } } ?: emptyList()
         )
     }.sortedBy { it.roundNumber }
+}
+
+object MatchStatMapper {
+    fun toRequest(domain: CreateBulkMatchStat): MatchStatRequest {
+        return MatchStatRequest(
+            roundNumber = domain.roundNumber,
+            subTeam = domain.subTeam,
+            goalMatchParticipantId = domain.goalMatchParticipantId,
+            assistMatchParticipantId = domain.assistMatchParticipantId
+        )
+    }
+
+    fun toDomain(request: MatchStatRequest): CreateBulkMatchStat {
+        return CreateBulkMatchStat(
+            roundNumber = request.roundNumber,
+            subTeam = request.subTeam,
+            goalMatchParticipantId = request.goalMatchParticipantId,
+            assistMatchParticipantId = request.assistMatchParticipantId
+        )
+    }
 } 
