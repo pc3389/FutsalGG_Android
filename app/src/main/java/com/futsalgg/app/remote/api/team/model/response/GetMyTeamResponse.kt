@@ -11,7 +11,7 @@ data class GetMyTeamResponse(
     @SerializedName("name")
     val name: String,
     @SerializedName("introduction")
-    val introduction: String,
+    val introduction: String?,
     @SerializedName("rule")
     val rule: String,
     @SerializedName("logoUrl")

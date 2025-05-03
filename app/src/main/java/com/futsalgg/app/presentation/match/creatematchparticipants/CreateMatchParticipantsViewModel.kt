@@ -83,12 +83,12 @@ class CreateMatchParticipantsViewModel @Inject constructor(
                     .onFailure { throwable ->
                         _uiState.value = UiState.Error(
                             (throwable as? DomainError)?.toUiError()
-                                ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
+                                ?: UiError.UnknownError("[loadTeamMembers] 알 수 없는 오류가 발생했습니다.")
                         )
                     }
             } catch (e: Exception) {
                 _uiState.value = UiState.Error(
-                    UiError.UnknownError("예기치 않은 오류가 발생했습니다: ${e.message}")
+                    UiError.UnknownError("[loadTeamMembers] 예기치 않은 오류가 발생했습니다: ${e.message}")
                 )
             }
         }

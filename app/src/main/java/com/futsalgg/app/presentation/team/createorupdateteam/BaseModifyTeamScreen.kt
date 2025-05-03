@@ -116,7 +116,7 @@ fun BaseTeamModifyScreen(
                             when (it) {
                                 EditTextState.Available -> context.getString(R.string.create_team_duplication_available)
                                 EditTextState.ErrorCannotUseSpecialChar -> context.getString(R.string.create_team_cannot_use_special_char)
-                                EditTextState.ErrorAlreadyExisting -> context.getString(R.string.create_team_duplication_available)
+                                EditTextState.ErrorAlreadyExisting -> context.getString(R.string.create_team_name_not_unique)
                                 EditTextState.ErrorCannotUseSlang -> context.getString(R.string.create_team_cannot_use_slang)
                                 else -> null
                             }
@@ -236,6 +236,7 @@ fun BaseTeamModifyScreen(
                 ProfileImageWithCameraButton(
                     image = croppedImage?.asImageBitmap()?.let { remember { BitmapPainter(it) } }
                         ?: painterResource(R.drawable.img_team_default),
+                    profileUrl = modifyTeamState.teamImageUrl,
                     onCameraClick = launchGalleryWithPermission
                 )
 

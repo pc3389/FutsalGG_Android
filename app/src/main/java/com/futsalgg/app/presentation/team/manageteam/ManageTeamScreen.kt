@@ -105,7 +105,7 @@ fun ManageTeamScreen(
 
                     // Team logo
                     AsyncImage(
-                        model = teamState.logoUrl,
+                        model = teamState?.logoUrl ?: "",
                         contentDescription = "프로필 이미지",
                         modifier = Modifier
                             .size(80.dp)
@@ -117,7 +117,7 @@ fun ManageTeamScreen(
 
                     // Team Name
                     Text(
-                        text = teamState.name,
+                        text = teamState?.name ?: "",
                         style = FutsalggTypography.bold_17_200,
                         color = FutsalggColor.mono900
                     )
@@ -298,7 +298,7 @@ fun ManageTeamScreen(
                                 color = FutsalggColor.mono900
                             )
                         }
-                        if (teamState.role.rank <= TeamRole.TEAM_LEADER.rank) {
+                        if ((teamState?.role?.rank ?: 0) <= TeamRole.TEAM_LEADER.rank) {
                             HorizontalDivider(
                                 thickness = 1.dp,
                                 color = FutsalggColor.mono200

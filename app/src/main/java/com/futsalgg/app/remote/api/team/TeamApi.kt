@@ -24,14 +24,16 @@ interface TeamApi {
         @Query("nickname") nickname: String
     ): Response<ApiResponse<CheckTeamNicknameResponse>>
 
-    @GET("teams/{id}/logo-presigned-url")
+    @GET("teams/presigned-url")
     suspend fun getTeamLogoPresignedUrl(
         @Header("Authorization") authHeader: String,
+        @Query("teamId") teamId: String,
     ): Response<ApiResponse<TeamLogoPresignedUrlResponse>>
 
     @PATCH("teams/{id}/logo")
     suspend fun updateTeamLogo(
         @Header("Authorization") authHeader: String,
+        @Path("id") teamId: String,
         @Body request: UpdateTeamLogoRequest
     ): Response<ApiResponse<TeamLogoPresignedUrlResponse>>
 

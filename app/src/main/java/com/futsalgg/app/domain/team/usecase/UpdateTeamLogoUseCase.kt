@@ -6,6 +6,7 @@ import java.io.File
 interface UpdateTeamLogoUseCase {
     suspend fun invoke(
         accessToken: String,
+        teamId: String,
         file: File
     ): Result<TeamLogoResponseModel>
 } 

@@ -19,10 +19,12 @@ import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.presentation.team.model.Access
 import com.futsalgg.app.presentation.user.util.slangList
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import javax.inject.Inject
 
@@ -34,7 +36,7 @@ open class ModifyTeamViewModel @Inject constructor(
     private val sharedViewModel: SharedViewModel,
     private val createTeamUseCase: CreateTeamUseCase,
     private val tokenManager: ITokenManager
-): ViewModel() {
+) : ViewModel() {
     private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
@@ -50,6 +52,24 @@ open class ModifyTeamViewModel @Inject constructor(
         }
 
         token ?: ""
+    }
+
+    init {
+        sharedViewModel.teamState.value?.let {
+            _modifyTeamState.value = _modifyTeamState.value.copy(
+                teamName = it.name,
+                teamNameState = EditTextState.Available,
+                access = when (it.access.name) {
+                    Access.TEAM_LEADER.name -> Access.TEAM_LEADER
+                    Access.TEAM_DEPUTY_LEADER.name -> Access.TEAM_DEPUTY_LEADER
+                    else -> Access.TEAM_SECRETARY
+                },
+                introduction = it.introduction,
+                rule = it.rule,
+                dues = "0",
+                teamImageUrl = it.logoUrl
+            )
+        }
     }
 
     internal fun onTeamNameChange(newValue: String) {
@@ -92,6 +112,15 @@ open class ModifyTeamViewModel @Inject constructor(
     internal fun checkTeamNameDuplication() {
         val currentTeamName = _modifyTeamState.value.teamName
 
+        if (!sharedViewModel.teamState.value?.name.isNullOrEmpty()
+            && currentTeamName == sharedViewModel.teamState.value?.name
+        ) {
+            _modifyTeamState.value = _modifyTeamState.value.copy(
+                teamNameState = EditTextState.Available
+            )
+            return
+        }
+
         if (currentTeamName.isEmpty()) {
             _modifyTeamState.value = _modifyTeamState.value.copy(
                 teamNameState = EditTextState.Initial
@@ -106,7 +135,7 @@ open class ModifyTeamViewModel @Inject constructor(
             return
         }
 
-        if (slangList.any {currentTeamName.contains(it)}) {
+        if (slangList.any { currentTeamName.contains(it) }) {
             _modifyTeamState.value = _modifyTeamState.value.copy(
                 teamNameState = EditTextState.ErrorCannotUseSlang
             )
@@ -158,10 +187,13 @@ open class ModifyTeamViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = UiState.Loading
 
-            val result = updateTeamLogoUseCase.invoke(
-                accessToken,
-                file
-            )
+            val result = withContext(Dispatchers.IO) {
+                updateTeamLogoUseCase.invoke(
+                    accessToken,
+                    teamId = sharedViewModel.teamState.value?.id ?: "",
+                    file
+                )
+            }
             result.fold(
                 onSuccess = { response ->
                     _modifyTeamState.value = _modifyTeamState.value.copy(
@@ -184,7 +216,8 @@ open class ModifyTeamViewModel @Inject constructor(
 
     internal fun setCroppedImage(bitmap: Bitmap) {
         _modifyTeamState.value = _modifyTeamState.value.copy(
-            croppedTeamImage = bitmap
+            croppedTeamImage = bitmap,
+            teamImageUrl = null
         )
     }
 

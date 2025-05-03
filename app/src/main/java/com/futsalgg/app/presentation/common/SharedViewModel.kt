@@ -19,8 +19,8 @@ class SharedViewModel @Inject constructor() : ViewModel() {
     val myTeamMemberId: StateFlow<String?> = _myTeamMemberId.asStateFlow()
 
     // My Team State
-    private val _teamState = MutableStateFlow(MyTeam())
-    val teamState: StateFlow<MyTeam> = _teamState.asStateFlow()
+    private val _teamState: MutableStateFlow<MyTeam?> = MutableStateFlow(null)
+    val teamState: StateFlow<MyTeam?> = _teamState.asStateFlow()
 
     // Selected Team Member Id
     private val _selectedTeamMemberId = MutableStateFlow<String?>(null)

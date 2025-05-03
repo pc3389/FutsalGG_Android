@@ -31,21 +31,21 @@ class OkHttpFileUploaderImpl @Inject constructor(
                 Result.failure(
                     DomainError.ServerError(
                         code = response.code,
-                        message = "파일 업로드 실패: ${response.code}"
+                        message = "[uploadFileToPresignedUrl] 파일 업로드 실패: ${response.code}"
                     )
                 )
             }
         } catch (e: IOException) {
             Result.failure(
                 DomainError.NetworkError(
-                    message = "네트워크 연결을 확인해주세요.",
+                    message = "[uploadFileToPresignedUrl] 네트워크 연결을 확인해주세요.",
                     cause = e
                 )
             )
         } catch (e: Exception) {
             Result.failure(
                 DomainError.UnknownError(
-                    message = "알 수 없는 오류가 발생했습니다.",
+                    message = "[uploadFileToPresignedUrl] 알 수 없는 오류가 발생했습니다.",
                     cause = e
                 )
             )

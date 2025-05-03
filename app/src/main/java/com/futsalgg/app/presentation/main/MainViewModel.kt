@@ -78,11 +78,11 @@ class MainViewModel @Inject constructor(
                     .onFailure { error ->
                         _uiState.value = UiState.Error(
                             (error as? DomainError)?.toUiError()
-                                ?: UiError.UnknownError("프레젠 알 수 없는 오류가 발생했습니다.")
+                                ?: UiError.UnknownError("[getMyTeam] 알 수 없는 오류가 발생했습니다.")
                         )
                     }
             } catch (e: Exception) {
-                _uiState.value = UiState.Error(UiError.UnknownError("프레젠 알 수 없는 오류가 발생했습니다."))
+                _uiState.value = UiState.Error(UiError.UnknownError("[getMyTeam] 알 수 없는 오류가 발생했습니다."))
             }
         }
     }
