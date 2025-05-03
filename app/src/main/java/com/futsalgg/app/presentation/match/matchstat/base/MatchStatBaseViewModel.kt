@@ -74,11 +74,11 @@ abstract class MatchStatBaseViewModel(
                     }
                     .onFailure { error ->
                         val uiError = (error as? DomainError)?.toUiError()
-                            ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
+                            ?: UiError.UnknownError("[loadMatchStats] 알 수 없는 오류가 발생했습니다: ${error.message}")
                         uiState.value = UiState.Error(uiError)
                     }
             } catch (e: Exception) {
-                val error = UiError.UnknownError("예기치 않은 오류가 발생했습니다: ${e.message}")
+                val error = UiError.UnknownError("[loadMatchStats] 예기치 않은 오류가 발생했습니다: ${e.message}")
                 uiState.value = UiState.Error(error)
             }
         }

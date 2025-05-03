@@ -49,15 +49,14 @@ class NicknameChecker(
                     onUiStateUpdate(
                         UiState.Error(
                             (error as? DomainError)?.toUiError()
-                                ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
+                                ?: UiError.UnknownError("[checkNickname] 알 수 없는 오류가 발생했습니다: ${error.message}")
                         )
                     )
                     onStateUpdate(EditTextState.ErrorAlreadyExisting)
                 }
             )
         } catch (e: Exception) {
-            Log.e("NicknameChecker", "Exception during nickname check", e)
-            onUiStateUpdate(UiState.Error(UiError.UnknownError("알 수 없는 오류가 발생했습니다.")))
+            onUiStateUpdate(UiState.Error(UiError.UnknownError("[checkNickname] 알 수 없는 오류가 발생했습니다: ${e.message}")))
             onStateUpdate(EditTextState.ErrorAlreadyExisting)
         }
     }

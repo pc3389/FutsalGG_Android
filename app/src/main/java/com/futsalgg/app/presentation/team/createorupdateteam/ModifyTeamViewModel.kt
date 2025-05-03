@@ -166,7 +166,7 @@ open class ModifyTeamViewModel @Inject constructor(
                         )
                         _uiState.value = UiState.Error(
                             (error as? DomainError)?.toUiError()
-                                ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
+                                ?: UiError.UnknownError("[checkTeamNameDuplication] 알 수 없는 오류가 발생했습니다: ${error.message}")
                         )
                         _modifyTeamState.value = _modifyTeamState.value.copy(
                             teamNameState = EditTextState.ErrorAlreadyExisting
@@ -174,8 +174,7 @@ open class ModifyTeamViewModel @Inject constructor(
                     }
                 )
             } catch (e: Exception) {
-                Log.e("CreateTeamViewModel", "Exception during team name check", e)
-                _uiState.value = UiState.Error(UiError.UnknownError("알 수 없는 오류가 발생했습니다."))
+                _uiState.value = UiState.Error(UiError.UnknownError("[checkTeamNameDuplication] 알 수 없는 오류가 발생했습니다: ${e.message}"))
                 _modifyTeamState.value = _modifyTeamState.value.copy(
                     teamNameState = EditTextState.ErrorAlreadyExisting
                 )
@@ -242,14 +241,9 @@ open class ModifyTeamViewModel @Inject constructor(
                         onSuccess()
                     },
                     onFailure = { error ->
-                        Log.e(
-                            "CreateTeamViewModel",
-                            "Create team 에러: ${error.message}",
-                            error
-                        )
                         _uiState.value = UiState.Error(
                             (error as? DomainError)?.toUiError()
-                                ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
+                                ?: UiError.UnknownError("[createTeam] 알 수 없는 오류가 발생했습니다: ${error.message}")
                         )
                         _modifyTeamState.value = _modifyTeamState.value.copy(
                             errorMessage = error.message
@@ -257,8 +251,7 @@ open class ModifyTeamViewModel @Inject constructor(
                     }
                 )
             } catch (e: Exception) {
-                Log.e("CreateTeamViewModel", "Exception during team creation", e)
-                _uiState.value = UiState.Error(UiError.UnknownError("알 수 없는 오류가 발생했습니다."))
+                _uiState.value = UiState.Error(UiError.UnknownError("[createTeam] 알 수 없는 오류가 발생했습니다: ${e.message}"))
                 _modifyTeamState.value = _modifyTeamState.value.copy(
                     errorMessage = e.message
                 )
@@ -288,14 +281,9 @@ open class ModifyTeamViewModel @Inject constructor(
                         onSuccess()
                     },
                     onFailure = { error ->
-                        Log.e(
-                            "CreateTeamViewModel",
-                            "Create team 에러: ${error.message}",
-                            error
-                        )
                         _uiState.value = UiState.Error(
                             (error as? DomainError)?.toUiError()
-                                ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
+                                ?: UiError.UnknownError("[updateTeam] 알 수 없는 오류가 발생했습니다: ${error.message}")
                         )
                         _modifyTeamState.value = _modifyTeamState.value.copy(
                             errorMessage = error.message
@@ -303,8 +291,7 @@ open class ModifyTeamViewModel @Inject constructor(
                     }
                 )
             } catch (e: Exception) {
-                Log.e("CreateTeamViewModel", "Exception during team creation", e)
-                _uiState.value = UiState.Error(UiError.UnknownError("알 수 없는 오류가 발생했습니다."))
+                _uiState.value = UiState.Error(UiError.UnknownError("[updateTeam] 알 수 없는 오류가 발생했습니다: ${e.message}"))
                 _modifyTeamState.value = _modifyTeamState.value.copy(
                     errorMessage = e.message
                 )

@@ -36,6 +36,7 @@ class UpdateProfileViewModel @Inject constructor(
     private val _profileState = MutableStateFlow(UpdateProfileState.Initial)
     val profileState: StateFlow<UpdateProfileState> = _profileState.asStateFlow()
 
+    private val accessToken = tokenManager.getAccessToken() ?: ""
     fun updateName(newName: String) {
         _profileState.value = _profileState.value.copy(nickname = newName)
     }
@@ -76,14 +77,6 @@ class UpdateProfileViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = UiState.Loading
             try {
-                val accessToken = tokenManager.getAccessToken()
-
-                if (accessToken.isNullOrEmpty()) {
-                    Log.e("CreateUserViewModel", "엑세스 토큰이 존재하지 않습니다")
-                    _uiState.value = UiState.Error(UiError.AuthError("엑세스 토큰이 존재하지 않습니다"))
-                    return@launch
-                }
-
                 updateProfileUseCase(
                     accessToken,
                     _profileState.value.nickname,
@@ -104,12 +97,11 @@ class UpdateProfileViewModel @Inject constructor(
                     .onFailure { error ->
                         _uiState.value = UiState.Error(
                             (error as? DomainError)?.toUiError()
-                                ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
+                                ?: UiError.UnknownError("[updateProfile] 알 수 없는 오류가 발생했습니다: ${error.message}")
                         )
                     }
             } catch (e: Exception) {
-                Log.e("CreateUserViewModel", "Exception during Signup", e)
-                _uiState.value = UiState.Error(UiError.UnknownError("알 수 없는 오류가 발생했습니다."))
+                _uiState.value = UiState.Error(UiError.UnknownError("[updateProfile] 알 수 없는 오류가 발생했습니다: ${e.message}"))
             }
         }
     }
@@ -117,12 +109,6 @@ class UpdateProfileViewModel @Inject constructor(
     fun uploadProfileImage(file: File, imageUploadSuccess: () -> Unit) {
         viewModelScope.launch {
             _uiState.value = UiState.Loading
-
-            val accessToken = tokenManager.getAccessToken()
-            if (accessToken.isNullOrEmpty()) {
-                _uiState.value = UiState.Error(UiError.AuthError("AccessToken이 존재하지 않습니다"))
-                return@launch
-            }
 
             val result = withContext(Dispatchers.IO) {
                 uploadUserProfilePictureUseCase.uploadProfileImage(accessToken, file)
@@ -135,10 +121,10 @@ class UpdateProfileViewModel @Inject constructor(
                     imageUploadSuccess()
                     _uiState.value = UiState.Success
                 },
-                onFailure = { throwable ->
+                onFailure = { error ->
                     _uiState.value = UiState.Error(
-                        (throwable as? DomainError)?.toUiError()
-                            ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
+                        (error as? DomainError)?.toUiError()
+                            ?: UiError.UnknownError("[uploadProfileImage] 알 수 없는 오류가 발생했습니다: ${error.message}")
                     )
                 }
             )

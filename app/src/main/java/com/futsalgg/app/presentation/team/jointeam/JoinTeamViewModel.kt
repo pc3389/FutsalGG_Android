@@ -37,102 +37,6 @@ class JoinTeamViewModel @Inject constructor(
     }
 
     fun searchTeams(name: String) {
-//        _state.update {
-//            it.copy(
-//                searchResults = listOf(
-//                    Team(
-//                        id = "1",
-//                        name = "바르셀로나",
-//                        createdTime = "2024-03-20"
-//                    ),
-//                    Team(
-//                        id = "2",
-//                        name = "레알마드리드",
-//                        createdTime = "2024-03-19"
-//                    ),
-//                    Team(
-//                        id = "3",
-//                        name = "맨체스터유나이티드",
-//                        createdTime = "2024-03-18"
-//                    ),
-//                    Team(
-//                        id = "4",
-//                        name = "리버풀",
-//                        createdTime = "2024-03-17"
-//                    ),
-//                    Team(
-//                        id = "5",
-//                        name = "아스날",
-//                        createdTime = "2024-03-16"
-//                    ),
-//                    Team(
-//                        id = "3",
-//                        name = "맨체스터유나이티드",
-//                        createdTime = "2024-03-18"
-//                    ),
-//                    Team(
-//                        id = "4",
-//                        name = "리버풀",
-//                        createdTime = "2024-03-17"
-//                    ),
-//                    Team(
-//                        id = "5",
-//                        name = "아스날",
-//                        createdTime = "2024-03-16"
-//                    ),
-//                    Team(
-//                        id = "4",
-//                        name = "리버풀",
-//                        createdTime = "2024-03-17"
-//                    ),
-//                    Team(
-//                        id = "5",
-//                        name = "아스날",
-//                        createdTime = "2024-03-16"
-//                    ),
-//                    Team(
-//                        id = "3",
-//                        name = "맨체스터유나이티드",
-//                        createdTime = "2024-03-18"
-//                    ),
-//                    Team(
-//                        id = "4",
-//                        name = "리버풀",
-//                        createdTime = "2024-03-17"
-//                    ),
-//                    Team(
-//                        id = "5",
-//                        name = "아스날",
-//                        createdTime = "2024-03-16"
-//                    ),
-//                    Team(
-//                        id = "4",
-//                        name = "리버풀",
-//                        createdTime = "2024-03-17"
-//                    ),
-//                    Team(
-//                        id = "5",
-//                        name = "아스날",
-//                        createdTime = "2024-03-16"
-//                    ),
-//                    Team(
-//                        id = "3",
-//                        name = "맨체스터유나이티드",
-//                        createdTime = "2024-03-18"
-//                    ),
-//                    Team(
-//                        id = "4",
-//                        name = "리버풀",
-//                        createdTime = "2024-03-17"
-//                    ),
-//                    Team(
-//                        id = "5",
-//                        name = "아스날",
-//                        createdTime = "2024-03-16"
-//                    )
-//                )
-//            )
-//        }
         viewModelScope.launch {
             _uiState.value = UiState.Loading
             searchTeamsUseCase(name).fold(
@@ -155,38 +59,11 @@ class JoinTeamViewModel @Inject constructor(
                 onFailure = { error ->
                     _uiState.value = UiState.Error(
                         (error as? DomainError)?.toUiError()
-                            ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
+                            ?: UiError.UnknownError("[searchTeams] 알 수 없는 오류가 발생했습니다: ${error.message}")
                     )
                 }
             )
         }
-//        viewModelScope.launch {
-//            _uiState.value = UiState.Loading
-//            searchTeamsUseCase(name).fold(
-//                onSuccess = { response ->
-//                    _state.update {
-//                        it.copy(
-//                            searchResults = response.teams.map { team ->
-//                                Team(
-//                                    id = team.id,
-//                                    name = team.name,
-//                                    leaderName = team.leaderName,
-//                                    memberCount = team.memberCount,
-//                                    createdTime = team.createdTime
-//                                )
-//                            }
-//                        )
-//                    }
-//                    _uiState.value = UiState.Success
-//                },
-//                onFailure = { error ->
-//                    _uiState.value = UiState.Error(
-//                        (error as? DomainError)?.toUiError()
-//                            ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
-//                    )
-//                }
-//            )
-//        }
     }
 
     fun joinTeam(
@@ -196,13 +73,7 @@ class JoinTeamViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = UiState.Loading
 
-            val accessToken = tokenManager.getAccessToken()
-
-            if (accessToken.isNullOrEmpty()) {
-                Log.e("CreateUserViewModel", "엑세스 토큰이 존재하지 않습니다")
-                _uiState.value = UiState.Error(UiError.AuthError("엑세스 토큰이 존재하지 않습니다"))
-                return@launch
-            }
+            val accessToken = tokenManager.getAccessToken() ?: ""
 
             joinTeamUseCase(
                 accessToken = accessToken,
@@ -215,7 +86,7 @@ class JoinTeamViewModel @Inject constructor(
                 onFailure = { error ->
                     _uiState.value = UiState.Error(
                         (error as? DomainError)?.toUiError()
-                            ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
+                            ?: UiError.UnknownError("[joinTeam] 알 수 없는 오류가 발생했습니다: ${error.message}")
                     )
                 }
             )

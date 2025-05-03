@@ -39,7 +39,7 @@ class TeamInfoViewModel @Inject constructor(
     private val _teamState = MutableStateFlow(MyTeam())
     val teamState: StateFlow<MyTeam> = _teamState.asStateFlow()
 
-    val accessToken = tokenManager.getAccessToken()
+    val accessToken = tokenManager.getAccessToken() ?: ""
 
     init {
         loadTeamMembers()
@@ -59,11 +59,6 @@ class TeamInfoViewModel @Inject constructor(
             _uiState.value = UiState.Loading
             try {
 
-                if (accessToken.isNullOrEmpty()) {
-                    _uiState.value = UiState.Error(UiError.AuthError("엑세스 토큰이 존재하지 않습니다"))
-                    return@launch
-                }
-
                 getTeamMembersByTeamIdUseCase(accessToken, sharedViewModel.teamId.value ?: "")
                     .onSuccess { teamMembers ->
                         val activeMembers =
@@ -73,15 +68,15 @@ class TeamInfoViewModel @Inject constructor(
                         }
                         _uiState.value = UiState.Success
                     }
-                    .onFailure { throwable ->
+                    .onFailure { error ->
                         _uiState.value = UiState.Error(
-                            (throwable as? DomainError)?.toUiError()
-                                ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
+                            (error as? DomainError)?.toUiError()
+                                ?: UiError.UnknownError("[loadTeamMembers] 알 수 없는 오류가 발생했습니다: ${error.message}")
                         )
                     }
             } catch (e: Exception) {
                 _uiState.value = UiState.Error(
-                    UiError.UnknownError("예기치 않은 오류가 발생했습니다: ${e.message}")
+                    UiError.UnknownError("[loadTeamMembers] 예기치 않은 오류가 발생했습니다: ${e.message}")
                 )
             }
         }
@@ -92,12 +87,6 @@ class TeamInfoViewModel @Inject constructor(
             _uiState.value = UiState.Loading
 
             try {
-                if (accessToken.isNullOrEmpty()) {
-                    Log.e("CreateTeamViewModel", "엑세스 토큰이 존재하지 않습니다")
-                    _uiState.value = UiState.Error(UiError.AuthError("엑세스 토큰이 존재하지 않습니다"))
-                    return@launch
-                }
-
                 getMyTeamUseCase(accessToken)
                     .onSuccess { domainMyTeam ->
                         _uiState.value = UiState.Success
@@ -108,13 +97,13 @@ class TeamInfoViewModel @Inject constructor(
                     .onFailure { error ->
                         _uiState.value = UiState.Error(
                             (error as? DomainError)?.toUiError()
-                                ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
+                                ?: UiError.UnknownError("[getMyTeam] 알 수 없는 오류가 발생했습니다: ${error.message}")
                         )
                     }
 
             } catch (e: Exception) {
                 _uiState.value = UiState.Error(
-                    UiError.UnknownError("예기치 않은 오류가 발생했습니다: ${e.message}")
+                    UiError.UnknownError("[getMyTeam] 예기치 않은 오류가 발생했습니다: ${e.message}")
                 )
             }
         }

@@ -43,6 +43,8 @@ class CreateUserViewModel @Inject constructor(
     private val _createUserState = MutableStateFlow(CreateUserState())
     val createUserState: StateFlow<CreateUserState> = _createUserState.asStateFlow()
 
+    private val accessToken = tokenManager.getAccessToken() ?: ""
+
     internal fun onNicknameChange(newValue: String) {
         _createUserState.value = _createUserState.value.copy(
             nickname = newValue,
@@ -106,14 +108,6 @@ class CreateUserViewModel @Inject constructor(
                     _createUserState.value.birthday, DateTimeFormatter.ofPattern("yyyyMMdd")
                 ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 
-                val accessToken = tokenManager.getAccessToken()
-
-                if (accessToken.isNullOrEmpty()) {
-                    Log.e("CreateUserViewModel", "엑세스 토큰이 존재하지 않습니다")
-                    _uiState.value = UiState.Error(UiError.AuthError("엑세스 토큰이 존재하지 않습니다"))
-                    return@launch
-                }
-
                 val result = createUserUseCase.createUser(
                     accessToken = accessToken,
                     nickname = _createUserState.value.nickname,
@@ -135,7 +129,7 @@ class CreateUserViewModel @Inject constructor(
                         )
                         _uiState.value = UiState.Error(
                             (error as? DomainError)?.toUiError()
-                                ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
+                                ?: UiError.UnknownError("[createUser] 알 수 없는 오류가 발생했습니다: ${error.message}")
                         )
                         _createUserState.value = _createUserState.value.copy(
                             errorMessage = error.message
@@ -143,8 +137,7 @@ class CreateUserViewModel @Inject constructor(
                     }
                 )
             } catch (e: Exception) {
-                Log.e("CreateUserViewModel", "Exception during Signup", e)
-                _uiState.value = UiState.Error(UiError.UnknownError("알 수 없는 오류가 발생했습니다."))
+                _uiState.value = UiState.Error(UiError.UnknownError("[createUser] 알 수 없는 오류가 발생했습니다: ${e.message}"))
                 _createUserState.value = _createUserState.value.copy(
                     errorMessage = e.message
                 )
@@ -156,13 +149,6 @@ class CreateUserViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = UiState.Loading
 
-            val accessToken = tokenManager.getAccessToken()
-            if (accessToken.isNullOrEmpty()) {
-                logError("AccessToken이 존재하지 않습니다.")
-                _uiState.value = UiState.Error(UiError.AuthError("AccessToken이 존재하지 않습니다"))
-                return@launch
-            }
-
             val result = withContext(Dispatchers.IO) {
                 uploadUserProfilePictureUseCase.uploadProfileImage(accessToken, file)
             }
@@ -173,14 +159,10 @@ class CreateUserViewModel @Inject constructor(
                     )
                     _uiState.value = UiState.Success
                 },
-                onFailure = { throwable ->
-                    logError("프로필 이미지 업로드 오류: ${throwable.message}")
+                onFailure = { error ->
                     _uiState.value = UiState.Error(
-                        (throwable as? DomainError)?.toUiError()
-                            ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
-                    )
-                    _createUserState.value = _createUserState.value.copy(
-                        errorMessage = throwable.message
+                        (error as? DomainError)?.toUiError()
+                            ?: UiError.UnknownError("[uploadProfileImage] 알 수 없는 오류가 발생했습니다: ${error.message}")
                     )
                 }
             )

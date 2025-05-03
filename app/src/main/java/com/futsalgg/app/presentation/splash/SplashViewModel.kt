@@ -71,11 +71,11 @@ class SplashViewModel @Inject constructor(
                         }
                         _uiState.value = UiState.Error(
                             (error as? DomainError)?.toUiError()
-                                ?: UiError.UnknownError("[getProfile] 알 수 없는 오류가 발생했습니다.")
+                                ?: UiError.UnknownError("[getProfile] 알 수 없는 오류가 발생했습니다: ${error.message}")
                         )
                     }
             } catch (e: Exception) {
-                _uiState.value = UiState.Error(UiError.UnknownError("[getProfile] 알 수 없는 오류가 발생했습니다."))
+                _uiState.value = UiState.Error(UiError.UnknownError("[getProfile] 알 수 없는 오류가 발생했습니다: ${e.message}"))
             }
         }
     }
@@ -105,7 +105,7 @@ class SplashViewModel @Inject constructor(
                         )
                     }
             } catch (e: Exception) {
-                _uiState.value = UiState.Error(UiError.UnknownError("[refreshTokenUseCase] 알 수 없는 오류가 발생했습니다."))
+                _uiState.value = UiState.Error(UiError.UnknownError("[refreshTokenUseCase] 알 수 없는 오류가 발생했습니다: ${e.message}"))
             }
         }
     }
@@ -127,11 +127,11 @@ class SplashViewModel @Inject constructor(
                         }
                         _uiState.value = UiState.Error(
                             (error as? DomainError)?.toUiError()
-                                ?: UiError.UnknownError("[getMyTeam] 알 수 없는 오류가 발생했습니다.")
+                                ?: UiError.UnknownError("[getMyTeam] 알 수 없는 오류가 발생했습니다: ${error.message}")
                         )
                     }
             } catch (e: Exception) {
-                _uiState.value = UiState.Error(UiError.UnknownError("[getMyTeam] 알 수 없는 오류가 발생했습니다."))
+                _uiState.value = UiState.Error(UiError.UnknownError("[getMyTeam] 알 수 없는 오류가 발생했습니다: ${e.message}"))
             }
         }
     }

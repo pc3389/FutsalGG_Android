@@ -53,13 +53,7 @@ class UpdateMatchParticipantsSubTeamViewModel @Inject constructor(
         onSuccess: () -> Unit
     ) {
         viewModelScope.launch {
-            val accessToken = tokenManager.getAccessToken()
-
-            if (accessToken.isNullOrEmpty()) {
-                Log.e("CreateMatchParticipantsViewModel", "엑세스 토큰이 존재하지 않습니다")
-                _uiState.value = UiState.Error(UiError.AuthError("엑세스 토큰이 존재하지 않습니다"))
-                return@launch
-            }
+            val accessToken = tokenManager.getAccessToken() ?: ""
             val matchId = matchSharedViewModel.matchState.value.id
             try {
                 _uiState.value = UiState.Loading
@@ -71,7 +65,7 @@ class UpdateMatchParticipantsSubTeamViewModel @Inject constructor(
                 )
             } catch (e: Exception) {
                 _uiState.value = UiState.Error(
-                    UiError.UnknownError("예기치 않은 오류가 발생했습니다: ${e.message}")
+                    UiError.UnknownError("[updateMatchParticipantsSubTeam] 예기치 않은 오류가 발생했습니다: ${e.message}")
                 )
             }
         }
@@ -98,10 +92,10 @@ class UpdateMatchParticipantsSubTeamViewModel @Inject constructor(
                 matchId = matchId,
                 onSuccess = onSuccess
             )
-        }.onFailure { exception ->
+        }.onFailure { error ->
             _uiState.value = UiState.Error(
-                (exception as? DomainError)?.toUiError()
-                    ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
+                (error as? DomainError)?.toUiError()
+                    ?: UiError.UnknownError("[updateTeamA] 알 수 없는 오류가 발생했습니다: ${error.message}")
             )
         }
     }
@@ -119,10 +113,10 @@ class UpdateMatchParticipantsSubTeamViewModel @Inject constructor(
         ).onSuccess {
             _uiState.value = UiState.Success
             onSuccess()
-        }.onFailure { exception ->
+        }.onFailure { error ->
             _uiState.value = UiState.Error(
-                (exception as? DomainError)?.toUiError()
-                    ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
+                (error as? DomainError)?.toUiError()
+                    ?: UiError.UnknownError("[updateTeamB] 알 수 없는 오류가 발생했습니다: ${error.message}")
             )
         }
     }

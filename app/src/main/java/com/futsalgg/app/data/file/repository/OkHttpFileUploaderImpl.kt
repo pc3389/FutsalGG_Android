@@ -45,7 +45,7 @@ class OkHttpFileUploaderImpl @Inject constructor(
         } catch (e: Exception) {
             Result.failure(
                 DomainError.UnknownError(
-                    message = "[uploadFileToPresignedUrl] 알 수 없는 오류가 발생했습니다.",
+                    message = "[uploadFileToPresignedUrl] 알 수 없는 오류가 발생했습니다: ${e.message}",
                     cause = e
                 )
             )

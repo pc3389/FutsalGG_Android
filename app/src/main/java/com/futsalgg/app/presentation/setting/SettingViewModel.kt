@@ -34,12 +34,7 @@ class SettingViewModel @Inject constructor(
     fun getProfile() {
         viewModelScope.launch {
 
-            val accessToken = tokenManager.getAccessToken()
-            if (accessToken.isNullOrEmpty()) {
-                Log.e("CreateTeamViewModel", "엑세스 토큰이 존재하지 않습니다")
-                _uiState.value = UiState.Error(UiError.AuthError("엑세스 토큰이 존재하지 않습니다"))
-                return@launch
-            }
+            val accessToken = tokenManager.getAccessToken() ?: ""
 
             _uiState.value = UiState.Loading
             getMyProfileForSettingUseCase(accessToken)
@@ -55,7 +50,7 @@ class SettingViewModel @Inject constructor(
                 .onFailure { error ->
                     _uiState.value = UiState.Error(
                         (error as? DomainError)?.toUiError()
-                            ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
+                            ?: UiError.UnknownError("[getProfile] 알 수 없는 오류가 발생했습니다: ${error.message}")
                     )
                 }
         }

@@ -43,13 +43,7 @@ class ManageTeamViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = UiState.Loading
             try {
-                val accessToken = tokenManager.getAccessToken()
-
-                if (accessToken.isNullOrEmpty()) {
-                    Log.e("CreateMatchParticipantsViewModel", "엑세스 토큰이 존재하지 않습니다")
-                    _uiState.value = UiState.Error(UiError.AuthError("엑세스 토큰이 존재하지 않습니다"))
-                    return@launch
-                }
+                val accessToken = tokenManager.getAccessToken() ?: ""
 
                 getTeamMembersByTeamIdUseCase(accessToken, sharedViewModel.teamId.value ?: "")
                     .onSuccess { teamMembers ->
@@ -65,10 +59,10 @@ class ManageTeamViewModel @Inject constructor(
                         }
                         _uiState.value = UiState.Success
                     }
-                    .onFailure { throwable ->
+                    .onFailure { error ->
                         _uiState.value = UiState.Error(
-                            (throwable as? DomainError)?.toUiError()
-                                ?: UiError.UnknownError("[loadTeamMember] 알 수 없는 오류가 발생했습니다.")
+                            (error as? DomainError)?.toUiError()
+                                ?: UiError.UnknownError("[loadTeamMember] 알 수 없는 오류가 발생했습니다: ${error.message}")
                         )
                     }
             } catch (e: Exception) {

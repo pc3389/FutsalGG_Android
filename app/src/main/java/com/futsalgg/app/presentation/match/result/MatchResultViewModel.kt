@@ -34,7 +34,7 @@ class MatchResultViewModel @Inject constructor(
     tokenManager: ITokenManager
 ) : ViewModel() {
 
-    val accessToken = tokenManager.getAccessToken()
+    val accessToken = tokenManager.getAccessToken() ?: ""
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
@@ -73,11 +73,6 @@ class MatchResultViewModel @Inject constructor(
         _uiState.value = UiState.Loading
         viewModelScope.launch {
             try {
-                if (accessToken.isNullOrEmpty()) {
-                    Log.e("CreateTeamViewModel", "엑세스 토큰이 존재하지 않습니다")
-                    _uiState.value = UiState.Error(UiError.AuthError("엑세스 토큰이 존재하지 않습니다"))
-                    return@launch
-                }
 
                 getMatchesUseCase.invoke(
                     accessToken = accessToken,
@@ -88,12 +83,11 @@ class MatchResultViewModel @Inject constructor(
                         .groupBy { it.matchDate }
                     matchSharedViewModel.afterRefresh()
                     _uiState.value = UiState.Success
-                }.onFailure { throwable ->
-                    val error = UiState.Error(
-                        (throwable as? DomainError)?.toUiError()
-                            ?: UiError.UnknownError("[loadMatches] 알 수 없는 오류가 발생했습니다.")
+                }.onFailure { error ->
+                    _uiState.value = UiState.Error(
+                        (error as? DomainError)?.toUiError()
+                            ?: UiError.UnknownError("[loadMatches] 알 수 없는 오류가 발생했습니다: ${error.message}")
                     )
-                    _uiState.value = error
                 }
             } catch (e: Exception) {
                 _uiState.value = UiState.Error(
@@ -107,28 +101,21 @@ class MatchResultViewModel @Inject constructor(
         _uiState.value = UiState.Loading
         viewModelScope.launch {
             try {
-                if (accessToken.isNullOrEmpty()) {
-                    Log.e("CreateTeamViewModel", "[deleteMatch] 엑세스 토큰이 존재하지 않습니다")
-                    _uiState.value = UiState.Error(UiError.AuthError("[deleteMatch] 엑세스 토큰이 존재하지 않습니다"))
-                    return@launch
-                }
-
                 deleteMatchUseCase.invoke(
                     accessToken = accessToken,
                     id = match.id
                 ).onSuccess { matches ->
                     removeMatch(match)
                     _uiState.value = UiState.Success
-                }.onFailure { throwable ->
-                    val error = UiState.Error(
-                        (throwable as? DomainError)?.toUiError()
-                            ?: UiError.UnknownError("[deleteMatch] 알 수 없는 오류가 발생했습니다.")
+                }.onFailure { error ->
+                    _uiState.value = UiState.Error(
+                        (error as? DomainError)?.toUiError()
+                            ?: UiError.UnknownError("[deleteMatch] 알 수 없는 오류가 발생했습니다: ${error.message}")
                     )
-                    _uiState.value = error
                 }
             } catch (e: Exception) {
                 _uiState.value = UiState.Error(
-                    UiError.UnknownError("예기치 않은 오류가 발생했습니다: ${e.message}")
+                    UiError.UnknownError("[deleteMatch] 예기치 않은 오류가 발생했습니다: ${e.message}")
                 )
             }
         }

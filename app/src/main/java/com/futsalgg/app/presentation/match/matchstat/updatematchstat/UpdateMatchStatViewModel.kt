@@ -187,12 +187,12 @@ class UpdateMatchStatViewModel @Inject constructor(
                     .onFailure { error ->
                         uiState.value = UiState.Error(
                             (error as? DomainError)?.toUiError()
-                                ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
+                                ?: UiError.UnknownError("[createMatchStat 알 수 없는 오류가 발생했습니다: ${error.message}")
                         )
                     }
             } catch (e: Exception) {
                 uiState.value = UiState.Error(
-                    UiError.UnknownError("예기치 않은 오류가 발생했습니다: ${e.message}")
+                    UiError.UnknownError("[createMatchStat] 예기치 않은 오류가 발생했습니다: ${e.message}")
                 )
             }
         }

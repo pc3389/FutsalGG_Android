@@ -46,7 +46,7 @@ class CreateMatchParticipantsViewModel @Inject constructor(
 
     private val _isAllSelected = MutableStateFlow(false)
 
-    private val accessToken = tokenManager.getAccessToken()
+    private val accessToken = tokenManager.getAccessToken() ?: ""
 
     init {
         loadTeamMembers()
@@ -56,11 +56,6 @@ class CreateMatchParticipantsViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = UiState.Loading
             try {
-                if (accessToken.isNullOrEmpty()) {
-                    Log.e("CreateMatchParticipantsViewModel", "엑세스 토큰이 존재하지 않습니다")
-                    _uiState.value = UiState.Error(UiError.AuthError("엑세스 토큰이 존재하지 않습니다"))
-                    return@launch
-                }
 
                 getTeamMembersByTeamIdUseCase(accessToken, sharedViewModel.teamId.value ?: "")
                     .onSuccess { teamMembers ->
@@ -80,10 +75,10 @@ class CreateMatchParticipantsViewModel @Inject constructor(
                         }
                         _uiState.value = UiState.Success
                     }
-                    .onFailure { throwable ->
+                    .onFailure { error ->
                         _uiState.value = UiState.Error(
-                            (throwable as? DomainError)?.toUiError()
-                                ?: UiError.UnknownError("[loadTeamMembers] 알 수 없는 오류가 발생했습니다.")
+                            (error as? DomainError)?.toUiError()
+                                ?: UiError.UnknownError("[loadTeamMembers] 알 수 없는 오류가 발생했습니다: ${error.message}")
                         )
                     }
             } catch (e: Exception) {
@@ -143,12 +138,6 @@ class CreateMatchParticipantsViewModel @Inject constructor(
         _uiState.value = UiState.Loading
         viewModelScope.launch {
             try {
-                if (accessToken.isNullOrEmpty()) {
-                    Log.e("CreateTeamViewModel", "엑세스 토큰이 존재하지 않습니다")
-                    _uiState.value = UiState.Error(UiError.AuthError("엑세스 토큰이 존재하지 않습니다"))
-                    return@launch
-                }
-
                 createMatchParticipantsUseCase(
                     accessToken = accessToken,
                     matchId = matchState.value.id,
@@ -174,15 +163,15 @@ class CreateMatchParticipantsViewModel @Inject constructor(
                         onSuccess()
                         _uiState.value = UiState.Success
                     }
-                    .onFailure { throwable ->
+                    .onFailure { error ->
                         _uiState.value = UiState.Error(
-                            (throwable as? DomainError)?.toUiError()
-                                ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
+                            (error as? DomainError)?.toUiError()
+                                ?: UiError.UnknownError("[createMatchParticipants] 알 수 없는 오류가 발생했습니다: ${error.message}")
                         )
                     }
             } catch (e: Exception) {
                 _uiState.value = UiState.Error(
-                    UiError.UnknownError("예기치 않은 오류가 발생했습니다: ${e.message}")
+                    UiError.UnknownError("[createMatchParticipants] 예기치 않은 오류가 발생했습니다: ${e.message}")
                 )
             }
         }

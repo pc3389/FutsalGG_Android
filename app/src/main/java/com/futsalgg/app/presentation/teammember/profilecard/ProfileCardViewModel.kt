@@ -46,13 +46,7 @@ class ProfileCardViewModel @Inject constructor(
         _uiState.value = UiState.Loading
         viewModelScope.launch {
             try {
-                val accessToken = tokenManager.getAccessToken()
-
-                if (accessToken.isNullOrEmpty()) {
-                    Log.e("CreateTeamViewModel", "엑세스 토큰이 존재하지 않습니다")
-                    _uiState.value = UiState.Error(UiError.AuthError("엑세스 토큰이 존재하지 않습니다"))
-                    return@launch
-                }
+                val accessToken = tokenManager.getAccessToken() ?: ""
 
                 getTeamMemberForProfileUseCase(accessToken, id)
                     .onSuccess { teamMember ->
@@ -79,16 +73,15 @@ class ProfileCardViewModel @Inject constructor(
                         )
                         _uiState.value = UiState.Success
                     }
-                    .onFailure { throwable ->
-                        val error = UiState.Error(
-                            (throwable as? DomainError)?.toUiError()
-                                ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
+                    .onFailure { error ->
+                        _uiState.value = UiState.Error(
+                            (error as? DomainError)?.toUiError()
+                                ?: UiError.UnknownError("[getProfile] 알 수 없는 오류가 발생했습니다: ${error.message}")
                         )
-                        _uiState.value = error
                     }
             } catch (e: Exception) {
                 _uiState.value = UiState.Error(
-                    UiError.UnknownError("예기치 않은 오류가 발생했습니다: ${e.message}")
+                    UiError.UnknownError("[getProfile] 예기치 않은 오류가 발생했습니다: ${e.message}")
                 )
             }
         }

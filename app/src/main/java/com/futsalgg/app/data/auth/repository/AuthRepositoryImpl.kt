@@ -123,7 +123,7 @@ class AuthRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             Result.failure(
                 DomainError.UnknownError(
-                    message = "getFirebaseToken 알 수 없는 오류가 발생했습니다.",
+                    message = "getFirebaseToken 알 수 없는 오류가 발생했습니다: ${e.message}",
                     cause = e
                 ) as Throwable
             )

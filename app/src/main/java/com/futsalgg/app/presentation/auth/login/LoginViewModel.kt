@@ -27,7 +27,7 @@ class LoginViewModel @Inject constructor(
 
     fun setError() {
         _uiState.value = UiState.Error (
-            UiError.UnknownError("예상치 못한 에러")
+            UiError.UnknownError("[Login] 예상치 못한 에러")
         )
     }
 
@@ -45,7 +45,7 @@ class LoginViewModel @Inject constructor(
             }.onFailure { error ->
                 _uiState.value = UiState.Error(
                     (error as? DomainError)?.toUiError()
-                        ?: UiError.UnknownError("[signInWithGoogleIdToken] 알 수 없는 오류가 발생했습니다.")
+                        ?: UiError.UnknownError("[signInWithGoogleIdToken] 알 수 없는 오류가 발생했습니다: ${error.message}")
                 )
                 onFailure(error)
             }
