@@ -37,7 +37,8 @@ fun ScoreTemplate(
     isEditable: Boolean = false,
     onGoalClick: (Int, Int) -> Unit = { _, _ -> }, // roundIndex, team(0, 1)
     onAssistClick: (Int, Int, Int) -> Unit = { _, _, _ -> }, // roudndIndex, team(0, 1), goalIndex
-    onDeleteClick: (Int, Int, Int) -> Unit = { _, _, _ -> } // roudndIndex, team(0, 1), goalIndex
+    onDeleteClick: (Int, Int, Int) -> Unit = { _, _, _ -> },// roudndIndex, team(0, 1), goalIndex
+    bottomButtons: @Composable () -> Unit = {}
 ) {
 
     Column {
@@ -250,26 +251,6 @@ fun ScoreTemplate(
             }
         }
 
-        HorizontalDivider(
-            thickness = 1.dp,
-            color = FutsalggColor.mono200
-        )
-        Box(
-            modifier = Modifier.background(FutsalggColor.white)
-        ) {
-            DoubleButtons(
-                leftText = "저장하기",
-                rightText = "최종등록",
-                onLeftClick = {
-                    // TODO Left button click
-                },
-                onRightClick = {
-                    // TODO Right button click
-                },
-                isLeftBlack = false,
-                horizontalPadding = 16.dp,
-                verticalPadding = 16.dp
-            )
-        }
+        bottomButtons()
     }
 }

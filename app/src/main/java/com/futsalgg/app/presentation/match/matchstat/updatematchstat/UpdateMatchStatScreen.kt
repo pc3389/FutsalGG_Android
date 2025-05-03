@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -23,6 +24,7 @@ import com.futsalgg.app.presentation.match.matchstat.base.BaseMatchStatScreen
 import com.futsalgg.app.presentation.match.matchstat.component.ScoreTemplate
 import com.futsalgg.app.presentation.match.matchstat.model.MatchParticipantState
 import com.futsalgg.app.ui.components.BottomButton
+import com.futsalgg.app.ui.components.DoubleButtons
 import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.ui.theme.FutsalggTypography
 
@@ -87,13 +89,13 @@ fun UpdateMatchStatScreen(
                         SelectableMathParticipantBox(
                             participant = participant,
                             onClick = {
-                                selectedParticipantId = if (selectedParticipantId == participant.teamMemberId) {
+                                selectedParticipantId = if (selectedParticipantId == participant.id) {
                                     ""
                                 } else {
-                                    participant.teamMemberId
+                                    participant.id
                                 }
                             },
-                            isSelected = participant.teamMemberId == selectedParticipantId,
+                            isSelected = participant.id == selectedParticipantId,
                             iconTrue = R.drawable.ic_radio_true_24,
                             iconFalse = R.drawable.ic_radio_false_24
                         )
@@ -141,7 +143,29 @@ fun UpdateMatchStatScreen(
             onDeleteClick = { roundIndex, teamIndex, goalIndex ->
                 viewModel.deleteGoal(roundIndex, teamIndex, goalIndex)
             }
-        )
+        ) {
+            HorizontalDivider(
+                thickness = 1.dp,
+                color = FutsalggColor.mono200
+            )
+            Box(
+                modifier = Modifier.background(FutsalggColor.white)
+            ) {
+                DoubleButtons(
+                    leftText = "저장하기",
+                    rightText = "최종등록",
+                    onLeftClick = {
+                        // TODO Left button click
+                    },
+                    onRightClick = {
+                        // TODO Right button click
+                    },
+                    isLeftBlack = false,
+                    horizontalPadding = 16.dp,
+                    verticalPadding = 16.dp
+                )
+            }
+        }
     }
 
     if (showBottomSheet) {

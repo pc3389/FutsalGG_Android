@@ -43,7 +43,19 @@ class UpdateMatchStatViewModel @Inject constructor(
 
     init {
         super.initial(
-            onSuccess = { _tempMatchStatsState.value = it }
+            onSuccess = {
+                _tempMatchStatsState.value = it
+                if (_tempMatchStatsState.value.size != matchRounds.value) {
+                    for (i in 1..matchRounds.value) {
+                        if (_tempMatchStatsState.value.find { it.roundNumber == i } == null)
+                            _tempMatchStatsState.value += RoundStats(
+                                roundNumber = i,
+                                teamAStats = listOf(),
+                                teamBStats = listOf()
+                            )
+                    }
+                }
+            }
         )
     }
 

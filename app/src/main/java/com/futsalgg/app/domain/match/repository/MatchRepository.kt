@@ -5,6 +5,7 @@ import com.futsalgg.app.domain.common.model.MatchType
 import com.futsalgg.app.domain.match.model.MatchStat
 import com.futsalgg.app.domain.match.model.RoundStats
 import com.futsalgg.app.domain.match.model.UpdateMatch
+import com.futsalgg.app.domain.match.model.MatchParticipant
 
 interface MatchRepository {
     suspend fun getMatches(

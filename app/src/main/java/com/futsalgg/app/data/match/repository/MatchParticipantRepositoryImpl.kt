@@ -115,7 +115,7 @@ class MatchParticipantRepositoryImpl @Inject constructor(
 
             if (response.isSuccessful) {
                 response.body()?.let { participants ->
-                    Result.success(participants.data.map { it.toDomain() })
+                    Result.success(participants.data.participants.map { it.toDomain() })
                 } ?: Result.failure(
                     DomainError.ServerError(
                         message = "[getMatchParticipants] 서버 응답이 비어있습니다.",

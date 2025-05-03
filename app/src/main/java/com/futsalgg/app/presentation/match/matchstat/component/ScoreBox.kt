@@ -29,6 +29,7 @@ import coil.compose.AsyncImage
 import com.futsalgg.app.R
 import com.futsalgg.app.presentation.match.matchstat.model.MatchParticipantState
 import com.futsalgg.app.presentation.match.matchstat.model.MatchStat
+import com.futsalgg.app.ui.components.spacers.VerticalSpacer4
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer8
 import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.ui.theme.FutsalggTypography
@@ -41,6 +42,7 @@ fun ScoreBox(
     borderColor: Color = FutsalggColor.mono500,
     emptyBorderColor: Color = FutsalggColor.mono800,
     textColor: Color = FutsalggColor.white,
+    nicknameTextColor: Color = FutsalggColor.white,
     isEditable: Boolean = false,
     onGoalClick: () -> Unit = {},
     onAssistClick: () -> Unit = {},
@@ -82,9 +84,11 @@ fun ScoreBox(
                     color = textColor
                 )
                 VerticalSpacer8()
-                Box(
-                    modifier = Modifier
-                        .height(72.dp)
+                val modifier = if (isEditable && !hasGoal) Modifier.clickable {
+                    onGoalClick()
+                } else Modifier
+                Column(
+                    modifier = modifier
                         .clip(RoundedCornerShape(8.dp))
                         .fillMaxWidth()
                         .background(actualBackgroundColor)
@@ -92,49 +96,52 @@ fun ScoreBox(
                             width = 1.dp,
                             color = actualBorderColor,
                             shape = RoundedCornerShape(8.dp)
-                        )
+                        ),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     if (hasGoal) {
-                        val profileUrl = participants.find {
-                            it.id == scoreInfo[0].id
-                        }?.profileUrl
+                        val participant = participants.find {
+                            it.id == scoreInfo[0].matchParticipantId
+                        }
+                        VerticalSpacer8()
                         AsyncImage(
-                            model = profileUrl,
+                            model = participant?.profileUrl,
                             contentDescription = "프로필 이미지",
                             modifier = Modifier
                                 .size(48.dp)
-                                .align(Alignment.Center)
                                 .clip(CircleShape),
                             placeholder = painterResource(R.drawable.ic_team_default_56),
                             error = painterResource(R.drawable.ic_team_default_56)
                         )
-                    } else {
-                        if (isEditable) {
-                            Icon(
-                                modifier = Modifier
-                                    .align(Alignment.Center)
-                                    .size(24.dp),
-                                imageVector = ImageVector.vectorResource(R.drawable.ic_add_14),
-                                contentDescription = "",
-                                tint = actualBorderColor
-                            )
-                        } else {
-                            Text(
-                                modifier = Modifier.align(Alignment.Center),
-                                text = "없음",
-                                style = FutsalggTypography.bold_17_200,
-                                color = actualBorderColor
-                            )
-                        }
-                    }
-                    if (isEditable && !hasGoal) {
-                        Box(
-                            Modifier
-                                .fillMaxSize()
-                                .clickable {
-                                    onGoalClick()
-                                }
+                        VerticalSpacer4()
+                        Text(
+                            text = participant?.name ?: "",
+                            color = nicknameTextColor,
+                            style = FutsalggTypography.light_15_100
                         )
+                        VerticalSpacer8()
+                    } else {
+                        Box(
+                            modifier = Modifier.height(72.dp)
+                        ) {
+                            if (isEditable) {
+                                Icon(
+                                    modifier = Modifier
+                                        .align(Alignment.Center)
+                                        .size(24.dp),
+                                    imageVector = ImageVector.vectorResource(R.drawable.ic_add_14),
+                                    contentDescription = "",
+                                    tint = actualBorderColor
+                                )
+                            } else {
+                                Text(
+                                    modifier = Modifier.align(Alignment.Center),
+                                    text = "없음",
+                                    style = FutsalggTypography.bold_17_200,
+                                    color = actualBorderColor
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -159,9 +166,11 @@ fun ScoreBox(
                 val actualAssistBackgroundColor =
                     if (hasAssist || (hasGoal && isEditable)) backgroundColor else Color.Transparent
 
-                Box(
-                    modifier = Modifier
-                        .height(72.dp)
+                val modifier = if (isEditable && hasGoal && !hasAssist) Modifier.clickable {
+                    onAssistClick()
+                } else Modifier
+                Column(
+                    modifier = modifier
                         .clip(RoundedCornerShape(8.dp))
                         .fillMaxWidth()
                         .background(actualAssistBackgroundColor)
@@ -169,49 +178,52 @@ fun ScoreBox(
                             width = 1.dp,
                             color = actualAssistBorderColor,
                             shape = RoundedCornerShape(8.dp)
-                        )
+                        ),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     if (hasAssist) {
-                        val profileUrl = participants.find {
-                            scoreInfo.size == 2 && it.id == scoreInfo[1].id
-                        }?.profileUrl
+                        val participant = participants.find {
+                            scoreInfo.size == 2 && it.id == scoreInfo[1].matchParticipantId
+                        }
+                        VerticalSpacer8()
                         AsyncImage(
-                            model = profileUrl,
+                            model = participant?.profileUrl,
                             contentDescription = "프로필 이미지",
                             modifier = Modifier
                                 .size(48.dp)
-                                .align(Alignment.Center)
                                 .clip(CircleShape),
                             placeholder = painterResource(R.drawable.ic_team_default_56),
                             error = painterResource(R.drawable.ic_team_default_56)
                         )
-                    } else {
-                        if (isEditable) {
-                            Icon(
-                                modifier = Modifier
-                                    .align(Alignment.Center)
-                                    .size(24.dp),
-                                imageVector = ImageVector.vectorResource(R.drawable.ic_add_14),
-                                contentDescription = "",
-                                tint = actualAssistBorderColor
-                            )
-                        } else {
-                            Text(
-                                modifier = Modifier.align(Alignment.Center),
-                                text = "없음",
-                                style = FutsalggTypography.bold_17_200,
-                                color = actualBorderColor
-                            )
-                        }
-                    }
-                    if (isEditable && hasGoal && !hasAssist) {
-                        Box(
-                            Modifier
-                                .fillMaxSize()
-                                .clickable {
-                                    onAssistClick()
-                                }
+                        VerticalSpacer4()
+                        Text(
+                            text = participant?.name ?: "",
+                            color = nicknameTextColor,
+                            style = FutsalggTypography.light_15_100
                         )
+                        VerticalSpacer8()
+                    } else {
+                        Box(
+                            modifier = Modifier.height(72.dp)
+                        ) {
+                            if (isEditable) {
+                                Icon(
+                                    modifier = Modifier
+                                        .size(24.dp)
+                                        .align(Alignment.Center),
+                                    imageVector = ImageVector.vectorResource(R.drawable.ic_add_14),
+                                    contentDescription = "",
+                                    tint = actualAssistBorderColor
+                                )
+                            } else {
+                                Text(
+                                    modifier = Modifier.align(Alignment.Center),
+                                    text = "없음",
+                                    style = FutsalggTypography.bold_17_200,
+                                    color = actualBorderColor
+                                )
+                            }
+                        }
                     }
                 }
             }
