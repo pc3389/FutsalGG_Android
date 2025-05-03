@@ -1,13 +1,10 @@
 package com.futsalgg.app.ui.components
 
-import android.graphics.drawable.Icon
-import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
-import com.futsalgg.app.R
 import com.futsalgg.app.ui.components.state.IconState
 import com.futsalgg.app.ui.theme.FutsalggColor
 import com.futsalgg.app.ui.theme.FutsalggTypography

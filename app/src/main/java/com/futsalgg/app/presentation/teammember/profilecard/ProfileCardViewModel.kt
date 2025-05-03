@@ -1,6 +1,5 @@
 package com.futsalgg.app.presentation.teammember.profilecard
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.futsalgg.app.domain.auth.repository.ITokenManager
@@ -18,16 +17,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileCardViewModel @Inject constructor(
     private val getTeamMemberForProfileUseCase: GetTeamMemberForProfileUseCase,
     private val tokenManager: ITokenManager,
-    private val sharedViewModel: SharedViewModel
+    sharedViewModel: SharedViewModel
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
@@ -87,32 +83,6 @@ class ProfileCardViewModel @Inject constructor(
         }
     }
 
-
-    fun getAgeGroup(
-        birthday: String
-    ): String {
-        return try {
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-            val birthDate = LocalDate.parse(birthday, formatter)
-            val currentDate = LocalDate.now()
-            val age = ChronoUnit.YEARS.between(birthDate, currentDate)
-
-            when {
-                age < 20 -> "10"
-                age < 30 -> "20"
-                age < 40 -> "30"
-                age < 50 -> "40"
-                age < 60 -> "50"
-                age < 70 -> "60"
-                age < 80 -> "70"
-                age < 90 -> "80"
-                else -> "90"
-            }
-        } catch (e: Exception) {
-            "00"
-        }
-    }
-
     fun getWinRate(history: List<MatchHistory>): Int {
         val win = history.filter { it.result == MatchResult.WIN }
 
@@ -125,9 +95,11 @@ class ProfileCardViewModel @Inject constructor(
         var lose = 0
 
         history.forEach {
-            if (it.result == MatchResult.WIN) win++
-            else if (it.result == MatchResult.DRAW) draw++
-            else lose++
+            when (it.result) {
+                MatchResult.WIN -> win++
+                MatchResult.DRAW -> draw++
+                else -> lose++
+            }
         }
 
         return "$win/$draw/$lose"

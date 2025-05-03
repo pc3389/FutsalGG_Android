@@ -1,15 +1,11 @@
 package com.futsalgg.app.presentation.team.createorupdateteam.createteam
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.futsalgg.app.navigation.RoutePath
 import com.futsalgg.app.presentation.team.createorupdateteam.BaseTeamModifyScreen
 import com.futsalgg.app.presentation.team.createorupdateteam.ModifyTeamViewModel
-import com.futsalgg.app.util.toFile
 
 @Composable
 fun CreateTeamScreen(

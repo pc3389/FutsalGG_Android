@@ -8,11 +8,9 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
-import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.error.getCause
 import com.futsalgg.app.presentation.common.error.getCode
 import com.futsalgg.app.presentation.common.error.getMessage
@@ -20,7 +18,6 @@ import com.futsalgg.app.presentation.common.error.getType
 import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.ui.components.FutsalggTopBar
 import com.futsalgg.app.ui.theme.FutsalggColor
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun BaseScreen(

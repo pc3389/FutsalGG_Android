@@ -44,7 +44,6 @@ fun UpdateMatchStatScreen(
     val uiState by viewModel.uiStateFlow.collectAsState()
     val roundScoreState by viewModel.tempMatchStatsStateFlow.collectAsState()
     val participants by viewModel.participantsStateFlow.collectAsState()
-    val matchState by viewModel.matchState.collectAsState()
 
     @Composable
     fun SelectGoalScorerBottomSheet(

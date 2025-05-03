@@ -153,7 +153,7 @@ class AuthRepositoryImpl @Inject constructor(
                 )
             } else {
                 val errorBody = response.errorBody()?.string()
-                val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java as Class<ApiResponse<*>>)
+                val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
 
                 Result.failure(
                     DomainError.ServerError(

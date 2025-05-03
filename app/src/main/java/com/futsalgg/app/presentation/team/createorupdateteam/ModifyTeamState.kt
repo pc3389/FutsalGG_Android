@@ -19,7 +19,5 @@ data class ModifyTeamState(
     val errorMessage: String? = null
 ) {
     val isFormValid: Boolean
-        get() = matchType != null && access != null &&
-                teamNameState == EditTextState.Available &&
-                dues.isNotEmpty()
+        get() = access != null && teamNameState == EditTextState.Available && dues.isNotEmpty()
 }

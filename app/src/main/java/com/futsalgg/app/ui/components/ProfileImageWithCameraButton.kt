@@ -1,7 +1,6 @@
 package com.futsalgg.app.ui.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
@@ -20,7 +19,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.futsalgg.app.R
-import com.futsalgg.app.ui.theme.FutsalggColor
 
 @Composable
 fun ProfileImageWithCameraButton(

@@ -13,9 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -43,7 +40,6 @@ fun SplashScreen(
     val composition by rememberLottieComposition(
         LottieCompositionSpec.Asset("lottie/splash_loading_bar.json")
     )
-    var isPlaying by remember { mutableStateOf(true) }
 
     val uiState by viewModel.uiState.collectAsState()
 
@@ -99,8 +95,7 @@ fun SplashScreen(
             modifier = Modifier.fillMaxWidth()
                 .padding(horizontal = 16.dp)
                 .padding(bottom = 80.dp)
-                .align(Alignment.BottomCenter),
-            isPlaying = isPlaying
+                .align(Alignment.BottomCenter)
         )
     }
 

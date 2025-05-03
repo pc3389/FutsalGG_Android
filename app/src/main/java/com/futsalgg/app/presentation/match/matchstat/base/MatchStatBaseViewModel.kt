@@ -100,8 +100,4 @@ abstract class MatchStatBaseViewModel(
             }
         }
     }
-
-    fun updateMatchParticipantState(id: String) {
-
-    }
 } 

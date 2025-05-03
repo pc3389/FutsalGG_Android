@@ -1,7 +1,6 @@
 package com.futsalgg.app.presentation.match.matchitem.update
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController

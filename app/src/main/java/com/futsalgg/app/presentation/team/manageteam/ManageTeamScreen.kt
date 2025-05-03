@@ -392,9 +392,9 @@ fun ManageTeamScreen(
                     text = stringResource(R.string.select_long),
                     onClick = {
                         if (selectedIndex == 1) {
-                            //TODO 신청 수락 버튼
+                            // TODO 신청 수락 버튼
                         } else {
-                            //TODO 신청 거절 버튼
+                            // TODO 신청 거절 버튼
                         }
                     },
                     enabled = selectedIndex != -1,

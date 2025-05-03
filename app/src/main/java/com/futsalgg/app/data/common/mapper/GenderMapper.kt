@@ -8,7 +8,6 @@ object GenderMapper {
         return when (this) {
             Gender.MAN -> DomainGender.MAN
             Gender.WOMAN -> DomainGender.WOMAN
-            else -> DomainGender.NONE
         }
     }
 }

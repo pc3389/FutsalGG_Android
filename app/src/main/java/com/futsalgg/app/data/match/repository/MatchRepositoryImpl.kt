@@ -20,12 +20,10 @@ import com.futsalgg.app.remote.api.match.model.response.MatchType as RemoteMatch
 import com.google.gson.Gson
 import java.io.IOException
 import javax.inject.Inject
-import com.futsalgg.app.domain.auth.repository.ITokenManager
 import com.futsalgg.app.domain.match.model.CreateBulkMatchStat
 
 class MatchRepositoryImpl @Inject constructor(
     private val matchApi: MatchApi,
-    private val tokenManager: ITokenManager
 ) : MatchRepository {
     override suspend fun getMatches(
         accessToken: String,
@@ -341,7 +339,7 @@ class MatchRepositoryImpl @Inject constructor(
             } else {
                 val errorBody = response.errorBody()?.string()
                 val errorResponse =
-                    Gson().fromJson(errorBody, ApiResponse::class.java as Class<ApiResponse<*>>)
+                    Gson().fromJson(errorBody, ApiResponse::class.java)
 
                 Result.failure(
                     DomainError.ServerError(

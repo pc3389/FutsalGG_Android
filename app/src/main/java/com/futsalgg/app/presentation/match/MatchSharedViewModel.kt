@@ -3,7 +3,6 @@ package com.futsalgg.app.presentation.match
 import androidx.lifecycle.ViewModel
 import com.futsalgg.app.presentation.match.matchstat.model.MatchParticipantState
 import com.futsalgg.app.presentation.match.model.Match
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

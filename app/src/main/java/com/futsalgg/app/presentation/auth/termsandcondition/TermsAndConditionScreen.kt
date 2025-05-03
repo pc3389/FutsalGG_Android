@@ -25,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.futsalgg.app.R
@@ -60,12 +59,12 @@ fun TermsAndConditionScreen(
         termsAgree = termsAgree,
         termsClick = {
             termsAgree = it
-            if (privacyAgree && termsAgree) allAgree = true else allAgree = false
+            allAgree = privacyAgree && termsAgree
         },
         privacyAgree = privacyAgree,
         privacyClick = {
             privacyAgree = it
-            if (privacyAgree && termsAgree) allAgree = true else allAgree = false
+            allAgree = privacyAgree && termsAgree
         },
         navController = navController
     )
@@ -143,7 +142,7 @@ fun Content(
                 text = R.string.agree_terms,
                 isChecked = termsAgree,
                 checkClick = termsClick,
-                {
+                textClick = {
                     // TODO 이용약관 클릭
                 }
             )
@@ -155,7 +154,7 @@ fun Content(
                 text = R.string.agree_privacy,
                 isChecked = privacyAgree,
                 checkClick = privacyClick,
-                {
+                textClick = {
                     // TODO 개인정보 클릭
                 }
             )

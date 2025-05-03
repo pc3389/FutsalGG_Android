@@ -1,6 +1,5 @@
 package com.futsalgg.app.presentation.match.updatesubteam
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.futsalgg.app.domain.auth.repository.ITokenManager
@@ -28,10 +27,8 @@ class UpdateMatchParticipantsSubTeamViewModel @Inject constructor(
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
     private val _selectedParticipantIds = MutableStateFlow<List<String>>(emptyList())
-    val selectedParticipantIds: StateFlow<List<String>> = _selectedParticipantIds.asStateFlow()
 
     private val _unSelectedParticipantIds = MutableStateFlow<List<String>>(emptyList())
-    val unSelectedParticipantIds: StateFlow<List<String>> = _unSelectedParticipantIds.asStateFlow()
 
     val matchParticipantsState = matchSharedViewModel.matchParticipantsState
 
@@ -40,12 +37,12 @@ class UpdateMatchParticipantsSubTeamViewModel @Inject constructor(
     fun isSelected(participantId: String) {
         if (_selectedParticipantIds.value.contains(participantId)) {
             // 이미 선택된 경우 선택 해제
-            _selectedParticipantIds.value = _selectedParticipantIds.value - participantId
-            _unSelectedParticipantIds.value = _unSelectedParticipantIds.value + participantId
+            _selectedParticipantIds.value -= participantId
+            _unSelectedParticipantIds.value += participantId
         } else {
             // 선택되지 않은 경우 선택
-            _selectedParticipantIds.value = _selectedParticipantIds.value + participantId
-            _unSelectedParticipantIds.value = _unSelectedParticipantIds.value - participantId
+            _selectedParticipantIds.value += participantId
+            _unSelectedParticipantIds.value -= participantId
         }
     }
 

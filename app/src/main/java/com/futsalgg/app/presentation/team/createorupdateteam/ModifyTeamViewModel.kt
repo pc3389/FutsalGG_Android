@@ -91,12 +91,6 @@ open class ModifyTeamViewModel @Inject constructor(
         )
     }
 
-    internal fun onMatchTypeChange(matchType: MatchType) {
-        _modifyTeamState.value = _modifyTeamState.value.copy(
-            matchType = matchType
-        )
-    }
-
     internal fun onAccessChange(access: Access) {
         _modifyTeamState.value = _modifyTeamState.value.copy(
             access = access
@@ -231,7 +225,7 @@ open class ModifyTeamViewModel @Inject constructor(
                     name = _modifyTeamState.value.teamName,
                     introduction = _modifyTeamState.value.introduction,
                     rule = _modifyTeamState.value.rule,
-                    matchType = MatchType.toDomain(_modifyTeamState.value.matchType!!),
+                    matchType = MatchType.toDomain(_modifyTeamState.value.matchType),
                     access = Access.toDomain(_modifyTeamState.value.access!!),
                     dues = _modifyTeamState.value.dues.toIntOrNull() ?: 0
                 )

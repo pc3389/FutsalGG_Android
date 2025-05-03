@@ -4,7 +4,6 @@ import com.futsalgg.app.remote.api.common.ApiResponse
 import com.futsalgg.app.remote.api.team.model.response.SearchTeamResponse
 import com.futsalgg.app.remote.api.team.model.request.CreateTeamRequest
 import com.futsalgg.app.remote.api.team.model.request.UpdateTeamLogoRequest
-import com.futsalgg.app.remote.api.team.model.request.JoinTeamRequest
 import com.futsalgg.app.remote.api.team.model.response.CheckTeamNicknameResponse
 import com.futsalgg.app.remote.api.team.model.response.TeamLogoPresignedUrlResponse
 import com.futsalgg.app.remote.api.team.model.response.GetMyTeamResponse

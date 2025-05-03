@@ -5,7 +5,6 @@ import com.futsalgg.app.domain.auth.repository.ITokenManager
 import com.futsalgg.app.domain.common.error.DomainError
 import com.futsalgg.app.domain.match.model.CreateBulkMatchStat
 import com.futsalgg.app.domain.match.usecase.GetMatchStatsUseCase
-import com.futsalgg.app.domain.match.usecase.CreateMatchStatUseCase
 import com.futsalgg.app.domain.match.usecase.CreateMatchStatsBulkUseCase
 import com.futsalgg.app.domain.match.usecase.GetMatchParticipantsUseCase
 import com.futsalgg.app.presentation.common.error.UiError
@@ -13,7 +12,6 @@ import com.futsalgg.app.presentation.common.error.toUiError
 import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.presentation.match.MatchSharedViewModel
 import com.futsalgg.app.presentation.match.matchstat.base.MatchStatBaseViewModel
-import com.futsalgg.app.presentation.match.matchstat.model.MatchParticipantState
 import com.futsalgg.app.presentation.match.matchstat.model.MatchStat
 import com.futsalgg.app.presentation.match.matchstat.model.MatchStat.StatType
 import com.futsalgg.app.presentation.match.matchstat.model.RoundStats
@@ -31,7 +29,7 @@ class UpdateMatchStatViewModel @Inject constructor(
     getMatchParticipantsUseCase: GetMatchParticipantsUseCase,
     private val createMatchStatsBulkUseCase: CreateMatchStatsBulkUseCase,
     tokenManager: ITokenManager,
-    private val matchSharedViewModel: MatchSharedViewModel
+    matchSharedViewModel: MatchSharedViewModel
 ) : MatchStatBaseViewModel(
     getMatchStatsUseCase,
     getMatchParticipantsUseCase,
@@ -40,19 +38,18 @@ class UpdateMatchStatViewModel @Inject constructor(
 ) {
 
     private val _createStatState = MutableStateFlow<UiState>(UiState.Initial)
-    val createStatState: StateFlow<UiState> = _createStatState.asStateFlow()
 
     private val _tempMatchStatsState = MutableStateFlow<List<RoundStats>>(emptyList())
     val tempMatchStatsStateFlow: StateFlow<List<RoundStats>> = _tempMatchStatsState.asStateFlow()
 
     private val tempDeleteList: MutableList<Triple<Int, Int, List<MatchStat>>> = mutableListOf()
 
-    val matchRounds = matchSharedViewModel.matchRound
+    private val matchRounds = matchSharedViewModel.matchRound
 
     init {
         super.initial(
-            onSuccess = {
-                _tempMatchStatsState.value = it
+            onSuccess = { roundStat ->
+                _tempMatchStatsState.value = roundStat
                 if (_tempMatchStatsState.value.size != matchRounds.value) {
                     for (i in 1..matchRounds.value) {
                         if (_tempMatchStatsState.value.find { it.roundNumber == i } == null)
@@ -145,7 +142,7 @@ class UpdateMatchStatViewModel @Inject constructor(
         _tempMatchStatsState.value = currentList
     }
 
-    fun getMatchStats(): List<CreateBulkMatchStat> {
+    private fun getMatchStats(): List<CreateBulkMatchStat> {
         val list: MutableList<CreateBulkMatchStat> = mutableListOf()
         _tempMatchStatsState.value.forEach { round ->
             round.teamAStats.forEach { stats ->

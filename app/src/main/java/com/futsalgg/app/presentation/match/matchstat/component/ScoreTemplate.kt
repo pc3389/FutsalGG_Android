@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import com.futsalgg.app.presentation.match.matchstat.model.MatchParticipantState
 import com.futsalgg.app.presentation.match.matchstat.model.RoundStats
 import com.futsalgg.app.presentation.match.matchstat.model.TeamStats
-import com.futsalgg.app.ui.components.DoubleButtons
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer16
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer20
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer24

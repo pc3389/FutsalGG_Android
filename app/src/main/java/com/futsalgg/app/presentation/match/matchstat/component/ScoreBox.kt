@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -28,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.futsalgg.app.R
 import com.futsalgg.app.presentation.match.matchstat.model.MatchParticipantState
-import com.futsalgg.app.presentation.match.matchstat.model.MatchStat
 import com.futsalgg.app.presentation.match.matchstat.model.TeamStats
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer4
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer8

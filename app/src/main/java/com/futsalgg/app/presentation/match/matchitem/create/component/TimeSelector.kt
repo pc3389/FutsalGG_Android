@@ -68,13 +68,13 @@ fun TimeSelectorItem(
     var isMinFocused by remember { mutableStateOf(false) }
     var textState by remember { mutableStateOf(EditTextState.Initial) }
 
-    var borderColor = when (textState) {
+    val borderColor = when (textState) {
         EditTextState.ErrorCannotUseSpecialChar -> FutsalggColor.orange
         EditTextState.Available -> FutsalggColor.mint500
         else -> FutsalggColor.mono500
     }
 
-    var stateMessage = when (textState) {
+    val stateMessage = when (textState) {
         EditTextState.ErrorCannotUseSpecialChar -> "에러 문구"
         EditTextState.Available -> "사용가능 문구"
         else -> ""

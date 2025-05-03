@@ -1,7 +1,6 @@
 package com.futsalgg.app.presentation.user.updateprofile
 
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.futsalgg.app.domain.auth.repository.ITokenManager
@@ -26,7 +25,7 @@ import javax.inject.Inject
 class UpdateProfileViewModel @Inject constructor(
     private val updateProfileUseCase: UpdateProfileUseCase,
     private val nicknameChecker: NicknameChecker,
-    private val tokenManager: ITokenManager,
+    tokenManager: ITokenManager,
     private val uploadUserProfilePictureUseCase: UploadUserProfilePictureUseCase
 ) : ViewModel() {
 

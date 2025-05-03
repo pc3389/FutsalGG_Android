@@ -1,6 +1,5 @@
 package com.futsalgg.app.presentation.team.teaminfo
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.futsalgg.app.domain.auth.repository.ITokenManager
@@ -27,7 +26,7 @@ class TeamInfoViewModel @Inject constructor(
     private val getTeamMembersByTeamIdUseCase: GetTeamMembersByTeamIdUseCase,
     private val getMyTeamUseCase: GetMyTeamUseCase,
     private val sharedViewModel: SharedViewModel,
-    private val tokenManager: ITokenManager
+    tokenManager: ITokenManager
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
@@ -82,7 +81,7 @@ class TeamInfoViewModel @Inject constructor(
         }
     }
 
-    fun getMyTeam() {
+    private fun getMyTeam() {
         viewModelScope.launch {
             _uiState.value = UiState.Loading
 

@@ -21,7 +21,6 @@ import androidx.navigation.NavController
 import com.futsalgg.app.R
 import com.futsalgg.app.navigation.RoutePath
 import com.futsalgg.app.presentation.common.screen.BaseScreen
-import com.futsalgg.app.presentation.match.MatchSharedViewModel
 import com.futsalgg.app.presentation.match.component.SelectableMathParticipantBox
 import com.futsalgg.app.presentation.match.matchstat.model.MatchParticipantState
 import com.futsalgg.app.ui.components.BottomButton

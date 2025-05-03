@@ -1,6 +1,5 @@
 package com.futsalgg.app.presentation.splash
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.futsalgg.app.domain.auth.repository.ITokenManager
@@ -99,7 +98,7 @@ class SplashViewModel @Inject constructor(
                         )
                         getProfile()
                     }
-                    .onFailure { error ->
+                    .onFailure { _ ->
                         _splashState.value = _splashState.value.copy(
                             toLogin = true
                         )

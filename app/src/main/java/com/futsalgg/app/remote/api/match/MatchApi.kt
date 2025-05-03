@@ -9,7 +9,6 @@ import com.futsalgg.app.remote.api.match.model.response.CreateMatchParticipantsR
 import com.futsalgg.app.remote.api.match.model.response.GetMatchResponse
 import com.futsalgg.app.remote.api.match.model.request.UpdateMatchParticipantsSubTeamRequest
 import com.futsalgg.app.remote.api.match.model.request.UpdateMatchRoundsRequest
-import com.futsalgg.app.remote.api.match.model.response.MatchParticipant
 import com.futsalgg.app.remote.api.match.model.response.GetMatchStatsResponse
 import com.futsalgg.app.remote.api.match.model.request.CreateMatchStatRequest
 import com.futsalgg.app.remote.api.match.model.response.MatchStat

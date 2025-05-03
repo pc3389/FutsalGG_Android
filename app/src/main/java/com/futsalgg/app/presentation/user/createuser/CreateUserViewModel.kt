@@ -32,7 +32,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CreateUserViewModel @Inject constructor(
     private val createUserUseCase: CreateUserUseCase,
-    private val tokenManager: ITokenManager,
+    tokenManager: ITokenManager,
     private val nicknameChecker: NicknameChecker,
     private val uploadUserProfilePictureUseCase: UploadUserProfilePictureUseCase
 ) : ViewModel() {
@@ -167,9 +167,5 @@ class CreateUserViewModel @Inject constructor(
                 }
             )
         }
-    }
-
-    private fun logError(message: String) {
-        Log.e("CreateUserViewModel", message)
     }
 }

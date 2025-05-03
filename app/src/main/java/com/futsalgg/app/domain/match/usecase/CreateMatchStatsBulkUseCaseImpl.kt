@@ -1,7 +1,6 @@
 package com.futsalgg.app.domain.match.usecase
 
 import com.futsalgg.app.domain.match.model.CreateBulkMatchStat
-import com.futsalgg.app.domain.match.model.MatchStat
 import com.futsalgg.app.domain.match.repository.MatchRepository
 import javax.inject.Inject
 

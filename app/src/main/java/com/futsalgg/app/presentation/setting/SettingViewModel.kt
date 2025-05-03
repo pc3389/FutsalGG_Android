@@ -1,6 +1,5 @@
 package com.futsalgg.app.presentation.setting
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.futsalgg.app.domain.auth.repository.ITokenManager
@@ -31,7 +30,7 @@ class SettingViewModel @Inject constructor(
     init {
         getProfile()
     }
-    fun getProfile() {
+    private fun getProfile() {
         viewModelScope.launch {
 
             val accessToken = tokenManager.getAccessToken() ?: ""

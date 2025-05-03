@@ -1,6 +1,5 @@
 package com.futsalgg.app.presentation.match.matchitem.create
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.futsalgg.app.domain.auth.repository.ITokenManager
 import com.futsalgg.app.domain.common.error.DomainError
@@ -10,7 +9,6 @@ import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.error.toUiError
 import com.futsalgg.app.presentation.common.model.MatchType
 import com.futsalgg.app.presentation.common.state.UiState
-import com.futsalgg.app.presentation.match.MatchSharedViewModel
 import com.futsalgg.app.presentation.match.matchitem.BaseMatchViewModel
 import com.futsalgg.app.presentation.match.model.VoteStatus
 import com.futsalgg.app.util.dateToRequestFormat

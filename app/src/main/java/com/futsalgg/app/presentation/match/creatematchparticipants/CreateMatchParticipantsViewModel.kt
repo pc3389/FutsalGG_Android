@@ -1,12 +1,10 @@
 package com.futsalgg.app.presentation.match.creatematchparticipants
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.futsalgg.app.domain.auth.repository.ITokenManager
 import com.futsalgg.app.domain.common.error.DomainError
 import com.futsalgg.app.domain.match.usecase.CreateMatchParticipantsUseCase
-import com.futsalgg.app.domain.match.usecase.GetMatchUseCase
 import com.futsalgg.app.domain.team.model.TeamMemberStatus
 import com.futsalgg.app.domain.team.usecase.GetTeamMembersByTeamIdUseCase
 import com.futsalgg.app.presentation.common.SharedViewModel
@@ -29,8 +27,7 @@ class CreateMatchParticipantsViewModel @Inject constructor(
     private val matchSharedViewModel: MatchSharedViewModel,
     private val getTeamMembersByTeamIdUseCase: GetTeamMembersByTeamIdUseCase,
     private val sharedViewModel: SharedViewModel,
-    private val getMatchUseCase: GetMatchUseCase,
-    private val tokenManager: ITokenManager
+    tokenManager: ITokenManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
@@ -177,7 +174,7 @@ class CreateMatchParticipantsViewModel @Inject constructor(
         }
     }
 
-    fun updateMatchParticipantsState(newList: List<MatchParticipantState>) {
+    private fun updateMatchParticipantsState(newList: List<MatchParticipantState>) {
         matchSharedViewModel.updateMatchParticipantsState(newList)
     }
 }

@@ -1,6 +1,5 @@
 package com.futsalgg.app.presentation.match.result
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.futsalgg.app.domain.auth.repository.ITokenManager
@@ -104,7 +103,7 @@ class MatchResultViewModel @Inject constructor(
                 deleteMatchUseCase.invoke(
                     accessToken = accessToken,
                     id = match.id
-                ).onSuccess { matches ->
+                ).onSuccess { _ ->
                     removeMatch(match)
                     _uiState.value = UiState.Success
                 }.onFailure { error ->
