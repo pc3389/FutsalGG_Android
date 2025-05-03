@@ -4,7 +4,6 @@ import com.futsalgg.app.core.token.FakeTokenManager
 import com.futsalgg.app.presentation.common.state.EditTextState
 import com.futsalgg.app.presentation.team.model.Access
 import com.futsalgg.app.presentation.common.model.MatchType
-import com.futsalgg.app.presentation.team.createorupdateteam.createteam.CreateTeamViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -58,7 +57,7 @@ class CreateTeamViewModelTest {
         advanceUntilIdle()
 
         // then
-        assertEquals(EditTextState.Initial, viewModel.createTeamState.value.teamNameState)
+        assertEquals(EditTextState.Initial, viewModel.modifyTeamState.value.teamNameState)
     }
 
     /**
@@ -76,7 +75,7 @@ class CreateTeamViewModelTest {
         advanceUntilIdle()
 
         // then
-        assertEquals(EditTextState.Available, viewModel.createTeamState.value.teamNameState)
+        assertEquals(EditTextState.Available, viewModel.modifyTeamState.value.teamNameState)
     }
 
     /**
@@ -94,7 +93,7 @@ class CreateTeamViewModelTest {
         advanceUntilIdle()
 
         // then
-        assertEquals(EditTextState.ErrorAlreadyExisting, viewModel.createTeamState.value.teamNameState)
+        assertEquals(EditTextState.ErrorAlreadyExisting, viewModel.modifyTeamState.value.teamNameState)
     }
 
     /**
@@ -133,7 +132,7 @@ class CreateTeamViewModelTest {
         advanceUntilIdle()
 
         // then
-        assertEquals("testUrl", viewModel.createTeamState.value.teamImageUrl)
+        assertEquals("testUrl", viewModel.modifyTeamState.value.teamImageUrl)
     }
 
     /**
@@ -151,7 +150,7 @@ class CreateTeamViewModelTest {
         advanceUntilIdle()
 
         // when
-        val isValid = viewModel.createTeamState.value.isFormValid
+        val isValid = viewModel.modifyTeamState.value.isFormValid
 
         // then
         assertTrue(isValid)

@@ -1,11 +1,11 @@
-package com.futsalgg.app.presentation.team.createorupdateteam.createteam
+package com.futsalgg.app.presentation.team.createorupdateteam
 
 import android.graphics.Bitmap
 import com.futsalgg.app.presentation.common.state.EditTextState
 import com.futsalgg.app.presentation.team.model.Access
 import com.futsalgg.app.presentation.common.model.MatchType
 
-data class CreateTeamState(
+data class ModifyTeamState(
     val teamName: String = "",
     val teamNameState: EditTextState = EditTextState.Initial,
 //    val matchType: MatchType? = null, // TODO MVP 2때 활성화(매치전)

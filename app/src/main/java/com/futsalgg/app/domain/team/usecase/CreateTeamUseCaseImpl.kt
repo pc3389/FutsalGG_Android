@@ -8,21 +8,10 @@ import java.io.File
 import javax.inject.Inject
 
 class CreateTeamUseCaseImpl @Inject constructor(
-    private val createTeamRepository: TeamRepository
+    private val teamRepository: TeamRepository
 ) : CreateTeamUseCase {
 
-    override suspend fun isTeamNicknameUnique(nickname: String): Result<Boolean> {
-        return createTeamRepository.isTeamNicknameUnique(nickname)
-    }
-
-    override suspend fun updateTeamLogo(
-        accessToken: String,
-        file: File
-    ): Result<TeamLogoResponseModel> {
-        return createTeamRepository.uploadLogoImage(accessToken, file)
-    }
-
-    override suspend fun createTeam(
+    override suspend fun invoke(
         accessToken: String,
         name: String,
         introduction: String,
@@ -31,7 +20,7 @@ class CreateTeamUseCaseImpl @Inject constructor(
         access: Access,
         dues: Int
     ): Result<Unit> {
-        return createTeamRepository.createTeam(
+        return teamRepository.createTeam(
             accessToken = accessToken,
             name = name,
             introduction = introduction,

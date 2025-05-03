@@ -6,6 +6,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.credentials.CredentialManager
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -27,12 +29,13 @@ import com.futsalgg.app.presentation.match.updateround.UpdateMatchRoundScreen
 import com.futsalgg.app.presentation.match.updatesubteam.UpdateMatchParticipantsSubTeamScreen
 import com.futsalgg.app.presentation.setting.SettingScreen
 import com.futsalgg.app.presentation.splash.SplashScreen
+import com.futsalgg.app.presentation.team.createorupdateteam.ModifyTeamViewModel
 import com.futsalgg.app.presentation.team.createorupdateteam.createteam.CreateTeamScreen
-import com.futsalgg.app.presentation.team.createorupdateteam.createteam.CreateTeamViewModel
+import com.futsalgg.app.presentation.team.createorupdateteam.updateteam.UpdateTeamScreen
 import com.futsalgg.app.presentation.team.jointeam.JoinTeamScreen
 import com.futsalgg.app.presentation.team.selectteam.SelectTeamScreen
 import com.futsalgg.app.presentation.team.teaminfo.TeamInfoScreen
-import com.futsalgg.app.presentation.team.manageteam.UpdateTeamScreen
+import com.futsalgg.app.presentation.team.manageteam.ManageTeamScreen
 import com.futsalgg.app.presentation.teammember.profilecard.ProfileCardScreen
 import com.futsalgg.app.presentation.user.updateprofile.UpdateProfileScreen
 import com.futsalgg.app.presentation.user.updateprofile.UpdateProfileViewModel
@@ -122,6 +125,9 @@ fun AppNavHost(
             TeamInfoScreen(navController)
         }
         composable(Screen.ManageTeam.route) {
+            ManageTeamScreen(navController)
+        }
+        composable(Screen.UpdateTeam.route) {
             UpdateTeamScreen(navController)
         }
         composable(
@@ -149,9 +155,9 @@ fun AppNavHost(
                     )
                 }
 
-                RoutePath.CREATE_TEAM -> {
-                    val parentEntry = navController.getBackStackEntry(RoutePath.CREATE_TEAM)
-                    val viewModel: CreateTeamViewModel = hiltViewModel(parentEntry)
+                RoutePath.CREATE_TEAM, RoutePath.UPDATE_TEAM -> {
+                    val parentEntry = navController.getBackStackEntry(viewModelType)
+                    val viewModel: ModifyTeamViewModel = hiltViewModel(parentEntry)
                     ProfileImageCropScreen(
                         imageUri = uri,
                         onBack = { navController.popBackStack() },

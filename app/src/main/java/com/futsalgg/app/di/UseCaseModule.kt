@@ -67,6 +67,10 @@ import com.futsalgg.app.domain.match.usecase.CreateMatchStatsBulkUseCase
 import com.futsalgg.app.domain.match.usecase.CreateMatchStatsBulkUseCaseImpl
 import com.futsalgg.app.domain.team.usecase.UpdateTeamUseCase
 import com.futsalgg.app.domain.team.usecase.UpdateTeamUseCaseImpl
+import com.futsalgg.app.domain.team.usecase.CheckTeamNicknameUniqueUseCase
+import com.futsalgg.app.domain.team.usecase.CheckTeamNicknameUniqueUseCaseImpl
+import com.futsalgg.app.domain.team.usecase.UpdateTeamLogoUseCase
+import com.futsalgg.app.domain.team.usecase.UpdateTeamLogoUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -316,5 +320,21 @@ object UseCaseModule {
         teamRepository: TeamRepository
     ): UpdateTeamUseCase {
         return UpdateTeamUseCaseImpl(teamRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideIsTeamNicknameUniqueUseCase(
+        teamRepository: TeamRepository
+    ): CheckTeamNicknameUniqueUseCase {
+        return CheckTeamNicknameUniqueUseCaseImpl(teamRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUpdateTeamLogoUseCase(
+        teamRepository: TeamRepository
+    ): UpdateTeamLogoUseCase {
+        return UpdateTeamLogoUseCaseImpl(teamRepository)
     }
 }

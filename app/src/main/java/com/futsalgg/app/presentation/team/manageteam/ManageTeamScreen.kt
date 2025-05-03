@@ -61,7 +61,7 @@ import com.futsalgg.app.util.toPx
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UpdateTeamScreen(
+fun ManageTeamScreen(
     navController: NavController,
     viewModel: ManageTeamViewModel = hiltViewModel()
 ) {
@@ -282,7 +282,7 @@ fun UpdateTeamScreen(
                             Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    // TODO Update Team
+                                    navController.navigate(RoutePath.UPDATE_TEAM)
                                     showMenu = false
                                 }
                         ) {

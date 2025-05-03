@@ -6,14 +6,7 @@ import com.futsalgg.app.domain.team.model.TeamLogoResponseModel
 import java.io.File
 
 interface CreateTeamUseCase {
-    suspend fun isTeamNicknameUnique(nickname: String): Result<Boolean>
-
-    suspend fun updateTeamLogo(
-        accessToken: String,
-        file: File
-    ): Result<TeamLogoResponseModel>
-
-    suspend fun createTeam(
+    suspend fun invoke(
         accessToken: String,
         name: String,
         introduction: String,
