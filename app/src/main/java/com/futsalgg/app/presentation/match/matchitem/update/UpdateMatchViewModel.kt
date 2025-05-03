@@ -21,7 +21,8 @@ import javax.inject.Inject
 class UpdateMatchViewModel @Inject constructor(
     private val tokenManager: ITokenManager,
     private val sharedViewModel: MatchSharedViewModel,
-    private val updateMatchUseCase: UpdateMatchUseCase
+    private val updateMatchUseCase: UpdateMatchUseCase,
+    private val matchSharedViewModel: MatchSharedViewModel
 ): BaseMatchViewModel() {
 
     init {
@@ -72,6 +73,7 @@ class UpdateMatchViewModel @Inject constructor(
 
                 if (result.isSuccess) {
                     updateUiState(UiState.Success)
+                    matchSharedViewModel.shouldRefresh()
                     onSuccess()
                 } else {
                     Log.e("CreateMatchViewModel", "알 수 없는 오류가 발생했습니다")

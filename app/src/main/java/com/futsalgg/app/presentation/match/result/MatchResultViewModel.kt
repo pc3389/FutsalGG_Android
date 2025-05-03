@@ -44,6 +44,8 @@ class MatchResultViewModel @Inject constructor(
 
     val teamId = sharedViewModel.teamId.value
 
+    val shouldRefresh = matchSharedViewModel.shouldRefresh
+
     init {
         loadMatches()
     }
@@ -67,7 +69,7 @@ class MatchResultViewModel @Inject constructor(
         }
     }
 
-    private fun loadMatches() {
+    fun loadMatches() {
         _uiState.value = UiState.Loading
         viewModelScope.launch {
             try {
@@ -84,6 +86,7 @@ class MatchResultViewModel @Inject constructor(
                     _matchesByDate.value = matches
                         .map { it.toPresentation() }
                         .groupBy { it.matchDate }
+                    matchSharedViewModel.afterRefresh()
                     _uiState.value = UiState.Success
                 }.onFailure { throwable ->
                     val error = UiState.Error(

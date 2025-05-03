@@ -28,6 +28,11 @@ fun MatchResultScreen(
 ) {
     val matchesByDate by viewModel.matchesByDate.collectAsState()
     val uiState by viewModel.uiState.collectAsState()
+    val shouldRefresh by viewModel.shouldRefresh.collectAsState()
+
+    if (shouldRefresh) {
+        viewModel.loadMatches()
+    }
 
     BaseScreen(
         navController = navController,

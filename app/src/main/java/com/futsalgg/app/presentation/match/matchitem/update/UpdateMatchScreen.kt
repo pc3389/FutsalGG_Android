@@ -20,7 +20,10 @@ fun UpdateMatchScreen(
         onBottomButtonClick = {
             viewModel.updateMatch(
                 onSuccess = {
-                    // TODO OnSuccess
+                    navController.popBackStack(
+                        route = RoutePath.MATCH_RESULT,
+                        inclusive = false
+                    )
                 }
             )
         },
