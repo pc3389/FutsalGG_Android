@@ -35,11 +35,10 @@ import com.futsalgg.app.ui.theme.FutsalggTypography
 fun UpdateMatchParticipantsSubTeamScreen(
     navController: NavController,
     viewModel: UpdateMatchParticipantsSubTeamViewModel = hiltViewModel(),
-    sharedViewModel: MatchSharedViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val matchParticipantsState by sharedViewModel.matchParticipantsState.collectAsState()
-    val matchState by sharedViewModel.matchState.collectAsState()
+    val matchParticipantsState by viewModel.matchParticipantsState.collectAsState()
+    val matchState by viewModel.matchState.collectAsState()
 
     // TODO SharedViewModel에서 자체전(내전) 가져오기
     BaseScreen(
@@ -88,12 +87,13 @@ fun UpdateMatchParticipantsSubTeamScreen(
             LazyColumn(
                 modifier = Modifier.weight(1f)
                     .background(FutsalggColor.mono50)
+                    .fillMaxSize()
             ) {
                 itemsIndexed(matchParticipantsState) { index, participant ->
                     SelectableMathParticipantBox(
                         onClick = {
                             viewModel.isSelected(participant.id)
-                            sharedViewModel.updateParticipantSubteam(index)
+                            viewModel.updateMatchParticipantsSubTeamInSharedVM(index)
                         },
                         participant = participant,
                         isSelected = participant.subTeam == MatchParticipantState.SubTeam.A
@@ -104,7 +104,11 @@ fun UpdateMatchParticipantsSubTeamScreen(
             BottomButton(
                 text = stringResource(R.string.select_long),
                 onClick = {
-                    // TODO 마지막 온클릭
+                    viewModel.updateMatchParticipantsSubTeam(
+                        onSuccess = {
+                            navController.navigate(RoutePath.UPDATE_MATCH_ROUND)
+                        }
+                    )
                 },
             )
         }

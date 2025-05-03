@@ -37,7 +37,6 @@ class ManageTeamViewModel @Inject constructor(
 
     init {
         loadTeamMembers()
-        // TODO Remove stub when not needed
     }
 
     private fun loadTeamMembers() {

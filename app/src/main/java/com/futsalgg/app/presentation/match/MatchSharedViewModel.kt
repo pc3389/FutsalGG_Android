@@ -23,6 +23,9 @@ class MatchSharedViewModel @Inject constructor() : ViewModel() {
     private val _shouldRefresh = MutableStateFlow(false)
     val shouldRefresh: StateFlow<Boolean> = _shouldRefresh.asStateFlow()
 
+    private val _matchRound = MutableStateFlow(0)
+    val matchRound: StateFlow<Int> = _matchRound.asStateFlow()
+
     fun updateMatchParticipantsState(newList: List<MatchParticipantState>) {
         _matchParticipantsState.value = newList
     }
@@ -50,5 +53,9 @@ class MatchSharedViewModel @Inject constructor() : ViewModel() {
 
     fun afterRefresh() {
         _shouldRefresh.value = false
+    }
+
+    fun updateMatchRound(round: Int) {
+        _matchRound.value = round
     }
 }

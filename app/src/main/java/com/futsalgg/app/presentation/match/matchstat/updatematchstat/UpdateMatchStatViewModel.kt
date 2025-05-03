@@ -39,6 +39,8 @@ class UpdateMatchStatViewModel @Inject constructor(
 
     private val tempDeleteList: MutableList<Triple<Int, Int, List<MatchStat>>> = mutableListOf()
 
+    val matchRounds = matchSharedViewModel.matchRound
+
     init {
         super.initial(
             onSuccess = { _tempMatchStatsState.value = it }

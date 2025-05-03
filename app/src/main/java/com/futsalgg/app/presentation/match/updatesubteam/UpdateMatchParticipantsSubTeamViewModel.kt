@@ -1,13 +1,16 @@
 package com.futsalgg.app.presentation.match.updatesubteam
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.futsalgg.app.domain.auth.repository.ITokenManager
 import com.futsalgg.app.domain.common.error.DomainError
 import com.futsalgg.app.domain.match.model.SubTeam
 import com.futsalgg.app.domain.match.usecase.UpdateMatchParticipantsSubTeamUseCase
 import com.futsalgg.app.presentation.common.error.UiError
 import com.futsalgg.app.presentation.common.error.toUiError
 import com.futsalgg.app.presentation.common.state.UiState
+import com.futsalgg.app.presentation.match.MatchSharedViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +20,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UpdateMatchParticipantsSubTeamViewModel @Inject constructor(
-    private val updateMatchParticipantsSubTeamUseCase: UpdateMatchParticipantsSubTeamUseCase
+    private val updateMatchParticipantsSubTeamUseCase: UpdateMatchParticipantsSubTeamUseCase,
+    private val matchSharedViewModel: MatchSharedViewModel,
+    private val tokenManager: ITokenManager
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
@@ -27,6 +32,10 @@ class UpdateMatchParticipantsSubTeamViewModel @Inject constructor(
 
     private val _unSelectedParticipantIds = MutableStateFlow<List<String>>(emptyList())
     val unSelectedParticipantIds: StateFlow<List<String>> = _unSelectedParticipantIds.asStateFlow()
+
+    val matchParticipantsState = matchSharedViewModel.matchParticipantsState
+
+    val matchState = matchSharedViewModel.matchState
 
     fun isSelected(participantId: String) {
         if (_selectedParticipantIds.value.contains(participantId)) {
@@ -41,20 +50,41 @@ class UpdateMatchParticipantsSubTeamViewModel @Inject constructor(
     }
 
     fun updateMatchParticipantsSubTeam(
-        accessToken: String,
-        matchId: String
+        onSuccess: () -> Unit
     ) {
         viewModelScope.launch {
-            _uiState.value = UiState.Loading
+            val accessToken = tokenManager.getAccessToken()
 
-            updateTeamA(accessToken, matchId)
-            updateTeamB(accessToken, matchId)
+            if (accessToken.isNullOrEmpty()) {
+                Log.e("CreateMatchParticipantsViewModel", "엑세스 토큰이 존재하지 않습니다")
+                _uiState.value = UiState.Error(UiError.AuthError("엑세스 토큰이 존재하지 않습니다"))
+                return@launch
+            }
+            val matchId = matchSharedViewModel.matchState.value.id
+            try {
+                _uiState.value = UiState.Loading
+
+                updateTeamA(
+                    accessToken,
+                    matchId,
+                    onSuccess
+                )
+            } catch (e: Exception) {
+                _uiState.value = UiState.Error(
+                    UiError.UnknownError("예기치 않은 오류가 발생했습니다: ${e.message}")
+                )
+            }
         }
+    }
+
+    fun updateMatchParticipantsSubTeamInSharedVM(index: Int) {
+        matchSharedViewModel.updateParticipantSubteam(index)
     }
 
     private suspend fun updateTeamA(
         accessToken: String,
-        matchId: String
+        matchId: String,
+        onSuccess: () -> Unit
     ) {
         updateMatchParticipantsSubTeamUseCase(
             accessToken = accessToken,
@@ -63,6 +93,11 @@ class UpdateMatchParticipantsSubTeamViewModel @Inject constructor(
             subTeam = SubTeam.A
         ).onSuccess {
             _uiState.value = UiState.Success
+            updateTeamB(
+                accessToken = accessToken,
+                matchId = matchId,
+                onSuccess = onSuccess
+            )
         }.onFailure { exception ->
             _uiState.value = UiState.Error(
                 (exception as? DomainError)?.toUiError()
@@ -71,7 +106,11 @@ class UpdateMatchParticipantsSubTeamViewModel @Inject constructor(
         }
     }
 
-    private suspend fun updateTeamB(accessToken: String, matchId: String) {
+    private suspend fun updateTeamB(
+        accessToken: String,
+        matchId: String,
+        onSuccess: () -> Unit
+    ) {
         updateMatchParticipantsSubTeamUseCase(
             accessToken = accessToken,
             matchId = matchId,
@@ -79,6 +118,7 @@ class UpdateMatchParticipantsSubTeamViewModel @Inject constructor(
             subTeam = SubTeam.B
         ).onSuccess {
             _uiState.value = UiState.Success
+            onSuccess()
         }.onFailure { exception ->
             _uiState.value = UiState.Error(
                 (exception as? DomainError)?.toUiError()

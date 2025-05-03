@@ -184,7 +184,7 @@ fun CreateMatchParticipantsScreen(
                 onClick = {
                     viewModel.createMatchParticipants(
                         onSuccess = {
-                            navController.navigate(RoutePath.UPDATE_MATCH_ROUND)
+                            navController.navigate(RoutePath.UPDATE_MATCH_PARTICIPANTS_SUB_TEAM)
                         }
                     )
                 }

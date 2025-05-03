@@ -59,18 +59,22 @@ fun MatchResultScreen(
                         date = date,
                         matches = matches,
                         onResultClick = { match ->
-                            // TODO 경기결과확인 클릭
+                            // 경기결과확인 클릭
                             viewModel.updateMatch(match)
+                            navController.navigate(RoutePath.CHECK_MATCH_STAT)
                         },
                         onScheduleEditClick = { match ->
+                            // 경기 일정 수정
                             viewModel.updateMatch(match)
                             navController.navigate(RoutePath.UPDATE_MATCH)
                         },
                         onResultEditClick = { match ->
+                            // 경기 결과 등록
                             viewModel.updateMatch(match)
                             navController.navigate(RoutePath.CREATE_MATCH_PARTICIPANTS)
                         },
                         onDeleteClick = { match ->
+                            // 경기 삭제
                             viewModel.deleteMatch(match)
                         }
                     )

@@ -44,6 +44,7 @@ class UpdateMatchRoundViewModel @Inject constructor(
                 updateMatchRoundsUseCase(accessToken, matchId, rounds)
                     .onSuccess {
                         _uiState.value = UiState.Success
+                        matchSharedViewModel.updateMatchRound(rounds)
                         onSuccess()
                     }
                     .onFailure { error ->
