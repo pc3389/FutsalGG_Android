@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.futsalgg.app.presentation.match.matchstat.model.MatchParticipantState
 import com.futsalgg.app.presentation.match.matchstat.model.RoundStats
+import com.futsalgg.app.presentation.match.matchstat.model.TeamStats
 import com.futsalgg.app.ui.components.DoubleButtons
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer16
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer20
@@ -182,13 +183,13 @@ fun ScoreTemplate(
                             }
                             if (!isEditable && item.teamAStats.isEmpty()) {
                                 ScoreBox(
-                                    scoreInfo = emptyList(),
+                                    scoreInfo = TeamStats(null, null),
                                     participants = participants
                                 )
                             }
                             if (isEditable) {
                                 ScoreBox(
-                                    scoreInfo = emptyList(),
+                                    scoreInfo = TeamStats(null, null),
                                     participants = participants,
                                     isEditable = true,
                                     onGoalClick = { onGoalClick(roundIndex, 0) }
@@ -223,7 +224,7 @@ fun ScoreTemplate(
                             }
                             if (!isEditable && item.teamBStats.isEmpty()) {
                                 ScoreBox(
-                                    scoreInfo = emptyList(),
+                                    scoreInfo = TeamStats(null, null),
                                     participants = participants,
                                     backgroundColor = FutsalggColor.mint50,
                                     borderColor = FutsalggColor.mint500,
@@ -233,7 +234,7 @@ fun ScoreTemplate(
                             }
                             if (isEditable) {
                                 ScoreBox(
-                                    scoreInfo = emptyList(),
+                                    scoreInfo = TeamStats(null, null),
                                     participants = participants,
                                     backgroundColor = FutsalggColor.mint50,
                                     borderColor = FutsalggColor.mint500,

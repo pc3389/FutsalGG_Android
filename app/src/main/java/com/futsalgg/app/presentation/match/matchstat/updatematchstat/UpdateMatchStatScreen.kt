@@ -158,7 +158,11 @@ fun UpdateMatchStatScreen(
                         // TODO Left button click
                     },
                     onRightClick = {
-                        // TODO Right button click
+                        viewModel.createMatchStat()
+                        navController.popBackStack(
+                            route = RoutePath.MATCH_RESULT,
+                            inclusive = false
+                        )
                     },
                     isLeftBlack = false,
                     horizontalPadding = 16.dp,

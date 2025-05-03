@@ -2,15 +2,22 @@ package com.futsalgg.app.presentation.match.matchstat.updatematchstat
 
 import androidx.lifecycle.viewModelScope
 import com.futsalgg.app.domain.auth.repository.ITokenManager
+import com.futsalgg.app.domain.common.error.DomainError
+import com.futsalgg.app.domain.match.model.CreateBulkMatchStat
 import com.futsalgg.app.domain.match.usecase.GetMatchStatsUseCase
 import com.futsalgg.app.domain.match.usecase.CreateMatchStatUseCase
+import com.futsalgg.app.domain.match.usecase.CreateMatchStatsBulkUseCase
 import com.futsalgg.app.domain.match.usecase.GetMatchParticipantsUseCase
 import com.futsalgg.app.presentation.common.error.UiError
+import com.futsalgg.app.presentation.common.error.toUiError
 import com.futsalgg.app.presentation.common.state.UiState
 import com.futsalgg.app.presentation.match.MatchSharedViewModel
 import com.futsalgg.app.presentation.match.matchstat.base.MatchStatBaseViewModel
+import com.futsalgg.app.presentation.match.matchstat.model.MatchParticipantState
 import com.futsalgg.app.presentation.match.matchstat.model.MatchStat
+import com.futsalgg.app.presentation.match.matchstat.model.MatchStat.StatType
 import com.futsalgg.app.presentation.match.matchstat.model.RoundStats
+import com.futsalgg.app.presentation.match.matchstat.model.TeamStats
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,6 +29,7 @@ import javax.inject.Inject
 class UpdateMatchStatViewModel @Inject constructor(
     getMatchStatsUseCase: GetMatchStatsUseCase,
     getMatchParticipantsUseCase: GetMatchParticipantsUseCase,
+    private val createMatchStatsBulkUseCase: CreateMatchStatsBulkUseCase,
     tokenManager: ITokenManager,
     private val matchSharedViewModel: MatchSharedViewModel
 ) : MatchStatBaseViewModel(
@@ -64,14 +72,16 @@ class UpdateMatchStatViewModel @Inject constructor(
         val roundList = currentList[roundIndex]
         val scoreList =
             if (teamIndex == 0) roundList.teamAStats.toMutableList() else roundList.teamBStats.toMutableList()
+        
         scoreList.add(
-            listOf(
-                MatchStat(
+            TeamStats(
+                goal = MatchStat(
                     matchParticipantId = matchParticipantId,
                     roundNumber = roundIndex + 1,
-                    statType = MatchStat.StatType.GOAL,
+                    statType = StatType.GOAL,
                     assistedMatchStatId = null,
-                )
+                ),
+                assist = null
             )
         )
 
@@ -92,18 +102,16 @@ class UpdateMatchStatViewModel @Inject constructor(
         val roundList = currentList[roundIndex]
         val scoreList =
             if (teamIndex == 0) roundList.teamAStats.toMutableList() else roundList.teamBStats.toMutableList()
-        val goalList = scoreList[goalIndex].toMutableList()
-        goalList.add(
-            MatchStat(
+        val goalStat = scoreList[goalIndex]
+        
+        scoreList[goalIndex] = goalStat.copy(
+            assist = MatchStat(
                 matchParticipantId = matchParticipantId,
                 roundNumber = roundIndex + 1,
-                statType = MatchStat.StatType.ASSIST,
+                statType = StatType.ASSIST,
                 assistedMatchStatId = null,
             )
         )
-
-        // scoreList 업데이트
-        scoreList[goalIndex] = goalList
 
         // roundList 업데이트
         val updatedRoundList = if (teamIndex == 0) {
@@ -122,7 +130,7 @@ class UpdateMatchStatViewModel @Inject constructor(
         val roundList = currentList[roundIndex]
         val scoreList =
             if (teamIndex == 0) roundList.teamAStats.toMutableList() else roundList.teamBStats.toMutableList()
-        tempDeleteList.add(Triple(roundIndex, teamIndex, scoreList[goalIndex]))
+        tempDeleteList.add(Triple(roundIndex, teamIndex, scoreList[goalIndex].goal?.let { listOf(it) } ?: emptyList()))
         scoreList.removeAt(goalIndex)
 
         // roundList 업데이트
@@ -137,26 +145,51 @@ class UpdateMatchStatViewModel @Inject constructor(
         _tempMatchStatsState.value = currentList
     }
 
-    // TODO API 수정 후 업데이트
+    fun getMatchStats(): List<CreateBulkMatchStat> {
+        val list: MutableList<CreateBulkMatchStat> = mutableListOf()
+        _tempMatchStatsState.value.forEach { round ->
+            round.teamAStats.forEach { stats ->
+                list.add(
+                    CreateBulkMatchStat(
+                        roundNumber = round.roundNumber,
+                        subTeam = "A",
+                        goalMatchParticipantId = stats.goal?.matchParticipantId ?: "",
+                        assistMatchParticipantId = stats.assist?.matchParticipantId
+                    )
+                )
+            }
+            round.teamBStats.forEach { stats ->
+                list.add(
+                    CreateBulkMatchStat(
+                        roundNumber = round.roundNumber,
+                        subTeam = "B",
+                        goalMatchParticipantId = stats.goal?.matchParticipantId ?: "",
+                        assistMatchParticipantId = stats.assist?.matchParticipantId
+                    )
+                )
+            }
+        }
+        return list
+    }
+
     fun createMatchStat() {
         viewModelScope.launch {
             try {
                 _createStatState.value = UiState.Loading
-//                createMatchStatUseCase(
-//                    matchParticipantId = matchParticipantId,
-//                    roundNumber = roundNumber,
-//                    statType = statType,
-//                    assistedMatchStatId = assistedMatchStatId
-//                )
-//                    .onSuccess {
-//                        _createStatState.value = UiState.Success
-//                    }
-//                    .onFailure { error ->
-//                        uiState.value = UiState.Error(
-//                            (error as? DomainError)?.toUiError()
-//                                ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
-//                        )
-//                    }
+                createMatchStatsBulkUseCase(
+                    accessToken = accessToken!!,
+                    matchId = matchState.value.id,
+                    stats = getMatchStats(),
+                )
+                    .onSuccess {
+                        _createStatState.value = UiState.Success
+                    }
+                    .onFailure { error ->
+                        uiState.value = UiState.Error(
+                            (error as? DomainError)?.toUiError()
+                                ?: UiError.UnknownError("알 수 없는 오류가 발생했습니다.")
+                        )
+                    }
             } catch (e: Exception) {
                 uiState.value = UiState.Error(
                     UiError.UnknownError("예기치 않은 오류가 발생했습니다: ${e.message}")

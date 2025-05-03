@@ -29,6 +29,7 @@ import coil.compose.AsyncImage
 import com.futsalgg.app.R
 import com.futsalgg.app.presentation.match.matchstat.model.MatchParticipantState
 import com.futsalgg.app.presentation.match.matchstat.model.MatchStat
+import com.futsalgg.app.presentation.match.matchstat.model.TeamStats
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer4
 import com.futsalgg.app.ui.components.spacers.VerticalSpacer8
 import com.futsalgg.app.ui.theme.FutsalggColor
@@ -36,7 +37,7 @@ import com.futsalgg.app.ui.theme.FutsalggTypography
 
 @Composable
 fun ScoreBox(
-    scoreInfo: List<MatchStat>,
+    scoreInfo: TeamStats,
     participants: List<MatchParticipantState>,
     backgroundColor: Color = FutsalggColor.mono800,
     borderColor: Color = FutsalggColor.mono500,
@@ -67,7 +68,7 @@ fun ScoreBox(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
 
-            val hasGoal = scoreInfo.isNotEmpty()
+            val hasGoal = scoreInfo.goal != null
             val actualBorderColor = if (hasGoal || isEditable) borderColor else emptyBorderColor
             val actualBackgroundColor =
                 if (hasGoal || isEditable) backgroundColor else Color.Transparent
@@ -101,7 +102,7 @@ fun ScoreBox(
                 ) {
                     if (hasGoal) {
                         val participant = participants.find {
-                            it.id == scoreInfo[0].matchParticipantId
+                            it.id == scoreInfo.goal?.matchParticipantId
                         }
                         VerticalSpacer8()
                         AsyncImage(
@@ -160,7 +161,7 @@ fun ScoreBox(
 
                 VerticalSpacer8()
 
-                val hasAssist = scoreInfo.size == 2
+                val hasAssist = scoreInfo.assist != null
                 val actualAssistBorderColor =
                     if (hasAssist || (hasGoal && isEditable)) borderColor else emptyBorderColor
                 val actualAssistBackgroundColor =
@@ -183,7 +184,7 @@ fun ScoreBox(
                 ) {
                     if (hasAssist) {
                         val participant = participants.find {
-                            scoreInfo.size == 2 && it.id == scoreInfo[1].matchParticipantId
+                            scoreInfo.assist != null && it.id == scoreInfo.assist.matchParticipantId
                         }
                         VerticalSpacer8()
                         AsyncImage(

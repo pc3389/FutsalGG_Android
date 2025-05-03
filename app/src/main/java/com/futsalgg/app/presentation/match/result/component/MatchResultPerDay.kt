@@ -89,7 +89,8 @@ fun MatchResultPerDay(
                         location = match.location,
                         matchStartTime = match.startTime,
                         matchEndTime = match.endTime,
-                        buttonEnabled = match.status == MatchStatus.COMPLETED,
+                        buttonEnabled = true,
+// TODO                        buttonEnabled = match.status == MatchStatus.COMPLETED,
                         onResultClick = { onResultClick(match) },
                         onScheduleEditClick = {
                             onScheduleEditClick(match)

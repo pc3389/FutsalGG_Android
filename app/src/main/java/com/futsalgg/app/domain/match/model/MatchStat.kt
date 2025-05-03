@@ -15,8 +15,13 @@ data class MatchStat(
     }
 }
 
+data class TeamStats(
+    val goal: MatchStat?,
+    val assist: MatchStat?
+)
+
 data class RoundStats(
     val roundNumber: Int,
-    val teamAStats: List<List<MatchStat>>,
-    val teamBStats: List<List<MatchStat>>
+    val teamAStats: List<TeamStats>,
+    val teamBStats: List<TeamStats>
 ) 

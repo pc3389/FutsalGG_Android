@@ -3,8 +3,7 @@ package com.futsalgg.app.remote.api.match.model.response
 import com.google.gson.annotations.SerializedName
 
 data class GetMatchStatsResponse(
-    @SerializedName("stats")
-    val stats: Map<String, Map<String, List<List<MatchStat>>>>
+    val stats: Map<String, Map<String, List<TeamStat>>>
 )
 
 data class MatchStat(
