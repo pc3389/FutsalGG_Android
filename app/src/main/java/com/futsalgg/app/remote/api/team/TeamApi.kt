@@ -63,4 +63,11 @@ interface TeamApi {
         @Path("id") teamMemberId: String,
         @Header("Authorization") accessToken: String
     ): Response<Unit>
+
+    @PATCH("teams/{id}")
+    suspend fun updateTeam(
+        @Header("Authorization") accessToken: String,
+        @Path("id") teamId: String,
+        @Body request: CreateTeamRequest
+    ): Response<Unit>
 } 

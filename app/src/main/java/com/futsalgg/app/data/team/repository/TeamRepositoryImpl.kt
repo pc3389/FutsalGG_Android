@@ -17,6 +17,8 @@ import java.io.File
 import com.futsalgg.app.remote.api.team.model.TeamRole as RemoteTeamRole
 import java.io.IOException
 import javax.inject.Inject
+import com.futsalgg.app.domain.common.model.MatchType
+import com.futsalgg.app.domain.team.model.Access
 
 class TeamRepositoryImpl @Inject constructor(
     private val teamApi: TeamApi,
@@ -386,6 +388,51 @@ class TeamRepositoryImpl @Inject constructor(
         Result.failure(
             DomainError.NetworkError(
                 message = "[rejectTeamMember] 네트워크 연결을 확인해주세요.",
+                cause = e
+            ) as Throwable
+        )
+    }
+
+    override suspend fun updateTeam(
+        accessToken: String,
+        teamId: String,
+        name: String,
+        introduction: String,
+        rule: String,
+        matchType: MatchType,
+        access: Access,
+        dues: Int
+    ): Result<Unit> = try {
+        val response = teamApi.updateTeam(
+            accessToken = "Bearer $accessToken",
+            teamId = teamId,
+            request = CreateTeamRequest(
+                name = name,
+                introduction = introduction,
+                rule = rule,
+                matchType = matchType.name,
+                access = access.name,
+                dues = dues
+            )
+        )
+
+        if (response.isSuccessful) {
+            Result.success(Unit)
+        } else {
+            val errorBody = response.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorBody, ApiResponse::class.java)
+
+            Result.failure(
+                DomainError.ServerError(
+                    message = "[updateTeam] 서버 오류: ${errorResponse.message}",
+                    code = response.code()
+                ) as Throwable
+            )
+        }
+    } catch (e: IOException) {
+        Result.failure(
+            DomainError.NetworkError(
+                message = "[updateTeam] 네트워크 연결을 확인해주세요.",
                 cause = e
             ) as Throwable
         )
