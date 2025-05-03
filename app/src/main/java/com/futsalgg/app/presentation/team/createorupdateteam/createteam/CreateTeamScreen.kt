@@ -1,4 +1,4 @@
-package com.futsalgg.app.presentation.team.createteam
+package com.futsalgg.app.presentation.team.createorupdateteam.createteam
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures

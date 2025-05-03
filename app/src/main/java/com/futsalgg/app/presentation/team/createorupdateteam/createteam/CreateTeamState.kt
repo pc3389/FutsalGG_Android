@@ -1,4 +1,4 @@
-package com.futsalgg.app.presentation.team.createteam
+package com.futsalgg.app.presentation.team.createorupdateteam.createteam
 
 import android.graphics.Bitmap
 import com.futsalgg.app.presentation.common.state.EditTextState

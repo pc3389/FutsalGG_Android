@@ -27,8 +27,8 @@ import com.futsalgg.app.presentation.match.updateround.UpdateMatchRoundScreen
 import com.futsalgg.app.presentation.match.updatesubteam.UpdateMatchParticipantsSubTeamScreen
 import com.futsalgg.app.presentation.setting.SettingScreen
 import com.futsalgg.app.presentation.splash.SplashScreen
-import com.futsalgg.app.presentation.team.createteam.CreateTeamScreen
-import com.futsalgg.app.presentation.team.createteam.CreateTeamViewModel
+import com.futsalgg.app.presentation.team.createorupdateteam.createteam.CreateTeamScreen
+import com.futsalgg.app.presentation.team.createorupdateteam.createteam.CreateTeamViewModel
 import com.futsalgg.app.presentation.team.jointeam.JoinTeamScreen
 import com.futsalgg.app.presentation.team.selectteam.SelectTeamScreen
 import com.futsalgg.app.presentation.team.teaminfo.TeamInfoScreen
